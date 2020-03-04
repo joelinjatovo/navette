@@ -17,3 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+use App\Http\Resources\User as UserResource;
+use App\Http\Resources\UserCollection;
+use App\User;
+
+Route::get('/user', function () {
+    return new UserResource(User::find(1));
+});
+
+Route::get('/users', function () {
+    return new UserCollection(User::all());
+});
