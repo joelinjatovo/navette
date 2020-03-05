@@ -58,11 +58,11 @@ class User extends Authenticatable
     }
     
     /**
-     * Get the races for the user.
+     * Get the travels for the user.
      */
-    public function races()
+    public function travels()
     {
-        return $this->hasMany(Race::class);
+        return $this->hasMany(Travel::class);
     }
     
     /**
@@ -71,6 +71,22 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+    
+    /**
+     * The clubs that belong to the user.
+     */
+    public function clubs()
+    {
+        return $this->hasMany(Club::class, 'author_id', 'id');
+    }
+    
+    /**
+     * The zones that belong to the user.
+     */
+    public function zones()
+    {
+        return $this->hasMany(Zone::class, 'author_id', 'id');
     }
     
     /**
@@ -99,5 +115,58 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return null !== $this->roles()->where('name', $role)->first();
+    }
+    
+    /**
+    * Check user can join travel
+    *
+    * @param int $travel_id
+    */
+    public function canJoinTravel($travel_id)
+    {
+        return null !== $this->travels()->where('id', $travel_id)->first();
+    }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return array|string
+     */
+    public function routeNotificationForMail($notification)
+    {
+        // Return name and email address...
+        return [$this->email => $this->name];
+    }
+    
+    /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'users.'.$this->id;
+    }
+
+    /**
+     * Route notifications for the Nexmo channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForNexmo($notification)
+    {
+        return $this->phone_number;
+    }
+    
+    /**
+     * Get the user's preferred locale.
+     *
+     * @return string
+     */
+    public function preferredLocale()
+    {
+        return $this->locale;
     }
 }

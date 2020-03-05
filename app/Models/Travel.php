@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-class Race extends Model
+class Travel extends Model
 {
 
     const TYPE_MAIN = 'main';
@@ -44,7 +44,7 @@ class Race extends Model
      */
     public function parent()
     {
-        return $this->belongsTo(Race::class, 'parent_id');
+        return $this->belongsTo(Travel::class, 'parent_id');
     }
 
     /**
@@ -52,6 +52,6 @@ class Race extends Model
      */
     public function childs()
     {
-        return $this->hasMany(Race::class, 'parent_id');
+        return $this->hasMany(Travel::class, 'parent_id');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRacesTable extends Migration
+class CreateZonesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateRacesTable extends Migration
      */
     public function up()
     {
-        if( ! Schema::hasTable('races') ) {
-            Schema::create('races', function (Blueprint $table) {
+        if( ! Schema::hasTable('zones') ) {
+            Schema::create('zones', function (Blueprint $table) {
                 $table->id();
-                $table->string('type');
-                $table->unsignedBigInteger('parent_id')->index();
+                $table->string('name');
+                $table->integer('distance');
+                $table->string('unit')->default('km');
+                $table->unsignedBigInteger('author_id')->index();
+                $table->foreign('author_id')->references('id')->on('users');
                 $table->timestamps();
                 $table->softDeletes();
             });
@@ -31,6 +34,6 @@ class CreateRacesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('races');
+        Schema::dropIfExists('zones');
     }
 }
