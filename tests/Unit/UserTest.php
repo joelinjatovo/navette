@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api;
+namespace Tests\Unit;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -44,7 +44,15 @@ class UserTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertJson($user->toArray());
+        $response->assertJson([
+            'code' => 200,
+            'status' => 'success',
+            'data' => $user->toArray()
+        ]);
+
+        $response->dumpHeaders();
+
+        $response->dump();
     }
 
     /** 
@@ -129,9 +137,9 @@ class UserTest extends TestCase
 
         $this->assertNull($user);
 
-        $response->assertJsonStructure([
-            'code',
-            'status',
+        $response->assertJson([
+            'code' => 200,
+            'status' => 'success',
         ]);
     }
 }
