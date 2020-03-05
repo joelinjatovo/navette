@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:api'])->prefix('v1')->group(function () {
+Route::middleware(['auth:api'])->prefix('v1')->name('api.')->group(function () {
     Route::get('user', function (Request $request) {
         return new UserResource($request->user());
-    });
+    })->name('user');
     
     Route::get('users', 'Api\UserController@index')->name('users');
     Route::get('user/{user}', 'Api\UserController@show')->name('user.show');
