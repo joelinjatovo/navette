@@ -178,7 +178,6 @@ return [
         /**
         * Custom Providers
         */
-        App\Providers\RepositoryServiceProvider::class,
 
     ],
 

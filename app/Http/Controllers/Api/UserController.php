@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUser as StoreUserRequest;
 use App\Http\Requests\UpdateUser as UpdateUserRequest;
+use App\Http\Resources\User as UserResource;
+use App\Http\Resources\UserCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-
 class UserController extends Controller
 {
-    
     /**
      * Show the list of all user
      *
@@ -20,29 +20,19 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        
-        return view('admin.user.all', ['users' => $users]);
+
+        return new UserCollection($users);
     }
 
     /**
-     * Show the profile for the given user.
+     * Get information for the given user.
      *
      * @param  int  $id
      * @return Response
      */
     public function show(User $user)
     {
-        return view('admin.user.show', ['user' => $user]);
-    }
-    
-    /**
-     * Show the form to create a new user.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        return view('admin.user.create');
+        return new UserResource($user);
     }
 
     /**
@@ -55,17 +45,14 @@ class UserController extends Controller
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
-    }
-    
-    /**
-     * Show the form to edit specified user.
-     *
-     * @param  string  $id
-     * @return Response
-     */
-    public function edit(User $user)
-    {
-        return view('admin.user.edit', ['user' => $user]);
+
+        $user = User::create($validated);
+
+        return response()->json([
+            'code'    => 200,
+            'status'  => "success",
+            'data'    => $user,
+        ]);
     }
 
     /**
@@ -79,6 +66,14 @@ class UserController extends Controller
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
+        
+        $user->update($validated);
+
+        return response()->json([
+            'code'    => 200,
+            'status'  => "success",
+            'data'    => $user,
+        ]);
     }
 
     /**
@@ -94,8 +89,7 @@ class UserController extends Controller
 
         return response()->json([
             'code' => 200,
-            'status' => "success",
+            'status'  => "success",
         ]);
     }
-
 }

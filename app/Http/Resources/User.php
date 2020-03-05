@@ -17,18 +17,22 @@ class User extends JsonResource
         //return parent::toArray($request);
         
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            
-            'secret' => $this->when(\Auth::user()->isAdmin(), 'secret-value'),
-            $this->mergeWhen(\Auth::user()->isAdmin(), [
-                'first-secret' => 'value',
-                'second-secret' => 'value',
-            ]),
-            //'posts' => PostResource::collection($this->posts),
+            'code' => 200,
+            'status' => "success",
+            'data' => [
+                'id' => $this->id,
+                'name' => $this->name,
+                'email' => $this->email,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
+
+                'secret' => $this->when(\Auth::user()->isAdmin(), 'secret-value'),
+                $this->mergeWhen(\Auth::user()->isAdmin(), [
+                    'first-secret' => 'value',
+                    'second-secret' => 'value',
+                ]),
+                //'posts' => PostResource::collection($this->posts),
+            ]
         ];
     }
 }
