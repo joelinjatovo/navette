@@ -13,24 +13,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Auth::routes();
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('profile', 'Account\ProfileController@show')->name('profile');
+    Route::post('profile', 'Account\ProfileController@update');
+    
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('users', 'Admin\UserController@index')->name('users');
-        Route::get('user/{user}', 'Admin\UserController@show')->name('user.show');
         Route::get('user', 'Admin\UserController@create')->name('user.create');
         Route::get('user', 'Admin\UserController@store');
+        Route::get('user/{user}', 'Admin\UserController@show')->name('user.show');
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('user.edit');
         Route::post('user/{user}/edit', 'Admin\UserController@update');
         Route::post('user/{user}/delete', 'Admin\UserController@delete');
     });
     
-    Route::get('profile', 'Account\ProfileController@show')->name('profile');
-    Route::post('profile', 'Account\ProfileController@update');
+    Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {
+        //
+    });
+    
+    Route::middleware(['role:customer'])->prefix('customer')->name('customer.')->group(function () {
+        //
+    });
+    
 });
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
