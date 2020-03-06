@@ -52,7 +52,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'api_token' => \App\Http\Middleware\ApiToken::class,
+        'apitoken' => \App\Http\Middleware\ApiKey::class,
+        'apikey' => \App\Http\Middleware\ApiKey::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

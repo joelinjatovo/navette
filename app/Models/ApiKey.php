@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ApiToken extends Model
+class ApiKey extends Model
 {
 
     /**
@@ -13,6 +13,6 @@ class ApiToken extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'token', 'version', 'agent',
+        'name', 'scopes', 'version', 'user_agent',
     ];
 }

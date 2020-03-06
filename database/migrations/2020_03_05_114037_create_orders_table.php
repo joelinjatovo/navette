@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
                 $table->float('price', 20, 4); // HT
                 $table->float('total', 20, 4); // TTC
                 $table->string('currency', 3);
-                $table->float('vat', 2, 4)->default(0);
+                $table->float('vat', 2, 2)->default(0);
                 $table->boolean('preordered')->default(false);
                 $table->boolean('privatized')->default(false);
                 $table->string('contact_name', 100);

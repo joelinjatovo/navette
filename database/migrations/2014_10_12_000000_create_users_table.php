@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
                 $table->string('phone', 20)->unique();
                 $table->timestamp('phone_verified_at')->nullable();
                 $table->string('password');
+                $table->boolean('active')->default(true);
                 $table->rememberToken();
                 $table->timestamps();
                 $table->softDeletes();

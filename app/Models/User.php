@@ -6,6 +6,7 @@ use App\Contracts\Auth\MustVerifyPhone;
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements MustVerifyPhone
 {
@@ -54,7 +55,18 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function tokens()
     {
-        return $this->hasMany(UserToken::class);
+        return $this->hasMany(AccessToken::class)->orderBy('created_at', 'desc');
+    }
+    
+    /**
+     * Create user's access token
+     */
+    public function createToken($token)
+    {
+        return $this->tokens()->create([
+            'scopes' => Hash::make($token, ['rounds' => 11]),
+            'expires_at' => now()->addDays(15)
+        ]);
     }
     
     /**

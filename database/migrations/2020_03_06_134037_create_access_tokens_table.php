@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserTokensTable extends Migration
+class CreateAccessTokensTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreateUserTokensTable extends Migration
      */
     public function up()
     {
-        if( ! Schema::hasTable('user_tokens') ) {
-            Schema::create('user_tokens', function (Blueprint $table) {
+        if( ! Schema::hasTable('access_tokens') ) {
+            Schema::create('access_tokens', function (Blueprint $table) {
                 $table->id();
-                $table->string('token', 100)->index();
-                $table->string('refresh_token')->index();
+                $table->text('scopes');
+                
                 $table->unsignedBigInteger('user_id')->index();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                
+                $table->boolean('revoked')->default(false);
+                $table->dateTime('expires_at')->nullable();
                 $table->timestamps();
             });
         }
@@ -32,6 +35,6 @@ class CreateUserTokensTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_tokens');
+        Schema::dropIfExists('access_tokens');
     }
 }
