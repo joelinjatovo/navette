@@ -18,6 +18,17 @@ class ProfileController extends Controller
     }
     
     /**
+     * Show form to edit the user's profile.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function edit()
+    {
+        // $request->user() returns an instance of the authenticated user...
+    }
+    
+    /**
      * Update the user's profile.
      *
      * @param  Request  $request

@@ -50,6 +50,14 @@ class User extends Authenticatable implements MustVerifyPhone
     ];
     
     /**
+     * Get the tokens for the user.
+     */
+    public function tokens()
+    {
+        return $this->hasMany(UserToken::class);
+    }
+    
+    /**
      * Get the phones for the user.
      */
     public function phones()
