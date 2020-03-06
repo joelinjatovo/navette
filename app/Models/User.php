@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Contracts\Auth\MustVerifyPhone;
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyPhone
 {
     use Notifiable;
     
@@ -28,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone', 'password',
+        'name', 'phone', 'password',
     ];
 
     /**
@@ -46,7 +46,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'phone_verified_at' => 'datetime',
     ];
     
     /**
@@ -184,5 +184,46 @@ class User extends Authenticatable
     public function preferredLocale()
     {
         return $this->locale;
+    }
+    
+    /**
+     * Send phone number verification
+     *
+     * @return string
+     */
+    public function hasVerifiedPhone()
+    {
+        return null != $this->phone_verified_at;
+    }
+    
+    /**
+     * Mark the given user's phone number as verified.
+     *
+     * @return bool
+     */
+    public function markPhoneAsVerified()
+    {
+        $this->phone_verified_at = now();
+        
+        return $this->save();
+    }
+
+    /**
+     * Send the phone verification notification.
+     *
+     * @return void
+     */
+    public function sendPhoneVerificationNotification()
+    {
+        
+    }
+
+    /**
+     * Get the phone number that should be used for verification.
+     *
+     * @return string
+     */
+    public function getPhoneForVerification(){
+        return $this->phone;
     }
 }

@@ -43,7 +43,7 @@ class OrderUpdated extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->markdown('email.order.updated');
+        return (new MailMessage)->markdown('emails.order.updated');
     }
 
     /**

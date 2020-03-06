@@ -20,6 +20,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('mailable', function () {
+    $user = App\Models\User::find(1);
+    return new App\Mail\UserLogin($user);
+});
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('profile', 'Account\ProfileController@show')->name('profile');

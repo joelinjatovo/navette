@@ -45,7 +45,7 @@ class OrderCreated extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)->markdown('email.order.created');
+        return (new MailMessage)->markdown('emails.order.created');
     }
 
     /**

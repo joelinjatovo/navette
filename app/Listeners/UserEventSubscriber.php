@@ -2,16 +2,19 @@
 
 namespace App\Listeners;
 
+use App\Mail\UserLogin;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Mail;
 
 class UserEventSubscriber
-{    /**
+{   
+    /**
      * Handle user login events.
      */
     public function handleUserLogin($event) {
-        
+        Mail::to($event->user)->send(new UserLogin($event->user));
     }
 
     /**
