@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -30,12 +31,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Auth::viaRequest('api-token', function ($request) {
-            $token = AccessToken::where('scopes', $request->token)
+            $bearerToken = substr($request->header('Authorization'), strlen('Bearer '));
+            $token = AccessToken::where('scopes', $bearerToken)
                     ->where('revoked', 0)
-                    ->where('expires_at', '>', now())
+                    ->whereDate('expires_at', '>', date('Y-m-d H:i:s'))
                     ->first();
             if( null != $token ) {
-                return $token->user();
+                return $token->user;
             }
         });
     }

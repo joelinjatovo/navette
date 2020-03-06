@@ -12,7 +12,7 @@ class RefreshToken extends Model
      * @var array
      */
     protected $fillable = [
-        'scopes', 'user_id'
+        'scopes', 'user_id', 'expires_at'
     ];
     
     /**

@@ -154,6 +154,16 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+    * Check if is admin
+    *
+    * @param string $role
+    */
+    public function isAdmin()
+    {
+        return null !== $this->roles()->where('name', Role::ADMIN)->first();
+    }
+    
+    /**
     * Check user can join travel
     *
     * @param int $travel_id

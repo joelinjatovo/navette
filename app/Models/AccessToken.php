@@ -14,7 +14,7 @@ class AccessToken extends Model
      * @var array
      */
     protected $fillable = [
-        'scopes'
+        'scopes', 'expires_at'
     ];
     
     /**
@@ -36,11 +36,11 @@ class AccessToken extends Model
     }
     
     /**
-     * Get the refresh that owns the token.
+     * Get the refreshes that owns the token.
      */
-    public function refresh()
+    public function refreshes()
     {
-        return $this->hasOne(RefreshToken::class);
+        return $this->hasMany(RefreshToken::class);
     }
     
     /**
@@ -48,10 +48,10 @@ class AccessToken extends Model
      */
     public function createRefreshToken($token)
     {
-        return $this->refresh()->create([
-            'scopes' => Hash::make($token, ['rounds' => 27]),
+        return $this->refreshes()->create([
+            'scopes' => Hash::make($token, ['rounds' => 2]),
             'expires_at' => now()->addDays(30),
-            'user_id' => $this->user()?$this->user()->id:null
+            'user_id' => $this->user?$this->user->id:null,
         ]);
     }
     
