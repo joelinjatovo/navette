@@ -13,7 +13,7 @@ class CreateUserTokensTable extends Migration
      */
     public function up()
     {
-        if( ! Schema::hasTable('api_tokens') ) {
+        if( ! Schema::hasTable('user_tokens') ) {
             Schema::create('user_tokens', function (Blueprint $table) {
                 $table->id();
                 $table->string('token', 100)->index();
