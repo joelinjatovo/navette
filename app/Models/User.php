@@ -106,6 +106,14 @@ class User extends Authenticatable
     }
     
     /**
+     * The positions that belong to the user.
+     */
+    public function positions()
+    {
+        return $this->belongsToMany(Point::class)->using(UserPosition::class);
+    }
+    
+    /**
     * Check multiple roles
     *
     * @param array $roles

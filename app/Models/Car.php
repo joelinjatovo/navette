@@ -31,4 +31,12 @@ class Car extends Model
     {
         return $this->hasMany(Travel::class);
     }
+    
+    /**
+     * The positions that belong to the car.
+     */
+    public function positions()
+    {
+        return $this->belongsToMany(Point::class)->using(CarPosition::class);
+    }
 }

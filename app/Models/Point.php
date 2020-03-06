@@ -80,4 +80,20 @@ class Point extends Model
                 return $this->hasMany(Travel::class, 'return_point_id', 'id');
         }
     }
+    
+    /**
+     * The cars that belong to the role.
+     */
+    public function cars()
+    {
+        return $this->belongsToMany(Car::class)->using(CarPosition::class);
+    }
+    
+    /**
+     * The users that belong to the role.
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class)->using(UserPosition::class);
+    }
 }
