@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Travel extends Model
 {
     
-    use SoftDeletingTrait;
+    use SoftDeletes;
     
     const STATUS_PING = 'ping';
     const STATUS_ACTIVE = 'active';

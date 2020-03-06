@@ -17,10 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+    
+Route::prefix('v1')->name('api.')->group(function () {
+    Route::get('scope', function (Request $request) {
+        return response()->json(['data'=>encrypt('scopes')]);
+    })->name('scopes');
+});
+
 Route::middleware(['apikey'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('json', function (Request $request) {
-        return response()->json(['data'=>1223]);
-    })->name('main');
     
     Route::post('token', 'Api\TokenController@create')->name('token');
     Route::post('token/refresh', 'Api\TokenController@refresh')->name('token.refresh');

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\ApiKey as ApiKeyModel;
 use Closure;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class ApiKey
 {
@@ -17,7 +18,7 @@ class ApiKey
     public function handle($request, Closure $next)
     {
         $token = $request->header('x-api-key');
-        if( empty($apikey) || !$this->isValidApiKey($token)){
+        if( empty($token) || !$this->isValidApiKey($token)){
             return response()->json([
                 'code' => 403,
                 'status' => 'Forbidden',
@@ -29,6 +30,11 @@ class ApiKey
     }
     
     private function isValidApiKey($token){
-        return false; //null != ApiKeyModel::where('scopes', $token)->andWhere('revoked', 0)->andWhere('expires_at', '>', now())->first();
+        try {
+            $decrypted = decrypt($token);
+        } catch (DecryptException $e) {
+            return false;
+        }
+        return null != ApiKeyModel::where('scopes', $decrypted)->where('revoked', 0)->where('expires_at', '>', now())->first();
     }
 }

@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Zone extends Model
 {
     
-    use SoftDeletingTrait;
+    use SoftDeletes;
     
     /**
      * Get the author that adds the club.

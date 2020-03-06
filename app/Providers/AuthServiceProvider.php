@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\AccessToken;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -29,10 +30,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Auth::viaRequest('api-token', function ($request) {
-            return User::tokens()->where('scopes', $request->token)
-                    ->andWhere('revoked', 0)
-                    ->andWhere('expires_at', '>', now())
+            $token = AccessToken::where('scopes', $request->token)
+                    ->where('revoked', 0)
+                    ->where('expires_at', '>', now())
                     ->first();
+            if( null != $token ) {
+                return $token->user();
+            }
         });
     }
 }

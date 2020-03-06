@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\AccessToken;
+use App\Models\RefreshToken;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class TokenController extends Controller
 {
@@ -16,7 +20,6 @@ class TokenController extends Controller
      */
     public function create(Request $request)
     {
-        
         $credentials = $request->only('phone', 'password');
         $credentials['active'] = 1;
         
@@ -24,7 +27,7 @@ class TokenController extends Controller
         {
             $user = Auth::user();
             
-            $token = $user->createToken(Str::random(60))
+            $token = $user->createToken(Str::random(60));
             $refresh_token = $token->createRefreshToken(Str::random(60));
             
             return response()->json([
@@ -33,6 +36,7 @@ class TokenController extends Controller
                     'data' => [
                         'token' => $token->scopes,
                         'refresh_token' => $refresh_token->scopes,
+                        //'expires' => $token->expires_at->time(),
                     ]
                 ], 200);
         }
@@ -69,6 +73,7 @@ class TokenController extends Controller
                     'data' => [
                         'token' => $token->scopes,
                         'refresh_token' => $refresh_token->scopes,
+                        //'expires' => $token->expires_at->time(),
                     ]
                 ], 200);
         }

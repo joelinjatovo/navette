@@ -14,7 +14,7 @@ class UserEventSubscriber
      * Handle user login events.
      */
     public function handleUserLogin($event) {
-        Mail::to($event->user)->send(new UserLogin($event->user));
+        //Mail::to($event->user)->send(new UserLogin($event->user));
     }
 
     /**
