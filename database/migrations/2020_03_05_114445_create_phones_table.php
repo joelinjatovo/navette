@@ -16,11 +16,17 @@ class CreatePhonesTable extends Migration
         if( ! Schema::hasTable('phones') ) {
             Schema::create('phones', function (Blueprint $table) {
                 $table->id();
-                $table->string('type');
-                $table->string('country_code');
-                $table->string('phone');
+                $table->string('type', 20);
+                $table->string('phone_country_code', 10);
+                $table->string('phone_number', 20);
+                $table->string('phone', 30);
+                
+                $table->unsignedBigInteger('order_id')->index();
+                $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+                
                 $table->unsignedBigInteger('user_id')->index();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                
                 $table->timestamps();
             });
         }

@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class CarModel extends Model
 {
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'year', 'place',
+    ];
+    
     /**
      * Get the type that owns the car model.
      */

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClubsTable extends Migration
+class CreatePointsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,18 @@ class CreateClubsTable extends Migration
      */
     public function up()
     {
-        if( ! Schema::hasTable('clubs') ) {
-            Schema::create('clubs', function (Blueprint $table) {
+        if( ! Schema::hasTable('points') ) {
+            Schema::create('points', function (Blueprint $table) {
                 $table->id();
                 $table->string('name', 200);
+                $table->decimal('long', 10, 7);
+                $table->decimal('lat', 10, 7);
+                $table->decimal('alt', 10, 7);
                 
-                $table->unsignedBigInteger('point_id')->index();
-                $table->foreign('point_id')->references('id')->on('points')->onDelete('cascade');
-                
-                $table->unsignedBigInteger('author_id')->index();
+                $table->unsignedBigInteger('author_id')->index()->nullable();
                 $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
                 
                 $table->timestamps();
-                $table->softDeletes();
             });
         }
     }
@@ -37,6 +36,6 @@ class CreateClubsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clubs');
+        Schema::dropIfExists('points');
     }
 }

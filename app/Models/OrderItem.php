@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-class Order extends Model
+class OrderItem extends Model
 {
     
     use SoftDeletingTrait;
@@ -25,27 +25,28 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'status', 'place', 'price', 'total', 'currency', 'vat', 'preordered', 'privatized', 'contact_name', 'contact_email', 'ip', 'mac',
+        'status', 'place', 'price', 'total', 'vat', 'preordered', 'privatized',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        '',
     ];
     
     /**
-     * Get the car that owns the order.
+     * Get the order that owns the order item.
      */
-    public function car()
+    public function order()
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Order::class);
     }
     
     /**
-     * Get the user that owns the order.
-     */
-    public function author()
-    {
-        return $this->belongsTo(User::class, 'author_id');
-    }
-    
-    /**
-     * Get the travel that owns the order.
+     * Get the travel that owns the order item.
      */
     public function travel()
     {
@@ -53,19 +54,19 @@ class Order extends Model
     }
     
     /**
-     * Get the phone that owns the order.
+     * Get the car that owns the order item.
      */
-    public function phone()
+    public function car()
     {
-        return $this->belongsTo(Phone::class);
+        return $this->belongsTo(Car::class);
     }
-
+    
     /**
-     * Get the items associated with the order.
+     * Get the user that owns the order item.
      */
-    public function items()
+    public function author()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->belongsTo(User::class, 'author_id');
     }
     
     /**

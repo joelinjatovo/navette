@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+
     /**
-     * The attributes that should be cast.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $casts = [
-        'value' => 'array',
+    protected $fillable = [
+        'key', 'value',
     ];
 }

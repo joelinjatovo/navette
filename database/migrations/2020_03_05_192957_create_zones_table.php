@@ -16,11 +16,16 @@ class CreateZonesTable extends Migration
         if( ! Schema::hasTable('zones') ) {
             Schema::create('zones', function (Blueprint $table) {
                 $table->id();
-                $table->string('name');
+                $table->string('name', 200);
                 $table->integer('distance');
-                $table->string('unit')->default('km');
+                $table->string('unit', 10)->default('km');
+                $table->float('privatizedPrice', 20, 4); // HT
+                $table->float('price', 20, 4); // HT
+                $table->string('currency', 3);
+                
                 $table->unsignedBigInteger('author_id')->index();
-                $table->foreign('author_id')->references('id')->on('users');
+                $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
+                
                 $table->timestamps();
                 $table->softDeletes();
             });

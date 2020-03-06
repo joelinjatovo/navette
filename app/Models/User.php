@@ -28,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'phone', 'password',
     ];
 
     /**
@@ -60,9 +60,17 @@ class User extends Authenticatable
     /**
      * Get the travels for the user.
      */
-    public function travels()
+    public function createdTravels()
     {
-        return $this->hasMany(Travel::class);
+        return $this->hasMany(Travel::class, 'author_id', 'id');
+    }
+    
+    /**
+     * Get the travels for the user.
+     */
+    public function drivedTravels()
+    {
+        return $this->hasMany(Travel::class, 'driver_id', 'id');
     }
     
     /**

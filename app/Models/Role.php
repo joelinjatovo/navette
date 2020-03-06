@@ -12,6 +12,15 @@ class Role extends Model
     const DRIVER = 'driver';
     
     const CUSTOMER = 'customer';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'description', 'priority',
+    ];
     
     /**
      * The users that belong to the role.

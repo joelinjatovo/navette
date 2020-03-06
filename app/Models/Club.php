@@ -9,6 +9,23 @@ class Club extends Model
 {
     
     use SoftDeletingTrait;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
+    
+    /**
+     * Get the point that adds the club.
+     */
+    public function point()
+    {
+        return $this->belongsTo(Point::class);
+    }
     
     /**
      * Get the author that adds the club.

@@ -7,12 +7,21 @@ use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Travel extends Model
 {
-
-    const TYPE_MAIN = 'main';
-    
-    const TYPE_CHILD = 'child';
     
     use SoftDeletingTrait;
+    
+    const STATUS_PING = 'ping';
+    const STATUS_ACTIVE = 'active';
+    
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'type', 'status',
+    ];
 
     /**
      * The attributes that are datetime type.
@@ -20,15 +29,23 @@ class Travel extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at','deleted_at',
+        'started_at', 'arrived_at', 'returned_at', 'created_at', 'updated_at', 'deleted_at',
     ];
     
     /**
-     * Get the driver record associated with the race.
+     * Get the driver associated with the race.
      */
     public function driver()
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(User::class, 'driver_id', 'id');
+    }
+    
+    /**
+     * Get the author associated with the race.
+     */
+    public function author()
+    {
+        return $this->hasOne(User::class, 'author_id', 'id');
     }
     
     /**
@@ -40,18 +57,58 @@ class Travel extends Model
     }
     
     /**
-     * Get the race associated with the child race.
+     * Get the parent that owns the travel.
      */
-    public function parent()
+    public function travel()
     {
-        return $this->belongsTo(Travel::class, 'parent_id');
+        return $this->belongsTo(Travel::class, 'parent_id', 'id');
     }
 
     /**
-     * Get the childs race associated with the parent race.
+     * Get the childs travels associated with travel.
      */
-    public function childs()
+    public function items()
     {
-        return $this->hasMany(Travel::class, 'parent_id');
+        return $this->hasMany(Travel::class, 'parent_id', 'id');
+    }
+
+    /**
+     * Get the orders associated with the travel.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get the order items associated with the travel.
+     */
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+    
+    /**
+     * Get the start point that owns the travel.
+     */
+    public function startPoint()
+    {
+        return $this->belongsTo(Point::class, 'start_point_id', 'id');
+    }
+    
+    /**
+     * Get the arrival point that owns the travel.
+     */
+    public function arrivalPoint()
+    {
+        return $this->belongsTo(Point::class, 'arrival_point_id', 'id');
+    }
+    
+    /**
+     * Get the return point that owns the travel.
+     */
+    public function returnPoint()
+    {
+        return $this->belongsTo(Point::class, 'return_point_id', 'id');
     }
 }

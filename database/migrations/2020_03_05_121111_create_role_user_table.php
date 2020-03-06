@@ -16,11 +16,14 @@ class CreateRoleUserTable extends Migration
         if( ! Schema::hasTable('role_user') ) {
             Schema::create('role_user', function (Blueprint $table) {
                 $table->id();
+                $table->boolean('approved')->default(true);
+                
                 $table->unsignedBigInteger('user_id')->index();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                
                 $table->unsignedBigInteger('role_id')->index();
                 $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-                $table->boolean('approved')->default(true);
+                
                 $table->timestamps();
             });
         }
