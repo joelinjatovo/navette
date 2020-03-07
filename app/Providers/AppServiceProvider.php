@@ -6,6 +6,7 @@ use App\Http\Middleware\AccessLog;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // String DB Lengths
+        Schema::defaultStringLength(191);
+        
         // share key to all view blade file
         View::share('key', 'value');
         

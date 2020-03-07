@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
                 $table->string('name', 100);
                 $table->string('locale', 2);
                 $table->string('phone', 20)->unique();
+                $table->timestamp('last_activity_at')->nullable();
                 $table->timestamp('phone_verified_at')->nullable();
                 $table->string('password');
                 $table->boolean('active')->default(true);

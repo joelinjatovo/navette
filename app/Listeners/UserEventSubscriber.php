@@ -10,19 +10,6 @@ use Illuminate\Support\Facades\Mail;
 
 class UserEventSubscriber
 {   
-    /**
-     * Handle user login events.
-     */
-    public function handleUserLogin($event) {
-        //Mail::to($event->user)->send(new UserLogin($event->user));
-    }
-
-    /**
-     * Handle user logout events.
-     */
-    public function handleUserLogout($event) {
-        
-    }
 
     /**
      * Register the listeners for the subscriber.
@@ -40,5 +27,19 @@ class UserEventSubscriber
             'Illuminate\Auth\Events\Logout',
             'App\Listeners\UserEventSubscriber@handleUserLogout'
         );
+    }
+    
+    /**
+     * Handle user login events.
+     */
+    public function handleUserLogin($event) {
+        //Mail::to($event->user)->send(new UserLogin($event->user));
+    }
+
+    /**
+     * Handle user logout events.
+     */
+    public function handleUserLogout($event) {
+        
     }
 }

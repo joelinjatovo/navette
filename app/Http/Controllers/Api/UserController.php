@@ -46,11 +46,7 @@ class UserController extends Controller
 
         $user = User::create($validated);
 
-        return response()->json([
-            'code'    => 200,
-            'status'  => "success",
-            'data'    => $user,
-        ]);
+        return new UserResource($user);
     }
 
     /**
@@ -67,11 +63,7 @@ class UserController extends Controller
         
         $user->update($validated);
 
-        return response()->json([
-            'code'    => 200,
-            'status'  => "success",
-            'data'    => $user,
-        ]);
+        return new UserResource($user);
     }
 
     /**
@@ -88,6 +80,7 @@ class UserController extends Controller
         return response()->json([
             'code' => 200,
             'status'  => "success",
-        ]);
+            'data' => null,
+        ], 200);
     }
 }

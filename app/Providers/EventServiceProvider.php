@@ -3,12 +3,7 @@
 namespace App\Providers;
 
 use App\Events\TravelInited;
-use App\Listeners\LogNotification;
-use App\Listeners\SendPhoneVerificationNotification;
-use App\Listeners\UserEventSubscriber;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Notifications\Events\NotificationSent;
 use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
@@ -19,11 +14,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendPhoneVerificationNotification::class,
+        '\Illuminate\Auth\Events\Registered' => [
+            '\App\Listeners\SendPhoneVerificationNotification',
         ],
-        NotificationSent::class => [
-            LogNotification::class,
+        '\Illuminate\Notifications\Events\NotificationSent' => [
+            '\App\Listeners\LogNotification',
         ],
     ];
 
@@ -33,7 +28,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
-        UserEventSubscriber::class,
+        \App\Listeners\UserEventSubscriber::class,
+        //\App\Listeners\UserPositionEventSubscriber::class,
     ];
 
     /**
