@@ -16,16 +16,34 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('mailable', function () {
     $user = App\Models\User::find(1);
     return new App\Mail\UserLogin($user);
 });
 
 Route::middleware(['auth'])->group(function () {
+    
+    Route::get('/event', function () {
+        event(new App\Events\MyEvent('hello world'));
+        return 'welcome';
+    });
+    
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/home', function () {
+        return view('welcome');
+    });
+    Route::get('/broadcast', function () {
+        return view('broadcast');
+    });
+    Route::get('/broadcast1', function () {
+        return view('broadcast1');
+    });
+    Route::get('/logout', function () {
+        \Auth::logout();
+        return redirect('login');
+    });
 
     Route::get('profile', 'Account\ProfileController@show')->name('profile');
     Route::post('profile', 'Account\ProfileController@update');

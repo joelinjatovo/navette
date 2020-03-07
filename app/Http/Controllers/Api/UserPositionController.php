@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserPosition as StoreUserPositionRequest;
 use App\Http\Resources\UserPosition as UserPositionResource;
+use App\Http\Resources\User as UserResource;
 use App\Models\User;
 use App\Models\UserPosition;
+use App\Models\Point;
 use Illuminate\Http\Request;
 
 class UserPositionController extends Controller
@@ -23,11 +25,13 @@ class UserPositionController extends Controller
         // Retrieve the validated input data...
         $validated = $request->validated();
 
-        $position = $request->user()->positions()->create($validated);
+        $user = $request->user();
+        $point = Point::create($validated);
+        $user->positions()->attach($point->id, ['created_at' => now()]);
         
-        event(new \App\Events\UserPositionCreated($position));
-        event(new \App\Events\TravelUserPositionCreated($position));
+        event(new \App\Events\UserPositionCreated($user, $point));
+        event(new \App\Events\TravelUserPositionCreated($user, $point));
 
-        return new UserPositionResource($position);
+        return new UserResource($user);
     }
 }

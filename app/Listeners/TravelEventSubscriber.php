@@ -32,68 +32,68 @@ class TravelEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            '\App\Events\TravelCreated',
-            '\App\Listeners\TravelEventSubscriber@handleTravelCreated'
+            'App\Events\TravelCreated',
+            'App\Listeners\TravelEventSubscriber@handleTravelCreated'
         );
         
         $events->listen(
-            '\App\Events\TravelStarted',
-            '\App\Listeners\TravelEventSubscriber@handleTravelStarted'
+            'App\Events\TravelStarted',
+            'App\Listeners\TravelEventSubscriber@handleTravelStarted'
         );
         
         $events->listen(
-            '\App\Events\TravelArrived',
-            '\App\Listeners\TravelEventSubscriber@handleTravelArrived'
+            'App\Events\TravelArrived',
+            'App\Listeners\TravelEventSubscriber@handleTravelArrived'
         );
         
         $events->listen(
-            '\App\Events\TravelReturned',
-            '\App\Listeners\TravelEventSubscriber@handleTravelReturned'
+            'App\Events\TravelReturned',
+            'App\Listeners\TravelEventSubscriber@handleTravelReturned'
         );
         
         $events->listen(
-            '\App\Events\TravelFinished',
-            '\App\Listeners\TravelEventSubscriber@handleTravelFinished'
+            'App\Events\TravelFinished',
+            'App\Listeners\TravelEventSubscriber@handleTravelFinished'
         );
         
         $events->listen(
-            '\App\Events\TravelDriverAssigned',
-            '\App\Listeners\TravelEventSubscriber@handleTravelDriverAssigned'
+            'App\Events\TravelDriverAssigned',
+            'App\Listeners\TravelEventSubscriber@handleTravelDriverAssigned'
         );
         
         $events->listen(
-            '\App\Events\TravelCarAssigned',
-            '\App\Listeners\TravelEventSubscriber@handleTravelCarAssigned'
+            'App\Events\TravelCarAssigned',
+            'App\Listeners\TravelEventSubscriber@handleTravelCarAssigned'
         );
         
         $events->listen(
-            '\App\Events\TravelOrderAssigned',
-            '\App\Listeners\TravelEventSubscriber@handleTravelOrderAssigned'
+            'App\Events\TravelOrderAssigned',
+            'App\Listeners\TravelEventSubscriber@handleTravelOrderAssigned'
         );
         
         $events->listen(
-            '\App\Events\TravelOrderActived',
-            '\App\Listeners\TravelEventSubscriber@handleTravelOrderActived'
+            'App\Events\TravelOrderActived',
+            'App\Listeners\TravelEventSubscriber@handleTravelOrderActived'
         );
         
         $events->listen(
-            '\App\Events\TravelOrderCanceled',
-            '\App\Listeners\TravelEventSubscriber@handleTravelOrderCanceled'
+            'App\Events\TravelOrderCanceled',
+            'App\Listeners\TravelEventSubscriber@handleTravelOrderCanceled'
         );
         
         $events->listen(
-            '\App\Events\TravelOrderMoved',
-            '\App\Listeners\TravelEventSubscriber@handleTravelOrderMoved'
+            'App\Events\TravelOrderMoved',
+            'App\Listeners\TravelEventSubscriber@handleTravelOrderMoved'
         );
         
         $events->listen(
-            '\App\Events\TravelOrderFinished',
-            '\App\Listeners\TravelEventSubscriber@handleTravelOrderFinished'
+            'App\Events\TravelOrderFinished',
+            'App\Listeners\TravelEventSubscriber@handleTravelOrderFinished'
         );
         
         $events->listen(
-            '\App\Events\TravelUserPositionCreated',
-            '\App\Listeners\TravelEventSubscriber@handleTravelUserPositionCreated'
+            'App\Events\TravelUserPositionCreated',
+            'App\Listeners\TravelEventSubscriber@handleTravelUserPositionCreated'
         );
     }
     
@@ -232,11 +232,11 @@ class TravelEventSubscriber
     /**
      * Handle travel user position created events.
      */
-    public function handleTravelUserPositionCreated(TravelUserPositionCreated $event) {
-        $position = $event->position;
-        $admin = $position->travel->user;
+    public function handleTravelUserPositionCreated(TravelUserPositionCreatedEvent $event) {
+        $admin = $event->user;
+        $point = $event->point;
         if( null != $admin ) {
-            $admin->notify(new TravelUserPositionCreatedNotifiation($position));
+            $admin->notify(new TravelUserPositionCreatedNotifiation($admin, $point));
         }
     }
 }

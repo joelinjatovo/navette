@@ -25,6 +25,6 @@ class TravelChannel
      */
     public function join(User $user, Travel $travel)
     {
-        return $user->canJoinTravel($travel->id);
+        return true; //$user->canJoinTravel($travel->id);
     }
 }

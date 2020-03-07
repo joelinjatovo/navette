@@ -18,4 +18,8 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('App.Travel.{travel}', TravelChannel::class);
+Broadcast::channel('App.Travel.{id}', function ($user, $id) {
+    return true;
+});
+
+//Broadcast::channel('App.Travel.{travel}', TravelChannel::class);

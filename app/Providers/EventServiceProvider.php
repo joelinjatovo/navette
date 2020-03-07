@@ -28,10 +28,10 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
-        \App\Listeners\OrderEventSubscriber::class,
-        \App\Listeners\TravelEventSubscriber::class,
-        \App\Listeners\UserEventSubscriber::class,
-        \App\Listeners\UserPositionEventSubscriber::class,
+        'App\Listeners\OrderEventSubscriber',
+        'App\Listeners\TravelEventSubscriber',
+        'App\Listeners\UserEventSubscriber',
+        'App\Listeners\UserPositionEventSubscriber',
     ];
 
     /**

@@ -19,8 +19,8 @@ class OrderEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            '\App\Events\OrderCreated',
-            '\App\Listeners\OrderEventSubscriber@handleOrderCreated'
+            'App\Events\OrderCreated',
+            'App\Listeners\OrderEventSubscriber@handleOrderCreated'
         );
     }
     

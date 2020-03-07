@@ -7,23 +7,27 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserPositionCreated
+class UserPositionCreated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $position;
+    public $user;
+
+    public $point;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(\App\Models\UserPosition $position)
+    public function __construct(\App\Models\User $user, \App\Models\Point $point)
     {
-        $this->position = $position;
+        $this->user = $user;
+        $this->point = $point;
     }
 
     /**
@@ -33,7 +37,7 @@ class UserPositionCreated
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->position->user->id);
+        return new PrivateChannel('App.User.'.$this->user->id);
     }
     
     /**
@@ -44,5 +48,27 @@ class UserPositionCreated
     public function broadcastAs()
     {
         return 'user.position.created';
+    }
+    
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastWith()
+    {
+        return [
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'phone' => $this->user->phone,
+            ],
+            'point' => [
+                'lat' => $this->point->lat,
+                'long' => $this->point->long,
+                'alt' => $this->point->alt,
+                'name' => $this->point->name,
+            ],
+        ];
     }
 }

@@ -12,16 +12,19 @@ class UserPositionCreated extends Notification
 {
     use Queueable;
 
-    public $position;
+    public $user;
+    
+    public $point;
     
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(\App\Models\UserPosition $position)
+    public function __construct(\App\Models\User $user, \App\Models\Point $point)
     {
-        $this->position = $position;
+        $this->user = $user;
+        $this->point = $point;
     }
 
     /**
@@ -32,7 +35,7 @@ class UserPositionCreated extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast', 'nexmo'];
+        return ['database'];
     }
 
     /**
@@ -44,12 +47,11 @@ class UserPositionCreated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id' => $this->position->id,
             'point' => [
-                'name' => $this->position->point->name,
-                'lat' => $this->position->point->lat,
-                'long' => $this->position->point->long,
-                'alt' => $this->position->point->alt,
+                'name' => $this->point->name,
+                'lat' => $this->point->lat,
+                'long' => $this->point->long,
+                'alt' => $this->point->alt,
             ],
         ];
     }

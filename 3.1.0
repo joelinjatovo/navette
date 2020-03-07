@@ -1,0 +1,6 @@
+
+> fibers@4.0.2 install C:\wamp64\www\navette.com\node_modules\fibers
+> node build.js || nodejs build.js
+
+
+C:\wamp64\www\navette.com\node_modules\fibers>if not defined npm_config_node_gyp (node "C:\Users\joeli\AppData\Roaming\npm\node_modules\npm\node_modules\npm-lifecycle\node-gyp-bin\\..\..\node_modules\node-gyp\bin\node-gyp.js" rebuild --release )  else (node "C:\Users\joeli\AppData\Roaming\npm\node_modules\npm\node_modules\node-gyp\bin\node-gyp.js" rebuild --release ) 

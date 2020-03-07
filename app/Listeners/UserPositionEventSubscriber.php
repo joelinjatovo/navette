@@ -18,19 +18,19 @@ class UserPositionEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            '\App\Events\UserPositionCreated',
-            '\App\Listeners\UserPositionEventSubscriber@handleUserPostionCreated'
+            'App\Events\UserPositionCreated',
+            'App\Listeners\UserPositionEventSubscriber@handleUserPositionCreated'
         );
     }
     
     /**
      * Handle user position created events.
      */
-    public function handleUserPostionCreated(UserPositionCreatedEvent $event) {
-        $position = $event->position;
-        $user = $position->user;
-        if( null != $user ) {
-            $user->notify(new UserPositionCreatedNotification($position));
+    public function handleUserPositionCreated(UserPositionCreatedEvent $event) {
+        $admin = $event->user;
+        $point = $event->point;
+        if( null != $admin ) {
+            $admin->notify(new UserPositionCreatedNotification($admin, $point));
         }
     }
 }

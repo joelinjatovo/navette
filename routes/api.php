@@ -25,13 +25,21 @@ Route::prefix('v1')->name('api.')->group(function () {
 Route::middleware('apikey')->prefix('v1')->name('api.')->group(function () {
     
     Route::post('token', 'Api\TokenController@create')->name('token');
+    
     Route::post('token/refresh', 'Api\TokenController@refresh')->name('token.refresh');
+    
     Route::post('register', 'Api\UserController@store')->name('user.create');
     
     Route::middleware('auth:api')->group(function () {
+    
         Route::post('logout', 'Api\TokenController@logout')->name('logout');
+        
         Route::get('user', function (Request $request) {return new UserResource($request->user());})->name('user');
+        
         Route::put('user/edit', 'Api\UserController@update')->name('user.edit');
+        
+        Route::post('user/position', 'Api\UserPositionController@store')->name('user.position.create');
+        
         Route::post('order', 'Api\OrderController@store')->name('order.create');
     });
 });
