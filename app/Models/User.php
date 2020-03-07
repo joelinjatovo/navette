@@ -6,7 +6,6 @@ use App\Contracts\Auth\MustVerifyPhone;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements MustVerifyPhone
 {
@@ -20,7 +19,7 @@ class User extends Authenticatable implements MustVerifyPhone
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at','deleted_at',
+        'created_at', 'updated_at', 'deleted_at',
     ];
 
     /**
@@ -51,6 +50,14 @@ class User extends Authenticatable implements MustVerifyPhone
     ];
     
     /**
+     * Get the access log for the user.
+     */
+    public function accessLogs()
+    {
+        return $this->hasMany(AccessLog::class);
+    }
+    
+    /**
      * Get the tokens for the user.
      */
     public function tokens()
@@ -64,7 +71,7 @@ class User extends Authenticatable implements MustVerifyPhone
     public function createToken($token)
     {
         return $this->tokens()->create([
-            'scopes' => Hash::make($token, ['rounds' => 11]),
+            'scopes' => md5(time()) . $token . md5($token),
             'expires_at' => now()->addDays(15)
         ]);
     }

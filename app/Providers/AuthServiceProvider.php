@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Carbon;
 
 class AuthServiceProvider extends ServiceProvider
 {

@@ -35,6 +35,9 @@ class ApiKey
         } catch (DecryptException $e) {
             return false;
         }
-        return null != ApiKeyModel::where('scopes', $decrypted)->where('revoked', 0)->where('expires_at', '>', now())->first();
+        return null != ApiKeyModel::where('scopes', $decrypted)
+                ->where('revoked', 0)
+                ->where('expires_at', '>', date('Y-m-d H:i:s'))
+                ->first();
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 
 class AccessToken extends Model
 {
@@ -26,21 +25,21 @@ class AccessToken extends Model
     }
     
     /**
+     * Get the refresh that owns the token.
+     */
+    public function refreshToken()
+    {
+        return $this->hasOne(RefreshToken::class);
+    }
+    
+    /**
      * Renew scopes
      */
     public function renew($token)
     {
-        $this->scopes = Hash::make($token, ['rounds' => 11]);
+        $this->scopes = md5(time()) . $token . md5($token);
         $this->expires_at = now()->addDays(15);
         $this->save();
-    }
-    
-    /**
-     * Get the refreshes that owns the token.
-     */
-    public function refreshes()
-    {
-        return $this->hasMany(RefreshToken::class);
     }
     
     /**
@@ -48,8 +47,8 @@ class AccessToken extends Model
      */
     public function createRefreshToken($token)
     {
-        return $this->refreshes()->create([
-            'scopes' => Hash::make($token, ['rounds' => 2]),
+        return $this->refreshToken()->create([
+            'scopes' => md5(time()) . $token . md5($token),
             'expires_at' => now()->addDays(30),
             'user_id' => $this->user?$this->user->id:null,
         ]);

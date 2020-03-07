@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\AccessToken as AccessTokenResource;
+use App\Http\Resources\Unauthorized as UnauthorizedResource;
 use App\Models\AccessToken;
 use App\Models\RefreshToken;
 use App\Models\User;
@@ -27,25 +29,15 @@ class TokenController extends Controller
         {
             $user = Auth::user();
             
-            $token = $user->createToken(Str::random(60));
-            $refresh_token = $token->createRefreshToken(Str::random(60));
+            $token = $user->createToken(Str::random(500));
+            $refresh_token = $token->createRefreshToken(Str::random(1000));
             
-            return response()->json([
-                    'code' => 200,
-                    'status' => 'Success',
-                    'data' => [
-                        'token' => $token->scopes,
-                        'refresh_token' => $refresh_token->scopes,
-                        //'expires' => $token->expires_at->time(),
-                    ]
-                ], 200);
+            $token = AccessToken::find($token->id);
+            
+            return (new AccessTokenResource($token));
         }
         
-        return response()->json([
-                'code' => 401,
-                'status' => 'Unauthorized',
-                'data' => null
-            ], 401);
+        return (new UnauthorizedResource(null))->response()->setStatusCode(401);
     }
 
     /**
@@ -56,32 +48,26 @@ class TokenController extends Controller
      */
     public function refresh(Request $request)
     {
-        $refresh_token = RefreshToken::where('scopes', $request->refresh_token)
-                    ->andWhere('revoked', 0)
-                    ->andWhere('expires_at', '>', now())
+        $refresh_token = RefreshToken::where('scopes', $request->input('refresh_token'))
+                    ->where('revoked', 0)
+                    ->where('expires_at', '>', date('Y-m-d H:i:s'))
                     ->first();
         
-        if( ( null != $refresh_token ) && ( $user = $refresh_token->user() ) && ( $token = $refresh_token->token() ) ) {
-            Auth::login($user);
+        if( null != $refresh_token ) {
+            $user = $refresh_token->user;
+            if( null != $user ) {
+                Auth::login($user);
+                
+                $token = $refresh_token->accessToken;
+                if( null != $token ) {
+                    $refresh_token->renew();
+                    $token->renew(Str::random(500));
             
-            $refresh_token->renew();
-            $token->renew(Str::random(60));
-            
-            return response()->json([
-                    'code' => 200,
-                    'status' => 'Success',
-                    'data' => [
-                        'token' => $token->scopes,
-                        'refresh_token' => $refresh_token->scopes,
-                        //'expires' => $token->expires_at->time(),
-                    ]
-                ], 200);
+                    return (new AccessTokenResource($token));
+                }
+            }
         }
         
-        return response()->json([
-                'code' => 401,
-                'status' => 'Unauthorized',
-                'data' => null
-            ], 401);
+        return (new UnauthorizedResource(null))->response()->setStatusCode(401);
     }
 }

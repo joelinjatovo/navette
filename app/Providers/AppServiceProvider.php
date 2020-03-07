@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\AccessLog;
 use Illuminate\Support\ServiceProvider;
-
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\View;
 
@@ -31,5 +31,9 @@ class AppServiceProvider extends ServiceProvider
         
         // Do not wrapped JSon data
         JsonResource::withoutWrapping();
+        
+        // Log access
+        $this->app->singleton(AccessLog::class);
+        
     }
 }

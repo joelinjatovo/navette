@@ -24,9 +24,9 @@ class RefreshToken extends Model
     }
     
     /**
-     * Get the token that owns the refresh token.
+     * Get the Access Token that owns the refresh token.
      */
-    public function token()
+    public function accessToken()
     {
         return $this->belongsTo(AccessToken::class);
     }
