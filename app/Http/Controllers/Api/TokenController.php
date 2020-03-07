@@ -37,7 +37,7 @@ class TokenController extends Controller
             return (new AccessTokenResource($token));
         }
         
-        return (new UnauthorizedResource(null))->response()->setStatusCode(401);
+        abort(400, "Bad Credentials");
     }
 
     /**
@@ -68,6 +68,23 @@ class TokenController extends Controller
             }
         }
         
-        return (new UnauthorizedResource(null))->response()->setStatusCode(401);
+        abort(400, "Invalid Refresh Token");
+    }
+
+    /**
+     * Logout
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        
+        return response()->json([
+                'code' => 200,
+                'status' => 'success',
+                'data' => null,
+            ], 200);
     }
 }

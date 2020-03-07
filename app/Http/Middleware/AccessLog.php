@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\ApiKey as ApiKeyModel;
 use App\Models\AccessLog as AccessLogModel;
 use Closure;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class AccessLog
 {

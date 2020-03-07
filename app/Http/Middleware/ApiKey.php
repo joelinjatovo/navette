@@ -19,11 +19,7 @@ class ApiKey
     {
         $token = $request->header('x-api-key');
         if( empty($token) || !$this->isValidApiKey($token)){
-            return response()->json([
-                'code' => 403,
-                'status' => 'Forbidden',
-                'data' => null
-            ], 403);
+            abort(403, 'Invalid Api Key');
         }
         
         return $next($request);

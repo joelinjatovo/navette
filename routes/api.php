@@ -16,28 +16,22 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-    
 Route::prefix('v1')->name('api.')->group(function () {
     Route::get('scope', function (Request $request) {
         return response()->json(['data'=>encrypt('scopes')]);
     })->name('scopes');
 });
 
-Route::middleware(['apikey'])->prefix('v1')->name('api.')->group(function () {
+Route::middleware('apikey')->prefix('v1')->name('api.')->group(function () {
     
     Route::post('token', 'Api\TokenController@create')->name('token');
     Route::post('token/refresh', 'Api\TokenController@refresh')->name('token.refresh');
+    Route::post('register', 'Api\UserController@store')->name('user.create');
     
-    Route::middleware(['auth:api'])->group(function () {
-        Route::get('user', function (Request $request) {
-            return new UserResource($request->user());
-        })->name('user');
-
-        Route::get('users', 'Api\UserController@index')->name('users');
-        Route::get('user/{user}', 'Api\UserController@show')->name('user.show');
-        Route::post('user', 'Api\UserController@store')->name('user.create');
-        Route::put('user/{user}/edit', 'Api\UserController@update')->name('user.edit');
-        Route::delete('user/{user}/delete', 'Api\UserController@delete')->name('user.delete');
+    Route::middleware('auth:api')->group(function () {
+        Route::post('logout', 'Api\TokenController@logout')->name('logout');
+        Route::get('user', function (Request $request) {return new UserResource($request->user());})->name('user');
+        Route::put('user/edit', 'Api\UserController@update')->name('user.edit');
+        Route::post('order', 'Api\OrderController@store')->name('order.create');
     });
 });

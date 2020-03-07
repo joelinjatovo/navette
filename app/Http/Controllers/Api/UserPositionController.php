@@ -24,6 +24,9 @@ class UserPositionController extends Controller
         $validated = $request->validated();
 
         $position = $request->user()->positions()->create($validated);
+        
+        event(new \App\Events\UserPositionCreated($position));
+        event(new \App\Events\TravelUserPositionCreated($position));
 
         return new UserPositionResource($position);
     }

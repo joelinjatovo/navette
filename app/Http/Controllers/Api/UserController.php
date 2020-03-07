@@ -8,30 +8,11 @@ use App\Http\Requests\UpdateUser as UpdateUserRequest;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\UserCollection;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Show the list of all user
-     *
-     * @return Response
-     */
-    public function index()
-    {
-        return new UserCollection(User::paginate());
-    }
-
-    /**
-     * Get information for the given user.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show(User $user)
-    {
-        return new UserResource($user);
-    }
 
     /**
      * Store a new user.
@@ -45,7 +26,9 @@ class UserController extends Controller
         $validated = $request->validated();
 
         $user = User::create($validated);
-
+        
+        event(new Registered($user));
+        
         return new UserResource($user);
     }
 
@@ -64,23 +47,5 @@ class UserController extends Controller
         $user->update($validated);
 
         return new UserResource($user);
-    }
-
-    /**
-     * Delete the specified user.
-     *
-     * @param  Request  $request
-     * @param  string  $id
-     * @return Response
-     */
-    public function delete(User $user)
-    {
-        $user->delete();
-
-        return response()->json([
-            'code' => 200,
-            'status'  => "success",
-            'data' => null,
-        ], 200);
     }
 }

@@ -24,7 +24,7 @@ class User extends JsonResource
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
 
-                'secret' => $this->when(\Auth::user()->isAdmin(), 'secret-value'),
+                'secret' => $this->when(\Auth::check() && \Auth::user()->isAdmin(), 'secret-value'),
                 $this->mergeWhen(\Auth::user()->isAdmin(), [
                     'first-secret' => 'value',
                     'second-secret' => 'value',

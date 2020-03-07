@@ -50,6 +50,60 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if($request->wantsJson()) {
+            switch(true){
+                case $exception instanceof \Illuminate\Auth\Access\AuthorizationException:
+                    return response()->json([
+                        'code' => 401,
+                        'status' => 'Unauthorized',
+                        'data' => [
+                            'message' => $exception->getMessage(),
+                            'errors' => [],
+                        ]
+                    ])->setStatusCode(401);
+                case $exception instanceof \Illuminate\Validation\ValidationException:
+                    return response()->json([
+                        'code' => $exception->status,
+                        'status' => 'Unprocessable Entity',
+                        'data' => [
+                            'message' => $exception->getMessage(),
+                            'errors' => $exception->errors(),
+                        ]
+                    ])->setStatusCode($exception->status);
+                case $exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException:
+                    $status = $exception->getStatusCode();
+                    switch($status){
+                        case 400:
+                            return response()->json([
+                                'code' => $status,
+                                'status' => 'Bad Request',
+                                'data' => [
+                                    'message' => $exception->getMessage(),
+                                    'errors' => [],
+                                ]
+                            ])->setStatusCode($status);
+                        case 401:
+                            return response()->json([
+                                'code' => $status,
+                                'status' => 'Unauthorized',
+                                'data' => [
+                                    'message' => $exception->getMessage(),
+                                    'errors' => [],
+                                ]
+                            ])->setStatusCode($status);
+                        case 403:
+                            return response()->json([
+                                'code' => $exception->getStatusCode(),
+                                'status' => 'Forbidden',
+                                'data' => [
+                                    'message' => $exception->getMessage(),
+                                    'errors' => [],
+                                ]
+                            ])->setStatusCode($status);
+                    }
+                    break;
+            }
+        }
         return parent::render($request, $exception);
     }
 }

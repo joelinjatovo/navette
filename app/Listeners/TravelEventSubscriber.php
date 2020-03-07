@@ -43,7 +43,7 @@ class TravelEventSubscriber
         
         $events->listen(
             '\App\Events\TravelArrived',
-            '\App\Listeners\TravelEventSubscriber@handleTravelStarted'
+            '\App\Listeners\TravelEventSubscriber@handleTravelArrived'
         );
         
         $events->listen(
@@ -144,7 +144,7 @@ class TravelEventSubscriber
     /**
      * Handle travel finished events.
      */
-    public function handleTravelReturned(TravelFinishedEvent $event) {
+    public function handleTravelFinished(TravelFinishedEvent $event) {
         $travel = $event->travel;
         $admin = $travel->user;
         if( null != $admin ) {
@@ -232,7 +232,7 @@ class TravelEventSubscriber
     /**
      * Handle travel user position created events.
      */
-    public function handleTravelOrderFinished(TravelUserPositionCreated $event) {
+    public function handleTravelUserPositionCreated(TravelUserPositionCreated $event) {
         $position = $event->position;
         $admin = $position->travel->user;
         if( null != $admin ) {

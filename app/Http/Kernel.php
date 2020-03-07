@@ -67,4 +67,16 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'verified.phone' => \App\Middleware\EnsurePhoneIsVerified::class,
     ];
+    
+    /**
+     * The priority-sorted list of middleware.
+     *
+     * This forces non-global middleware to always be in the given order.
+     *
+     * @var array
+     */
+    protected $middlewarePriority = [
+        \App\Http\Middleware\ApiKey::class,
+        \App\Http\Middleware\Authenticate::class,
+    ];
 }

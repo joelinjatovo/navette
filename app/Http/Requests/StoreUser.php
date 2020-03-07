@@ -13,7 +13,7 @@ class StoreUser extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
 
         /*
         
@@ -32,25 +32,10 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|unique:posts|max:255',
-            'body' => 'required',
+            'name' => 'required|max:255',
+            'phone' => 'required|numeric|unique:users',
+            'password' => 'required|max:8',
         ];
-    }
-    
-    /**
-     * Configure the validator instance.
-     * Add an "after" hook to a form request
-     *
-     * @param  \Illuminate\Validation\Validator  $validator
-     * @return void
-     */
-    public function withValidator($validator)
-    {
-        $validator->after(function ($validator) {
-            if ($this->somethingElseIsInvalid()) {
-                $validator->errors()->add('field', 'Something is wrong with this field!');
-            }
-        });
     }
     
     /**
@@ -61,33 +46,9 @@ class StoreUser extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'A title is required',
-            'body.required'  => 'A message is required',
-        ];
-    }
-    
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return [
-            'email' => 'email address',
-        ];
-    }
-    
-    /**
-     * Prepare Input For Validation
-     * Get custom attributes for validator errors.
-     *
-     * @return array
-     */
-    public function attributes()
-    {
-        return [
-            'email' => 'email address',
+            'name.required' => 'Your name is required',
+            'phone.required'  => 'Your phone number is required',
+            'password.required'  => 'A password is required',
         ];
     }
 }

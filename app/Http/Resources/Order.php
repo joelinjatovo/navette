@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Unauthorized extends JsonResource
+class Order extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,12 @@ class Unauthorized extends JsonResource
     public function toArray($request)
     {
         return [
-                'code' => 401,
-                'status' => 'Unauthorized',
-                'data' => null
-            ];
+            'code' => 200,
+            'status' => "success",
+            'data' => [
+                'id' => $this->id,
+                'created_at' => $this->created_at,
+            ]
+        ];
     }
 }
