@@ -2,28 +2,30 @@
 
 namespace App\Events;
 
+use App\Models\Travel;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserPositionCreated
+class TravelCarAssigned implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $position;
+    public $travel;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(\App\Models\UserPosition $position)
+    public function __construct(Travel $travel)
     {
-        $this->position = $position;
+        $this->travel = $travel;
     }
 
     /**
@@ -33,7 +35,7 @@ class UserPositionCreated
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->position->user->id);
+        return new PrivateChannel('App.Travel.'.$this->travel->id);
     }
     
     /**
@@ -43,6 +45,18 @@ class UserPositionCreated
      */
     public function broadcastAs()
     {
-        return 'user.position.created';
+        return 'travel.car.assigned';
     }
+    
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    /*
+    public function broadcastWith()
+    {
+        return ['id' => $this->travel->id];
+    }
+    */
 }

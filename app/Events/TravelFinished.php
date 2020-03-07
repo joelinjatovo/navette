@@ -45,7 +45,7 @@ class TravelFinished implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'travel.finished';
+        return 'travel.status.finished';
     }
     
     /**

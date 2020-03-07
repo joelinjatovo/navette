@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserPositionCreated
+class TravelUserPositionCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -33,7 +33,7 @@ class UserPositionCreated
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->position->user->id);
+        return new PrivateChannel('App.Travel.1');
     }
     
     /**
@@ -43,6 +43,6 @@ class UserPositionCreated
      */
     public function broadcastAs()
     {
-        return 'user.position.created';
+        return 'travel.user.position.created';
     }
 }

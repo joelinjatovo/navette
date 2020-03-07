@@ -12,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TravelMoved implements ShouldBroadcastNow
+class TravelArrived implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -45,7 +45,7 @@ class TravelMoved implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'travel.moved';
+        return 'travel.status.arrived';
     }
     
     /**

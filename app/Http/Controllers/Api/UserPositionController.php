@@ -23,7 +23,7 @@ class UserPositionController extends Controller
         // Retrieve the validated input data...
         $validated = $request->validated();
 
-        $position = UserPosition::create($validated);
+        $position = $request->user()->positions()->create($validated);
 
         return new UserPositionResource($position);
     }

@@ -82,14 +82,6 @@ class Point extends Model
     }
     
     /**
-     * The cars that belong to the role.
-     */
-    public function cars()
-    {
-        return $this->belongsToMany(Car::class)->using(CarPosition::class);
-    }
-    
-    /**
      * The users that belong to the role.
      */
     public function users()

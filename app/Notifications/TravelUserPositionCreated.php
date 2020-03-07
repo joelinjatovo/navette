@@ -8,20 +8,20 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderUpdated extends Notification
+class TravelUserPositionCreated extends Notification
 {
     use Queueable;
-    
-    protected $order;
 
+    public $position;
+    
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(\App\Models\UserPosition $position)
     {
-        $this->order = $order;
+        $this->position = $position;
     }
 
     /**
@@ -32,18 +32,7 @@ class OrderUpdated extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)->markdown('emails.order.updated');
+        return ['database', 'broadcast', 'nexmo'];
     }
 
     /**
@@ -55,22 +44,25 @@ class OrderUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'order_id' => $this->order->id,
-            'person' => $this->person,
+            'id' => $this->position->id,
+            'point' => [
+                'name' => $this->position->point->name,
+                'lat' => $this->position->point->lat,
+                'long' => $this->position->point->long,
+                'alt' => $this->position->point->alt,
+            ],
         ];
     }
     
     /**
-     * Get the broadcastable representation of the notification.
+     * Get the Nexmo / SMS representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return BroadcastMessage
+     * @return NexmoMessage
      */
-    public function toBroadcast($notifiable)
+    public function toNexmo($notifiable)
     {
-        return new BroadcastMessage([
-            'order_id' => $this->order->id,
-            'person' => $this->person,
-        ]);
+        return (new NexmoMessage)
+                    ->content('Your SMS message content sayes user position');
     }
 }

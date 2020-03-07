@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Order;
+use App\Models\Travel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -10,20 +10,20 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
 
-class OrderCreated extends Notification
+class TravelCarAssigned extends Notification
 {
     use Queueable;
     
-    protected $order;
+    protected $travel;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Travel $travel)
     {
-        $this->order = $order;
+        $this->travel = $travel;
     }
 
     /**
@@ -34,18 +34,7 @@ class OrderCreated extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
-    }
-
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)->markdown('emails.order.created');
+        return ['database', 'broadcast', 'nexmo'];
     }
 
     /**
@@ -57,23 +46,8 @@ class OrderCreated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'order_id' => $this->order->id,
-            'person' => $this->person,
+            'id' => $this->travel->id,
         ];
-    }
-    
-    /**
-     * Get the broadcastable representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return BroadcastMessage
-     */
-    public function toBroadcast($notifiable)
-    {
-        return new BroadcastMessage([
-            'order_id' => $this->order->id,
-            'person' => $this->person,
-        ]);
     }
     
     /**
@@ -85,6 +59,6 @@ class OrderCreated extends Notification
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage)
-                    ->content('Your SMS message content');
+                    ->content('Your SMS message content sayes that that travel\'s car is assigned');
     }
 }
