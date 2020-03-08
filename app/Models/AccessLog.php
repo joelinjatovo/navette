@@ -25,6 +25,18 @@ class AccessLog extends Model
     protected $fillable = [
         'user_id', 'url', 'referer', 'user_agent', 'ip', 'country', 'platform', 'api', 'api_key_id'
     ];
+
+    /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            $model->user_id = auth()->check()?auth()->user()->id:null;
+        });
+    }
     
     /**
      * Get the user that owns the phone.

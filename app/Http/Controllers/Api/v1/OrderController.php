@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\Order as OrderResource;
 use App\Models\Order;
+use App\Models\Phone;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -26,11 +27,13 @@ class OrderController extends Controller
         $data['currency'] = 'EUR';
         $data['subtotal'] = $data['place'] * $data['amount'];
         $data['total'] = $data['subtotal'] + $data['subtotal'] * $data['vat'];
-        $order = Order::create($validated);
+        $order = Order::create($data);
         
-        $data = $request->only(['phone']);
+        $data = $request->input('phone');
+        $data['type'] = 'home';
         $data['phone'] = $data['phone_country_code'] . $data['phone_number'];
-        $order->phone()->create($validated['phone']);
+        $phone = Phone::create($data);
+        $order->phones()->save($phone);
 
         event(new \App\Events\OrderCreated($order));
         

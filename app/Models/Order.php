@@ -27,6 +27,18 @@ class Order extends Model
     protected $fillable = [
         'status', 'place', 'amount', 'total', 'subtotal', 'currency', 'vat', 'preordered', 'privatized', 'ip_address', 'mac_address',
     ];
+
+    /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            $model->user_id = auth()->check()?auth()->user()->id:null;
+        });
+    }
     
     /**
      * Get the first order.
@@ -53,11 +65,11 @@ class Order extends Model
     }
     
     /**
-     * Get the phone that owns the order.
+     * Get the phones that owns the order.
      */
-    public function phone()
+    public function phones()
     {
-        return $this->belongsTo(Phone::class);
+        return $this->hasMany(Phone::class);
     }
     
     /**

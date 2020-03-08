@@ -13,7 +13,7 @@ class StoreOrder extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -27,8 +27,8 @@ class StoreOrder extends FormRequest
             'place' => 'required|numeric|min:0|max:10',
             'preordered' => 'required',
             'privatized' => 'required',
-            'phone.phone_country_code' => 'required|numeric|max:10',
-            'phone.phone_number' => 'required|numeric|max:20',
+            'phone.phone_country_code' => 'required|numeric',
+            'phone.phone_number' => 'required|numeric',
         ];
     }
 }

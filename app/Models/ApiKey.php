@@ -33,6 +33,18 @@ class ApiKey extends Model
     protected $fillable = [
         'name', 'scopes', 'version', 'user_agent', 'revoked', 'expires_at',
     ];
+
+    /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            $model->user_id = auth()->check()?auth()->user()->id:null;
+        });
+    }
     
     /**
      * The user that creates the api key.

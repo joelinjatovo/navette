@@ -102,6 +102,17 @@ class Handler extends ExceptionHandler
                             ])->setStatusCode($status);
                     }
                     break;
+                default:
+                    return response()->json([
+                        'code' => 500,
+                        'status' => 'Unknown',
+                        'data' => [
+                            'message' => $exception->getMessage(),
+                            //'file' => $exception->getFile(),
+                            //'line' => $exception->getLine(),
+                            'errors' => [],
+                        ]
+                    ])->setStatusCode(500);
             }
         }
         return parent::render($request, $exception);

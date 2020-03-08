@@ -20,9 +20,9 @@ class CreatePhonesTable extends Migration
                 $table->string('phone_country_code', 10);
                 $table->string('phone_number', 20);
                 $table->string('phone', 30);
-                $table->unsignedBigInteger('order_id')->index();
+                $table->unsignedBigInteger('order_id')->index()->nullable();
                 $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-                $table->unsignedBigInteger('user_id')->index();
+                $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->timestamps();
             });

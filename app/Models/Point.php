@@ -17,6 +17,18 @@ class Point extends Model
     ];
 
     /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            $model->user_id = auth()->check()?auth()->user()->id:null;
+        });
+    }
+
+    /**
      * Get the clubs what owns the point.
      */
     public function clubs()

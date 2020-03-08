@@ -9,6 +9,18 @@ class Zone extends Model
 {
     
     use SoftDeletes;
+
+    /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            $model->user_id = auth()->check()?auth()->user()->id:null;
+        });
+    }
     
     /**
      * Get the user that adds the club.

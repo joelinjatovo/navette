@@ -25,10 +25,10 @@ class Phone extends Model
     }
     
     /**
-     * Get the orders that owns the phone.
+     * Get the order that owns the phone.
      */
-    public function orders()
+    public function order()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(Order::class);
     }
 }

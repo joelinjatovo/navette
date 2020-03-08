@@ -15,6 +15,18 @@ class AccessToken extends Model
     protected $fillable = [
         'scopes', 'expires_at'
     ];
+
+    /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            $model->user_id = auth()->check()?auth()->user()->id:null;
+        });
+    }
     
     /**
      * Get the user that owns the phone.

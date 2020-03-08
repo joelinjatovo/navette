@@ -31,6 +31,18 @@ class Travel extends Model
     protected $dates = [
         'created_at', 'updated_at', 'deleted_at',
     ];
+
+    /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            $model->user_id = auth()->check()?auth()->user()->id:null;
+        });
+    }
     
     /**
      * Get the card associated with the race.

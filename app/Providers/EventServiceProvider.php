@@ -31,7 +31,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Listeners\OrderEventSubscriber',
         'App\Listeners\TravelEventSubscriber',
         'App\Listeners\UserEventSubscriber',
-        'App\Listeners\UserPositionEventSubscriber',
+        'App\Listeners\UserPointEventSubscriber',
     ];
 
     /**

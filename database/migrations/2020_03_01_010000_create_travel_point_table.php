@@ -17,7 +17,7 @@ class CreateTravelPointTable extends Migration
             Schema::create('travel_point', function (Blueprint $table) {
                 $table->id();
                 $table->integer('order')->default(0);
-                $table->timestamps('arrived_at')->nullable();
+                $table->dateTime('arrived_at')->nullable();
                 $table->unsignedBigInteger('travel_id')->index();
                 $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
                 $table->unsignedBigInteger('point_id')->index();
