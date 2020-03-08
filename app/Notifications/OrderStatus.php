@@ -53,7 +53,7 @@ class OrderStatus extends Notification
     {
         return [
             'order_id' => $this->order->id,
-            'person' => $this->person,
+            'order' => $this->order->user,
         ];
     }
     

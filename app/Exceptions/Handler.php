@@ -108,9 +108,12 @@ class Handler extends ExceptionHandler
                         'status' => 'Unknown',
                         'data' => [
                             'message' => $exception->getMessage(),
-                            //'file' => $exception->getFile(),
-                            //'line' => $exception->getLine(),
-                            'errors' => [],
+                            'errors' => [
+                                [
+                                    'file' => $exception->getFile(),
+                                    'line' => $exception->getLine(),
+                                ]
+                            ],
                         ]
                     ])->setStatusCode(500);
             }
