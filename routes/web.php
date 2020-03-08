@@ -23,23 +23,12 @@ Route::get('mailable', function () {
 
 Route::middleware(['auth'])->group(function () {
     
-    Route::get('/event', function () {
-        event(new App\Events\MyEvent('hello world'));
-        return 'welcome';
-    });
+    Route::get('/', function () {return view('welcome');});
     
-    Route::get('/', function () {
-        return view('welcome');
-    });
-    Route::get('/home', function () {
-        return view('welcome');
-    });
-    Route::get('/broadcast', function () {
-        return view('broadcast');
-    });
-    Route::get('/broadcast1', function () {
-        return view('broadcast1');
-    });
+    Route::get('/home', function () {return view('welcome');});
+    
+    Route::get('/broadcast', function () {return view('broadcast');});
+
     Route::get('/logout', function () {
         \Auth::logout();
         return redirect('login');
