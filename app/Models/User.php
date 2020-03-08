@@ -110,14 +110,6 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-     * Get the orders items for the user.
-     */
-    public function ordersItems()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
-    
-    /**
      * The clubs that belong to the user.
      */
     public function clubs()

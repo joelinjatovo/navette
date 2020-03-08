@@ -131,14 +131,6 @@ class Order extends Model
     {
         return $this->belongsTo(Phone::class);
     }
-
-    /**
-     * Get the items associated with the order.
-     */
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
     
     /**
      * Get the start point that owns the order item.
