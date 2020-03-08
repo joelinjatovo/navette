@@ -74,6 +74,33 @@ class OrderItem extends Model
     }
     
     /**
+     * Check if order is started
+     * @return boolean
+     */
+    public function isStarted()
+    {
+        return ! is_null($this->started_at);
+    }
+    
+    /**
+     * Check if order is arrived
+     * @return boolean
+     */
+    public function isArrived()
+    {
+        return ! is_null($this->arrived_at);
+    }
+    
+    /**
+     * Check if order is returned
+     * @return boolean
+     */
+    public function isReturned()
+    {
+        return ! is_null($this->returned_at);
+    }
+    
+    /**
      * Get the order that owns the order item.
      */
     public function order()
