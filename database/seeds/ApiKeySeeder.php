@@ -20,6 +20,7 @@ class ApiKeySeeder extends Seeder
             'version' => date('Y-m-d'),
             'user_agent' => null,
             'expires_at' => now()->addDays(5*365 +1 ), // 5 ans
+            'user_id' => 1,
         ]);
     }
 }

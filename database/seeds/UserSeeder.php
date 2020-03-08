@@ -17,7 +17,8 @@ class UserSeeder extends Seeder
     {
         //factory(User::class, 10)->create();
         DB::table('users')->insert([
-            'name' => 'JOELINJATOVO Haja',
+            'id' => 1,
+            'name' => 'Haja JOELINJATOVO',
             'phone' => '+261331377768',
             'password' => Hash::make('admin!'),
             'phone_verified_at' => now(),
@@ -25,5 +26,20 @@ class UserSeeder extends Seeder
             'active' => 1,
             'locale' => 'fr',
         ]);
+        
+        $i = 1;
+        $roles = ['admin' => 'administrator', 'driver' => 'driver', 'customer' => 'customer'];
+        foreach($roles as $role => $description){
+            DB::table('roles')->insert([
+                'id' => $i,
+                'name' => $role,
+                'description' => $description,
+                'priority' => $i - 1,
+                'user_id' => 1,
+                'created_at' => now(),
+            ]);
+        }
+        
+        DB::table('role_user')->insert(['approved' => 1, 'user_id' => 1, 'role_id' => 1]);
     }
 }
