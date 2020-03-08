@@ -19,13 +19,10 @@ class CreateCarsTable extends Migration
                 $table->string('name', 100);
                 $table->string('year', 4);
                 $table->integer('place');
-                
                 $table->unsignedBigInteger('car_model_id')->index();
                 $table->foreign('car_model_id')->references('id')->on('car_models')->onDelete('cascade');
-                
                 $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
-                
                 $table->timestamps();
             });
         }
