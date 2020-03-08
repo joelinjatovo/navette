@@ -22,24 +22,24 @@ Route::prefix('v1')->name('api.')->group(function () {
     })->name('scopes');
 });
 
-Route::middleware('apikey')->prefix('v1')->name('api.')->group(function () {
+Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->group(function () {
     
-    Route::post('token', 'Api\TokenController@create')->name('token');
+    Route::post('token', 'TokenController@create')->name('token');
     
-    Route::post('token/refresh', 'Api\TokenController@refresh')->name('token.refresh');
+    Route::post('token/refresh', 'TokenController@refresh')->name('token.refresh');
     
-    Route::post('register', 'Api\UserController@store')->name('user.create');
+    Route::post('register', 'UserController@store')->name('user.create');
     
     Route::middleware('auth:api')->group(function () {
     
-        Route::post('logout', 'Api\TokenController@logout')->name('logout');
+        Route::post('logout', 'TokenController@logout')->name('logout');
         
         Route::get('user', function (Request $request) {return new UserResource($request->user());})->name('user');
         
-        Route::put('user/edit', 'Api\UserController@update')->name('user.edit');
+        Route::put('user/edit', 'UserController@update')->name('user.edit');
         
-        Route::post('user/position', 'Api\UserPositionController@store')->name('user.position.create');
+        Route::post('user/position', 'UserPositionController@store')->name('user.position.create');
         
-        Route::post('order', 'Api\OrderController@store')->name('order.create');
+        Route::post('order', 'OrderController@store')->name('order.create');
     });
 });

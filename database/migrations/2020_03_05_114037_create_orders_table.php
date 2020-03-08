@@ -16,16 +16,16 @@ class CreateOrdersTable extends Migration
         if( ! Schema::hasTable('orders') ) {
             Schema::create('orders', function (Blueprint $table) {
                 $table->id();
-                $table->string('status', 50);
+                $table->string('status', 50)->nullable();
                 $table->integer('place');
-                $table->float('price', 20, 4); // HT
-                $table->float('total', 20, 4); // TTC
-                $table->string('currency', 3);
+                $table->float('price', 20, 4)->nullable(); // HT
+                $table->float('total', 20, 4)->nullable(); // TTC
+                $table->string('currency', 3)->nullable();
                 $table->float('vat', 2, 2)->default(0);
                 $table->boolean('preordered')->default(false);
                 $table->boolean('privatized')->default(false);
-                $table->string('contact_name', 100);
-                $table->string('contact_email', 100);
+                $table->string('contact_name', 100)->nullable();
+                $table->string('contact_email', 100)->nullable();
                 $table->ipAddress('ip')->nullable();
                 $table->macAddress('mac')->nullable();
                 $table->unsignedBigInteger('phone_id')->index();

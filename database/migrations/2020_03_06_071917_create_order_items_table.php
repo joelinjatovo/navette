@@ -16,10 +16,10 @@ class CreateOrderItemsTable extends Migration
         if( ! Schema::hasTable('order_items') ) {
             Schema::create('order_items', function (Blueprint $table) {
                 $table->id();
-                $table->string('status', 50);
+                $table->string('status', 50)->nullable();
                 $table->integer('place');
-                $table->float('price', 20, 4);
-                $table->float('total', 20, 4);
+                $table->float('price', 20, 4)->nullable();
+                $table->float('total', 20, 4)->nullable();
                 $table->float('vat', 2, 2)->default(0);
                 $table->boolean('preordered')->default(false);
                 $table->boolean('privatized')->default(false);
