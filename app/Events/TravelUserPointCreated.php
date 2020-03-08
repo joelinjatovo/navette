@@ -11,7 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class UserPositionCreated implements ShouldBroadcastNow
+class TravelUserPointCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -37,7 +37,7 @@ class UserPositionCreated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->user->id);
+        return new PrivateChannel('App.Travel.1');
     }
     
     /**
@@ -47,7 +47,7 @@ class UserPositionCreated implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'user.position.created';
+        return 'travel.user.point.created';
     }
     
     /**

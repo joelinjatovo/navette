@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TravelUserPositionCreated extends Notification
+class TravelUserPointCreated extends Notification
 {
     use Queueable;
 

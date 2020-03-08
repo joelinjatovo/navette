@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class UserPosition extends Pivot
+class TravelPoint extends Pivot
 {
     //
 }

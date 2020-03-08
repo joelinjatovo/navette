@@ -38,7 +38,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         
         Route::put('user/edit', 'UserController@update')->name('user.edit');
         
-        Route::post('user/position', 'UserPositionController@store')->name('user.position.create');
+        Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         
         Route::post('order', 'OrderController@store')->name('order.create');
     });

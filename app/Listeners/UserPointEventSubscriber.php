@@ -2,13 +2,13 @@
 
 namespace App\Listeners;
 
-use App\Events\UserPositionCreated as UserPositionCreatedEvent;
-use App\Notifications\UserPositionCreated as UserPositionCreatedNotification;
+use App\Events\UserPointCreated as UserPointCreatedEvent;
+use App\Notifications\UserPointCreated as UserPointCreatedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 
-class UserPositionEventSubscriber
+class UserPointEventSubscriber
 {
     /**
      * Register the listeners for the subscriber.
@@ -18,19 +18,19 @@ class UserPositionEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            'App\Events\UserPositionCreated',
-            'App\Listeners\UserPositionEventSubscriber@handleUserPositionCreated'
+            'App\Events\UserPointCreated',
+            'App\Listeners\UserPointEventSubscriber@handleUserPointCreated'
         );
     }
     
     /**
      * Handle user position created events.
      */
-    public function handleUserPositionCreated(UserPositionCreatedEvent $event) {
+    public function handleUserPointCreated(UserPointCreatedEvent $event) {
         $admin = $event->user;
         $point = $event->point;
         if( null != $admin ) {
-            $admin->notify(new UserPositionCreatedNotification($admin, $point));
+            $admin->notify(new UserPointCreatedNotification($admin, $point));
         }
     }
 }

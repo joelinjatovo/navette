@@ -59,70 +59,11 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-     * Get the tokens for the user.
+     * The api keys that creates by the user.
      */
-    public function tokens()
+    public function apiKeys()
     {
-        return $this->hasMany(AccessToken::class)->orderBy('created_at', 'desc');
-    }
-    
-    /**
-     * Create user's access token
-     */
-    public function createToken($token)
-    {
-        return $this->tokens()->create([
-            'scopes' => md5(time()) . $token . md5($token),
-            'expires_at' => now()->addDays(15)
-        ]);
-    }
-    
-    /**
-     * Get the phones for the user.
-     */
-    public function phones()
-    {
-        return $this->hasMany(Phone::class);
-    }
-    
-    /**
-     * Get the travels for the user.
-     */
-    public function createdTravels()
-    {
-        return $this->hasMany(Travel::class);
-    }
-    
-    /**
-     * Get the travels for the user.
-     */
-    public function drivedTravels()
-    {
-        return $this->hasMany(Travel::class, 'driver_id', 'id');
-    }
-    
-    /**
-     * Get the orders for the user.
-     */
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-    
-    /**
-     * The clubs that belong to the user.
-     */
-    public function clubs()
-    {
-        return $this->hasMany(Club::class);
-    }
-    
-    /**
-     * The zones that belong to the user.
-     */
-    public function zones()
-    {
-        return $this->hasMany(Zone::class);
+        return $this->hasMany(ApiKey::class);
     }
     
     /**
@@ -131,14 +72,6 @@ class User extends Authenticatable implements MustVerifyPhone
     public function cars()
     {
         return $this->hasMany(Car::class);
-    }
-    
-    /**
-     * The car types that belong to the user.
-     */
-    public function carTypes()
-    {
-        return $this->hasMany(CarType::class);
     }
     
     /**
@@ -158,11 +91,35 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-     * The api keys that creates by the user.
+     * The car types that belong to the user.
      */
-    public function apiKeys()
+    public function carTypes()
     {
-        return $this->hasMany(ApiKey::class);
+        return $this->hasMany(CarType::class);
+    }
+    
+    /**
+     * The clubs that belong to the user.
+     */
+    public function clubs()
+    {
+        return $this->hasMany(Club::class);
+    }
+    
+    /**
+     * Get the orders for the user.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    
+    /**
+     * Get the phones for the user.
+     */
+    public function phones()
+    {
+        return $this->hasMany(Phone::class);
     }
     
     /**
@@ -178,15 +135,7 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function positions()
     {
-        return $this->belongsToMany(Point::class, 'user_positions')->using(UserPosition::class);
-    }
-    
-    /**
-     * The roles that created by the user.
-     */
-    public function createdRoles()
-    {
-        return $this->hasMany(Role::class);
+        return $this->belongsToMany(Point::class, 'user_point')->using(UserPoint::class);
     }
     
     /**
@@ -195,6 +144,67 @@ class User extends Authenticatable implements MustVerifyPhone
     public function roles()
     {
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
+    }
+    
+    /**
+     * The roles that created by the user.
+     */
+    public function rolesCreated()
+    {
+        return $this->hasMany(Role::class);
+    }
+    
+    /**
+     * Get the travels created by the user.
+     */
+    public function travelsCreated()
+    {
+        return $this->hasMany(Travel::class);
+    }
+    
+    /**
+     * Get the travels drived by the user.
+     */
+    public function travelsDrived()
+    {
+        return $this->hasMany(Travel::class, 'driver_id', 'id');
+    }
+    
+    /**
+     * Get the tokens for the user.
+     */
+    public function tokens()
+    {
+        return $this->hasMany(AccessToken::class)->orderBy('created_at', 'desc');
+    }
+    
+    /**
+     * The zones that belong to the user.
+     */
+    public function zones()
+    {
+        return $this->hasMany(Zone::class);
+    }
+    
+    /**
+     * Create user's access token
+     */
+    public function createToken($token)
+    {
+        return $this->tokens()->create([
+            'scopes' => md5(time()) . $token . md5($token),
+            'expires_at' => now()->addDays(15)
+        ]);
+    }
+    
+    /**
+    * Check if is admin
+    *
+    * @param string $role
+    */
+    public function isAdmin()
+    {
+        return $this->hasRole(Role::ADMIN);
     }
     
     /**
@@ -215,16 +225,6 @@ class User extends Authenticatable implements MustVerifyPhone
     public function hasRole($role)
     {
         return null !== $this->roles()->where('name', $role)->first();
-    }
-    
-    /**
-    * Check if is admin
-    *
-    * @param string $role
-    */
-    public function isAdmin()
-    {
-        return null !== $this->roles()->where('name', Role::ADMIN)->first();
     }
     
     /**

@@ -16,18 +16,9 @@ class CreateTravelsTable extends Migration
         if( ! Schema::hasTable('travels') ) {
             Schema::create('travels', function (Blueprint $table) {
                 $table->id();
-                $table->integer('level');
                 $table->string('status', 50);
-                $table->unsignedBigInteger('parent_id')->index();
-                $table->dateTime('started_at')->nullable();
-                $table->unsignedBigInteger('start_point_id')->index();
-                $table->foreign('start_point_id')->references('id')->on('points')->onDelete('cascade');
-                $table->dateTime('arrived_at')->nullable();
-                $table->unsignedBigInteger('arrival_point_id')->index();
-                $table->foreign('arrival_point_id')->references('id')->on('points')->onDelete('cascade');
-                $table->dateTime('returned_at')->nullable();
-                $table->unsignedBigInteger('return_point_id')->index()->nullable();
-                $table->foreign('return_point_id')->references('id')->on('points')->onDelete('cascade');
+                $table->unsignedBigInteger('car_id')->index()->nullable();
+                $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
                 $table->unsignedBigInteger('driver_id')->index()->nullable();
                 $table->foreign('driver_id')->references('id')->on('users')->onDelete('cascade');
                 $table->unsignedBigInteger('user_id')->index()->nullable();

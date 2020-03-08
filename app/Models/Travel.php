@@ -20,7 +20,7 @@ class Travel extends Model
      * @var array
      */
     protected $fillable = [
-        'type', 'status',
+        'status',
     ];
 
     /**
@@ -29,24 +29,8 @@ class Travel extends Model
      * @var array
      */
     protected $dates = [
-        'started_at', 'arrived_at', 'returned_at', 'created_at', 'updated_at', 'deleted_at',
+        'created_at', 'updated_at', 'deleted_at',
     ];
-    
-    /**
-     * Get the driver associated with the race.
-     */
-    public function driver()
-    {
-        return $this->hasOne(User::class, 'driver_id', 'id');
-    }
-    
-    /**
-     * Get the user who creates the travel.
-     */
-    public function user()
-    {
-        return $this->hasOne(User::class);
-    }
     
     /**
      * Get the card associated with the race.
@@ -57,21 +41,13 @@ class Travel extends Model
     }
     
     /**
-     * Get the parent that owns the travel.
+     * Get the driver associated with the race.
      */
-    public function travel()
+    public function driver()
     {
-        return $this->belongsTo(Travel::class, 'parent_id', 'id');
+        return $this->hasOne(User::class, 'driver_id', 'id');
     }
-
-    /**
-     * Get the childs travels associated with travel.
-     */
-    public function items()
-    {
-        return $this->hasMany(Travel::class, 'parent_id', 'id');
-    }
-
+    
     /**
      * Get the orders associated with the travel.
      */
@@ -79,36 +55,20 @@ class Travel extends Model
     {
         return $this->hasMany(Order::class);
     }
-
+    
     /**
-     * Get the order items associated with the travel.
+     * The points that belong to the order.
      */
-    public function orderItems()
+    public function points()
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->belongsToMany(Point::class, 'order_point')->using(UserPoint::class);
     }
     
     /**
-     * Get the start point that owns the travel.
+     * Get the user who creates the travel.
      */
-    public function startPoint()
+    public function user()
     {
-        return $this->belongsTo(Point::class, 'start_point_id', 'id');
-    }
-    
-    /**
-     * Get the arrival point that owns the travel.
-     */
-    public function arrivalPoint()
-    {
-        return $this->belongsTo(Point::class, 'arrival_point_id', 'id');
-    }
-    
-    /**
-     * Get the return point that owns the travel.
-     */
-    public function returnPoint()
-    {
-        return $this->belongsTo(Point::class, 'return_point_id', 'id');
+        return $this->hasOne(User::class);
     }
 }

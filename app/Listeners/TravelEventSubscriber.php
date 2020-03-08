@@ -14,10 +14,10 @@ use App\Events\TravelOrderAssigned as TravelOrderAssignedEvent;
 use App\Events\TravelOrderCanceled as TravelOrderCanceledEvent;
 use App\Events\TravelOrderFinished as TravelOrderFinishedEvent;
 use App\Events\TravelOrderMoved as TravelOrderMovedEvent;
-use App\Events\TravelUserPositionCreated as TravelUserPositionCreatedEvent;
+use App\Events\TravelUserPointCreated as TravelUserPointCreatedEvent;
 use App\Notifications\TravelOrderStatus as TravelOrderStatusNotifiation;
 use App\Notifications\TravelStatus as TravelStatusNotification;
-use App\Notifications\TravelUserPositionCreated as TravelUserPositionCreatedNotifiation;
+use App\Notifications\TravelUserPointCreated as TravelUserPointCreatedNotifiation;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -92,8 +92,8 @@ class TravelEventSubscriber
         );
         
         $events->listen(
-            'App\Events\TravelUserPositionCreated',
-            'App\Listeners\TravelEventSubscriber@handleTravelUserPositionCreated'
+            'App\Events\TravelUserPointCreated',
+            'App\Listeners\TravelEventSubscriber@handleTravelUserPointCreated'
         );
     }
     
@@ -232,11 +232,11 @@ class TravelEventSubscriber
     /**
      * Handle travel user position created events.
      */
-    public function handleTravelUserPositionCreated(TravelUserPositionCreatedEvent $event) {
+    public function handleTravelUserPointCreated(TravelUserPointCreatedEvent $event) {
         $admin = $event->user;
         $point = $event->point;
         if( null != $admin ) {
-            $admin->notify(new TravelUserPositionCreatedNotifiation($admin, $point));
+            $admin->notify(new TravelUserPointCreatedNotifiation($admin, $point));
         }
     }
 }
