@@ -40,7 +40,7 @@ class TravelCreated extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast', 'nexmo'];
+        return ['database', 'nexmo'];
     }
 
     /**
