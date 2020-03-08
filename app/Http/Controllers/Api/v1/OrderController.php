@@ -20,10 +20,17 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-
+        $data = $request->only(['place', 'preordered', 'privatized']);
+        $data['vat'] = 0;
+        $data['amount'] = 10;
+        $data['currency'] = 'EUR';
+        $data['subtotal'] = $data['place'] * $data['amount'];
+        $data['total'] = $data['subtotal'] + $data['subtotal'] * $data['vat'];
         $order = Order::create($validated);
+        
+        $data = $request->only(['phone']);
+        $data['phone'] = $data['phone_country_code'] . $data['phone_number'];
+        $order->phone()->create($validated['phone']);
 
         event(new \App\Events\OrderCreated($order));
         
