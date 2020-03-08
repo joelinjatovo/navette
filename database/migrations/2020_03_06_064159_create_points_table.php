@@ -20,10 +20,8 @@ class CreatePointsTable extends Migration
                 $table->decimal('long', 10, 7);
                 $table->decimal('lat', 10, 7);
                 $table->decimal('alt', 10, 7);
-                
-                $table->unsignedBigInteger('author_id')->index()->nullable();
-                $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
-                
+                $table->unsignedBigInteger('user_id')->index()->nullable();
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });
         }

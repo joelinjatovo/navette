@@ -36,8 +36,8 @@ class CreateTravelsTable extends Migration
                 $table->unsignedBigInteger('driver_id')->index()->nullable();
                 $table->foreign('driver_id')->references('id')->on('users')->onDelete('cascade');
                 
-                $table->unsignedBigInteger('author_id')->index()->nullable();
-                $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
+                $table->unsignedBigInteger('user_id')->index()->nullable();
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 
                 $table->timestamps();
                 $table->softDeletes();

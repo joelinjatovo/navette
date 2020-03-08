@@ -26,6 +26,9 @@ class CreateCarModelsTable extends Migration
                 $table->unsignedBigInteger('car_type_id')->index();
                 $table->foreign('car_type_id')->references('id')->on('car_types')->onDelete('cascade');
                 
+                $table->unsignedBigInteger('user_id')->index()->nullable();
+                $table->foreign('user_id')->references('id')->on('users');
+                
                 $table->timestamps();
             });
         }

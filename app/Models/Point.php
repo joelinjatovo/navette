@@ -34,6 +34,14 @@ class Point extends Model
     }
 
     /**
+     * Get the user what creates the point.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Get the travels who starts at the point.
      */
     public function starts($type = null)

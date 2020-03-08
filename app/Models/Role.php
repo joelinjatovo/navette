@@ -23,6 +23,14 @@ class Role extends Model
     ];
     
     /**
+     * The user that creates the role.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    /**
      * The users that belong to the role.
      */
     public function users()

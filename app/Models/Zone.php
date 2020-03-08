@@ -11,10 +11,10 @@ class Zone extends Model
     use SoftDeletes;
     
     /**
-     * Get the author that adds the club.
+     * Get the user that adds the club.
      */
-    public function author()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'author_id', 'id');
+        return $this->belongsTo(User::class);
     }
 }

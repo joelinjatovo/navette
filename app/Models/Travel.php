@@ -41,11 +41,11 @@ class Travel extends Model
     }
     
     /**
-     * Get the author associated with the race.
+     * Get the user who creates the travel.
      */
-    public function author()
+    public function user()
     {
-        return $this->hasOne(User::class, 'author_id', 'id');
+        return $this->hasOne(User::class);
     }
     
     /**

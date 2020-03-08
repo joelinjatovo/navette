@@ -17,13 +17,10 @@ class CreateClubsTable extends Migration
             Schema::create('clubs', function (Blueprint $table) {
                 $table->id();
                 $table->string('name', 200);
-                
                 $table->unsignedBigInteger('point_id')->index();
                 $table->foreign('point_id')->references('id')->on('points')->onDelete('cascade');
-                
-                $table->unsignedBigInteger('author_id')->index();
-                $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
-                
+                $table->unsignedBigInteger('user_id')->index();
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
                 $table->softDeletes();
             });

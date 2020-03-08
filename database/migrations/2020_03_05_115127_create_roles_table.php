@@ -19,6 +19,8 @@ class CreateRolesTable extends Migration
                 $table->string('name', 50)->unique();
                 $table->string('description');
                 $table->integer('priority');
+                $table->unsignedBigInteger('user_id')->index()->nullable();
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });
         }

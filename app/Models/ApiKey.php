@@ -35,6 +35,14 @@ class ApiKey extends Model
     ];
     
     /**
+     * The user that creates the api key.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    /**
      * Get the access log for the api key.
      */
     public function accessLogs()

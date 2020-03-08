@@ -17,6 +17,14 @@ class CarType extends Model
     ];
     
     /**
+     * Get the user that adds the car type.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    /**
      * The models that belong to the car type.
      */
     public function models()

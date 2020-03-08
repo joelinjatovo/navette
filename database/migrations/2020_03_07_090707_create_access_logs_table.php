@@ -18,7 +18,6 @@ class CreateAccessLogsTable extends Migration
                 $table->id();
                 $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-                
                 $table->string('url')->nullable();
                 $table->string('referer')->nullable();
                 $table->string('user_agent')->nullable();
@@ -26,10 +25,8 @@ class CreateAccessLogsTable extends Migration
                 $table->ipAddress('ip')->nullable();
                 $table->string('platform', 100)->nullable();
                 $table->boolean('api')->default(false);
-                
                 $table->unsignedBigInteger('api_key_id')->index()->nullable();
                 $table->foreign('api_key_id')->references('id')->on('api_keys')->onDelete('cascade');
-                
                 $table->timestamps();
             });
         }

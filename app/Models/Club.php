@@ -20,7 +20,7 @@ class Club extends Model
     ];
     
     /**
-     * Get the point that adds the club.
+     * Get the point that owns the club.
      */
     public function point()
     {
@@ -28,10 +28,10 @@ class Club extends Model
     }
     
     /**
-     * Get the author that adds the club.
+     * Get the user that adds the club.
      */
-    public function author()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'author_id', 'id');
+        return $this->belongsTo(User::class);
     }
 }

@@ -25,6 +25,14 @@ class Car extends Model
     }
     
     /**
+     * Get the user that creates the car.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    /**
      * Get the travels for the car.
      */
     public function travels()
