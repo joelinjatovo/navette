@@ -23,7 +23,7 @@ class AccessToken extends JsonResource
             'data' => [
                 'token' => $this->scopes,
                 'expires' => strtotime($this->expires_at),
-                'refresh_token' => $this->refreshToken ? $this->refreshToken->scope : null,
+                'refresh_token' => $this->refreshToken ? $this->refreshToken->scopes : null,
                 'refresh_token_expires' => $this->refreshToken ? strtotime($this->refreshToken->expires_at) : null,
             ]
         ];

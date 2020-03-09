@@ -7,7 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\Order as OrderResource;
 use App\Models\Order;
+use App\Models\OrderPoint;
 use App\Models\Phone;
+use App\Models\Point;
+use App\Models\Zone;
+use App\Repositories\Repository;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -19,7 +23,7 @@ class OrderController extends Controller
      *
      * @param  Order  $order
      */
-    public __construct(Order $order){
+    public function __construct(Order $order){
         $this->repository = new Repository($order);
     }
 
@@ -27,25 +31,51 @@ class OrderController extends Controller
      * Store a new order.
      *
      * @param  Request  $request
+     * @param  Zone  $zone
      * @return Response
      */
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request, Zone $zone)
     {
-        $data = $request->only(['place', 'preordered', 'privatized']);
-        $data['vat'] = 0;
-        $data['amount'] = 10;
-        $data['currency'] = 'EUR';
-        $data['subtotal'] = $data['place'] * $data['amount'];
-        $data['total'] = $data['subtotal'] + $data['subtotal'] * $data['vat'];
-        $order = Order::create($data);
+        $order = new Order($request->only('place', 'privatized', 'preordered'));
+        $order->calculate($zone);
+        $zone->orders()->save($order);
         
-        $data = $request->input('phone');
-        $data['type'] = 'home';
-        $data['phone'] = $data['phone_country_code'] . $data['phone_number'];
-        $phone = Phone::create($data);
+        $phone = new Phone($request->input('phone'));
+        $phone->phone = $phone->phone_country_code . $phone->phone_number;
+        $phone->save();
         $order->phones()->save($phone);
+        
+        $points = $request->input('points');
+        $keys = ['a', 'b'];
+        foreach($keys as $key){
+            if( isset( $points[$key] ) ) {
+                $point = new Point($points[$key]);
+                $point->save();
+                $order->points()->attach($point->id, [
+                    'type' => $key == 'a' ? OrderPoint::TYPE_START : OrderPoint::TYPE_END, 
+                    'created_at' => now()
+                ]);
+            }
+        }
+        
+        $keys = ['b', 'c'];
+        if( isset( $points['c'] ) ) {
+            $second = $order->replicate();
+            $order->second()->save($second);
+            
+            foreach($keys as $key){
+                if( isset( $points[$key] ) ) {
+                    $point = new Point($points[$key]);
+                    $point->save();
+                    $second->points()->attach($point->id, [
+                        'type' => $key == 'b' ? OrderPoint::TYPE_START : OrderPoint::TYPE_END, 
+                        'created_at' => now()
+                    ]);
+                }
+            }
+        }
 
-        event(new \App\Events\OrderCreated($order));
+        //event(new \App\Events\OrderCreated($order));
         
         return new OrderResource($order);
     }

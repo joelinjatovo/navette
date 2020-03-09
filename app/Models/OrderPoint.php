@@ -9,4 +9,5 @@ class OrderPoint extends Pivot
     const TYPE_START = 'start';
     
     const TYPE_END = 'end';
+    
 }

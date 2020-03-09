@@ -40,6 +40,6 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         
-        Route::post('order', 'OrderController@store')->name('order.create');
+        Route::post('zone/{zone}/order', 'OrderController@store')->name('order.create');
     });
 });

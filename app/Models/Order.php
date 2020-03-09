@@ -77,7 +77,7 @@ class Order extends Model
      */
     public function points()
     {
-        return $this->belongsToMany(Point::class, 'order_point')->using(UserPoint::class);
+        return $this->belongsToMany(Point::class, 'order_point')->using(UserPoint::class)->withPivot(['type']);
     }
     
     /**
@@ -94,5 +94,21 @@ class Order extends Model
     public function zone()
     {
         return $this->belongsTo(Zone::class);
+    }
+    
+    /**
+     * Calculate the order
+     * @params Zone $zone
+     * @params Order
+     */
+    public function calculate($zone)
+    {
+        $this->vat = 0;
+        $this->amount = $zone->price;
+        $this->currency = $zone->currency;
+        $this->subtotal = $this->place * $zone->price;
+        $this->total = $this->subtotal + $this->subtotal * $this->vat;
+        
+        return $this;
     }
 }

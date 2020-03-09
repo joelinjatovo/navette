@@ -33,8 +33,8 @@ class Zone extends Model
     /**
      * Get the orders that adds the zone.
      */
-    public function user()
+    public function orders()
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasMany(Order::class);
     }
 }
