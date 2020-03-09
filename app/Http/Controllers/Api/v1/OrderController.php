@@ -12,6 +12,16 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    
+    private $repository;
+    
+    /**
+     *
+     * @param  Order  $order
+     */
+    public __construct(Order $order){
+        $this->repository = new Repository($order);
+    }
 
     /**
      * Store a new order.

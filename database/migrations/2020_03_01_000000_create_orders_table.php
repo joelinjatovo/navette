@@ -25,6 +25,8 @@ class CreateOrdersTable extends Migration
                 $table->string('currency', 3)->nullable();
                 $table->boolean('preordered')->default(false);
                 $table->boolean('privatized')->default(false);
+                $table->unsignedBigInteger('zone_id')->index()->nullable();
+                $table->foreign('zone_id')->references('id')->on('zones')->onDelete('cascade');
                 $table->unsignedBigInteger('travel_id')->index()->nullable();
                 $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
                 $table->unsignedBigInteger('user_id')->index()->nullable();

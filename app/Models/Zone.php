@@ -23,10 +23,18 @@ class Zone extends Model
     }
     
     /**
-     * Get the user that adds the club.
+     * Get the user that adds the zone.
      */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    /**
+     * Get the orders that adds the zone.
+     */
+    public function user()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

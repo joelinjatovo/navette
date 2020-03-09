@@ -87,4 +87,12 @@ class Order extends Model
     {
         return $this->hasOne(Order::class);
     }
+    
+    /**
+     * Get zone that owns the order
+     */
+    public function zone()
+    {
+        return $this->belongsTo(Zone::class);
+    }
 }
