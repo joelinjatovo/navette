@@ -17,6 +17,8 @@ class User extends JsonResource
         return [
             'code' => 200,
             'status' => "success",
+            'message' => null,
+            'errors' => [],
             'data' => [
                 'id' => $this->id,
                 'name' => $this->name,

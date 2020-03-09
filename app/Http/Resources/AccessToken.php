@@ -18,10 +18,13 @@ class AccessToken extends JsonResource
         return [
             'code' => 200,
             'status' => "success",
+            'message' => null,
+            'errors' => [],
             'data' => [
                 'token' => $this->scopes,
                 'expires' => strtotime($this->expires_at),
-                'refresh_token' => new RefreshToken($this->refreshToken),
+                'refresh_token' => $this->refreshToken ? $this->refreshToken->scope : null,
+                'refresh_token_expires' => $this->refreshToken ? strtotime($this->refreshToken->expires_at) : null,
             ]
         ];
     }

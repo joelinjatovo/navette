@@ -19,10 +19,9 @@ class UserCollection extends ResourceCollection
         return [
             'code' => 200,
             'status' => "success",
+            'message' => null,
+            'errors' => [],
             'data' => $this->collection,
-            'links' => [
-                'self' => 'link-value',
-            ],
         ];
     }
 }

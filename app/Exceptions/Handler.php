@@ -56,19 +56,17 @@ class Handler extends ExceptionHandler
                     return response()->json([
                         'code' => 401,
                         'status' => 'Unauthorized',
-                        'data' => [
-                            'message' => $exception->getMessage(),
-                            'errors' => [],
-                        ]
+                        'message' => $exception->getMessage(),
+                        'errors' => [],
+                        'data' => null
                     ])->setStatusCode(401);
                 case $exception instanceof \Illuminate\Validation\ValidationException:
                     return response()->json([
                         'code' => $exception->status,
                         'status' => 'Unprocessable Entity',
-                        'data' => [
-                            'message' => $exception->getMessage(),
-                            'errors' => $exception->errors(),
-                        ]
+                        'message' => $exception->getMessage(),
+                        'errors' => $exception->errors(),
+                        'data' => null
                     ])->setStatusCode($exception->status);
                 case $exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException:
                     $status = $exception->getStatusCode();
@@ -77,28 +75,25 @@ class Handler extends ExceptionHandler
                             return response()->json([
                                 'code' => $status,
                                 'status' => 'Bad Request',
-                                'data' => [
-                                    'message' => $exception->getMessage(),
-                                    'errors' => [],
-                                ]
+                                'message' => $exception->getMessage(),
+                                'errors' => [],
+                                'data' => null
                             ])->setStatusCode($status);
                         case 401:
                             return response()->json([
                                 'code' => $status,
                                 'status' => 'Unauthorized',
-                                'data' => [
-                                    'message' => $exception->getMessage(),
-                                    'errors' => [],
-                                ]
+                                'message' => $exception->getMessage(),
+                                'errors' => [],
+                                'data' => null
                             ])->setStatusCode($status);
                         case 403:
                             return response()->json([
                                 'code' => $exception->getStatusCode(),
                                 'status' => 'Forbidden',
-                                'data' => [
-                                    'message' => $exception->getMessage(),
-                                    'errors' => [],
-                                ]
+                                'message' => $exception->getMessage(),
+                                'errors' => [],
+                                'data' => null
                             ])->setStatusCode($status);
                     }
                     break;
@@ -106,15 +101,14 @@ class Handler extends ExceptionHandler
                     return response()->json([
                         'code' => 500,
                         'status' => 'Unknown',
-                        'data' => [
-                            'message' => $exception->getMessage(),
-                            'errors' => [
-                                [
-                                    'file' => $exception->getFile(),
-                                    'line' => $exception->getLine(),
-                                ]
-                            ],
-                        ]
+                        'message' => $exception->getMessage(),
+                        'errors' => [
+                            [
+                                'file' => $exception->getFile(),
+                                'line' => $exception->getLine(),
+                            ]
+                        ],
+                        'data' => null
                     ])->setStatusCode(500);
             }
         }
