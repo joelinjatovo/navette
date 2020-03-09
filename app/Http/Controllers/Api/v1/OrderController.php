@@ -77,6 +77,8 @@ class OrderController extends Controller
 
         //event(new \App\Events\OrderCreated($order));
         
+        \App\Jobs\ProcessOrder::dispatchAfterResponse($order);
+        
         return new OrderResource($order);
     }
 }
