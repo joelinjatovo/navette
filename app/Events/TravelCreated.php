@@ -45,7 +45,7 @@ class TravelCreated implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'travel.status.created';
+        return 'travel.created';
     }
     
     /**

@@ -10,26 +10,20 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
 
-class TravelOrderStatus extends Notification
+class TravelDriverAttached extends Notification
 {
     use Queueable;
     
     protected $travel;
-    
-    protected $old_status;
-    
-    protected $new_status;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Travel $travel, $new_status, $old_status = null)
+    public function __construct(Travel $travel)
     {
         $this->travel = $travel;
-        $this->old_status = $old_status;
-        $this->new_status = $new_status;
     }
 
     /**
@@ -65,6 +59,6 @@ class TravelOrderStatus extends Notification
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage)
-                    ->content('Your SMS message content sayes that that your travel\'s order status is changed');
+                    ->content('Your SMS message content sayes that that travel\'s driver is assigned');
     }
 }

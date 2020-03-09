@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Models\Order;
-use App\Models\Travel;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -13,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TravelOrderAssigned implements ShouldBroadcastNow
+class OrderUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -36,7 +35,7 @@ class TravelOrderAssigned implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.Travel.'.$this->order->travel->id);
+        return new PrivateChannel('App.User.'.$this->order->user->id);
     }
     
     /**
@@ -46,7 +45,7 @@ class TravelOrderAssigned implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'travel.order.assigned';
+        return 'order.updated';
     }
     
     /**

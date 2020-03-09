@@ -45,7 +45,7 @@ class OrderCreated implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'order.status.created';
+        return 'order.created';
     }
     
     /**

@@ -2,29 +2,28 @@
 
 namespace App\Notifications;
 
+use App\Models\Travel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
 
-class TravelUserPointCreated extends Notification
+class TravelCarAttached extends Notification
 {
     use Queueable;
+    
+    protected $travel;
 
-    private $user;
-    
-    private $point;
-    
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(\App\Models\User $user, \App\Models\Point $point)
+    public function __construct(Travel $travel)
     {
-        $this->user = $user;
-        $this->point = $point;
+        $this->travel = $travel;
     }
 
     /**
@@ -47,12 +46,7 @@ class TravelUserPointCreated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'point' => [
-                'name' => $this->point->name,
-                'lat' => $this->point->lat,
-                'long' => $this->point->long,
-                'alt' => $this->point->alt,
-            ],
+            'id' => $this->travel->id,
         ];
     }
     
@@ -65,6 +59,6 @@ class TravelUserPointCreated extends Notification
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage)
-                    ->content('Your SMS message content sayes user position');
+                    ->content('Your SMS message content sayes that that travel\'s car is assigned');
     }
 }

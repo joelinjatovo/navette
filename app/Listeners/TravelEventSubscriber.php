@@ -37,63 +37,18 @@ class TravelEventSubscriber
         );
         
         $events->listen(
-            'App\Events\TravelStarted',
-            'App\Listeners\TravelEventSubscriber@handleTravelStarted'
+            'App\Events\TravelUpdated',
+            'App\Listeners\TravelEventSubscriber@handleTravelUpdated'
         );
         
         $events->listen(
-            'App\Events\TravelArrived',
-            'App\Listeners\TravelEventSubscriber@handleTravelArrived'
+            'App\Events\TravelDriverAttached',
+            'App\Listeners\TravelEventSubscriber@handleTravelDriverAttached'
         );
         
         $events->listen(
-            'App\Events\TravelReturned',
-            'App\Listeners\TravelEventSubscriber@handleTravelReturned'
-        );
-        
-        $events->listen(
-            'App\Events\TravelFinished',
-            'App\Listeners\TravelEventSubscriber@handleTravelFinished'
-        );
-        
-        $events->listen(
-            'App\Events\TravelDriverAssigned',
-            'App\Listeners\TravelEventSubscriber@handleTravelDriverAssigned'
-        );
-        
-        $events->listen(
-            'App\Events\TravelCarAssigned',
-            'App\Listeners\TravelEventSubscriber@handleTravelCarAssigned'
-        );
-        
-        $events->listen(
-            'App\Events\TravelOrderAssigned',
-            'App\Listeners\TravelEventSubscriber@handleTravelOrderAssigned'
-        );
-        
-        $events->listen(
-            'App\Events\TravelOrderActived',
-            'App\Listeners\TravelEventSubscriber@handleTravelOrderActived'
-        );
-        
-        $events->listen(
-            'App\Events\TravelOrderCanceled',
-            'App\Listeners\TravelEventSubscriber@handleTravelOrderCanceled'
-        );
-        
-        $events->listen(
-            'App\Events\TravelOrderMoved',
-            'App\Listeners\TravelEventSubscriber@handleTravelOrderMoved'
-        );
-        
-        $events->listen(
-            'App\Events\TravelOrderFinished',
-            'App\Listeners\TravelEventSubscriber@handleTravelOrderFinished'
-        );
-        
-        $events->listen(
-            'App\Events\TravelUserPointCreated',
-            'App\Listeners\TravelEventSubscriber@handleTravelUserPointCreated'
+            'App\Events\TravelCarAttached',
+            'App\Listeners\TravelEventSubscriber@handleTravelCarAttached'
         );
     }
     
@@ -109,123 +64,35 @@ class TravelEventSubscriber
     }
     
     /**
-     * Handle travel started events.
+     * Handle travel updated events.
      */
-    public function handleTravelStarted(TravelStartedEvent $event) {
+    public function handleTravelUpdated(TravelUpdatedEvent $event) {
         $travel = $event->travel;
         $admin = $travel->user;
         if( null != $admin ) {
-            $admin->notify(new TravelStatusNotification($travel, 'started'));
+            $admin->notify(new TravelStatusNotification($travel, 'updated'));
         }
     }
     
     /**
-     * Handle travel inited events.
+     * Handle travel driver attached events.
      */
-    public function handleTravelArrived(TravelArrivedEvent $event) {
-        $travel = $event->travel;
-        $admin = $travel->user;
-        if( null != $admin ) {
-            $admin->notify(new TravelStatusNotification($travel, 'arrived'));
-        }
-    }
-    
-    /**
-     * Handle travel returned events.
-     */
-    public function handleTravelReturned(TravelReturnedEvent $event) {
-        $travel = $event->travel;
-        $admin = $travel->user;
-        if( null != $admin ) {
-            $admin->notify(new TravelStatusNotification($travel, 'returned'));
-        }
-    }
-    
-    /**
-     * Handle travel finished events.
-     */
-    public function handleTravelFinished(TravelFinishedEvent $event) {
-        $travel = $event->travel;
-        $admin = $travel->user;
-        if( null != $admin ) {
-            $admin->notify(new TravelStatusNotification($travel, 'finished'));
-        }
-    }
-    
-    /**
-     * Handle travel driver assigned events.
-     */
-    public function handleTravelDriverAssigned(TravelDriverAssignedEvent $event) {
+    public function handleTravelDriverAttached(TravelDriverAttachedEvent $event) {
         $travel = $event->travel;
         $driver = $travel->driver;
         if( null != $driver ) {
-            $user->notify(new TravelDriverAssignedNotifiation($travel));
+            $user->notify(new TravelDriverAttachedNotifiation($travel));
         }
     }
     
     /**
-     * Handle travel car assigned events.
+     * Handle travel car attached events.
      */
-    public function handleTravelCarAssigned(TravelCarAssignedEvent $event) {
+    public function handleTravelCarAttached(TravelCarAttachedEvent $event) {
         $travel = $event->travel;
         $admin = $travel->user;
         if( null != $admin ) {
-            $admin->notify(new TravelCarAssignedNotifiation($travel));
-        }
-    }
-    
-    /**
-     * Handle travel order assigned events.
-     */
-    public function handleTravelOrderAssigned(TravelOrderAssignedEvent $event) {
-        $travel = $event->travel;
-        $admin = $travel->user;
-        if( null != $admin ) {
-            $admin->notify(new TravelOrderStatusNotifiation($travel, 'assigned'));
-        }
-    }
-    
-    /**
-     * Handle travel order actived events.
-     */
-    public function handleTravelOrderActived(TravelOrderActivedEvent $event) {
-        $travel = $event->travel;
-        $admin = $travel->user;
-        if( null != $admin ) {
-            $admin->notify(new TravelOrderStatusNotifiation($travel, 'actived'));
-        }
-    }
-    
-    /**
-     * Handle travel order canceled events.
-     */
-    public function handleTravelOrderCanceled(TravelOrderCanceledEvent $event) {
-        $travel = $event->travel;
-        $admin = $travel->user;
-        if( null != $admin ) {
-            $admin->notify(new TravelOrderStatusNotifiation($travel, 'canceled'));
-        }
-    }
-    
-    /**
-     * Handle travel order moved events.
-     */
-    public function handleTravelOrderMoved(TravelOrderMovedEvent $event) {
-        $travel = $event->travel;
-        $admin = $travel->user;
-        if( null != $admin ) {
-            $admin->notify(new TravelOrderStatusNotifiation($travel, 'moved'));
-        }
-    }
-    
-    /**
-     * Handle travel order moved events.
-     */
-    public function handleTravelOrderFinished(TravelOrderFinishedEvent $event) {
-        $travel = $event->travel;
-        $admin = $travel->user;
-        if( null != $admin ) {
-            $admin->notify(new TravelOrderStatusNotifiation($travel, 'finished'));
+            $admin->notify(new TravelCarAttachedNotifiation($travel));
         }
     }
     

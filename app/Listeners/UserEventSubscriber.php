@@ -27,6 +27,11 @@ class UserEventSubscriber
             'Illuminate\Auth\Events\Logout',
             'App\Listeners\UserEventSubscriber@handleUserLogout'
         );
+        
+        $events->listen(
+            'App\Events\UserPointCreated',
+            'App\Listeners\UserEventSubscriber@handleUserPointCreated'
+        );
     }
     
     /**
@@ -41,5 +46,16 @@ class UserEventSubscriber
      */
     public function handleUserLogout($event) {
         
+    }
+    
+    /**
+     * Handle user position created events.
+     */
+    public function handleUserPointCreated(UserPointCreatedEvent $event) {
+        $admin = $event->user;
+        $point = $event->point;
+        if( null != $admin ) {
+            $admin->notify(new UserPointCreatedNotification($admin, $point));
+        }
     }
 }

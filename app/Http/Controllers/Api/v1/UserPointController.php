@@ -30,7 +30,6 @@ class UserPointController extends Controller
         $user->positions()->attach($point->id, ['created_at' => now()]);
         
         event(new \App\Events\UserPointCreated($user, $point));
-        event(new \App\Events\TravelUserPointCreated($user, $point));
 
         return new UserResource($user);
     }

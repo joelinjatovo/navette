@@ -22,6 +22,10 @@ class OrderEventSubscriber
             'App\Events\OrderCreated',
             'App\Listeners\OrderEventSubscriber@handleOrderCreated'
         );
+        $events->listen(
+            'App\Events\OrderUpdated',
+            'App\Listeners\OrderEventSubscriber@handleOrderUpdated'
+        );
     }
     
     /**
@@ -36,13 +40,13 @@ class OrderEventSubscriber
     }
     
     /**
-     * Handle order changed events.
+     * Handle order updated events.
      */
-    public function handleOrderChanged(OrderChangedEvent $event) {
+    public function handleOrderUpdated(OrderChangedEvent $event) {
         $order = $event->order;
         $user = $order->user;
         if( null != $user ) {
-            $user->notify(new OrderStatusNotification($order, 'changed'));
+            $user->notify(new OrderStatusNotification($order, 'updated'));
         }
     }
 }
