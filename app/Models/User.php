@@ -47,7 +47,6 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     protected $casts = [
         'phone_verified_at' => 'datetime',
-        'last_activity_at' => 'datetime',
     ];
     
     /**

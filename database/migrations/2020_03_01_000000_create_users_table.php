@@ -18,8 +18,8 @@ class CreateUsersTable extends Migration
                 $table->id();
                 $table->string('name', 100);
                 $table->string('locale', 2)->default('fr');
-                $table->string('phone', 20)->unique();
-                $table->timestamp('last_activity_at')->nullable();
+                $table->string('facebook_id', 200)->nullable();
+                $table->string('phone', 20)->nullable();
                 $table->timestamp('phone_verified_at')->nullable();
                 $table->string('password');
                 $table->boolean('active')->default(true);
