@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Services\TravelProcessor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,7 +31,7 @@ class ProcessOrder implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(TravelProcessor $processor)
     {
         $driver = \App\Models\User::find(1);
         $car = \App\Models\Car::find(1);

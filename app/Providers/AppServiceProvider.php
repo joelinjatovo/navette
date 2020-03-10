@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Middleware\AccessLog;
+use App\Http\Middleware\AccessLog as AccessLogMiddleware;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\View;
@@ -37,7 +37,9 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
         
         // Log access
-        $this->app->singleton(AccessLog::class);
+        $this->app->singleton(AccessLogMiddleware::class);
+        
+        $this->app->bind(\App\Services\ProcessorInterface::class, \App\Services\TravelProcessor::class);
         
     }
 }
