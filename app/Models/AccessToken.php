@@ -6,6 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class AccessToken extends Model
 {
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+    
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +37,12 @@ class AccessToken extends Model
         parent::boot();
         
         static::creating(function ($model) {
-            $model->user_id = auth()->check()?auth()->user()->id:null;
+            if ( empty( $model->{$model->getKeyName()} ) ) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+            if( empty( $model->user_id ) && auth()->check() ) {
+                $model->user_id = auth()->user()->id;
+            }
         });
     }
     

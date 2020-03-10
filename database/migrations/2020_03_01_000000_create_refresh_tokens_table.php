@@ -15,9 +15,9 @@ class CreateRefreshTokensTable extends Migration
     {
         if( ! Schema::hasTable('refresh_tokens') ) {
             Schema::create('refresh_tokens', function (Blueprint $table) {
-                $table->id();
+                $table->uuid('id')->primary();
                 $table->text('scopes');
-                $table->unsignedBigInteger('access_token_id')->index();
+                $table->uuid('access_token_id')->index();
                 $table->foreign('access_token_id')->references('id')->on('access_tokens')->onDelete('cascade');
                 $table->unsignedBigInteger('user_id')->index();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

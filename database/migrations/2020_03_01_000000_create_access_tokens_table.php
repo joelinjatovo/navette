@@ -15,7 +15,7 @@ class CreateAccessTokensTable extends Migration
     {
         if( ! Schema::hasTable('access_tokens') ) {
             Schema::create('access_tokens', function (Blueprint $table) {
-                $table->id();
+                $table->uuid('id')->primary();
                 $table->text('scopes');
                 $table->unsignedBigInteger('user_id')->index();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

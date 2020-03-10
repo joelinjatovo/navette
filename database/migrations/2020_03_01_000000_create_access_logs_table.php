@@ -15,9 +15,10 @@ class CreateAccessLogsTable extends Migration
     {
         if( ! Schema::hasTable('access_logs') ) {
             Schema::create('access_logs', function (Blueprint $table) {
-                $table->id();
+                $table->uuid('id')->primary();
                 $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->integer('status')->default(0);
                 $table->string('url')->nullable();
                 $table->string('referer')->nullable();
                 $table->string('user_agent')->nullable();

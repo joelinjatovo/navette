@@ -27,6 +27,7 @@ class AccessLog
         AccessLogModel::create([
                 'user_id' => $request->user()?$request->user()->id:0,
                 'url' => $request->fullUrl(),
+                'status' => $response->status(),
                 'method' => $request->method(),
                 'referer' => $request->headers->get('referer'),
                 'user_agent' => $request->header('User-Agent'),

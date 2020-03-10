@@ -3,9 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class AccessLog extends Model
 {
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+    
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
 
     /**
      * The attributes that are datetime type.
@@ -23,7 +37,7 @@ class AccessLog extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'url', 'referer', 'user_agent', 'ip', 'country', 'platform', 'api', 'api_key_id'
+        'user_id', 'status',  'url', 'referer', 'user_agent', 'ip', 'country', 'platform', 'api', 'api_key_id'
     ];
 
     /**
@@ -34,7 +48,12 @@ class AccessLog extends Model
         parent::boot();
         
         static::creating(function ($model) {
-            $model->user_id = auth()->check()?auth()->user()->id:null;
+            if ( empty( $model->{$model->getKeyName()} ) ) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+            if( empty( $model->user_id ) && auth()->check() ) {
+                $model->user_id = auth()->user()->id;
+            }
         });
     }
     

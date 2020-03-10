@@ -15,11 +15,11 @@ class CreateOrderPointTable extends Migration
     {
         if( ! Schema::hasTable('order_point') ) {
             Schema::create('order_point', function (Blueprint $table) {
-                $table->id();
+                $table->uuid('id')->primary();
                 $table->string('type', 20)->nullable();
                 $table->unsignedBigInteger('order_id')->index();
                 $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-                $table->unsignedBigInteger('point_id')->index();
+                $table->uuid('point_id')->index();
                 $table->foreign('point_id')->references('id')->on('points')->onDelete('cascade');
                 $table->timestamps();
             });

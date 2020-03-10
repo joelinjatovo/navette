@@ -15,7 +15,7 @@ class CreatePointsTable extends Migration
     {
         if( ! Schema::hasTable('points') ) {
             Schema::create('points', function (Blueprint $table) {
-                $table->id();
+                $table->uuid('id')->primary();
                 $table->string('name', 200);
                 $table->decimal('long', 10, 7);
                 $table->decimal('lat', 10, 7);

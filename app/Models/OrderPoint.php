@@ -10,4 +10,32 @@ class OrderPoint extends Pivot
     
     const TYPE_END = 'end';
     
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+    
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            if ( empty( $model->{$model->getKeyName()} ) ) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+        });
+    }
+    
 }

@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class RefreshToken extends Model
 {
     /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+    
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+    
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -14,6 +28,23 @@ class RefreshToken extends Model
     protected $fillable = [
         'scopes', 'user_id', 'expires_at'
     ];
+
+    /**
+     * Save item author
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            if ( empty( $model->{$model->getKeyName()} ) ) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+            if( empty( $model->user_id ) && $this->accessToken && $this->accessToken->user ) {
+                $model->user_id = $this->accessToken->user->id;
+            }
+        });
+    }
     
     /**
      * Get the user that owns the phone.

@@ -27,7 +27,9 @@ class Club extends Model
         parent::boot();
         
         static::creating(function ($model) {
-            $model->user_id = auth()->check()?auth()->user()->id:null;
+            if( empty( $model->user_id ) && auth()->check() ) {
+                $model->user_id = auth()->user()->id;
+            }
         });
     }
     
