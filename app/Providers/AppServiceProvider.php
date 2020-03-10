@@ -36,9 +36,13 @@ class AppServiceProvider extends ServiceProvider
         // Do not wrapped JSon data
         JsonResource::withoutWrapping();
         
-        // Log access
+        // Log all application response into database
         $this->app->singleton(AccessLogMiddleware::class);
         
+        // Google API
+        $this->app->singleton(GoogleApiService::class);
+        
+        //
         $this->app->bind(\App\Services\ProcessorInterface::class, \App\Services\TravelProcessor::class);
         
     }

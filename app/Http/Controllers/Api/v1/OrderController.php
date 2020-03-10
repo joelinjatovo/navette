@@ -10,7 +10,7 @@ use App\Models\Order;
 use App\Models\OrderPoint;
 use App\Models\Phone;
 use App\Models\Point;
-use App\Models\Zone;
+use App\Models\Club;
 use App\Repositories\Repository;
 use Illuminate\Http\Request;
 
@@ -34,45 +34,37 @@ class OrderController extends Controller
      * @param  Zone  $zone
      * @return Response
      */
-    public function store(StoreOrderRequest $request, Zone $zone)
+    public function store(StoreOrderRequest $request, Club $club)
     {
-        $order = new Order($request->only('place', 'privatized', 'preordered'));
-        $this->repository->calculate($order, $zone);
-        $zone->orders()->save($order);
-        
-        $phone = new Phone($request->input('phone'));
-        
-        $phone->save();
-        $order->phones()->save($phone);
-        
         $points = $request->input('points');
-        $keys = ['a', 'b'];
-        foreach($keys as $key){
-            if( isset( $points[$key] ) ) {
-                $point = new Point($points[$key]);
-                $point->save();
-                $order->points()->attach($point->id, [
-                    'type' => $key == 'a' ? OrderPoint::TYPE_START : OrderPoint::TYPE_END, 
-                    'created_at' => now()
-                ]);
-            }
+        $point_a = null;
+        $point_b = null;
+        if( isset( $points['a'] ) ) {
+            $point_a = new Point($points['a']);
+            $point_a->save();
+        }
+        if( isset( $points['b'] ) ) {
+            $point_b = new Point($points['b']);
+            $point_b->save();
         }
         
-        $keys = ['b', 'c'];
-        if( isset( $points['c'] ) ) {
-            $second = $order->replicate();
+        $phone = new Phone($request->input('phone'));
+        $phone->save();
+        
+        $order = new Order($request->only('place', 'privatized', 'preordered'));
+        $zone = $this->repository->calculate($order, $club, $point_a, $point_b);
+        
+        $zone->orders()->save($order);
+        $order->phones()->save($phone);
+        $order->points()->attach($point_a->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
+        $order->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
+        
+        if($point_b){
+            $second->replicate();
             $order->second()->save($second);
             
-            foreach($keys as $key){
-                if( isset( $points[$key] ) ) {
-                    $point = new Point($points[$key]);
-                    $point->save();
-                    $second->points()->attach($point->id, [
-                        'type' => $key == 'b' ? OrderPoint::TYPE_START : OrderPoint::TYPE_END, 
-                        'created_at' => now()
-                    ]);
-                }
-            }
+            $second->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
+            $second->points()->attach($point_b->id, ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
         }
 
         event(new \App\Events\OrderCreated($order));
