@@ -21,7 +21,9 @@ class UserPoint extends Pivot
     protected $keyType = 'string';
 
     /**
-     * Save item author
+     * Bootstrap the model and its traits.
+     *
+     * @return void
      */
     public static function boot()
     {

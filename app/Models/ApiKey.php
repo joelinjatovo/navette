@@ -35,7 +35,9 @@ class ApiKey extends Model
     ];
 
     /**
-     * Save item author
+     * Bootstrap the model and its traits.
+     *
+     * @return void
      */
     public static function boot()
     {

@@ -27,6 +27,28 @@ class Phone extends Model
     protected $fillable = [
         'type', 'phone_country_code', 'phone_number', 'phone',
     ];
+
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            if( empty( $model->phone ) ) {
+                $model->phone = $model->phone_country_code . $model->phone_number;
+            }
+        });
+        
+        static::updating(function ($model) {
+            if( empty( $model->phone ) ) {
+                $model->phone = $model->phone_country_code . $model->phone_number;
+            }
+        });
+    }
     
     /**
      * Get the user that owns the phone.

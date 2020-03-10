@@ -23,8 +23,8 @@ class OrderController extends Controller
      *
      * @param  Order  $order
      */
-    public function __construct(Order $order){
-        $this->repository = new Repository($order);
+    public function __construct(OrderRepository $repository){
+        $this->repository = $repository;
     }
 
     /**
@@ -37,11 +37,11 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request, Zone $zone)
     {
         $order = new Order($request->only('place', 'privatized', 'preordered'));
-        $order->calculate($zone);
+        $this->repository->calculate($order, $zone);
         $zone->orders()->save($order);
         
         $phone = new Phone($request->input('phone'));
-        $phone->phone = $phone->phone_country_code . $phone->phone_number;
+        
         $phone->save();
         $order->phones()->save($phone);
         

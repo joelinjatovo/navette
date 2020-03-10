@@ -11,7 +11,9 @@ class Zone extends Model
     use SoftDeletes;
 
     /**
-     * Save item author
+     * Bootstrap the model and its traits.
+     *
+     * @return void
      */
     public static function boot()
     {
