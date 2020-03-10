@@ -16,12 +16,13 @@ class CreateUsersTable extends Migration
         if( ! Schema::hasTable('users') ) {
             Schema::create('users', function (Blueprint $table) {
                 $table->id();
-                $table->string('name', 100);
-                $table->string('locale', 2)->default('fr');
                 $table->string('facebook_id', 200)->nullable();
+                $table->string('name', 100);
+                $table->string('email', 100)->nullable();
                 $table->string('phone', 20)->nullable();
                 $table->timestamp('phone_verified_at')->nullable();
                 $table->string('password');
+                $table->string('locale', 2)->default('fr');
                 $table->boolean('active')->default(true);
                 $table->rememberToken();
                 $table->timestamps();
