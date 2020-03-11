@@ -76,7 +76,12 @@ class Handler extends ExceptionHandler
                                 'code' => $status,
                                 'status' => 'Bad Request',
                                 'message' => $exception->getMessage(),
-                                'errors' => [],
+                                'errors' => [
+                                    [
+                                        'file' => $exception->getFile(),
+                                        'line' => $exception->getLine(),
+                                    ]
+                                ],
                                 'data' => null
                             ])->setStatusCode($status);
                         case 401:
@@ -84,7 +89,12 @@ class Handler extends ExceptionHandler
                                 'code' => $status,
                                 'status' => 'Unauthorized',
                                 'message' => $exception->getMessage(),
-                                'errors' => [],
+                                'errors' => [
+                                    [
+                                        'file' => $exception->getFile(),
+                                        'line' => $exception->getLine(),
+                                    ]
+                                ],
                                 'data' => null
                             ])->setStatusCode($status);
                         case 403:
@@ -92,7 +102,12 @@ class Handler extends ExceptionHandler
                                 'code' => $exception->getStatusCode(),
                                 'status' => 'Forbidden',
                                 'message' => $exception->getMessage(),
-                                'errors' => [],
+                                'errors' => [
+                                    [
+                                        'file' => $exception->getFile(),
+                                        'line' => $exception->getLine(),
+                                    ]
+                                ],
                                 'data' => null
                             ])->setStatusCode($status);
                     }

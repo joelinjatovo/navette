@@ -19,7 +19,7 @@ class ZoneSeeder extends Seeder
             'price' => 10,
             'currency' => 'EUR',
             'user_id' => 1,
-            'created_at' => now(), // 5 ans
+            'created_at' => now(),
         ]);
         
         DB::table('zones')->insert([
@@ -30,7 +30,7 @@ class ZoneSeeder extends Seeder
             'price' => 20,
             'currency' => 'EUR',
             'user_id' => 1,
-            'created_at' => now(), // 5 ans
+            'created_at' => now(),
         ]);
         
         DB::table('zones')->insert([
@@ -41,7 +41,7 @@ class ZoneSeeder extends Seeder
             'price' => 30,
             'currency' => 'EUR',
             'user_id' => 1,
-            'created_at' => now(), // 5 ans
+            'created_at' => now(),
         ]);
     }
 }

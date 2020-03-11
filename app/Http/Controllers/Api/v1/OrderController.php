@@ -7,25 +7,27 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\Order as OrderResource;
 use App\Http\Resources\OrderCollection;
+use App\Models\Club;
 use App\Models\Order;
 use App\Models\OrderPoint;
 use App\Models\Phone;
 use App\Models\Point;
-use App\Models\Club;
+use App\Models\Zone;
+use App\Services\GoogleApiService;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    
-    private $repository;
-    
+    protected $google;
+
     /**
+     * Paginate orders
      *
-     * @param  Order  $order
+     * @return Response
      */
-    public function __construct(OrderRepository $repository){
-        $this->repository = $repository;
+    public function __construct(GoogleApiService $google){
+        $this->google = $google;
     }
 
     /**
@@ -44,8 +46,12 @@ class OrderController extends Controller
      * @param  Zone  $zone
      * @return Response
      */
-    public function store(StoreOrderRequest $request, Club $club)
+    public function store(StoreOrderRequest $request, OrderRepository $repository, Club $club)
     {
+        if( null === $club->point ) {
+            abort(400, "Invalid Club");
+        }
+        
         $points = $request->input('points');
         $point_a = null;
         $point_b = null;
@@ -61,16 +67,28 @@ class OrderController extends Controller
         $phone = new Phone($request->input('phone'));
         $phone->save();
         
+        $distance = $this->calculateDistance($point_a, $club->point);
+        if($distance == 0){
+            abort(400, "Distance null");
+        }
+        
+        $zone = $this->getZone($distance);
+        if(null == $zone){
+            abort(400, "Very far.");
+        }
+        
         $order = new Order($request->only('place', 'privatized', 'preordered'));
-        $zone = $this->repository->calculate($order, $club, $point_a, $point_b);
+        $order = $repository->calculate($order, $zone);
         
         $zone->orders()->save($order);
+        
         $order->phones()->save($phone);
         $order->points()->attach($point_a->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
         $order->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
+
         
         if($point_b){
-            $second->replicate();
+            $second = $order->replicate();
             $order->second()->save($second);
             
             $second->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
@@ -82,5 +100,32 @@ class OrderController extends Controller
         \App\Jobs\ProcessOrder::dispatchAfterResponse($order);
         
         return new OrderResource($order);
+    }
+    
+    /**
+     * calculateDistance
+     *
+     * @params Point $a
+     * @params Point $b
+     */
+    protected function calculateDistance(Point $a, Point $b)
+    {
+        $response = $this->google->getDistance($a, $b);
+        if($response['status'] === 'OK'){
+            return ceil( $response['rows'][0]['elements'][0]['distance']['value'] / 1000 );
+        }
+        
+        return 0;
+    }
+    
+    /**
+     * Find zone
+     *
+     * @params Order $order
+     * @params Club $club
+     */
+    protected function getZone($distance)
+    {
+        return Zone::where('distance', '>=', $distance)->orderBy('distance', 'ASC')->first();
     }
 }

@@ -46,7 +46,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         
         Route::get('orders', 'OrderController@index')->name('orders');
         
-        Route::post('zone/{zone}/order', 'OrderController@store')->name('order.create');
+        Route::post('club/{club}/order', 'OrderController@store')->name('order.create');
         
         Route::get('clubs', 'ClubController@index')->name('clubs');
     });

@@ -41,10 +41,6 @@ class StoreOrder extends FormRequest
             'points.b.long' => 'required',
             'points.b.alt' => 'required',
             
-            'points.c.name' => 'required',
-            'points.c.lat' => 'required',
-            'points.c.long' => 'required',
-            'points.c.alt' => 'required',
         ];
     }
 }

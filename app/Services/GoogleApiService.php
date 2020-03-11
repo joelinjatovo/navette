@@ -17,14 +17,35 @@ class GoogleApiService
     {
         $url = "https://maps.googleapis.com/maps/api/distancematrix/json";
         $data = [
-            'mode' => 'driving', // driving | walking | bicycling | transit 
+            //'mode' => 'driving', // driving | walking | bicycling | transit 
             'units' => 'metric', // metric | imperial
-            'traffic_model' => 'best_guess', // best_guess | pessimistic | optimistic 
-            'origins' => 'Washington,DC',
-            'destinations' => 'New+York+City,NY',
+            //'traffic_model' => 'best_guess', // best_guess | pessimistic | optimistic 
+            'origins' => $pointA->lat.','.$pointA->long, //$a['results'][0]['formatted_address'],
+            'destinations' => $pointB->lat.','.$pointB->long, //$b['results'][0]['formatted_address'],
             'key' => env('GOOGLE_API_KEY'),
         ];
         $response = Http::get($url . '?' . http_build_query($data));
+        
+        \Log::info('distancematrix ' . $response->body());
+        
+        return $response->json();
+    }
+    
+    /**
+     *
+     * @params Point $pointA
+     * @params Point $pointB
+     */
+    public function geocode(Point $point)
+    {
+        $url = "https://maps.googleapis.com/maps/api/geocode/json";
+        $data = [
+            'latlng' => $point->lat.','.$point->long,
+            'key' => env('GOOGLE_API_KEY'),
+        ];
+        $response = Http::get($url . '?' . http_build_query($data));
+        
+        \Log::info('geocode ' . $response->body());
         
         return $response->json();
     }

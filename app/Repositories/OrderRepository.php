@@ -25,9 +25,8 @@ class OrderRepository extends Repository
      * @params Order $order
      * @params Club $club
      */
-    public function calculate(Order $order, Club $club, Point $point_a, ?Point $point_b = null)
+    public function calculate(Order $order, Zone $zone)
     {
-        $zone = $this->getZone($club, $point_a);
         $order->vat = 0;
         $order->amount = $zone->price;
         $order->currency = $zone->currency;
@@ -46,6 +45,6 @@ class OrderRepository extends Repository
     public function getZone(Club $club, Point $point)
     {
         $distance =  10;
-        return Zone::where('distance', '>=', $distance)->order('distance', 'ASC')->first();
+        return Zone::where('distance', '>=', $distance)->orderBy('distance', 'ASC')->first();
     }
 }

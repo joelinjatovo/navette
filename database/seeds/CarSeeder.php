@@ -40,7 +40,7 @@ class CarSeeder extends Seeder
             'place' => 4,
             'car_model_id' => 1,
             'user_id' => 1,
-            'created_at' => now(), // 5 ans
+            'created_at' => now(),
         ]);
     }
 }
