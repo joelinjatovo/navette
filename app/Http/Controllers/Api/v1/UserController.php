@@ -48,4 +48,20 @@ class UserController extends Controller
 
         return new UserResource($user);
     }
+
+    /**
+     * Verify user phone code
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function verify(VerifyPhoneRequest $request)
+    {
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+        
+        $user->update($validated);
+
+        return new UserResource($user);
+    }
 }
