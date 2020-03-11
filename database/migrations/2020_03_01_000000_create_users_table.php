@@ -20,10 +20,12 @@ class CreateUsersTable extends Migration
                 $table->string('name', 100);
                 $table->string('email', 100)->nullable();
                 $table->string('phone', 20)->nullable();
-                $table->timestamp('phone_verified_at')->nullable();
                 $table->string('password');
                 $table->string('locale', 2)->default('fr');
                 $table->boolean('active')->default(true);
+                $table->timestamp('phone_verified_at')->nullable();
+                $table->string('phone_verification_code')->nullable();
+                $table->timestamp('phone_verification_expires_at')->nullable();
                 $table->rememberToken();
                 $table->timestamps();
                 $table->softDeletes();

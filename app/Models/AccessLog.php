@@ -37,7 +37,7 @@ class AccessLog extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'status',  'url', 'referer', 'user_agent', 'ip', 'country', 'platform', 'api', 'api_key_id'
+        'user_id', 'status', 'url', 'referer', 'user_agent', 'ip', 'country', 'platform', 'api', 'api_key_id'
     ];
 
     /**

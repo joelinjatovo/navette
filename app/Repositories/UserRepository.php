@@ -11,4 +11,15 @@ class UserRepository extends Repository
     {
         $this->model = new \App\Models\User();
     }
+    
+    /**
+     * Verify code
+     *
+     * @params string $code
+     * @return boolean
+     */
+    public function verifyCode($code)
+    {
+        return true;
+    }
 }

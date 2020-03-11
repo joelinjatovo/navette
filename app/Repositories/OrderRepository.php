@@ -13,10 +13,10 @@ class OrderRepository extends Repository
 
     protected $google;
     
-    public function __construct(Model $model = null, GoogleApiService $google)
+    public function __construct(Order $model)
     {
-        $this->model = new \App\Models\Order();
-        $this->google = $google;
+        $this->model = $model;
+        //$this->google = $google;
     }
     
     /**

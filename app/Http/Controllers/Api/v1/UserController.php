@@ -5,11 +5,17 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUser as StoreUserRequest;
 use App\Http\Requests\UpdateUser as UpdateUserRequest;
+use App\Http\Requests\VerifyPhone as VerifyPhoneRequest;
+use App\Http\Resources\AccessToken as AccessTokenResource;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\UserCollection;
+use App\Models\AccessToken;
 use App\Models\User;
+use App\Models\RefreshToken;
+use App\Repositories\TokenRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -20,16 +26,17 @@ class UserController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request, TokenRepository $repository)
     {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-
-        $user = User::create($validated);
+        $user = User::create($request->only('name', 'phone', 'password'));
+        
+        $user->sendPhoneVerificationNotification();
         
         event(new Registered($user));
-        
-        return new UserResource($user);
+
+        $token = $repository->generateToken($user);
+
+        return (new AccessTokenResource($token));
     }
 
     /**
@@ -41,26 +48,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-        
-        $user->update($validated);
-
-        return new UserResource($user);
-    }
-
-    /**
-     * Verify user phone code
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function verify(VerifyPhoneRequest $request)
-    {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-        
-        $user->update($validated);
+        $user->update($request->validated());
 
         return new UserResource($user);
     }

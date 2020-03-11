@@ -34,12 +34,20 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
     
         Route::post('logout', 'TokenController@logout')->name('logout');
         
+        Route::post('verify', 'VerificationController@verify')->name('verification.verify');
+        
+        Route::get('resend', 'VerificationController@resend')->name('verification.resend');
+        
         Route::get('user', function (Request $request) {return new UserResource($request->user());})->name('user');
         
         Route::put('user/edit', 'UserController@update')->name('user.edit');
         
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         
+        Route::get('orders', 'OrderController@index')->name('orders');
+        
         Route::post('zone/{zone}/order', 'OrderController@store')->name('order.create');
+        
+        Route::get('clubs', 'ClubController@index')->name('clubs');
     });
 });

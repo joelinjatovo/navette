@@ -6,6 +6,8 @@ use App\Contracts\Auth\MustVerifyPhone;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Config;
 
 class User extends Authenticatable implements MustVerifyPhone
 {
@@ -274,9 +276,11 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function markPhoneAsVerified()
     {
-        $this->phone_verified_at = now();
-        
-        return $this->save();
+        return $this->forceFill([
+            'phone_verification_code' => null,
+            'phone_verification_expires_at' => null,
+            'phone_verified_at' => $this->freshTimestamp(),
+        ])->save();
     }
 
     /**
@@ -286,7 +290,14 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function sendPhoneVerificationNotification()
     {
+        $code = "123462";
         
+        return $this->forceFill([
+            'phone_verification_code' => md5($code),
+            'phone_verification_expires_at' => Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+        ])->save();
+        
+        $this->notify(new VerifyPhone($code));
     }
 
     /**

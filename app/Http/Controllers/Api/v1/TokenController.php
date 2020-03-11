@@ -8,6 +8,7 @@ use App\Models\AccessToken;
 use App\Models\RefreshToken;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Repositories\TokenRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -20,24 +21,20 @@ class TokenController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function create(Request $request)
+    public function create(Request $request, TokenRepository $repository)
     {
         $credentials = $request->only('phone', 'password');
         $credentials['active'] = 1;
         
-        if(Auth::attempt($credentials))
-        {
-            $user = Auth::user();
-            
-            $token = $user->createToken(Str::random(500));
-            $refresh_token = $token->createRefreshToken(Str::random(1000));
-            
-            $token = AccessToken::find($token->id);
-            
-            return (new AccessTokenResource($token));
+        if( ! Auth::attempt($credentials) ) {
+            abort(400, "Bad Credentials");
         }
         
-        abort(400, "Bad Credentials");
+        $user = Auth::user();
+
+        $token = $repository->generateToken($user);
+
+        return (new AccessTokenResource($token));
     }
 
     /**

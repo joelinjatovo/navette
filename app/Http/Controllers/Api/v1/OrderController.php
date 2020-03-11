@@ -6,12 +6,13 @@ use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\Order as OrderResource;
+use App\Http\Resources\OrderCollection;
 use App\Models\Order;
 use App\Models\OrderPoint;
 use App\Models\Phone;
 use App\Models\Point;
 use App\Models\Club;
-use App\Repositories\Repository;
+use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -25,6 +26,15 @@ class OrderController extends Controller
      */
     public function __construct(OrderRepository $repository){
         $this->repository = $repository;
+    }
+
+    /**
+     * Paginate orders
+     *
+     * @return Response
+     */
+    public function index(Request $request){
+        return new OrderCollection($request->user()->orders()->paginate());
     }
 
     /**
