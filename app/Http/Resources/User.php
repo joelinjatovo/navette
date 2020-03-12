@@ -16,22 +16,20 @@ class User extends JsonResource
     {
         return [
             'code' => 200,
-            'status' => "success",
+            'status' => 0,
             'message' => null,
             'errors' => [],
             'data' => [
-                'id' => $this->id,
+                'id' => $this->getKey(),
+                'facebook_id' => $this->facebook_id,
                 'name' => $this->name,
+                'email' => $this->email,
                 'phone' => $this->phone,
-                'created_at' => $this->created_at,
-                'updated_at' => $this->updated_at,
-
-                'secret' => $this->when(\Auth::check() && \Auth::user()->isAdmin(), 'secret-value'),
-                $this->mergeWhen(\Auth::user()->isAdmin(), [
-                    'first-secret' => 'value',
-                    'second-secret' => 'value',
-                ]),
-                //'posts' => PostResource::collection($this->posts),
+                'locale' => $this->locale,
+                'verified' => $this->hasVerifiedPhone(),
+                'is_admin' => $this->isAdmin(),
+                'is_driver' => $this->isDriver(),
+                'is_customer' => $this->isCustomer(),
             ]
         ];
     }

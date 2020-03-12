@@ -35,6 +35,7 @@ class OrderCollection extends ResourceCollection
             'code' => 200,
             'status' => "success",
             'message' => null,
+            'error_code' => 0,
             'errors' => [],
             'data' => $this->collection,
             'pagination' => $this->pagination,

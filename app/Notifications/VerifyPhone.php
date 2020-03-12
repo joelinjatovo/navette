@@ -44,7 +44,7 @@ class VerifyPhone extends Notification
      */
     public function via($notifiable)
     {
-        return ['nexmo'];
+        return [];
     }
     
     /**

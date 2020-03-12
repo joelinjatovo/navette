@@ -16,7 +16,7 @@ class Success extends JsonResource
     {
         return [
             'code' => 200,
-            'status' => "success",
+            'status' => 0,
             'message' => null,
             'errors' => [],
             'data' => null

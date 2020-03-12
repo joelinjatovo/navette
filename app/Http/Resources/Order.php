@@ -18,6 +18,7 @@ class Order extends JsonResource
             'code' => 200,
             'status' => "success",
             'message' => null,
+            'error_code' => 0,
             'errors' => [],
             'data' => [
                 'id' => $this->id,

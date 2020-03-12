@@ -209,6 +209,26 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+    * Check if is driver
+    *
+    * @param string $role
+    */
+    public function isDriver()
+    {
+        return $this->hasRole(Role::DRIVER);
+    }
+    
+    /**
+    * Check if is customer
+    *
+    * @param string $role
+    */
+    public function isCustomer()
+    {
+        return $this->hasRole(Role::CUSTOMER);
+    }
+    
+    /**
     * Check multiple roles
     *
     * @param array $roles
@@ -290,14 +310,23 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function sendPhoneVerificationNotification()
     {
-        $code = "123462";
+        $code = "1256";
         
-        return $this->forceFill([
+        $this->forceFill([
             'phone_verification_code' => md5($code),
             'phone_verification_expires_at' => Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
         ])->save();
         
-        $this->notify(new VerifyPhone($code));
+        $this->notify(new \App\Notifications\VerifyPhone($code));
+    }
+
+    /**
+     * Get the phone number that should be used for verification.
+     *
+     * @return string
+     */
+    public function isValidCode($code){
+        return ( $this->phone_verification_expires_at > now() ) && ( md5($code) == $this->phone_verification_code);
     }
 
     /**

@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Resources\Success as SuccessResource;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthorizationException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -21,16 +23,12 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
-        if (md5( $request->input('code') ) != $request->user()->phone_verification_code) {
-            throw new AuthorizationException;
-        }
-        
-        if ($request->user()->phone_verification_expires_at <= Carbon::now()) {
-            throw new AuthorizationException;
+        if (!$request->user()->isValidCode($request->input('code'))){
+            abort(400, 'Bad Request');
         }
 
         if ($request->user()->hasVerifiedPhone()) {
-            abort(400, 'Bad Request');
+            throw new AuthorizationException;
         }
 
         if ($request->user()->markPhoneAsVerified()) {
@@ -49,7 +47,7 @@ class VerificationController extends Controller
     public function resend(Request $request)
     {
         if ($request->user()->hasVerifiedPhone()) {
-            abort(400, 'Bad Request');
+            throw new AuthorizationException;
         }
 
         $request->user()->sendPhoneVerificationNotification();

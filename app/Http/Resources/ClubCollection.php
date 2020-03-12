@@ -33,7 +33,7 @@ class ClubCollection extends ResourceCollection
     {
         return [
             'code' => 200,
-            'status' => "success",
+            'status' => 0,
             'message' => null,
             'errors' => [],
             'data' => $this->collection,

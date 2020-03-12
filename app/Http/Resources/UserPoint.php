@@ -16,7 +16,7 @@ class UserPoint extends JsonResource
     {
         return [
             'code' => 200,
-            'status' => "success",
+            'status' => 0,
             'message' => null,
             'errors' => [],
             'data' => new Point($this)

@@ -32,7 +32,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         
         Route::get('resend', 'VerificationController@resend')->name('verification.resend');
         
-        Route::put('user', 'UserController@show')->name('user.show');
+        Route::get('user', 'UserController@show')->name('user.show');
         
         Route::put('user/edit', 'UserController@update')->name('user.edit');
         
@@ -40,8 +40,10 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         
         Route::get('orders', 'OrderController@index')->name('orders');
         
-        Route::post('club/{club}/order', 'OrderController@store')->name('order.create');
-        
         Route::get('clubs', 'ClubController@index')->name('clubs');
+        
+        Route::middleware('verified')->group(function () {
+            Route::post('club/{club}/order', 'OrderController@store')->name('order.create');
+        });
     });
 });
