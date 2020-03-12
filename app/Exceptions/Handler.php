@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -53,79 +54,40 @@ class Handler extends ExceptionHandler
         if($request->wantsJson()) {
             switch(true){
                 case $exception instanceof \Illuminate\Auth\Access\AuthorizationException:
-                    return response()->json([
-                        'code' => 401,
-                        'status' => 'Unauthorized',
-                        'message' => $exception->getMessage(),
-                        'errors' => [],
-                        'data' => null
-                    ])->setStatusCode(401);
+                    $statusCode = 401;
+                    $errors = [];
+                break;
                 case $exception instanceof \Illuminate\Validation\ValidationException:
-                    return response()->json([
-                        'code' => $exception->status,
-                        'status' => 'Unprocessable Entity',
-                        'message' => $exception->getMessage(),
-                        'errors' => $exception->errors(),
-                        'data' => null
-                    ])->setStatusCode($exception->status);
+                    $statusCode = $exception->status;
+                    $errors = $exception->errors();
+                break;
                 case $exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException:
-                    $status = $exception->getStatusCode();
-                    switch($status){
-                        case 400:
-                            return response()->json([
-                                'code' => $status,
-                                'status' => 'Bad Request',
-                                'message' => $exception->getMessage(),
-                                'errors' => [
-                                    [
-                                        'file' => $exception->getFile(),
-                                        'line' => $exception->getLine(),
-                                    ]
-                                ],
-                                'data' => null
-                            ])->setStatusCode($status);
-                        case 401:
-                            return response()->json([
-                                'code' => $status,
-                                'status' => 'Unauthorized',
-                                'message' => $exception->getMessage(),
-                                'errors' => [
-                                    [
-                                        'file' => $exception->getFile(),
-                                        'line' => $exception->getLine(),
-                                    ]
-                                ],
-                                'data' => null
-                            ])->setStatusCode($status);
-                        case 403:
-                            return response()->json([
-                                'code' => $exception->getStatusCode(),
-                                'status' => 'Forbidden',
-                                'message' => $exception->getMessage(),
-                                'errors' => [
-                                    [
-                                        'file' => $exception->getFile(),
-                                        'line' => $exception->getLine(),
-                                    ]
-                                ],
-                                'data' => null
-                            ])->setStatusCode($status);
-                    }
-                    break;
+                    $statusCode = $exception->getStatusCode();
+                    $errors = [
+                        [
+                            'file' => $exception->getFile(),
+                            'line' => $exception->getLine(),
+                        ]
+                    ];
+                break;
                 default:
-                    return response()->json([
-                        'code' => 500,
-                        'status' => 'Unknown',
-                        'message' => $exception->getMessage(),
-                        'errors' => [
-                            [
-                                'file' => $exception->getFile(),
-                                'line' => $exception->getLine(),
-                            ]
-                        ],
-                        'data' => null
-                    ])->setStatusCode(500);
+                    $statusCode = 500;
+                    $errors = [
+                        [
+                            'file' => $exception->getFile(),
+                            'line' => $exception->getLine(),
+                        ]
+                    ];
+                break;
             }
+
+            return response()->json([
+                'code' => $statusCode,
+                'status' => isset(Response::$statusTexts[$statusCode]) ? Response::$statusTexts[$statusCode] : 'unknown status',
+                'message' => $exception->getMessage(),
+                'errors' => $errors,
+                'data' => null
+            ])->setStatusCode($statusCode);
         }
         return parent::render($request, $exception);
     }

@@ -43,26 +43,19 @@ class TokenController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function refresh(Request $request)
+    public function refresh(Request $request, TokenRepository $repository)
     {
         $refresh_token = RefreshToken::where('scopes', $request->input('refresh_token'))
                     ->where('revoked', 0)
                     ->where('expires_at', '>', date('Y-m-d H:i:s'))
                     ->first();
         
-        if( null != $refresh_token ) {
-            $user = $refresh_token->user;
-            if( null != $user ) {
-                Auth::login($user);
-                
-                $token = $refresh_token->accessToken;
-                if( null != $token ) {
-                    $refresh_token->renew();
-                    $token->renew(Str::random(500));
+        if( ( null != $refresh_token ) && ( null != $user = $refresh_token->user) && ( null != $token = $refresh_token->accessToken ) ) {
+            Auth::login($user);
             
-                    return (new AccessTokenResource($token));
-                }
-            }
+            $token = $repository->refreshToken($token);
+
+            return (new AccessTokenResource($token));
         }
         
         abort(400, "Invalid Refresh Token");

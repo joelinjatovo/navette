@@ -70,8 +70,11 @@ class AccessToken extends Model
      */
     public function renew($token)
     {
+        $max_expires = $this->refreshToken->expires_at;
+        $new_expires = now()->addDays(15);
+        
         $this->scopes = md5(time()) . $token . md5($token);
-        $this->expires_at = now()->addDays(15);
+        $this->expires_at = ( $max_expires <= $new_expires ? $max_expires : $new_expires ); // Valid until refresh token expiration
         $this->save();
     }
     

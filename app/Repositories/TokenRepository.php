@@ -27,4 +27,18 @@ class TokenRepository extends Repository
 
         return $token->refresh();
     }
+    
+    /**
+     * Refresh token
+     *
+     * @params User $user
+     * @return boolean
+     */
+    public function refreshToken(\App\Models\AccessToken $token)
+    {
+        //$token->refreshToken->renew(); // Update refresh_token_expires
+        $token->renew(Str::random(500));
+
+        return $token->refresh();
+    }
 }
