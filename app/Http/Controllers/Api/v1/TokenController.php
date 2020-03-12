@@ -71,6 +71,10 @@ class TokenController extends Controller
     {
         Auth::logout();
         
+        /**
+        * @TODO Remove access token
+        */
+        
         return response()->json([
                 'code' => 200,
                 'status' => 'success',
