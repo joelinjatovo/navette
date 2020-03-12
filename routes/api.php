@@ -16,12 +16,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::prefix('v1')->name('api.')->group(function () {
-    Route::get('scope', function (Request $request) {
-        return response()->json(['data'=>encrypt('scopes')]);
-    })->name('scopes');
-});
-
 Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->group(function () {
     
     Route::post('token', 'TokenController@create')->name('token');
@@ -38,7 +32,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         
         Route::get('resend', 'VerificationController@resend')->name('verification.resend');
         
-        Route::get('user', function (Request $request) {return new UserResource($request->user());})->name('user');
+        Route::put('user', 'UserController@show')->name('user.show');
         
         Route::put('user/edit', 'UserController@update')->name('user.edit');
         

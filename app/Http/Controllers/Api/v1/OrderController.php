@@ -86,7 +86,6 @@ class OrderController extends Controller
         $order->points()->attach($point_a->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
         $order->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
 
-        
         if($point_b){
             $second = $order->replicate();
             $order->second()->save($second);

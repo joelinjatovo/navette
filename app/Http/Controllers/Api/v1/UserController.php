@@ -21,6 +21,17 @@ class UserController extends Controller
 {
 
     /**
+     * Show logged in user.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function show(Request $request)
+    {
+        return new UserResource($request->user());
+    }
+
+    /**
      * Store a new user.
      *
      * @param  Request  $request
