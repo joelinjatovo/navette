@@ -58,7 +58,7 @@ class TokenController extends Controller
             return (new AccessTokenResource($token));
         }
         
-        return $this->error(400, 100, "Bad Credentials");
+        return $this->error(400, 110, "Invalid Refresh Token");
     }
 
     /**

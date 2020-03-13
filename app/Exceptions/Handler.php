@@ -91,7 +91,7 @@ class Handler extends ExceptionHandler
                 'message' => $exception->getMessage(),
                 'errors' => $errors,
                 'data' => null
-            ])->setStatusCode($statusCode);
+            ])->setStatusCode($status);
         }
         return parent::render($request, $exception);
     }

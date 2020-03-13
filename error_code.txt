@@ -8,3 +8,4 @@
 107: No Zone Found
 108: Invalid Verification Code
 109: Phone Already Verified
+110: Invalid Refresh Token
