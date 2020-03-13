@@ -15,6 +15,7 @@ use App\Models\RefreshToken;
 use App\Repositories\TokenRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -39,7 +40,13 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request, TokenRepository $repository)
     {
-        $user = User::create($request->only('name', 'phone', 'password'));
+        $data = $request->validated();
+        
+        $user = User::create([
+            'name' => $data['name'],
+            'phone' => $data['phone'],
+            'password' => Hash::make($data['password']),
+        ]);
         
         $user->sendPhoneVerificationNotification();
         

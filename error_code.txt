@@ -1,0 +1,10 @@
+100: Bad Credentials
+101: Unauthorized
+102: ValidationException
+103: HttpException
+104: Autres
+105: Invalid Club Position
+106: Invalid Distance Between User Position and Club
+107: No Zone Found
+108: Invalid Verification Code
+109: Phone Already Verified

@@ -31,8 +31,8 @@ class AccessToken extends JsonResource
             ];
         }
         return [
-            'code' => 200,
-            'status' => 0,
+            'status' => 200,
+            'code' => 0,
             'message' => null,
             'errors' => [],
             'data' => array_merge(

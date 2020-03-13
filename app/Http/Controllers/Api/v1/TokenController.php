@@ -27,7 +27,7 @@ class TokenController extends Controller
         $credentials['active'] = 1;
         
         if( ! Auth::attempt($credentials) ) {
-            abort(400, "Bad Credentials");
+            return $this->error(400, 100, "Bad Credentials");
         }
         
         $user = Auth::user();
@@ -58,7 +58,7 @@ class TokenController extends Controller
             return (new AccessTokenResource($token));
         }
         
-        abort(400, "Invalid Refresh Token");
+        return $this->error(400, 100, "Bad Credentials");
     }
 
     /**
@@ -75,10 +75,6 @@ class TokenController extends Controller
         * @TODO Remove access token
         */
         
-        return response()->json([
-                'code' => 200,
-                'status' => 'success',
-                'data' => null,
-            ], 200);
+        return response()->success(200, "Success Logout");
     }
 }

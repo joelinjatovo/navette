@@ -22,11 +22,10 @@ class UserPointController extends Controller
      */
     public function store(StoreUserPointRequest $request)
     {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-
+        $data = $request->validated();
+        $point = Point::create($data);
+        
         $user = $request->user();
-        $point = Point::create($validated);
         $user->positions()->attach($point->id, ['created_at' => now()]);
         
         event(new \App\Events\UserPointCreated($user, $point));

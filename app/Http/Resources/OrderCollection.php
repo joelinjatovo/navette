@@ -32,10 +32,9 @@ class OrderCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'code' => 200,
-            'status' => "success",
+            'status' => 200,
+            'code' => 0,
             'message' => null,
-            'error_code' => 0,
             'errors' => [],
             'data' => $this->collection,
             'pagination' => $this->pagination,

@@ -15,8 +15,8 @@ class Club extends JsonResource
     public function toArray($request)
     {
         return [
-            'code' => 200,
-            'status' => 0,
+            'status' => 200,
+            'code' => 0,
             'message' => null,
             'errors' => [],
             'data' => [

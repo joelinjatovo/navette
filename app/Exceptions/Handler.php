@@ -54,28 +54,18 @@ class Handler extends ExceptionHandler
         if($request->wantsJson()) {
             switch(true){
                 case $exception instanceof \Illuminate\Auth\Access\AuthorizationException:
-                    $statusCode = 401;
-                    $status = 101;
+                    $status = 401;
+                    $code = 101;
                     $errors = [];
                 break;
                 case $exception instanceof \Illuminate\Validation\ValidationException:
-                    $statusCode = $exception->status;
-                    $status = 102;
+                    $status = $exception->status;
+                    $code = 102;
                     $errors = $exception->errors();
                 break;
                 case $exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException:
-                    $statusCode = $exception->getStatusCode();
-                    $status = 103;
-                    $errors = [
-                        [
-                            'file' => $exception->getFile(),
-                            'line' => $exception->getLine(),
-                        ]
-                    ];
-                break;
-                case $exception instanceof \App\Exceptions\BaseException:
-                    $statusCode = $exception->getStatusCode();
-                    $status = $exception->getStatus();
+                    $status = $exception->getStatusCode();
+                    $code = 103;
                     $errors = [
                         [
                             'file' => $exception->getFile(),
@@ -84,8 +74,8 @@ class Handler extends ExceptionHandler
                     ];
                 break;
                 default:
-                    $statusCode = 500;
-                    $status = 104;
+                    $status = 500;
+                    $code = 104;
                     $errors = [
                         [
                             'file' => $exception->getFile(),
@@ -96,8 +86,8 @@ class Handler extends ExceptionHandler
             }
 
             return response()->json([
-                'code' => $statusCode,
                 'status' => $status,
+                'code' => $code,
                 'message' => $exception->getMessage(),
                 'errors' => $errors,
                 'data' => null

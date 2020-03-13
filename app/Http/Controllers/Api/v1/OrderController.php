@@ -50,7 +50,7 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request, OrderRepository $orderRepository, ZoneRepository $zoneRrepository, Club $club)
     {
         if( null === $club->point ) {
-            abort(400, "Invalid Club");
+            return $this->error(400, 105, "Invalid Club Position");
         }
         
         $points = $request->input('points');
@@ -70,12 +70,12 @@ class OrderController extends Controller
         
         $distance = $this->calculateDistance($point_a, $club->point);
         if($distance == 0){
-            abort(400, "Distance null");
+            return $this->error(400, 106, "Invalid Distance Between User Position And Club");
         }
         
         $zone = $zoneRrepository->getByDistance($distance);
         if(null == $zone){
-            abort(400, "Zone not found");
+            return $this->error(400, 107, "No Zone Found");
         }
         
         $order = new Order($request->only('place', 'privatized', 'preordered'));

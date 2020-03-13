@@ -15,10 +15,9 @@ class Order extends JsonResource
     public function toArray($request)
     {
         return [
-            'code' => 200,
-            'status' => "success",
+            'status' => 200,
+            'code' => 0,
             'message' => null,
-            'error_code' => 0,
             'errors' => [],
             'data' => [
                 'id' => $this->id,

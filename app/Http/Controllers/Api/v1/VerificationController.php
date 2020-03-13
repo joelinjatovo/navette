@@ -24,11 +24,11 @@ class VerificationController extends Controller
     public function verify(Request $request)
     {
         if (!$request->user()->isValidCode($request->input('code'))){
-            abort(400, 'Bad Request');
+            return $this->error(400, 108, "Invalid Verification Code");
         }
 
         if ($request->user()->hasVerifiedPhone()) {
-            throw new AuthorizationException;
+            return $this->error(400, 109, "Phone Already Verified");
         }
 
         if ($request->user()->markPhoneAsVerified()) {
@@ -52,6 +52,6 @@ class VerificationController extends Controller
 
         $request->user()->sendPhoneVerificationNotification();
 
-        return new SuccessResource(null);
+        return $this->success(200, "Verification Code Sent");
     }
 }
