@@ -27,7 +27,13 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/home', function () {return view('welcome');});
     
-    Route::get('/broadcast', function () {return view('broadcast');});
+    Route::get('/event', function () {
+        event(new \App\Events\MyEvent('hello world'));}
+    );
+    
+    Route::get('/broadcast', function () {
+        return view('event');
+    });
 
     Route::get('/logout', function () {
         \Auth::logout();

@@ -18,8 +18,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('stylesheet')
 </head>
 <body>
     @yield('body')
+    
+    @yield('javascript')
 </body>
 </html>

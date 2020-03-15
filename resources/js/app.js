@@ -30,3 +30,18 @@ window.Vue = require('vue');
 const app = new Vue({
     el: '#app',
 });
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    encrypted: true
+});
+window.Echo.private('App.Travel.1')
+    .listen('.travel.user.position.created', (e) => {
+        console.error(e);
+    });
+window.Echo.channel('my-channel')
+    .listen('.my-event', (e) => {
+        console.log(e);
+    });

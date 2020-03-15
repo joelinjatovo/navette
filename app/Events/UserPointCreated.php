@@ -58,6 +58,7 @@ class UserPointCreated implements ShouldBroadcastNow
     public function broadcastWith()
     {
         return [
+            /*
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
@@ -69,6 +70,7 @@ class UserPointCreated implements ShouldBroadcastNow
                 'alt' => $this->point->alt,
                 'name' => $this->point->name,
             ],
+            */
         ];
     }
 }
