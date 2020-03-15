@@ -59245,6 +59245,18 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 var app = new Vue({
   el: '#app'
 });
+window.Echo = new Echo({
+  broadcaster: 'pusher',
+  key: "69f8d746e9b5ad39d512",
+  cluster: "eu",
+  encrypted: true
+});
+window.Echo["private"]('App.Travel.1').listen('.travel.user.position.created', function (e) {
+  console.error(e);
+});
+window.Echo.channel('my-channel').listen('.my-event', function (e) {
+  console.log(e);
+});
 
 /***/ }),
 
@@ -59288,18 +59300,6 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
-  broadcaster: 'pusher',
-  key: "69f8d746e9b5ad39d512",
-  cluster: "eu",
-  encrypted: true
-});
-window.Echo["private"]('App.Travel.1').listen('.travel.user.position.created', function (e) {
-  console.error(e);
-});
-window.Echo.channel('my-channel').listen('.my-event', function (e) {
-  console.log(e);
-});
 
 /***/ }),
 

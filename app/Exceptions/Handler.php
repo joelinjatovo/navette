@@ -51,7 +51,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if($request->wantsJson()) {
+        if(false && $request->wantsJson()) {
             switch(true){
                 case $exception instanceof \Illuminate\Auth\Access\AuthorizationException:
                     $status = 401;
