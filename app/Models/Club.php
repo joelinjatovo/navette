@@ -36,6 +36,22 @@ class Club extends Model
     }
     
     /**
+     * Get the cars for the club
+     */
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
+    
+    /**
+     * Get the orders for the club
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    
+    /**
      * Get the point that owns the club.
      */
     public function point()

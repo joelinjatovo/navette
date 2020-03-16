@@ -27,7 +27,7 @@ class Order extends Model
     protected $fillable = [
         'status', 'place', 'amount', 'total', 'subtotal', 'currency', 'vat', 'preordered', 'privatized', 'ip_address', 'mac_address',
     ];
-
+    
     /**
      * Bootstrap the model and its traits.
      *
@@ -42,6 +42,22 @@ class Order extends Model
                 $model->user_id = auth()->user()->id;
             }
         });
+    }
+    
+    /**
+     * Get the car privatized with the order.
+     */
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
+    }
+    
+    /**
+     * Get the club that owns the order.
+     */
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
     }
     
     /**

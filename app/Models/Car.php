@@ -33,6 +33,14 @@ class Car extends Model
     }
     
     /**
+     * Get the club that owns the car.
+     */
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
+    }
+    
+    /**
      * Get the model that owns the car.
      */
     public function model()
@@ -46,6 +54,14 @@ class Car extends Model
     public function travels()
     {
         return $this->hasMany(Travel::class);
+    }
+    
+    /**
+     * Get the orders for the car.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
     
     /**

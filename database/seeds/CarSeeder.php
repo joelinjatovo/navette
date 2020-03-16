@@ -34,7 +34,6 @@ class CarSeeder extends Seeder
             'created_at' => now(),
         ]);
         DB::table('cars')->insert([
-            'name' => 'Zone 1',
             'name' => 'Mazda',
             'year' => '2020',
             'place' => 4,

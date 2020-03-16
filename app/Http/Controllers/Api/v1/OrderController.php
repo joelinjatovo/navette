@@ -47,26 +47,25 @@ class OrderController extends Controller
      * @param  Zone  $zone
      * @return Response
      */
-    public function store(StoreOrderRequest $request, OrderRepository $orderRepository, ZoneRepository $zoneRrepository, Club $club)
+    public function store(StoreOrderRequest $request, ZoneRepository $zoneRrepository, Club $club)
     {
         if( null === $club->point ) {
-            return $this->error(400, 105, "Invalid Club Position");
+            return $this->error(400, 105, "Club Without Position");
         }
         
         $points = $request->input('points');
+        
         $point_a = null;
-        $point_b = null;
         if( isset( $points['a'] ) ) {
             $point_a = new Point($points['a']);
             $point_a->save();
         }
+        
+        $point_b = null;
         if( isset( $points['b'] ) ) {
             $point_b = new Point($points['b']);
             $point_b->save();
         }
-        
-        $phone = new Phone($request->input('phone'));
-        $phone->save();
         
         $distance = $this->calculateDistance($point_a, $club->point);
         if($distance == 0){
@@ -79,25 +78,34 @@ class OrderController extends Controller
         }
         
         $order = new Order($request->only('place', 'privatized', 'preordered'));
-        $order = $orderRepository->calculate($order, $zone);
+        $order->vat = 0;
+        $order->amount = $zone->price;
+        $order->currency = $zone->currency;
+        $order->subtotal = $order->place * $zone->price;
+        $order->total = $order->subtotal + $order->subtotal * $order->vat;
+        $order->club_id = $club->getKey();
+        $order->zone_id = $zone->getKey();
+        $order->save();
         
-        $zone->orders()->save($order);
         
+        $phone = new Phone($request->input('phone'));
+        $phone->save();
         $order->phones()->save($phone);
-        $order->points()->attach($point_a->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
-        $order->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
+        
+        $order->points()->attach($point_a->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
+        $order->points()->attach($club->point->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
 
         if($point_b){
             $second = $order->replicate();
             $order->second()->save($second);
             
-            $second->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
-            $second->points()->attach($point_b->id, ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
+            $second->points()->attach($club->point->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
+            $second->points()->attach($point_b->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
         }
 
         event(new \App\Events\OrderCreated($order));
         
-        \App\Jobs\ProcessOrder::dispatchAfterResponse($order);
+        //\App\Jobs\ProcessOrder::dispatchAfterResponse($order);
         
         return new OrderResource($order);
     }
