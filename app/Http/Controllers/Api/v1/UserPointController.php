@@ -30,6 +30,6 @@ class UserPointController extends Controller
         
         event(new \App\Events\UserPointCreated($user, $point));
 
-        return new UserResource($user);
+        return $this->success(200, "Position created");
     }
 }
