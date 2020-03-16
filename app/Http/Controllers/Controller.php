@@ -18,7 +18,7 @@ class Controller extends BaseController
             'message' => $message,
             'errors' => [],
             'data' => null,
-        ])->setStatusCode($status);;
+        ])->setStatusCode(200);;
     }
     
     protected function error($status, $code, $message){
@@ -28,6 +28,6 @@ class Controller extends BaseController
             'message' => $message,
             'errors' => [],
             'data' => null,
-        ])->setStatusCode($status);
+        ])->setStatusCode(200);
     }
 }
