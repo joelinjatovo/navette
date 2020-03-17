@@ -38,7 +38,7 @@ class AccessToken extends JsonResource
             'data' => array_merge(
                 $data, [
                     'token' => $this->scopes,
-                    'expires' => strtotime($this->expires_at),
+                    'token_expires' => strtotime($this->expires_at),
                     'refresh_token' => $this->refreshToken ? $this->refreshToken->scopes : null,
                     'refresh_token_expires' => $this->refreshToken ? strtotime($this->refreshToken->expires_at) : null,
                 ]
