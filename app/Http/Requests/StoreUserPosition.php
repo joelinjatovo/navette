@@ -26,7 +26,7 @@ class StoreUserPoint extends FormRequest
         return [
             'name' => 'required|max:255',
             'lat' => 'required',
-            'long' => 'required',
+            'lng' => 'required',
             'alt' => 'required',
         ];
     }

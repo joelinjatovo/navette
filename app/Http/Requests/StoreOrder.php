@@ -33,12 +33,12 @@ class StoreOrder extends FormRequest
             
             'points.a.name' => 'required',
             'points.a.lat' => 'required',
-            'points.a.long' => 'required',
+            'points.a.lng' => 'required',
             'points.a.alt' => 'required',
             
             'points.b.name' => 'required',
             'points.b.lat' => 'required',
-            'points.b.long' => 'required',
+            'points.b.lng' => 'required',
             'points.b.alt' => 'required',
             
         ];
