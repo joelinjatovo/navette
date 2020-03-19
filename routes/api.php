@@ -23,6 +23,8 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
     Route::post('token/refresh', 'TokenController@refresh')->name('token.refresh');
     
     Route::post('register', 'UserController@store')->name('user.create');
+        
+    Route::get('clubs', 'ClubController@index')->name('clubs');
     
     Route::middleware('auth:api')->group(function () {
     
@@ -39,8 +41,6 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         
         Route::get('orders', 'OrderController@index')->name('orders');
-        
-        Route::get('clubs', 'ClubController@index')->name('clubs');
         
         Route::middleware('verified')->group(function () {
             Route::post('club/{club}/order', 'OrderController@store')->name('order.create');
