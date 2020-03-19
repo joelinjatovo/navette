@@ -41,6 +41,14 @@ class Car extends Model
     }
     
     /**
+     * Get the car's image.
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+    
+    /**
      * Get the model that owns the car.
      */
     public function model()

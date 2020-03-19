@@ -108,6 +108,14 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the user's image.
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+    
+    /**
      * Get the orders for the user.
      */
     public function orders()

@@ -44,6 +44,14 @@ class Club extends Model
     }
     
     /**
+     * Get the club's image.
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+    
+    /**
      * Get the orders for the club
      */
     public function orders()
