@@ -24,7 +24,7 @@ class Club extends JsonResource
                 'name' => $this->name,
                 'point' => $this->point ? new Point($this->point) : null,
                 'created_at' => $this->created_at,
-                'image' => $this->imageable ? new Image($this->imageable) : null,
+                'image' => $this->image ? new Image($this->image) : null,
             ]
         ];
     }
