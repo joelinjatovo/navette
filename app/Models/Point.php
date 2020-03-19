@@ -27,7 +27,7 @@ class Point extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'long', 'lat', 'alt',
+        'name', 'lng', 'lat', 'alt',
     ];
 
     /**
