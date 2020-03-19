@@ -14,7 +14,7 @@ class ClubSeeder extends Seeder
         DB::table('points')->insert([
             'id' => 1,
             'name' => 'Vegas Club',
-            'long' => 49.127983,
+            'lng' => 49.127983,
             'lat' => 2.2396556,
             'alt' => 17,
             'user_id' => 1,
@@ -39,7 +39,7 @@ class ClubSeeder extends Seeder
         DB::table('points')->insert([
             'id' => 2,
             'name' => 'Grisy Club',
-            'long' => 48.8178148,
+            'lng' => 48.8178148,
             'lat' => 1.3483707,
             'alt' => 8,
             'user_id' => 1,
@@ -64,7 +64,7 @@ class ClubSeeder extends Seeder
         DB::table('points')->insert([
             'id' => 3,
             'name' => 'LE R7 - Restaurant Lounge Club',
-            'long' => 49.1270697,
+            'lng' => 49.1270697,
             'lat' => 2.0311066,
             'alt' => 14,
             'user_id' => 1,
@@ -89,7 +89,7 @@ class ClubSeeder extends Seeder
         DB::table('points')->insert([
             'id' => 4,
             'name' => 'Pacha Club',
-            'long' => 48.8482925,
+            'lng' => 48.8482925,
             'lat' => 2.1065443,
             'alt' => 17,
             'user_id' => 1,

@@ -22,9 +22,9 @@ class Club extends JsonResource
             'data' => [
                 'id' => $this->id,
                 'name' => $this->name,
-                'point' => new Point($this->point),
+                'point' => $this->point ? new Point($this->point) : null,
                 'created_at' => $this->created_at,
-                'image' => new Image($this->imageable),
+                'image' => $this->imageable ? new Image($this->imageable) : null,
             ]
         ];
     }
