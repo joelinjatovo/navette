@@ -26,6 +26,8 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         
     Route::get('clubs', 'ClubController@index')->name('clubs');
     
+    Route::get('club/{club}/cars', 'ClubController@cars')->name('club.cars');
+    
     Route::middleware('auth:api')->group(function () {
     
         Route::post('logout', 'TokenController@logout')->name('logout');
