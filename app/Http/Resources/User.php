@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class User extends JsonResource
 {
@@ -15,11 +16,7 @@ class User extends JsonResource
     public function toArray($request)
     {
         return [
-            'status' => 200,
-            'code' => 0,
-            'message' => null,
-            'errors' => [],
-            'data' => [
+            'user' => [
                 'id' => $this->getKey(),
                 'facebook_id' => $this->facebook_id,
                 'name' => $this->name,
@@ -27,10 +24,9 @@ class User extends JsonResource
                 'phone' => $this->phone,
                 'locale' => $this->locale,
                 'verified' => $this->hasVerifiedPhone(),
-                'is_admin' => $this->isAdmin(),
-                'is_driver' => $this->isDriver(),
-                'is_customer' => $this->isCustomer(),
-            ]
+                'image_url' => $this->image ? $this->image->url : null,
+            ],
+            'roles' => new ResourceCollection($this->roles)
         ];
     }
 }

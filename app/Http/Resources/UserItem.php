@@ -4,18 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ClubItem extends JsonResource
+class UserItem extends JsonResource
 {
-    protected $resource;
-    
-
-    public function __construct($resource)
-    {
-        $resource = $resource;
-
-        parent::__construct($resource);
-    }
-    
     /**
      * Transform the resource into an array.
      *
@@ -30,13 +20,16 @@ class ClubItem extends JsonResource
             'message' => null,
             'errors' => [],
             'data' => [
-                'club' => [
-                    'id' => $this->id,
+                'user' => [
+                    'id' => $this->getKey(),
+                    'facebook_id' => $this->facebook_id,
                     'name' => $this->name,
-                    'created_at' => $this->created_at,
+                    'email' => $this->email,
+                    'phone' => $this->phone,
+                    'locale' => $this->locale,
+                    'verified' => $this->hasVerifiedPhone(),
                     'image_url' => $this->image ? $this->image->url : null,
-                ],
-                'point' => $this->point ? new Point($this->point) : null,
+                ]
             ]
         ];
     }

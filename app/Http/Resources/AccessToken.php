@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class AccessToken extends JsonResource
 {
@@ -25,24 +26,26 @@ class AccessToken extends JsonResource
                 'phone' => $this->user->phone,
                 'locale' => $this->user->locale,
                 'verified' => $this->user->hasVerifiedPhone(),
-                'is_admin' => $this->user->isAdmin(),
-                'is_driver' => $this->user->isDriver(),
-                'is_customer' => $this->user->isCustomer(),
+                'image_url' => $this->user->image ? $this->user->image->url : null,
             ];
         }
+        
         return [
             'status' => 200,
             'code' => 0,
             'message' => null,
             'errors' => [],
-            'data' => array_merge(
-                $data, [
-                    'token' => $this->scopes,
-                    'token_expires' => strtotime($this->expires_at),
-                    'refresh_token' => $this->refreshToken ? $this->refreshToken->scopes : null,
-                    'refresh_token_expires' => $this->refreshToken ? strtotime($this->refreshToken->expires_at) : null,
-                ]
-            )
+            'data' => [
+                'user' => array_merge(
+                    $data, [
+                        'token' => $this->scopes,
+                        'token_expires' => strtotime($this->expires_at),
+                        'refresh_token' => $this->refreshToken ? $this->refreshToken->scopes : null,
+                        'refresh_token_expires' => $this->refreshToken ? strtotime($this->refreshToken->expires_at) : null,
+                    ]
+                ),
+                'roles' => Role::collection($this->user->roles)
+            ]
         ];
     }
 }
