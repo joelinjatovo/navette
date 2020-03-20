@@ -52,6 +52,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if($request->wantsJson()) {
+            $validation = null;
             switch(true){
                 case $exception instanceof \Illuminate\Auth\Access\AuthorizationException:
                     $status = 401;
@@ -61,7 +62,8 @@ class Handler extends ExceptionHandler
                 case $exception instanceof \Illuminate\Validation\ValidationException:
                     $status = $exception->status;
                     $code = 102;
-                    $errors = $exception->errors();
+                    $validation = $exception->errors();
+                    $errors = [];
                 break;
                 case $exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException:
                     $status = $exception->getStatusCode();
@@ -90,6 +92,7 @@ class Handler extends ExceptionHandler
                 'code' => $code,
                 'message' => $exception->getMessage(),
                 'errors' => $errors,
+                'validation' => $validation,
                 'data' => null
             ])->setStatusCode(200);
         }
