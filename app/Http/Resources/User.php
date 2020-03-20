@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class User extends JsonResource
 {
@@ -26,7 +25,7 @@ class User extends JsonResource
                 'verified' => $this->hasVerifiedPhone(),
                 'image_url' => $this->image ? $this->image->url : null,
             ],
-            'roles' => new ResourceCollection($this->roles)
+            'roles' => Role::collection($this->user->roles)
         ];
     }
 }
