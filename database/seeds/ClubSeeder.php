@@ -55,7 +55,7 @@ class ClubSeeder extends Seeder
         DB::table('images')->insert([
             'name' => 'grisy-club.png',
             'type' => "image/jpeg",
-            'url' => "uploads/grisy-club.jpeg",
+            'url' => "uploads/grisy-club.jpg",
             'imageable_id' => 2,
             'imageable_type' => "App\Models\Club",
             'created_at' => now(),
@@ -80,7 +80,7 @@ class ClubSeeder extends Seeder
         DB::table('images')->insert([
             'name' => 'r7-club.png',
             'type' => "image/jpeg",
-            'url' => "uploads/r7-club.jpeg",
+            'url' => "uploads/r7-club.jpg",
             'imageable_id' => 3,
             'imageable_type' => "App\Models\Club",
             'created_at' => now(),
@@ -105,7 +105,7 @@ class ClubSeeder extends Seeder
         DB::table('images')->insert([
             'name' => 'pacha-club.png',
             'type' => "image/jpeg",
-            'url' => "uploads/pacha-club.jpeg",
+            'url' => "uploads/pacha-club.jpg",
             'imageable_id' => 4,
             'imageable_type' => "App\Models\Club",
             'created_at' => now(),
