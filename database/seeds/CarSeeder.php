@@ -74,6 +74,15 @@ class CarSeeder extends Seeder
             'club_id' => 1,
             'created_at' => now(),
         ]);
+        DB::table('images')->insert([
+            'name' => 'car-01.png',
+            'type' => "image/jpeg",
+            'url' => "uploads/car-01.jpg",
+            'imageable_id' => 1,
+            'imageable_type' => "App\Models\Car",
+            'created_at' => now(),
+        ]);
+        
         DB::table('cars')->insert([
             'id' => 2,
             'name' => 'Mazda',
@@ -82,6 +91,14 @@ class CarSeeder extends Seeder
             'car_model_id' => 2,
             'user_id' => 1,
             'club_id' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('images')->insert([
+            'name' => 'car-02.jpg',
+            'type' => "image/jpeg",
+            'url' => "uploads/car-02.jpg",
+            'imageable_id' => 2,
+            'imageable_type' => "App\Models\Car",
             'created_at' => now(),
         ]);
     }
