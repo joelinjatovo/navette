@@ -21,7 +21,7 @@ class Order extends JsonResource
             'errors' => [],
             'data' => [
                 'order' => [
-                    'id' => $this->id,
+                    'rid' => $this->id,
                     'place' => $this->place,
                     'amount' => $this->amount,
                     'subtotal' => $this->subtotal,
@@ -31,7 +31,7 @@ class Order extends JsonResource
                     'privatized' => $this->privatized,
                     'preordered' => $this->preordered,
                     'created_at' => $this->created_at,
-                ]
+                ],
                 'points' => Point::collection($this->points),
                 'phone' => Phone::collection($this->phones),
             ]

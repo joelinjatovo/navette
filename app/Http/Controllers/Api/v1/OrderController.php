@@ -53,21 +53,19 @@ class OrderController extends Controller
             return $this->error(400, 105, "Club Without Position");
         }
         
-        $points = $request->input('points');
-        
-        $point_a = null;
-        if( isset( $points['a'] ) ) {
-            $point_a = new Point($points['a']);
-            $point_a->save();
+        $origin = $request->input('origin');
+        if( $origin ) {
+            $origin = new Point($origin);
+            $origin->save();
         }
         
-        $point_b = null;
-        if( isset( $points['b'] ) ) {
-            $point_b = new Point($points['b']);
-            $point_b->save();
+        $retours = $request->input('retours');
+        if( $retours ) {
+            $retours = new Point($retours);
+            $retours->save();
         }
         
-        $distance = $this->calculateDistance($point_a, $club->point);
+        $distance = 20; //$this->calculateDistance($origin, $club->point);
         if($distance == 0){
             return $this->error(400, 106, "Invalid Distance Between User Position And Club");
         }
@@ -87,20 +85,22 @@ class OrderController extends Controller
         $order->zone_id = $zone->getKey();
         $order->save();
         
+        $phone = $request->input('phone');
+        if( $retours ) {
+            $phone = new Phone($phone);
+            $phone->save();
+            $order->phones()->save($phone);
+        }
         
-        $phone = new Phone($request->input('phone'));
-        $phone->save();
-        $order->phones()->save($phone);
-        
-        $order->points()->attach($point_a->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
+        $order->points()->attach($origin->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
         $order->points()->attach($club->point->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
 
-        if($point_b){
+        if($retours){
             $second = $order->replicate();
             $order->second()->save($second);
             
             $second->points()->attach($club->point->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
-            $second->points()->attach($point_b->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
+            $second->points()->attach($retours->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
         }
 
         event(new \App\Events\OrderCreated($order));

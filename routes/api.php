@@ -47,5 +47,11 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::middleware('verified')->group(function () {
             Route::post('club/{club}/order', 'OrderController@store')->name('order.create');
         });
+        
+        Route::get('notifications', 'NotificationController@index')->name('notifications');
+        
+        Route::post('notifications', 'NotificationController@markAsRead')->name('notifications.markAsRead');
+        
+        Route::get('notifications/unread', 'NotificationController@unread')->name('notifications.unread');
     });
 });

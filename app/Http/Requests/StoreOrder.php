@@ -28,18 +28,18 @@ class StoreOrder extends FormRequest
             'preordered' => 'required',
             'privatized' => 'required',
             
-            'phone.phone_country_code' => 'required|numeric',
-            'phone.phone_number' => 'required|numeric',
+            //'phone.phone_country_code' => 'required|numeric',
+            //'phone.phone_number' => 'required|numeric',
             
-            'points.a.name' => 'required',
-            'points.a.lat' => 'required',
-            'points.a.lng' => 'required',
-            'points.a.alt' => 'required',
+            'origin.name' => 'required',
+            'origin.lat' => 'required',
+            'origin.lng' => 'required',
+            //'origin.alt' => 'required',
             
-            'points.b.name' => 'required',
-            'points.b.lat' => 'required',
-            'points.b.lng' => 'required',
-            'points.b.alt' => 'required',
+            //'retours.name' => 'required',
+            //'retours.lat' => 'required',
+            //'retours.lng' => 'required',
+            //'retours.alt' => 'required',
             
         ];
     }
