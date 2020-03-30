@@ -27,8 +27,8 @@ class Order extends JsonResource
                 'preordered' => $this->preordered,
                 'created_at' => $this->created_at,
             ],
-            'club' => $this->club ? new ClubItem($this->club) : null,
-            'car' => $this->car ? new CarItem($this->car) : null,
+            'club' => $this->club ? new ClubSingle($this->club) : null,
+            'car' => $this->car ? new CarSingle($this->car) : null,
             'points' => Point::collection($this->points),
             'phone' => Phone::collection($this->phones),
         ];
