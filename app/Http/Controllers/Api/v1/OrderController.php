@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
-use App\Http\Resources\Order as OrderResource;
+use App\Http\Resources\OrderItem as OrderItemResource;
 use App\Http\Resources\OrderCollection;
 use App\Models\Club;
 use App\Models\Order;
@@ -107,7 +107,7 @@ class OrderController extends Controller
         
         //\App\Jobs\ProcessOrder::dispatchAfterResponse($order);
         
-        return new OrderResource($order);
+        return new OrderItemResource($order);
     }
     
     /**

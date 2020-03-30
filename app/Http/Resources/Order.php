@@ -15,26 +15,22 @@ class Order extends JsonResource
     public function toArray($request)
     {
         return [
-            'status' => 200,
-            'code' => 0,
-            'message' => null,
-            'errors' => [],
-            'data' => [
-                'order' => [
-                    'rid' => $this->id,
-                    'place' => $this->place,
-                    'amount' => $this->amount,
-                    'subtotal' => $this->subtotal,
-                    'total' => $this->total,
-                    'vat' => $this->vat,
-                    'currency' => $this->currency,
-                    'privatized' => $this->privatized,
-                    'preordered' => $this->preordered,
-                    'created_at' => $this->created_at,
-                ],
-                'points' => Point::collection($this->points),
-                'phone' => Phone::collection($this->phones),
-            ]
+            'order' => [
+                'rid' => $this->id,
+                'place' => $this->place,
+                'amount' => $this->amount,
+                'subtotal' => $this->subtotal,
+                'total' => $this->total,
+                'vat' => $this->vat,
+                'currency' => $this->currency,
+                'privatized' => $this->privatized,
+                'preordered' => $this->preordered,
+                'created_at' => $this->created_at,
+            ],
+            'club' => $this->club ? new ClubItem($this->club) : null,
+            'car' => $this->car ? new CarItem($this->car) : null,
+            'points' => Point::collection($this->points),
+            'phone' => Phone::collection($this->phones),
         ];
     }
 }
