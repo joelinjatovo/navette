@@ -17,14 +17,15 @@ class Order extends JsonResource
         return [
             'order' => [
                 'rid' => $this->id,
+                'status' => $this->status,
                 'place' => $this->place,
                 'amount' => $this->amount,
                 'subtotal' => $this->subtotal,
                 'total' => $this->total,
                 'vat' => $this->vat,
                 'currency' => $this->currency,
-                'privatized' => $this->privatized,
-                'preordered' => $this->preordered,
+                'privatized' => (boolean) $this->privatized,
+                'preordered' => (boolean) $this->preordered,
                 'created_at' => $this->created_at,
             ],
             'club' => $this->club ? new ClubSingle($this->club) : null,

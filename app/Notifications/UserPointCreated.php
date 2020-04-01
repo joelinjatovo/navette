@@ -51,7 +51,7 @@ class UserPointCreated extends Notification
             'point' => [
                 'name' => $this->point->name,
                 'lat' => $this->point->lat,
-                'long' => $this->point->long,
+                'lng' => $this->point->lng,
                 'alt' => $this->point->alt,
             ],
         ];

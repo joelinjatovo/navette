@@ -19,7 +19,7 @@ class CreatePointsTable extends Migration
                 $table->string('name', 200);
                 $table->decimal('lng', 10, 7);
                 $table->decimal('lat', 10, 7);
-                $table->decimal('alt', 10, 7);
+                $table->decimal('alt', 10, 7)->nullable();
                 $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
