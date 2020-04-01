@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
 
-class TravelCreated extends Notification
+class TravelStatus extends Notification
 {
     use Queueable;
     
