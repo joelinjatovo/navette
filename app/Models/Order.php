@@ -9,6 +9,28 @@ class Order extends Model
 {
     
     use SoftDeletes;
+    
+    public const STATUS_PING = 'ping'; 
+    
+    public const STATUS_PROCESSING = 'processing';
+    
+    public const STATUS_OK = 'ok';
+    
+    public const STATUS_ACTIVE = 'active';
+    
+    public const STATUS_CANCELED = 'canceled';
+    
+    public const STATUS_TERMINATED = 'terminated';
+    
+    public const STATUS_CLOSED = 'closed';
+    
+    public const PAYMENT_TYPE_CASH = 'cash';
+    
+    public const PAYMENT_TYPE_STRIPE = 'stripe';
+    
+    public const PAYMENT_TYPE_PAYPAL = 'paypal';
+    
+    public const PAYMENT_TYPE_APPLE_PAY = 'apple_pay';
 
     /**
      * The attributes that are datetime type.
@@ -16,7 +38,7 @@ class Order extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at', 'deleted_at',
+        'created_at', 'updated_at', 'deleted_at', 'payed_at', 'canceled_at',
     ];
 
     /**
@@ -25,7 +47,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'status', 'place', 'amount', 'total', 'subtotal', 'currency', 'vat', 'preordered', 'privatized', 'ip_address', 'mac_address',
+        'status', 'place', 'amount', 'total', 'subtotal', 'currency', 'vat', 'preordered', 'privatized', 'payment_type', 'canceled_at', 'canceled_by', 'canceler_role', 'ip_address', 'mac_address',
     ];
     
     /**
@@ -50,6 +72,14 @@ class Order extends Model
     public function car()
     {
         return $this->belongsTo(Car::class);
+    }
+    
+    /**
+     * Get the user that canceled the order.
+     */
+    public function canceler()
+    {
+        return $this->belongsTo(User::class, 'canceled_by');
     }
     
     /**

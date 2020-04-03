@@ -100,6 +100,14 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the orders canceled by the user.
+     */
+    public function canceledOrders()
+    {
+        return $this->hasMany(Order::class, 'canceled_by');
+    }
+    
+    /**
      * The clubs that belong to the user.
      */
     public function clubs()

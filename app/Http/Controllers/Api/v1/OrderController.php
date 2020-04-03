@@ -76,6 +76,7 @@ class OrderController extends Controller
         }
         
         $order = new Order($request->only('place', 'privatized', 'preordered'));
+        $order->status = Order::STATUS_PING;
         $order->vat = 0;
         $order->amount = $zone->price;
         $order->currency = $zone->currency;

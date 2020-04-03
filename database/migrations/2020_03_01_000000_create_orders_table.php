@@ -25,6 +25,12 @@ class CreateOrdersTable extends Migration
                 $table->string('currency', 3)->nullable();
                 $table->boolean('preordered')->default(false);
                 $table->boolean('privatized')->default(false);
+                $table->string('payment_type', 100)->nullable();
+                $table->dateTime('payed_at')->nullable();
+                $table->dateTime('canceled_at')->nullable();
+                $table->string('canceler_role')->nullable();
+                $table->unsignedBigInteger('canceled_by')->index()->nullable();
+                $table->foreign('canceled_by')->references('id')->on('users');
                 $table->unsignedBigInteger('car_id')->index()->nullable();
                 $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
                 $table->unsignedBigInteger('club_id')->index()->nullable();

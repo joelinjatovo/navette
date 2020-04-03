@@ -26,6 +26,7 @@ class Order extends JsonResource
                 'currency' => $this->currency,
                 'privatized' => (boolean) $this->privatized,
                 'preordered' => (boolean) $this->preordered,
+                'payment_type' => $this->payment_type,
                 'created_at' => $this->created_at,
             ],
             'club' => $this->club ? new ClubSingle($this->club) : null,
