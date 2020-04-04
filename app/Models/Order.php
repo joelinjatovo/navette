@@ -91,6 +91,14 @@ class Order extends Model
     }
     
     /**
+     * Get the driver that owns the order.
+     */
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
+    
+    /**
      * Get the first order.
      */
     public function first()

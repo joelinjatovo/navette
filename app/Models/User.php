@@ -128,7 +128,15 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'user_id');
+    }
+    
+    /**
+     * Get the drived orders for the user.
+     */
+    public function driverdOrders()
+    {
+        return $this->hasMany(Order::class, 'driver_id');
     }
     
     /**

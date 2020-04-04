@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\OrderItem as OrderItemResource;
 use App\Http\Resources\OrderCollection;
+use App\Models\Car;
 use App\Models\Club;
 use App\Models\Order;
 use App\Models\OrderPoint;
@@ -75,6 +76,11 @@ class OrderController extends Controller
             return $this->error(400, 107, "No Zone Found");
         }
         
+        $car = $request->input('car');
+        if( $car > 0 ) {
+            $car = Car::find($car);
+        }
+        
         $order = new Order($request->only('place', 'privatized', 'preordered'));
         $order->status = Order::STATUS_PING;
         $order->vat = 0;
@@ -84,6 +90,7 @@ class OrderController extends Controller
         $order->total = $order->subtotal + $order->subtotal * $order->vat;
         $order->club_id = $club->getKey();
         $order->zone_id = $zone->getKey();
+        $order->car_id = ($car?$car->getKey():null);
         $order->save();
         
         $phone = $request->input('phone');

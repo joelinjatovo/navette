@@ -45,6 +45,8 @@ class CreateOrdersTable extends Migration
                 $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->unsignedBigInteger('order_id')->index()->nullable();
+                $table->foreign('driver_id')->references('id')->on('users');
+                $table->unsignedBigInteger('driver_id')->index()->nullable();
                 $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
                 $table->ipAddress('ip_address')->nullable();
                 $table->macAddress('mac_address')->nullable();
