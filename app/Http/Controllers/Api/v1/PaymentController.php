@@ -20,9 +20,22 @@ class PaymentController extends Controller
      */
     public function confirm(Request $request, Order $order, $type)
     {
-        $order->payment_type = $type;
-        $order->payed_at = now();
-        $order->save();
+        switch($type){
+            case Order::PAYMENT_TYPE_CASH:
+                $order->status = Order::STATUS_OK;
+                $order->payment_type = $type;
+                $order->payed_at = now();
+                $order->save();
+            break;
+            case Order::PAYMENT_TYPE_STRIPE:
+            case Order::PAYMENT_TYPE_PAYPAL:
+            case Order::PAYMENT_TYPE_APPLE_CASH:
+            default:
+                $order->status = Order::STATUS_PROCESSING;
+                $order->payment_type = $type;
+                $order->save();
+            break;
+        }
         
         return new OrderItemResource($order);
     }

@@ -25,6 +25,9 @@ class CreateOrdersTable extends Migration
                 $table->string('currency', 3)->nullable();
                 $table->boolean('preordered')->default(false);
                 $table->boolean('privatized')->default(false);
+                $table->string('distance')->nullable();
+                $table->string('delay')->nullable();
+                $table->text('direction')->nullable();
                 $table->string('payment_type', 100)->nullable();
                 $table->dateTime('payed_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
