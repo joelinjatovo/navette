@@ -66,7 +66,7 @@ class OrderController extends Controller
             $retours->save();
         }
         
-        $distance = 20; //$this->calculateDistance($origin, $club->point);
+        $distance = $this->calculateDistance($origin, $club->point);
         if($distance == 0){
             return $this->error(400, 106, "Invalid Distance Between User Position And Club");
         }
@@ -128,6 +128,7 @@ class OrderController extends Controller
     {
         $response = $this->google->getDistance($a, $b);
         if($response['status'] === 'OK'){
+            echo json_encode($response); exit;
             return ceil( $response['rows'][0]['elements'][0]['distance']['value'] / 1000 );
         }
         
