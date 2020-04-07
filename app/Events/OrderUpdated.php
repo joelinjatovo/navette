@@ -56,7 +56,7 @@ class OrderUpdated implements ShouldBroadcastNow
     /*
     public function broadcastWith()
     {
-        return ['id' => $this->travel->id];
+        return ['id' => $this->ride->id];
     }
     */
 }

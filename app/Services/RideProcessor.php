@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Travel;
+use App\Models\Ride;
 
-class TravelProcessor implements ProcessorInterface
+class RideProcessor implements ProcessorInterface
 {
     public function doSomething()
     {

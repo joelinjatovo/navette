@@ -40,8 +40,8 @@ class CreateOrdersTable extends Migration
                 $table->foreign('club_id')->references('id')->on('clubs')->onDelete('cascade');
                 $table->unsignedBigInteger('zone_id')->index()->nullable();
                 $table->foreign('zone_id')->references('id')->on('zones')->onDelete('cascade');
-                $table->unsignedBigInteger('travel_id')->index()->nullable();
-                $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
+                $table->unsignedBigInteger('ride_id')->index()->nullable();
+                $table->foreign('ride_id')->references('id')->on('rides')->onDelete('cascade');
                 $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->unsignedBigInteger('driver_id')->index()->nullable();

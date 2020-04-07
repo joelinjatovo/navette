@@ -180,19 +180,19 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-     * Get the travels created by the user.
+     * Get the rides created by the user.
      */
-    public function travelsCreated()
+    public function ridesCreated()
     {
-        return $this->hasMany(Travel::class);
+        return $this->hasMany(Ride::class);
     }
     
     /**
-     * Get the travels drived by the user.
+     * Get the rides drived by the user.
      */
-    public function travelsDrived()
+    public function ridesDrived()
     {
-        return $this->hasMany(Travel::class, 'driver_id', 'id');
+        return $this->hasMany(Ride::class, 'driver_id', 'id');
     }
     
     /**
@@ -273,13 +273,13 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-    * Check user can join travel
+    * Check user can join ride
     *
-    * @param int $travel_id
+    * @param int $ride_id
     */
-    public function canJoinTravel($travel_id)
+    public function canJoinRide($ride_id)
     {
-        return null !== $this->travels()->where('id', $travel_id)->first();
+        return null !== $this->rides()->where('id', $ride_id)->first();
     }
 
     /**

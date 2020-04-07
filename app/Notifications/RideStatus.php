@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Travel;
+use App\Models\Ride;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -10,20 +10,26 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
 
-class TravelDriverAttached extends Notification
+class RideStatus extends Notification
 {
     use Queueable;
     
-    protected $travel;
+    protected $ride;
+    
+    protected $old_status;
+    
+    protected $new_status;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Travel $travel)
+    public function __construct(Ride $ride, $new_status, $old_status = null)
     {
-        $this->travel = $travel;
+        $this->ride = $ride;
+        $this->old_status = $old_status;
+        $this->new_status = $new_status;
     }
 
     /**
@@ -34,7 +40,7 @@ class TravelDriverAttached extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'nexmo'];
     }
 
     /**
@@ -46,7 +52,7 @@ class TravelDriverAttached extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id' => $this->travel->id,
+            'id' => $this->ride->id,
         ];
     }
     
@@ -59,6 +65,6 @@ class TravelDriverAttached extends Notification
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage)
-                    ->content('Your SMS message content sayes that that travel\'s driver is assigned');
+                    ->content('Your SMS message content sayes that that ride is created');
     }
 }

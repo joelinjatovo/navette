@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Travel extends Model
+class Ride extends Model
 {
     
     use SoftDeletes;
@@ -65,7 +65,7 @@ class Travel extends Model
     }
     
     /**
-     * Get the orders associated with the travel.
+     * Get the orders associated with the ride.
      */
     public function orders()
     {
@@ -81,7 +81,7 @@ class Travel extends Model
     }
     
     /**
-     * Get the user who creates the travel.
+     * Get the user who creates the ride.
      */
     public function user()
     {

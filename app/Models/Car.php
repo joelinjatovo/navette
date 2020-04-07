@@ -57,11 +57,11 @@ class Car extends Model
     }
     
     /**
-     * Get the travels for the car.
+     * Get the rides for the car.
      */
-    public function travels()
+    public function rides()
     {
-        return $this->hasMany(Travel::class);
+        return $this->hasMany(Ride::class);
     }
     
     /**

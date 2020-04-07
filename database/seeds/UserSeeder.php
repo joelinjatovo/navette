@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         //factory(User::class, 10)->create();
+        
         DB::table('users')->insert([
             'id' => 1,
             'name' => 'Haja JOELINJATOVO',
@@ -25,6 +26,14 @@ class UserSeeder extends Seeder
             'created_at' => now(),
             'active' => 1,
             'locale' => 'fr',
+        ]);
+        DB::table('images')->insert([
+            'name' => 'haja.jpg',
+            'type' => "image/jpeg",
+            'url' => "uploads/haja.jpg",
+            'imageable_id' => 1,
+            'imageable_type' => "App\Models\User",
+            'created_at' => now(),
         ]);
         
         $i = 1;

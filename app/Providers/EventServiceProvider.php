@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Events\TravelInited;
+use App\Events\RideInited;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -29,7 +29,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $subscribe = [
         'App\Listeners\OrderEventSubscriber',
-        'App\Listeners\TravelEventSubscriber',
+        'App\Listeners\RideEventSubscriber',
         'App\Listeners\UserEventSubscriber',
     ];
 

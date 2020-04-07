@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Services\TravelProcessor;
+use App\Services\RideProcessor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,16 +31,16 @@ class ProcessOrder implements ShouldQueue
      *
      * @return void
      */
-    public function handle(TravelProcessor $processor)
+    public function handle(RideProcessor $processor)
     {
         $driver = \App\Models\User::find(1);
         $car = \App\Models\Car::find(1);
-        $travel = \App\Models\Travel::where('user_id', $driver->id)->where('car_id', $car->id)->first();
-        if(null === $travel){
-            $travel = \App\Models\Travel::create(['user_id' => $driver->id, 'car_id' => $car->id, 'status' => 'ping']);
-            //event(new \App\Events\TravelCreated($travel));
+        $ride = \App\Models\Ride::where('user_id', $driver->id)->where('car_id', $car->id)->first();
+        if(null === $ride){
+            $ride = \App\Models\Ride::create(['user_id' => $driver->id, 'car_id' => $car->id, 'status' => 'ping']);
+            //event(new \App\Events\RideCreated($ride));
         }else{
-            //event(new \App\Events\TravelUpdated($travel));   
+            //event(new \App\Events\RideUpdated($ride));   
         }
     }
 

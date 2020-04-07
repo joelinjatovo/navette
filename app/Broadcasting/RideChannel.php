@@ -3,9 +3,9 @@
 namespace App\Broadcasting;
 
 use App\Models\User;
-use App\Models\Travel;
+use App\Models\Ride;
 
-class TravelChannel
+class RideChannel
 {
     /**
      * Create a new channel instance.
@@ -23,8 +23,8 @@ class TravelChannel
      * @param  \App\Models\User  $user
      * @return array|bool
      */
-    public function join(User $user, Travel $travel)
+    public function join(User $user, Ride $ride)
     {
-        return true; //$user->canJoinTravel($travel->id);
+        return true; //$user->canJoinRide($ride->id);
     }
 }

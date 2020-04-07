@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Travel;
+use App\Models\Ride;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -12,20 +12,20 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TravelUpdated implements ShouldBroadcastNow
+class RideUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $travel;
+    public $ride;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Travel $travel)
+    public function __construct(Ride $ride)
     {
-        $this->travel = $travel;
+        $this->ride = $ride;
     }
 
     /**
@@ -35,7 +35,7 @@ class TravelUpdated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.Travel.'.$this->travel->id);
+        return new PrivateChannel('App.Ride.'.$this->ride->id);
     }
     
     /**
@@ -45,7 +45,7 @@ class TravelUpdated implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'travel.updated';
+        return 'ride.updated';
     }
     
     /**
@@ -56,7 +56,7 @@ class TravelUpdated implements ShouldBroadcastNow
     /*
     public function broadcastWith()
     {
-        return ['id' => $this->travel->id];
+        return ['id' => $this->ride->id];
     }
     */
 }

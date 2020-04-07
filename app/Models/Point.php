@@ -66,11 +66,11 @@ class Point extends Model
     }
     
     /**
-     * The travels that belong to the point.
+     * The rides that belong to the point.
      */
-    public function travels()
+    public function rides()
     {
-        return $this->belongsToMany(Travel::class, 'travel_point')->using(TravelPoint::class);
+        return $this->belongsToMany(Ride::class, 'ride_point')->using(RidePoint::class);
     }
 
     /**

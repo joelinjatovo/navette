@@ -115,11 +115,11 @@ class Order extends Model
     }
     
     /**
-     * Get the travel that owns the order.
+     * Get the ride that owns the order.
      */
-    public function travel()
+    public function ride()
     {
-        return $this->belongsTo(Travel::class);
+        return $this->belongsTo(Ride::class);
     }
     
     /**

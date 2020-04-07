@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTravelPointTable extends Migration
+class CreateRidePointTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateTravelPointTable extends Migration
      */
     public function up()
     {
-        if( ! Schema::hasTable('travel_point') ) {
-            Schema::create('travel_point', function (Blueprint $table) {
+        if( ! Schema::hasTable('ride_point') ) {
+            Schema::create('ride_point', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->integer('order')->default(0);
                 $table->dateTime('arrived_at')->nullable();
-                $table->unsignedBigInteger('travel_id')->index();
-                $table->foreign('travel_id')->references('id')->on('travels')->onDelete('cascade');
+                $table->unsignedBigInteger('ride_id')->index();
+                $table->foreign('ride_id')->references('id')->on('rides')->onDelete('cascade');
                 $table->uuid('point_id')->index();
                 $table->foreign('point_id')->references('id')->on('points')->onDelete('cascade');
                 $table->timestamps();
@@ -34,6 +34,6 @@ class CreateTravelPointTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('travel_point');
+        Schema::dropIfExists('ride_point');
     }
 }

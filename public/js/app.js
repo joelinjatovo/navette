@@ -59251,7 +59251,7 @@ window.Echo = new Echo({
   cluster: "eu",
   encrypted: true
 });
-window.Echo["private"]('App.Travel.1').listen('.travel.user.position.created', function (e) {
+window.Echo["private"]('App.Ride.1').listen('.ride.user.position.created', function (e) {
   console.error(e);
 });
 window.Echo.channel('my-channel').listen('.my-event', function (e) {
