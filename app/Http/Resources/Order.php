@@ -35,6 +35,7 @@ class Order extends JsonResource
                 'direction' => $this->direction,
                 'created_at' => $this->created_at,
             ],
+            'user' => $this->user ? new User($this->user) : null,
             'club' => $this->club ? new ClubSingle($this->club) : null,
             'car' => $this->car ? new CarSingle($this->car) : null,
             'origin' => $origin ? new Point($origin) : null,
