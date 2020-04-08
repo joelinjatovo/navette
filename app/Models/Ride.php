@@ -20,7 +20,7 @@ class Ride extends Model
      * @var array
      */
     protected $fillable = [
-        'status',
+        'status', 'user_id', 'driver_id', 'car_id',
     ];
 
     /**
@@ -53,7 +53,7 @@ class Ride extends Model
      */
     public function car()
     {
-        return $this->hasOne(Car::class);
+        return $this->belongsTo(Car::class);
     }
     
     /**
@@ -61,7 +61,7 @@ class Ride extends Model
      */
     public function driver()
     {
-        return $this->hasOne(User::class, 'driver_id', 'id');
+        return $this->belongsTo(User::class, 'driver_id', 'id');
     }
     
     /**
@@ -77,7 +77,7 @@ class Ride extends Model
      */
     public function points()
     {
-        return $this->belongsToMany(Point::class, 'order_point')->using(UserPoint::class);
+        return $this->belongsToMany(Point::class, 'ride_point')->using(RidePoint::class);
     }
     
     /**
@@ -85,6 +85,6 @@ class Ride extends Model
      */
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

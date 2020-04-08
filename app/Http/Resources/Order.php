@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\OrderPoint;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Order extends JsonResource
@@ -14,6 +15,8 @@ class Order extends JsonResource
      */
     public function toArray($request)
     {
+        $origin = $this->points()->where('type', OrderPoint::TYPE_START)->first();
+        $destination = $this->points()->where('type', OrderPoint::TYPE_END)->first();
         return [
             'order' => [
                 'rid' => $this->id,
@@ -34,8 +37,8 @@ class Order extends JsonResource
             ],
             'club' => $this->club ? new ClubSingle($this->club) : null,
             'car' => $this->car ? new CarSingle($this->car) : null,
-            'points' => Point::collection($this->points),
-            'phone' => Phone::collection($this->phones),
+            'origin' => $origin ? new Point($origin) : null,
+            'destination' => $destination ? new Point($destination) : null,
         ];
     }
 }

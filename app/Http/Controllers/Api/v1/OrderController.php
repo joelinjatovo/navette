@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\OrderItem as OrderItemResource;
 use App\Http\Resources\OrderCollection;
+use App\Jobs\ProcessOrder;
 use App\Models\Car;
 use App\Models\Club;
 use App\Models\Order;
@@ -66,7 +67,7 @@ class OrderController extends Controller
             $retours->save();
         }
         
-        $distance = $this->calculateDistance($origin, $club->point);
+        $distance = 20; //$this->calculateDistance($origin, $club->point);
         if($distance == 0){
             return $this->error(400, 106, "Invalid Distance Between User Position And Club");
         }
@@ -111,9 +112,9 @@ class OrderController extends Controller
             $second->points()->attach($retours->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
         }
 
-        event(new \App\Events\OrderCreated($order));
+        event(new OrderCreated($order));
         
-        //\App\Jobs\ProcessOrder::dispatchAfterResponse($order);
+        ProcessOrder::dispatchAfterResponse($order);
         
         return new OrderItemResource($order);
     }

@@ -22,7 +22,7 @@ class Ride extends JsonResource
             'driver' => $this->driver ? new User($this->driver) : null,
             'car' => $this->car ? new CarSingle($this->car) : null,
             'points' => Point::collection($this->points),
-            'orders' => Order::collection($this->orders),
+            //'orders' => Order::collection($this->orders),
         ];
     }
 }

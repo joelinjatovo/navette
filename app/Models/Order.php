@@ -71,7 +71,7 @@ class Order extends Model
      */
     public function car()
     {
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Car::class, 'car_id');
     }
     
     /**
@@ -99,11 +99,11 @@ class Order extends Model
     }
     
     /**
-     * Get the first order.
+     * Get the first order. (parent)
      */
     public function first()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_id');
     }
     
     /**
@@ -135,11 +135,11 @@ class Order extends Model
      */
     public function points()
     {
-        return $this->belongsToMany(Point::class, 'order_point')->using(UserPoint::class)->withPivot(['type']);
+        return $this->belongsToMany(Point::class, 'order_point')->using(OrderPoint::class)->withPivot(['type']);
     }
     
     /**
-     * Get second order that owns the first order
+     * Get second order that owns the first order (Child)
      */
     public function second()
     {

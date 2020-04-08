@@ -2,6 +2,11 @@
 
 namespace App\Jobs;
 
+use App\Models\Car;
+use App\Models\OrderPoint;
+use App\Models\Order;
+use App\Models\Ride;
+use App\Models\User;
 use App\Services\RideProcessor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,7 +26,7 @@ class ProcessOrder implements ShouldQueue
      * @param  $order  $order
      * @return void
      */
-    public function __construct(\App\Models\Order $order)
+    public function __construct(Order $order)
     {
         $this->order = $order;
     }
@@ -31,16 +36,25 @@ class ProcessOrder implements ShouldQueue
      *
      * @return void
      */
-    public function handle(RideProcessor $processor)
+    public function handle()
     {
-        $driver = \App\Models\User::find(1);
-        $car = \App\Models\Car::find(1);
-        $ride = \App\Models\Ride::where('user_id', $driver->id)->where('car_id', $car->id)->first();
+        $driver = User::find(1);
+        $car = Car::find(1);
+        $ride = Ride::where('driver_id', $driver->getKey())->where('car_id', $car->getKey())->first();
         if(null === $ride){
-            $ride = \App\Models\Ride::create(['user_id' => $driver->id, 'car_id' => $car->id, 'status' => 'ping']);
+            $ride = Ride::create(['user_id' => $driver->getKey(), 'car_id' => $car->getKey(), 'status' => 'ping']);
             //event(new \App\Events\RideCreated($ride));
         }else{
             //event(new \App\Events\RideUpdated($ride));   
+        }
+        $ride->save();
+        
+        $this->order->ride_id = $ride->getKey();
+        $this->order->save();
+        //$ride->orders()->save($this->order);
+        
+        foreach($this->order->points()->where('type', OrderPoint::TYPE_START)->get() as $point){
+            $ride->points()->attach($point->getKey(), ['created_at' => now()]);
         }
     }
 

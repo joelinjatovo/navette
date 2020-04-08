@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
+use App\Models\Order;
 use App\Models\Ride;
 
 class RideProcessor implements ProcessorInterface
 {
-    public function doSomething()
+    public function process(Order $order)
     {
-        // Code for Something.
     }
 }
