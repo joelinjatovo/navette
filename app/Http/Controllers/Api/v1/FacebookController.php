@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AccessToken as AccessTokenResource;
 use App\Models\User;
+use App\Models\Role;
 use App\Repositories\TokenRepository;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -36,6 +37,13 @@ class FacebookController extends Controller
                 'email' => $request->input('email'),
                 'password' => '123',
             ]);
+            
+            $role = Role::where('name', Role::CUSTOMER)->first();
+            if($role){
+                $user->roles()->save($phone);
+            }
+            
+            //$user->sendPasswordNotification();
         
             $user->sendPhoneVerificationNotification();
 

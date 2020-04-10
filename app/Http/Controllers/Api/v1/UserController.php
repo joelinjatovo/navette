@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateUser as UpdateUserRequest;
 use App\Http\Requests\VerifyPhone as VerifyPhoneRequest;
 use App\Http\Resources\AccessToken as AccessTokenResource;
 use App\Http\Resources\User as UserResource;
+use App\Http\Resources\UserItem as UserItemResource;
 use App\Http\Resources\UserCollection;
 use App\Models\AccessToken;
 use App\Models\User;
@@ -64,10 +65,21 @@ class UserController extends Controller
      * @param  string  $id
      * @return Response
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request)
     {
-        $user->update($request->validated());
+        $data = $request->validated();
+        
+        $user = $request->user();
+        
+        if($user->phone != $data['phone']){
+            $user->sendPhoneVerificationNotification();
+        }
+        
+        $user->update([
+            'name' => $data['name'],
+            'phone' => $data['phone'],
+        ]);
 
-        return new UserResource($user);
+        return (new AccessTokenResource(app('api_token')));
     }
 }

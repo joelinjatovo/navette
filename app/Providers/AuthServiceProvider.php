@@ -35,6 +35,11 @@ class AuthServiceProvider extends ServiceProvider
                     ->where('revoked', 0)
                     ->whereDate('expires_at', '>', date('Y-m-d H:i:s'))
                     ->first();
+            
+            $this->app->singleton('api_token', function($app) use ($token) {
+                return $token;
+            });
+            
             if( null != $token ) {
                 return $token->user;
             }
