@@ -46,6 +46,10 @@ class Order extends Model
     
     public const STATUS_COMPLETED = 'completed';
     
+    public const TYPE_GO = 'go';
+    
+    public const TYPE_BACK = 'back';
+    
     /**
      * The attributes that are datetime type.
      *
@@ -121,6 +125,14 @@ class Order extends Model
     }
     
     /**
+     * Get the order's note.
+     */
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
+    }
+    
+    /**
      * Get the user that owns the order.
      */
     public function user()
@@ -134,6 +146,14 @@ class Order extends Model
     public function ride()
     {
         return $this->belongsTo(Ride::class);
+    }
+    
+    /**
+     * Get the payment tokens for the user.
+     */
+    public function paymentTokens()
+    {
+        return $this->hasMany(PaymentToken::class, 'order_id');
     }
     
     /**
@@ -174,8 +194,7 @@ class Order extends Model
     public function cancelable()
     {
         switch($this->status){
-            case self::STATUS_TERMINATED:
-            case self::STATUS_CLOSED:
+            case self::STATUS_COMPLETED:
             case self::STATUS_CANCELED:
                 return false;
             default:
@@ -188,9 +207,12 @@ class Order extends Model
     /**
      * Cancel order
      */
-    public function cancel()
+    public function cancel(User $user)
     {
         $this->status = self::STATUS_CANCELED;
-        return $this->save();
+        $this->canceled_at = now();
+        $this->canceler_role = $user->isAdmin() ? Role::ADMIN : ( $user->isDriver() ? Role::DRIVER : Role::CUSTOMER );
+        $this->canceled_by = $user->getKey();
+        $this->save();
     }
 }

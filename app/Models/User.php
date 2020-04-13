@@ -140,6 +140,14 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the payment tokens for the user.
+     */
+    public function paymentTokens()
+    {
+        return $this->hasMany(PaymentToken::class, 'user_id');
+    }
+    
+    /**
      * Get the phones for the user.
      */
     public function phones()

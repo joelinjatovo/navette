@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RideCollection;
 use App\Http\Resources\OrderCollection;
+use App\Http\Resources\RidePointCollection;
 use App\Http\Resources\RideItem as RideItemResource;
 use App\Models\Ride;
 use Illuminate\Http\Request;
@@ -34,17 +35,73 @@ class RideController extends Controller
     }
     
     /**
-     * Start a new ride.
+     * Get points of rides
      *
      * @param  Request  $request
      * @param  Ride  $ride
      *
      * @return Response
      */
-    public function start(Request $request, Ride $ride)
+    public function points(Request $request, Ride $ride)
     {
-        $ride->status = 'active';
-        $ride->save();
+        return new RidePointCollection($ride->points()->paginate());
+    }
+    
+    /**
+     * Start a ride.
+     *
+     * @param  Request  $request
+     * @param  Ride  $ride
+     *
+     * @return Response
+     */
+    public function start(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('ride'));
+        
+        if(!$ride->startable()){
+            return $this->error(400, 401, "Ride not startable");
+        }
+        
+        $ride->start();
+        
+        return new RideItemResource($ride);
+    }
+    
+    /**
+     * Cancel a ride.
+     *
+     * @param  Request  $request
+     *
+     * @return Response
+     */
+    public function cancel(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('ride'));
+        
+        if(!$ride->cancelable()){
+            return $this->error(400, 401, "Ride not cancelable");
+        }
+        
+        $ride->cancel();
+        
+        return new RideItemResource($ride);
+    }
+    
+    /**
+     * Complete a ride.
+     *
+     * @param  Request  $request
+     * @param  Ride  $ride
+     *
+     * @return Response
+     */
+    public function complete(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('ride'));
+        
+        $ride->complete();
+        
         return new RideItemResource($ride);
     }
 }

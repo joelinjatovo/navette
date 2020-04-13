@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\Api\v1\Gateway;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\PaymentToken;
 
 class StripeController extends Controller
 {
     
     /**
-     * Create stripe payment intent
+     * Pay order per Stripe
      *
      * @param  Request  $request
      * @param  Order $order
      * @return Response
      */
-    public function paymentIntent(Request $request)
+    public function pay(Request $request)
     {
         $order = Order::findOrFail($request->input('order'));
 
@@ -27,6 +28,18 @@ class StripeController extends Controller
         $intent = \Stripe\PaymentIntent::create([
           'amount' => $order->total * 100,
           'currency' => $order->currency,
+        ]);
+        
+        $order->status = Order::STATUS_ON_HOLD;
+        $order->payment_type = Order::PAYMENT_TYPE_STRIPE;
+        $order->save();
+        
+        PaymentToken::create([
+           'payment_type' => Order::PAYMENT_TYPE_STRIPE,
+           'amount' => $order->total * 100,
+           'currency' => $order->currency,
+           'order_id' => $order->getKey(),
+           'token' => md5($intent->client_secret),
         ]);
 
         $output = [
@@ -43,8 +56,7 @@ class StripeController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function webhook(Request $request)
-    {
+    public function webhook(Request $request){
         $event = null;
 
         try {

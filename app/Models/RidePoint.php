@@ -8,6 +8,10 @@ use Illuminate\Support\Str;
 class RidePoint extends Pivot
 {
     
+    const TYPE_UP = 'up';
+    
+    const TYPE_DOWN = 'down';
+    
     const STATUS_PING = 'ping';
     
     const STATUS_NEXT = 'next';

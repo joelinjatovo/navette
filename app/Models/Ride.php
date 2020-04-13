@@ -81,7 +81,13 @@ class Ride extends Model
      */
     public function points()
     {
-        return $this->belongsToMany(Point::class, 'ride_point')->using(RidePoint::class);
+        return $this->belongsToMany(Point::class, 'ride_point')
+                    ->using(RidePoint::class)
+                    ->withPivot([
+                        'status', 
+                        'type', 
+                        'order'
+                    ]);
     }
     
     /**
@@ -91,4 +97,51 @@ class Ride extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
+    /**
+     * Check if ride is startable
+     */
+    public function startable()
+    {
+        return self::STATUS_COMPLETED != $this->status;
+    }
+    
+    /**
+     * Mark ride as started
+     */
+    public function start()
+    {
+        $this->status = self::STATUS_STARTED;
+        $this->started_at = now();
+        $this->save();
+    }
+    
+    /**
+     * Check if order is cancelable
+     */
+    public function cancelable()
+    {
+        return self::STATUS_COMPLETED != $this->status;
+    }
+    
+    /**
+     * Cancel ride
+     */
+    public function cancel()
+    {
+        $this->status = self::STATUS_CANCELED;
+        $this->canceled_at = now();
+        $this->save();
+    }
+    
+    /**
+     * Complete ride
+     */
+    public function complete()
+    {
+        $this->status = self::STATUS_COMPLETED;
+        $this->completed_at = now();
+        $this->save();
+    }
+    
 }

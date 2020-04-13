@@ -134,7 +134,7 @@ class OrderController extends Controller
             return $this->error(400, 301, "Order not cancelable");
         }
         
-        $order->cancel();
+        $order->cancel($request->user());
         
         return new OrderItemResource($order);
     }

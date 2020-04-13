@@ -16,8 +16,8 @@ class CreateOrdersTable extends Migration
         if( ! Schema::hasTable('orders') ) {
             Schema::create('orders', function (Blueprint $table) {
                 $table->id();
-                $table->string('status', 50)->nullable();
-                $table->string('type', 50)->nullable();
+                $table->string('status', 50)->default('ping')->nullable();
+                $table->string('type', 50)->default('go')->nullable();
                 $table->float('vat', 2, 2)->default(0);
                 $table->float('amount', 20, 4)->nullable(); // HT
                 $table->integer('place');
@@ -31,6 +31,7 @@ class CreateOrdersTable extends Migration
                 $table->text('direction')->nullable();
                 $table->string('payment_type', 100)->nullable();
                 $table->dateTime('payed_at')->nullable();
+                $table->dateTime('completed_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
                 $table->string('canceler_role')->nullable();
                 $table->unsignedBigInteger('canceled_by')->index()->nullable();
