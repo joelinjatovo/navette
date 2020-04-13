@@ -11,9 +11,13 @@ class Ride extends Model
     use SoftDeletes;
     
     const STATUS_PING = 'ping';
-    const STATUS_ACTIVE = 'active';
     
-
+    const STATUS_STARTED = 'started';
+    
+    const STATUS_COMPLETED = 'completed';
+    
+    const STATUS_CANCELED = 'canceled';
+    
     /**
      * The attributes that are mass assignable.
      *

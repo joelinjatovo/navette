@@ -10,7 +10,31 @@ class Order extends Model
     
     use SoftDeletes;
     
+    public const PAYMENT_TYPE_CASH = 'cash';
+    
+    public const PAYMENT_TYPE_STRIPE = 'stripe';
+    
+    public const PAYMENT_TYPE_PAYPAL = 'paypal';
+    
+    public const PAYMENT_TYPE_APPLE_PAY = 'apple_pay';
+    
+    public const RIDE_STATUS_NONE = 'none';
+    
+    public const RIDE_STATUS_PING = 'ping';
+    
+    public const RIDE_STATUS_NEXT_UP = 'next-up';
+    
+    public const RIDE_STATUS_ONLINE = 'online';
+    
+    public const RIDE_STATUS_NEXT_DOWN = 'next-down';
+    
+    public const RIDE_STATUS_COMPLETED = 'completed';
+    
+    public const RIDE_STATUS_CANCELED = 'canceled';
+    
     public const STATUS_PING = 'ping'; 
+    
+    public const STATUS_ON_HOLD = 'on-hold';
     
     public const STATUS_PROCESSING = 'processing';
     
@@ -20,18 +44,8 @@ class Order extends Model
     
     public const STATUS_CANCELED = 'canceled';
     
-    public const STATUS_TERMINATED = 'terminated';
+    public const STATUS_COMPLETED = 'completed';
     
-    public const STATUS_CLOSED = 'closed';
-    
-    public const PAYMENT_TYPE_CASH = 'cash';
-    
-    public const PAYMENT_TYPE_STRIPE = 'stripe';
-    
-    public const PAYMENT_TYPE_PAYPAL = 'paypal';
-    
-    public const PAYMENT_TYPE_APPLE_PAY = 'apple_pay';
-
     /**
      * The attributes that are datetime type.
      *
@@ -152,5 +166,31 @@ class Order extends Model
     public function zone()
     {
         return $this->belongsTo(Zone::class);
+    }
+    
+    /**
+     * Check if order is cancelable
+     */
+    public function cancelable()
+    {
+        switch($this->status){
+            case self::STATUS_TERMINATED:
+            case self::STATUS_CLOSED:
+            case self::STATUS_CANCELED:
+                return false;
+            default:
+                return true;
+        }
+    
+        return true;
+    }
+    
+    /**
+     * Cancel order
+     */
+    public function cancel()
+    {
+        $this->status = self::STATUS_CANCELED;
+        return $this->save();
     }
 }

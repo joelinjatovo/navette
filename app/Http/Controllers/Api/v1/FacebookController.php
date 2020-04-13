@@ -40,7 +40,7 @@ class FacebookController extends Controller
             
             $role = Role::where('name', Role::CUSTOMER)->first();
             if($role){
-                $user->roles()->save($phone);
+                $user->roles()->save($role);
             }
             
             //$user->sendPasswordNotification();

@@ -33,7 +33,10 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::get('orders', 'OrderController@index')->name('orders');
         Route::middleware('verified')->group(function () {
             Route::post('club/{club}/order', 'OrderController@store')->name('order.create');
-            Route::post('order/{order}/pay/{type}', 'PaymentController@confirm')->name('order.pay');
+            Route::post('order/cancel', 'OrderController@cancel')->name('order.cancel');
+            Route::post('order/{order}/pay/{type}', 'PaymentController@confirm')->name('payment.confirm');
+            Route::post('stripe/payment-intent', 'StripeController@paymentIntent')->name('stripe.payment.intent');
+            Route::post('stripe/webhook', 'StripeController@webhook')->name('stripe.payment.webhook');
         });
         Route::get('notifications', 'NotificationController@index')->name('notifications');
         Route::post('notifications', 'NotificationController@markAsRead')->name('notifications.markAsRead');

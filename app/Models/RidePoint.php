@@ -7,6 +7,15 @@ use Illuminate\Support\Str;
 
 class RidePoint extends Pivot
 {
+    
+    const STATUS_PING = 'ping';
+    
+    const STATUS_NEXT = 'next';
+    
+    const STATUS_COMPLETED = 'completed';
+    
+    const STATUS_CANCELED = 'canceled';
+    
     /**
      * Indicates if the IDs are auto-incrementing.
      *

@@ -38,9 +38,10 @@ class VerificationController extends Controller
         if ($user->markPhoneAsVerified()) {
             event(new Verified($user));
         }
+        
+        $token = app('api_token');
 
-        return (new AccessTokenResource(app('api_token')));
-        //return new UserResource($user);
+        return (new AccessTokenResource($token));
     }
 
     /**

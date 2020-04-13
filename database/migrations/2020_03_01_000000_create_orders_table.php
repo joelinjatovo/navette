@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration
             Schema::create('orders', function (Blueprint $table) {
                 $table->id();
                 $table->string('status', 50)->nullable();
+                $table->string('type', 50)->nullable();
                 $table->float('vat', 2, 2)->default(0);
                 $table->float('amount', 20, 4)->nullable(); // HT
                 $table->integer('place');
@@ -40,6 +41,7 @@ class CreateOrdersTable extends Migration
                 $table->foreign('club_id')->references('id')->on('clubs')->onDelete('cascade');
                 $table->unsignedBigInteger('zone_id')->index()->nullable();
                 $table->foreign('zone_id')->references('id')->on('zones')->onDelete('cascade');
+                $table->string('ride_status', 50)->default('none')->nullable();
                 $table->unsignedBigInteger('ride_id')->index()->nullable();
                 $table->foreign('ride_id')->references('id')->on('rides')->onDelete('cascade');
                 $table->unsignedBigInteger('user_id')->index()->nullable();

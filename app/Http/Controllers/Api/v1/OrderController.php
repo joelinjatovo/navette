@@ -120,6 +120,26 @@ class OrderController extends Controller
     }
     
     /**
+     * Cancel order
+     *
+     * @param  Request  $request
+     * @param  Order $order
+     * @return Response
+     */
+    public function cancel(Request $request)
+    {
+        $order = Order::findOrFail($request->input('order'));
+
+        if(!$order->cancelable()){
+            return $this->error(400, 301, "Order not cancelable");
+        }
+        
+        $order->cancel();
+        
+        return new OrderItemResource($order);
+    }
+    
+    /**
      * calculateDistance
      *
      * @params Point $a

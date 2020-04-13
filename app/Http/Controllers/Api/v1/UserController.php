@@ -79,7 +79,9 @@ class UserController extends Controller
             'name' => $data['name'],
             'phone' => $data['phone'],
         ]);
+        
+        $token = app('api_token');
 
-        return (new AccessTokenResource(app('api_token')));
+        return (new AccessTokenResource($token));
     }
 }

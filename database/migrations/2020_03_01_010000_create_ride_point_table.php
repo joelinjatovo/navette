@@ -16,8 +16,9 @@ class CreateRidePointTable extends Migration
         if( ! Schema::hasTable('ride_point') ) {
             Schema::create('ride_point', function (Blueprint $table) {
                 $table->uuid('id')->primary();
+                $table->string('status', 50)->nullable();
+                $table->string('type', 50)->nullable();
                 $table->integer('order')->default(0);
-                $table->dateTime('arrived_at')->nullable();
                 $table->unsignedBigInteger('ride_id')->index();
                 $table->foreign('ride_id')->references('id')->on('rides')->onDelete('cascade');
                 $table->uuid('point_id')->index();
