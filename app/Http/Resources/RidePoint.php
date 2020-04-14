@@ -15,15 +15,21 @@ class RidePoint extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'type' => $this->when($this->pivot, $this->pivot->type),
-            'status' => $this->when($this->pivot, $this->pivot->status),
-            'order' => $this->when($this->pivot, $this->pivot->order),
-            'name' => $this->name,
-            'lat' => $this->lat,
-            'lng' => $this->lng,
-            'alt' => $this->alt,
-            'created_at' => $this->created_at,
+            'ride_point' => [
+                'id' => $this->when($this->pivot, $this->pivot->id),
+                'type' => $this->when($this->pivot, $this->pivot->type),
+                'status' => $this->when($this->pivot, $this->pivot->status),
+                'order' => $this->when($this->pivot, $this->pivot->order),
+            ],
+            'point' => [
+                'id' => $this->id,
+                'name' => $this->name,
+                'lat' => $this->lat,
+                'lng' => $this->lng,
+                'alt' => $this->alt,
+                'created_at' => $this->created_at,
+            ],
+            'user' => new User($this->user),
         ];
     }
 }

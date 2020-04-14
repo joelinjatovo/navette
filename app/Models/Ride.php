@@ -84,6 +84,7 @@ class Ride extends Model
         return $this->belongsToMany(Point::class, 'ride_point')
                     ->using(RidePoint::class)
                     ->withPivot([
+                        'id', 
                         'status', 
                         'type', 
                         'order'

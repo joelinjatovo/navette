@@ -131,7 +131,7 @@ class OrderController extends Controller
         $order = Order::findOrFail($request->input('order'));
 
         if(!$order->cancelable()){
-            return $this->error(400, 301, "Order not cancelable");
+            return $this->error(400, 111, "Order not cancelable");
         }
         
         $order->cancel($request->user());

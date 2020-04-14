@@ -60,7 +60,7 @@ class RideController extends Controller
         $ride = Ride::findOrFail($request->input('ride'));
         
         if(!$ride->startable()){
-            return $this->error(400, 401, "Ride not startable");
+            return $this->error(400, 112, "Ride not startable");
         }
         
         $ride->start();
@@ -80,7 +80,7 @@ class RideController extends Controller
         $ride = Ride::findOrFail($request->input('ride'));
         
         if(!$ride->cancelable()){
-            return $this->error(400, 401, "Ride not cancelable");
+            return $this->error(400, 113, "Ride not cancelable");
         }
         
         $ride->cancel();

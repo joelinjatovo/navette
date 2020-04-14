@@ -49,4 +49,27 @@ class RidePoint extends Pivot
             }
         });
     }
+    
+    /**
+     * Get the user related to this point.
+     */
+    public function user()
+    {
+        if($this->point){
+            $orders = $this->point->orders;
+            if(is_array($orders) && isset($orders[0])){
+                return $orders[0]->user();
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get the point related to this ride point.
+     */
+    public function point()
+    {
+        return $this->belongsTo(Point::class, 'point_id');
+    }
 }
