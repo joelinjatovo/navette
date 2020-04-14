@@ -30,6 +30,7 @@ class CreateOrdersTable extends Migration
                 $table->string('delay')->nullable();
                 $table->text('direction')->nullable();
                 $table->string('payment_type', 100)->nullable();
+                $table->dateTime('picked_at')->nullable();
                 $table->dateTime('payed_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();

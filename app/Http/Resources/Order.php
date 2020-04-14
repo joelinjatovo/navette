@@ -33,6 +33,7 @@ class Order extends JsonResource
                 'distance' => $this->distance,
                 'delay' => $this->delay,
                 'direction' => $this->direction,
+                'picked_at' => $this->picked_at,
                 'created_at' => $this->created_at,
             ],
             'user' => $this->user ? new User($this->user) : null,
