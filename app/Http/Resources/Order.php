@@ -20,6 +20,7 @@ class Order extends JsonResource
         return [
             'order' => [
                 'rid' => $this->id,
+                'type' => $this->type,
                 'status' => $this->status,
                 'place' => $this->place,
                 'amount' => $this->amount,

@@ -8,9 +8,9 @@ use Illuminate\Support\Str;
 class RidePoint extends Pivot
 {
     
-    const TYPE_UP = 'up';
+    const TYPE_PICKUP = 'pickup';
     
-    const TYPE_DOWN = 'down';
+    const TYPE_DROP = 'drop';
     
     const STATUS_PING = 'ping';
     

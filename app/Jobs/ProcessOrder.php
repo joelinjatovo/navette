@@ -58,7 +58,7 @@ class ProcessOrder implements ShouldQueue
             $ride->points()->attach($point->getKey(), [
                 'created_at' => now(), 
                 'status' => RidePoint::STATUS_PING, 
-                'type' => RidePoint::TYPE_UP 
+                'type' => RidePoint::TYPE_PICKUP
             ]);
         }
     }
