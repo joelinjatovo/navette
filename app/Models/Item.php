@@ -22,22 +22,6 @@ class Item extends Model
     ];
     
     /**
-     * Bootstrap the model and its traits.
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-        
-        static::creating(function ($model) {
-            if( empty( $model->user_id ) && auth()->check() ) {
-                $model->user_id = auth()->user()->id;
-            }
-        });
-    }
-    
-    /**
      * Get the driver that owns the order.
      */
     public function driver()
