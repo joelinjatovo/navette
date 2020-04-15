@@ -73,17 +73,17 @@ class OrderController extends Controller
             
             $item = new Item($value['item']);
             $item->point()->associate($point);
+            $item->order()->associate($order);
             $item->save();
             
             $distance += (int) $item->distance_value;
-            
-            $order->items()->attach($item->getKey());
         }
         
         if($distance == 0){
             return $this->error(400, 106, "Invalid Distance Between User Position And Club");
         }
         
+        $distance = (int) ( $distance / 2 );
         $zone = Zone::findByDistance($distance);
         if(null == $zone){
             return $this->error(400, 107, "No Zone Found");
