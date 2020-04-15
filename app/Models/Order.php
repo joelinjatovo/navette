@@ -65,7 +65,26 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'status', 'place', 'amount', 'total', 'subtotal', 'currency', 'vat', 'preordered', 'privatized', 'payment_type', 'canceled_at', 'canceled_by', 'canceler_role', 'ip_address', 'mac_address',
+        'status', 
+        'place', 
+        'amount', 
+        'total', 
+        'subtotal', 
+        'currency', 
+        'vat', 
+        'distance', 
+        'distance_value', 
+        'delay', 
+        'delay_value', 
+        'direction', 
+        'preordered', 
+        'privatized', 
+        'payment_type', 
+        'canceled_at', 
+        'canceled_by', 
+        'canceler_role', 
+        'ip_address', 
+        'mac_address',
     ];
     
     /**

@@ -61,13 +61,7 @@ class OrderController extends Controller
             $origin->save();
         }
         
-        $retours = $request->input('retours');
-        if( $retours ) {
-            $retours = new Point($retours);
-            $retours->save();
-        }
-        
-        $distance = 20; //$this->calculateDistance($origin, $club->point);
+        $distance = $request->input('distance_value');
         if($distance == 0){
             return $this->error(400, 106, "Invalid Distance Between User Position And Club");
         }
@@ -82,12 +76,27 @@ class OrderController extends Controller
             $car = Car::find($car);
         }
         
-        $order = new Order($request->only('place', 'privatized', 'preordered'));
+        $order = new Order(
+            $request->only(
+                'place', 
+                'privatized', 
+                'preordered', 
+                'distance',
+                'distance_value',
+                'delay', 
+                'delay_value', 
+                'direction'
+            )
+        );
         $order->status = Order::STATUS_PING;
         $order->vat = 0;
-        $order->amount = $zone->price;
+        if($order->privatized){
+            $order->amount = $zone->privatizedPrice;
+        }else{
+            $order->amount = $zone->price;
+        }
         $order->currency = $zone->currency;
-        $order->subtotal = $order->place * $zone->price;
+        $order->subtotal = $order->place * $order->amount;
         $order->total = $order->subtotal + $order->subtotal * $order->vat;
         $order->club_id = $club->getKey();
         $order->zone_id = $zone->getKey();
@@ -95,7 +104,7 @@ class OrderController extends Controller
         $order->save();
         
         $phone = $request->input('phone');
-        if( $retours ) {
+        if( $phone ) {
             $phone = new Phone($phone);
             $phone->save();
             $order->phones()->save($phone);
@@ -104,18 +113,25 @@ class OrderController extends Controller
         $order->points()->attach($origin->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
         $order->points()->attach($club->point->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
 
+        event(new OrderCreated($order));
+        ProcessOrder::dispatchAfterResponse($order);
+        
+        $retours = $request->input('retours');
+        if( $retours ) {
+            $retours = new Point($retours);
+            $retours->save();
+        }
         if($retours){
             $second = $order->replicate();
             $order->second()->save($second);
             
             $second->points()->attach($club->point->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
             $second->points()->attach($retours->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
+            
+            event(new OrderCreated($second));
+            ProcessOrder::dispatchAfterResponse($second);
         }
 
-        event(new OrderCreated($order));
-        
-        ProcessOrder::dispatchAfterResponse($order);
-        
         return new OrderItemResource($order);
     }
     
@@ -137,33 +153,5 @@ class OrderController extends Controller
         $order->cancel($request->user());
         
         return new OrderItemResource($order);
-    }
-    
-    /**
-     * calculateDistance
-     *
-     * @params Point $a
-     * @params Point $b
-     */
-    protected function calculateDistance(Point $a, Point $b)
-    {
-        $response = $this->google->getDistance($a, $b);
-        if($response['status'] === 'OK'){
-            echo json_encode($response); exit;
-            return ceil( $response['rows'][0]['elements'][0]['distance']['value'] / 1000 );
-        }
-        
-        return 0;
-    }
-    
-    /**
-     * Find zone
-     *
-     * @params Order $order
-     * @params Club $club
-     */
-    protected function getZone($distance)
-    {
-        return Zone::where('distance', '>=', $distance)->orderBy('distance', 'ASC')->first();
     }
 }
