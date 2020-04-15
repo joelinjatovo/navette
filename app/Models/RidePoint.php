@@ -56,9 +56,12 @@ class RidePoint extends Pivot
     public function user()
     {
         if($this->point){
-            $orders = $this->point->orders;
-            if(is_array($orders) && isset($orders[0])){
-                return $orders[0]->user();
+            $items = $this->point->items;
+            if(is_array($items) && isset($items[0])){
+                $order = $items[0]->order;
+                if($order){
+                    return $order->user();
+                }
             }
         }
         

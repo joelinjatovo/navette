@@ -60,9 +60,9 @@ class Point extends Model
     /**
      * The orders that belong to the point.
      */
-    public function orders()
+    public function items()
     {
-        return $this->belongsToMany(Order::class, 'order_point')->using(OrderPoint::class);
+        return $this->belongsToMany(Item::class, 'item_point')->using(ItemPoint::class);
     }
     
     /**

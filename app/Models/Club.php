@@ -52,11 +52,11 @@ class Club extends Model
     }
     
     /**
-     * Get the orders for the club
+     * Get the items for the club
      */
-    public function orders()
+    public function items()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Item::class);
     }
     
     /**

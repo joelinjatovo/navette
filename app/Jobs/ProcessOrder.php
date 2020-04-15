@@ -3,7 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\Car;
-use App\Models\OrderPoint;
+use App\Models\Item;
+use App\Models\ItemPoint;
 use App\Models\Order;
 use App\Models\Ride;
 use App\Models\RidePoint;
@@ -39,6 +40,7 @@ class ProcessOrder implements ShouldQueue
      */
     public function handle()
     {
+        /*
         $driver = User::find(1);
         $car = Car::find(1);
         $ride = Ride::where('driver_id', $driver->getKey())->where('car_id', $car->getKey())->first();
@@ -54,13 +56,14 @@ class ProcessOrder implements ShouldQueue
         $this->order->save();
         //$ride->orders()->save($this->order);
         
-        foreach($this->order->points()->where('type', OrderPoint::TYPE_START)->get() as $point){
+        foreach($this->order->items()->where('type', OrderPoint::TYPE_START)->get() as $point){
             $ride->points()->attach($point->getKey(), [
                 'created_at' => now(), 
                 'status' => RidePoint::STATUS_PING, 
                 'type' => RidePoint::TYPE_PICKUP
             ]);
         }
+        */
     }
 
     /**

@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Phone extends Model
 {
     const TYPE_HOME = 'home';
+    
     const TYPE_WORK = 'work';
+    
     const TYPE_MOBILE = 'mobile';
 
     /**
@@ -56,13 +58,5 @@ class Phone extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-    
-    /**
-     * Get the order that owns the phone.
-     */
-    public function order()
-    {
-        return $this->belongsTo(Order::class);
     }
 }

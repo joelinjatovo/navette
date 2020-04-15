@@ -104,7 +104,7 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function canceledOrders()
     {
-        return $this->hasMany(Order::class, 'canceled_by');
+        return $this->hasMany(Order::class, 'canceler_id');
     }
     
     /**
@@ -132,11 +132,11 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-     * Get the drived orders for the user.
+     * Get the items order for the user.
      */
-    public function driverdOrders()
+    public function items()
     {
-        return $this->hasMany(Order::class, 'driver_id');
+        return $this->hasMany(Item::class, 'driver_id');
     }
     
     /**

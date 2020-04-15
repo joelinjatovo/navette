@@ -69,11 +69,11 @@ class Ride extends Model
     }
     
     /**
-     * Get the orders associated with the ride.
+     * Get the items
      */
-    public function orders()
+    public function items()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Item::class);
     }
     
     /**
