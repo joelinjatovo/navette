@@ -49,16 +49,13 @@ class OrderController extends Controller
      * @param  Zone  $zone
      * @return Response
      */
-    public function store(StoreOrderRequest $request, ZoneRepository $zoneRrepository, Club $club)
+    public function store(StoreOrderRequest $request, ZoneRepository $zoneRrepository)
     {
+        $club = Club::findOrFail($request->input('order.club'));
+        $car = Car::find($request->input('order.car'));
+        
         if( null === $club->point ) {
             return $this->error(400, 105, "Club Without Position");
-        }
-        
-        $a = $request->input('a');
-        if( $a ) {
-            $a = new Point($a);
-            $a->save();
         }
         
         $distance = $request->input('distance_value');
@@ -71,66 +68,26 @@ class OrderController extends Controller
             return $this->error(400, 107, "No Zone Found");
         }
         
-        $car = $request->input('car');
-        if( $car > 0 ) {
-            $car = Car::find($car);
-        }
-        
-        $order = new Order(
-            $request->only(
-                'place', 
-                'privatized', 
-                'preordered', 
-                'distance',
-                'distance_value',
-                'delay', 
-                'delay_value', 
-                'direction'
-            )
-        );
+        $order = new Order($request->input('order'));
         $order->status = Order::STATUS_PING;
-        $order->vat = 0;
-        if($order->privatized){
-            $order->amount = $zone->privatizedPrice;
-        }else{
-            $order->amount = $zone->price;
-        }
-        $order->currency = $zone->currency;
-        $order->subtotal = $order->place * $order->amount;
-        $order->total = $order->subtotal + $order->subtotal * $order->vat;
-        $order->club_id = $club->getKey();
-        $order->zone_id = $zone->getKey();
-        $order->car_id = ($car?$car->getKey():null);
+        $order->setZone($zone);
+        $order->setVat(0);
+        $order->club()->associate($club);
+        if($car) $order->car()->associate($car);
         $order->save();
         
-        $phone = $request->input('phone');
-        if( $phone ) {
-            $phone = new Phone($phone);
-            $phone->save();
-            $order->phones()->save($phone);
+        $items = $request->input('items');
+        foreach($items as $item){
+            $point = new Point($item['item']);
+            $point->save();
+            
+            $item = new Item($item['item']);
+            $item->point()->associate($point);
+            $item->save();
         }
-        
-        $order->points()->attach($origin->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
-        $order->points()->attach($club->point->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
 
         event(new OrderCreated($order));
         ProcessOrder::dispatchAfterResponse($order);
-        
-        $retours = $request->input('retours');
-        if( $retours ) {
-            $retours = new Point($retours);
-            $retours->save();
-        }
-        if($retours){
-            $second = $order->replicate();
-            $order->second()->save($second);
-            
-            $second->points()->attach($club->point->getKey(), ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
-            $second->points()->attach($retours->getKey(), ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
-            
-            event(new OrderCreated($second));
-            ProcessOrder::dispatchAfterResponse($second);
-        }
 
         return new OrderItemResource($order);
     }

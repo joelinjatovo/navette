@@ -23,22 +23,6 @@ class Item extends Model
     }
     
     /**
-     * Get the car privatized with the order.
-     */
-    public function car()
-    {
-        return $this->belongsTo(Car::class, 'car_id');
-    }
-    
-    /**
-     * Get the club that owns the order.
-     */
-    public function club()
-    {
-        return $this->belongsTo(Club::class);
-    }
-    
-    /**
      * Get the driver that owns the order.
      */
     public function driver()
@@ -76,13 +60,5 @@ class Item extends Model
     public function point()
     {
         return $this->belongsTo(Point::class);
-    }
-    
-    /**
-     * Get zone that owns the item
-     */
-    public function zone()
-    {
-        return $this->belongsTo(Zone::class);
     }
 }

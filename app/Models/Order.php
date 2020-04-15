@@ -77,6 +77,22 @@ class Order extends Model
     }
     
     /**
+     * Get the car privatized with the order.
+     */
+    public function car()
+    {
+        return $this->belongsTo(Car::class, 'car_id');
+    }
+    
+    /**
+     * Get the club that owns the order.
+     */
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
+    }
+    
+    /**
      * Get the order items
      */
     public function items()
@@ -106,6 +122,43 @@ class Order extends Model
     public function paymentTokens()
     {
         return $this->hasMany(PaymentToken::class, 'order_id');
+    }
+    
+    /**
+     * Get zone that owns the order
+     */
+    public function zone()
+    {
+        return $this->belongsTo(Zone::class);
+    }
+    
+    /**
+     * Set VAT tax
+     */
+    public function setVat($vat)
+    {
+        $this->vat = $vat;
+        $this->total = $this->subtotal + $this->subtotal * $this->vat;
+        
+        return $this;
+    }
+    
+    /**
+     * Set zone and calculate
+     */
+    public function setZone(Zone $zone)
+    {
+        $this->zone_id = $zone->getKey();
+        if($this->privatized){
+            $this->amount = $zone->privatizedPrice;
+        }else{
+            $this->amount = $zone->price;
+        }
+        $this->currency = $zone->currency;
+        $this->subtotal = $this->place * $this->amount;
+        $this->total = $this->subtotal + $this->subtotal * $this->vat;
+        
+        return $this;
     }
     
     /**

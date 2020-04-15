@@ -31,8 +31,6 @@ class CreateItemsTable extends Migration
                 $table->foreign('point_id')->references('id')->on('points');
                 $table->unsignedBigInteger('driver_id')->index()->nullable();
                 $table->foreign('driver_id')->references('id')->on('users');
-                $table->unsignedBigInteger('zone_id')->index()->nullable();
-                $table->foreign('zone_id')->references('id')->on('zones')->onDelete('cascade');
                 $table->unsignedBigInteger('order_id')->index();
                 $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
                 $table->timestamps();
