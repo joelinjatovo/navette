@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Str;
 
-class OrderPoint extends Pivot
+class ItemPoint extends Pivot
 {
     const TYPE_START = 'start';
     
@@ -39,6 +39,22 @@ class OrderPoint extends Pivot
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
+    }
+    
+    /**
+     * Get the item
+     */
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
+    
+    /**
+     * Get the point
+     */
+    public function point()
+    {
+        return $this->belongsTo(Point::class, 'point_id');
     }
     
 }

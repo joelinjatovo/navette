@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrderPointTable extends Migration
+class CreateItemPointTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateOrderPointTable extends Migration
      */
     public function up()
     {
-        if( ! Schema::hasTable('order_point') ) {
-            Schema::create('order_point', function (Blueprint $table) {
+        if( ! Schema::hasTable('item_point') ) {
+            Schema::create('item_point', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->string('type', 20)->nullable();
-                $table->unsignedBigInteger('order_id')->index();
-                $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+                $table->unsignedBigInteger('item_id')->index();
+                $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
                 $table->uuid('point_id')->index();
                 $table->foreign('point_id')->references('id')->on('points')->onDelete('cascade');
                 $table->timestamps();

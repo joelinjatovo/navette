@@ -50,42 +50,7 @@ class Order extends Model
     
     public const TYPE_BACK = 'back';
     
-    /**
-     * The attributes that are datetime type.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at', 'updated_at', 'deleted_at', 'payed_at', 'canceled_at',
-    ];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'status', 
-        'place', 
-        'amount', 
-        'total', 
-        'subtotal', 
-        'currency', 
-        'vat', 
-        'distance', 
-        'distance_value', 
-        'delay', 
-        'delay_value', 
-        'direction', 
-        'preordered', 
-        'privatized', 
-        'payment_type', 
-        'canceled_at', 
-        'canceled_by', 
-        'canceler_role', 
-        'ip_address', 
-        'mac_address',
-    ];
+    public const TYPE_GO_BACK = 'go-back';
     
     /**
      * Bootstrap the model and its traits.
@@ -104,43 +69,19 @@ class Order extends Model
     }
     
     /**
-     * Get the car privatized with the order.
-     */
-    public function car()
-    {
-        return $this->belongsTo(Car::class, 'car_id');
-    }
-    
-    /**
      * Get the user that canceled the order.
      */
     public function canceler()
     {
-        return $this->belongsTo(User::class, 'canceled_by');
+        return $this->belongsTo(User::class, 'canceler_id');
     }
     
     /**
-     * Get the club that owns the order.
+     * Get the order items
      */
-    public function club()
+    public function items()
     {
-        return $this->belongsTo(Club::class);
-    }
-    
-    /**
-     * Get the driver that owns the order.
-     */
-    public function driver()
-    {
-        return $this->belongsTo(User::class, 'driver_id');
-    }
-    
-    /**
-     * Get the first order. (parent)
-     */
-    public function first()
-    {
-        return $this->belongsTo(Order::class, 'order_id');
+        return $this->hasMany(Item::class, 'order_id');
     }
     
     /**
@@ -160,51 +101,11 @@ class Order extends Model
     }
     
     /**
-     * Get the ride that owns the order.
-     */
-    public function ride()
-    {
-        return $this->belongsTo(Ride::class);
-    }
-    
-    /**
-     * Get the payment tokens for the user.
+     * Get the payment tokens
      */
     public function paymentTokens()
     {
         return $this->hasMany(PaymentToken::class, 'order_id');
-    }
-    
-    /**
-     * Get the phones that owns the order.
-     */
-    public function phones()
-    {
-        return $this->hasMany(Phone::class);
-    }
-    
-    /**
-     * The points that belong to the order.
-     */
-    public function points()
-    {
-        return $this->belongsToMany(Point::class, 'order_point')->using(OrderPoint::class)->withPivot(['type']);
-    }
-    
-    /**
-     * Get second order that owns the first order (Child)
-     */
-    public function second()
-    {
-        return $this->hasOne(Order::class);
-    }
-    
-    /**
-     * Get zone that owns the order
-     */
-    public function zone()
-    {
-        return $this->belongsTo(Zone::class);
     }
     
     /**
@@ -231,7 +132,7 @@ class Order extends Model
         $this->status = self::STATUS_CANCELED;
         $this->canceled_at = now();
         $this->canceler_role = $user->isAdmin() ? Role::ADMIN : ( $user->isDriver() ? Role::DRIVER : Role::CUSTOMER );
-        $this->canceled_by = $user->getKey();
+        $this->canceler_id = $user->getKey();
         $this->save();
     }
 }
