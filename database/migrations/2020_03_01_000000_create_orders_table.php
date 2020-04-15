@@ -22,7 +22,8 @@ class CreateOrdersTable extends Migration
                 $table->boolean('privatized')->default(false);
                 $table->float('vat', 2, 2)->default(0);
                 $table->float('amount', 20, 4)->nullable(); // HT
-                $table->integer('place');
+                $table->integer('place')->default(0);
+                $table->bigInteger('distance')->default(0);
                 $table->float('subtotal', 20, 4)->nullable(); // amount * place
                 $table->float('total', 20, 4)->nullable(); // subtotal + subtotal * TVA
                 $table->string('currency', 3)->nullable();

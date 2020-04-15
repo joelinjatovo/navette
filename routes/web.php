@@ -21,6 +21,10 @@ Route::get('mailable', function () {
     return new App\Mail\UserLogin($user);
 });
 
+Route::get('cron', function () {
+    return response()->json('ok');
+});
+
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/', function () {return view('welcome');});

@@ -45,11 +45,11 @@ class OrderController extends Controller
     /**
      * Store a new order.
      *
-     * @param  Request  $request
-     * @param  Zone  $zone
+     * @param  Request $request
+     * @param  ZoneRepository  $zone
      * @return Response
      */
-    public function store(StoreOrderRequest $request, ZoneRepository $zoneRrepository)
+    public function store(Request $request)
     {
         $club = Club::findOrFail($request->input('order.club'));
         $car = Car::find($request->input('order.car'));
@@ -58,35 +58,42 @@ class OrderController extends Controller
             return $this->error(400, 105, "Club Without Position");
         }
         
-        $distance = $request->input('distance_value');
-        if($distance == 0){
-            return $this->error(400, 106, "Invalid Distance Between User Position And Club");
-        }
-        
-        $zone = $zoneRrepository->getByDistance($distance);
-        if(null == $zone){
-            return $this->error(400, 107, "No Zone Found");
-        }
-        
         $order = new Order($request->input('order'));
         $order->status = Order::STATUS_PING;
-        $order->setZone($zone);
         $order->setVat(0);
         $order->club()->associate($club);
         if($car) $order->car()->associate($car);
         $order->save();
         
-        $items = $request->input('items');
-        foreach($items as $item){
-            $point = new Point($item['item']);
+        $distance = 0;
+        $values = $request->input('items');
+        foreach($values as $value){
+            $point = new Point($value['point']);
             $point->save();
             
-            $item = new Item($item['item']);
+            $item = new Item($value['item']);
             $item->point()->associate($point);
             $item->save();
+            
+            $distance += (int) $item->distance_value;
+            
+            $order->items()->attach($item->getKey());
         }
+        
+        if($distance == 0){
+            return $this->error(400, 106, "Invalid Distance Between User Position And Club");
+        }
+        
+        $zone = Zone::findByDistance($distance);
+        if(null == $zone){
+            return $this->error(400, 107, "No Zone Found");
+        }
+        $order->distance = $distance;
+        $order->setZone($zone);
+        $order->save();
 
         event(new OrderCreated($order));
+        
         ProcessOrder::dispatchAfterResponse($order);
 
         return new OrderItemResource($order);

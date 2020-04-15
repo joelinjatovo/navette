@@ -6,6 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
 {
+    
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'type',
+        'distance',
+        'distance_value',
+        'delay',
+        'delay_value',
+        'direction',
+    ];
+    
     /**
      * Bootstrap the model and its traits.
      *

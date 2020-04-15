@@ -23,7 +23,8 @@ class CreateItemsTable extends Migration
                 $table->bigInteger('delay_value')->nullable();
                 $table->string('delay')->nullable();
                 $table->text('direction')->nullable();
-                $table->dateTime('ride_at')->nullable();
+                $table->dateTime('rided_at')->nullable();
+                $table->dateTime('completed_at')->nullable();
                 $table->string('ride_status', 50)->default('none')->nullable();
                 $table->unsignedBigInteger('ride_id')->index()->nullable();
                 $table->foreign('ride_id')->references('id')->on('rides')->onDelete('cascade');

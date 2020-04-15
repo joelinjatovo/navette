@@ -31,19 +31,12 @@ class Order extends JsonResource
                 'privatized' => (boolean) $this->privatized,
                 'preordered' => (boolean) $this->preordered,
                 'payment_type' => $this->payment_type,
-                'distance_value' => $this->distance_value,
-                'distance' => $this->distance,
-                'delay_value' => $this->delay_value,
-                'delay' => $this->delay,
-                'direction' => $this->direction,
-                'picked_at' => $this->picked_at,
                 'created_at' => $this->created_at,
             ],
-            'user' => $this->user ? new User($this->user) : null,
-            'club' => $this->club ? new ClubSingle($this->club) : null,
-            'car' => $this->car ? new CarSingle($this->car) : null,
-            'origin' => $origin ? new Point($origin) : null,
-            'destination' => $destination ? new Point($destination) : null,
+            'items' => ItemSingle::collection($this->items),
+            'user' => new User($this->user),
+            'club' => new ClubSingle($this->club),
+            'car' => new CarSingle($this->car),
         ];
     }
 }

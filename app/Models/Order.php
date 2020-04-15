@@ -53,6 +53,18 @@ class Order extends Model
     public const TYPE_GO_BACK = 'go-back';
     
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'type',
+        'place',
+        'privatized',
+        'preordered',
+    ];
+    
+    /**
      * Bootstrap the model and its traits.
      *
      * @return void
