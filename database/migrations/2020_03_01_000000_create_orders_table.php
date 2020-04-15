@@ -18,6 +18,8 @@ class CreateOrdersTable extends Migration
                 $table->id();
                 $table->string('type', 50)->default('go')->nullable(); // go, back, go-back
                 $table->string('status', 50)->default('ping')->nullable();
+                $table->boolean('preordered')->default(false);
+                $table->boolean('privatized')->default(false);
                 $table->float('vat', 2, 2)->default(0);
                 $table->float('amount', 20, 4)->nullable(); // HT
                 $table->integer('place');
@@ -34,6 +36,10 @@ class CreateOrdersTable extends Migration
                 $table->string('canceler_role')->nullable();
                 $table->unsignedBigInteger('canceler_id')->index()->nullable();
                 $table->foreign('canceler_id')->references('id')->on('users');
+                $table->unsignedBigInteger('car_id')->index()->nullable();
+                $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
+                $table->unsignedBigInteger('club_id')->index()->nullable();
+                $table->foreign('club_id')->references('id')->on('clubs')->onDelete('cascade');
                 $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->timestamps();

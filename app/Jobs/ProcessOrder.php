@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Car;
 use App\Models\Item;
-use App\Models\ItemPoint;
 use App\Models\Order;
 use App\Models\Ride;
 use App\Models\RidePoint;

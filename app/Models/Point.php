@@ -62,7 +62,7 @@ class Point extends Model
      */
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'item_point')->using(ItemPoint::class);
+        return $this->hasMany(Item::class);
     }
     
     /**

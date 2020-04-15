@@ -71,11 +71,11 @@ class Item extends Model
     }
     
     /**
-     * The points that belong to the item.
+     * Get the point that owns the item.
      */
-    public function points()
+    public function point()
     {
-        return $this->belongsToMany(Point::class, 'item_point')->using(ItemPoint::class)->withPivot(['type']);
+        return $this->belongsTo(Point::class);
     }
     
     /**

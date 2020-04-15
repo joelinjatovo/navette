@@ -11,7 +11,7 @@ use App\Jobs\ProcessOrder;
 use App\Models\Car;
 use App\Models\Club;
 use App\Models\Order;
-use App\Models\OrderPoint;
+use App\Models\Item;
 use App\Models\Phone;
 use App\Models\Point;
 use App\Models\Zone;
@@ -55,10 +55,10 @@ class OrderController extends Controller
             return $this->error(400, 105, "Club Without Position");
         }
         
-        $origin = $request->input('origin');
-        if( $origin ) {
-            $origin = new Point($origin);
-            $origin->save();
+        $a = $request->input('a');
+        if( $a ) {
+            $a = new Point($a);
+            $a->save();
         }
         
         $distance = $request->input('distance_value');

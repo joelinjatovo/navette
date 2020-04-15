@@ -65,11 +65,11 @@ class Car extends Model
     }
     
     /**
-     * Get the items for the car.
+     * Get the orders for the car.
      */
-    public function items()
+    public function orders()
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(Order::class);
     }
     
     /**
