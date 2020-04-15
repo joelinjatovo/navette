@@ -19,6 +19,7 @@ class Order extends JsonResource
                 'rid' => $this->id,
                 'type' => $this->type,
                 'status' => $this->status,
+                'distance' => $this->distance,
                 'place' => $this->place,
                 'amount' => $this->amount,
                 'subtotal' => $this->subtotal,
