@@ -19,6 +19,7 @@ class Item extends Model
         'delay',
         'delay_value',
         'direction',
+        'rided_at',
     ];
     
     /**

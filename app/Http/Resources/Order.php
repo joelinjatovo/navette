@@ -31,7 +31,7 @@ class Order extends JsonResource
                 'payment_type' => $this->payment_type,
                 'created_at' => $this->created_at,
             ],
-            'items' => ItemSingle::collection($this->items),
+            'items' => Item::collection($this->items),
             'user' => new User($this->user),
             'club' => new ClubSingle($this->club),
             'car' => new CarSingle($this->car),

@@ -27,6 +27,7 @@ class Item extends JsonResource
                 'direction' => $this->direction,
                 'ride_at' => $this->ride_at,
                 'completed_at' => $this->completed_at,
+                'rided_at' => $this->rided_at,
                 'created_at' => $this->created_at,
             ],
             'point' => new Point($this->point),
