@@ -57,7 +57,7 @@ class RideController extends Controller
      */
     public function start(Request $request)
     {
-        $ride = Ride::findOrFail($request->input('ride'));
+        $ride = Ride::findOrFail($request->input('ride_id'));
         
         if(!$ride->startable()){
             return $this->error(400, 112, "Ride not startable");
@@ -77,7 +77,7 @@ class RideController extends Controller
      */
     public function cancel(Request $request)
     {
-        $ride = Ride::findOrFail($request->input('ride'));
+        $ride = Ride::findOrFail($request->input('ride_id'));
         
         if(!$ride->cancelable()){
             return $this->error(400, 113, "Ride not cancelable");
@@ -98,7 +98,7 @@ class RideController extends Controller
      */
     public function complete(Request $request)
     {
-        $ride = Ride::findOrFail($request->input('ride'));
+        $ride = Ride::findOrFail($request->input('ride_id'));
         
         $ride->complete();
         

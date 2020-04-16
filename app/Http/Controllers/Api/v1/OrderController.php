@@ -51,8 +51,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $club = Club::findOrFail($request->input('order.club'));
-        $car = Car::find($request->input('order.car'));
+        $club = Club::findOrFail($request->input('order.club_id'));
+        $car = Car::find($request->input('order.car_id'));
         
         if( null === $club->point ) {
             return $this->error(400, 105, "Club Without Position");
@@ -108,7 +108,7 @@ class OrderController extends Controller
      */
     public function cancel(Request $request)
     {
-        $order = Order::findOrFail($request->input('order'));
+        $order = Order::findOrFail($request->input('order_id'));
 
         if(!$order->cancelable()){
             return $this->error(400, 111, "Order not cancelable");
