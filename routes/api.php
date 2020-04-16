@@ -37,6 +37,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         
         Route::get('orders', 'OrderController@index')->name('orders');
         Route::middleware('verified')->group(function () {
+            Route::post('cart', 'OrderController@cart')->name('order.cart');
             Route::post('order', 'OrderController@store')->name('order.create');
             Route::post('order/cancel', 'OrderController@cancel')->name('order.cancel');
             Route::namespace('Gateway')->name('gateway.')->group(function () {

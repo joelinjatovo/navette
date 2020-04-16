@@ -43,10 +43,50 @@ class OrderController extends Controller
     }
 
     /**
+     * Get cart info
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function cart(Request $request)
+    {
+        $club = Club::findOrFail($request->input('order.club_id'));
+        $car = Car::find($request->input('order.car_id'));
+        
+        if( null === $club->point ) {
+            return $this->error(400, 105, "Club Without Position");
+        }
+        
+        $order = new Order($request->input('order'));
+        $order->status = Order::STATUS_PING;
+        $order->setVat(0);
+        
+        $distance = 0;
+        $values = $request->input('items');
+        foreach($values as $value){
+            $item = new Item($value['item']);
+            $distance += (int) $item->distance_value;
+        }
+        
+        if($distance == 0){
+            return $this->error(400, 106, "Invalid Distance Between User Position And Club");
+        }
+        
+        $distance = (int) ( $distance / 2 );
+        $zone = Zone::findByDistance($distance);
+        if(null == $zone){
+            return $this->error(400, 107, "No Zone Found");
+        }
+        $order->distance = $distance;
+        $order->setZone($zone);
+
+        return new OrderItemResource($order);
+    }
+
+    /**
      * Store a new order.
      *
      * @param  Request $request
-     * @param  ZoneRepository  $zone
      * @return Response
      */
     public function store(Request $request)
