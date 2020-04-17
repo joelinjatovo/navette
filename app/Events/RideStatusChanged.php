@@ -12,20 +12,26 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class RideUpdated implements ShouldBroadcastNow
+class RideStatusChanged implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $ride;
+    
+    public $oldStatus;
+    
+    public $newStatus;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Ride $ride)
+    public function __construct(Ride $ride, $oldStatus, $newStatus)
     {
         $this->ride = $ride;
+        $this->oldStatus = $oldStatus;
+        $this->newStatus = $newStatus;
     }
 
     /**
@@ -45,7 +51,7 @@ class RideUpdated implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'ride.updated';
+        return 'ride.'.$this->newStatus;
     }
     
     /**

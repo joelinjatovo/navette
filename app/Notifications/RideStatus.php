@@ -16,20 +16,20 @@ class RideStatus extends Notification
     
     protected $ride;
     
-    protected $old_status;
+    protected $oldStatus;
     
-    protected $new_status;
+    protected $newStatus;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Ride $ride, $new_status, $old_status = null)
+    public function __construct(Ride $ride, $oldStatus, $newStatus)
     {
         $this->ride = $ride;
-        $this->old_status = $old_status;
-        $this->new_status = $new_status;
+        $this->oldStatus = $oldStatus;
+        $this->newStatus = $newStatus;
     }
 
     /**

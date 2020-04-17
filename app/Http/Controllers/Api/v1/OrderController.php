@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Events\OrderCreated;
+use App\Events\OrderStatusChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\OrderItem as OrderItemResource;
@@ -136,7 +136,7 @@ class OrderController extends Controller
         $order->setZone($zone);
         $order->save();
 
-        event(new OrderCreated($order));
+        event(new OrderStatusChanged($order, null, Order::STATUS_PING));
         
         ProcessOrder::dispatchAfterResponse($order);
 

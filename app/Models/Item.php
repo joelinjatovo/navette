@@ -11,6 +11,16 @@ class Item extends Model
     
     public const TYPE_BACK = 'back';
     
+    public const STATUS_PING = 'ping';
+    
+    public const STATUS_ACTIVE = 'active';
+    
+    public const STATUS_NEXT = 'next';
+    
+    public const STATUS_CANCELED = 'canceled';
+    
+    public const STATUS_COMPLETED = 'completed';
+    
     /**
      * The attributes that are mass assignable.
      *

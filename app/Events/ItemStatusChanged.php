@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Order;
+use App\Models\Item;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -12,20 +12,26 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrderCreated implements ShouldBroadcastNow
+class ItemStatusChanged implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
+    public $item;
+    
+    public $oldStatus;
+    
+    public $newStatus;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Order $order)
+    public function __construct(Item $item, $oldStatus, $newStatus)
     {
-        $this->order = $order;
+        $this->item = $item;
+        $this->oldStatus = $oldStatus;
+        $this->newStatus = $newStatus;
     }
 
     /**
@@ -35,7 +41,7 @@ class OrderCreated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->order->user->id);
+        return new PrivateChannel('App.User.'.$this->item->order->user->id);
     }
     
     /**
@@ -45,7 +51,7 @@ class OrderCreated implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'order.created';
+        return 'item.'.$this->newStatus;
     }
     
     /**

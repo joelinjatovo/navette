@@ -28,6 +28,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $subscribe = [
+        'App\Listeners\ItemEventSubscriber',
         'App\Listeners\OrderEventSubscriber',
         'App\Listeners\RideEventSubscriber',
         'App\Listeners\UserEventSubscriber',
