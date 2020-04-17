@@ -39,30 +39,56 @@ class ProcessOrder implements ShouldQueue
      */
     public function handle()
     {
-        /*
-        $driver = User::find(1);
-        $car = Car::find(1);
-        $ride = Ride::where('driver_id', $driver->getKey())->where('car_id', $car->getKey())->first();
-        if(null === $ride){
-            $ride = Ride::create(['user_id' => $driver->getKey(), 'car_id' => $car->getKey(), 'status' => 'ping']);
-            //event(new \App\Events\RideCreated($ride));
+        $order = $this->order;
+        $car = $order->car;
+        $driver = $order->car->driver;
+        $club = $order->club;
+        
+        $ride = $this->getAvailableRide($car);
+        $updated = true;
+        if(!$ride){
+            $updated = false;
+            $ride = new Ride();
+            $ride->status = Ride::STATUS_PING;
+            $ride->car()->associate($car);
+            $ride->driver()->associate($driver);
+            $ride->save();
+        }
+        
+        switch($order->type){
+            case Order::TYPE_GO:
+            case Order::TYPE_BACK:
+                $item = $order->items()->first();
+
+                $type = RidePoint::TYPE_PICKUP;
+                if($item->type == Item::TYPE_BACK){
+                    $type = RidePoint::TYPE_DROP;
+                }
+                $ride->points()->attach($item->point->getKey(), [
+                        'status' => RidePoint::STATUS_PING,
+                        'type' => $type,
+                        'order' => 0,
+                    ]);
+
+                $item->ride()->associate($ride);
+                $item->driver()->associate($driver);
+                $item->save();
+
+                // Notify *customer
+                event(new ItemUpdated($item));
+                break;
+            case Order::TYPE_GO_BACK:
+            case Order::TYPE_CUSTOM:
+                // @TODO Implement processor GO BACK Order Items
+                break;
+        }
+                    
+        // Notify *driver
+        if($updated){
+            event(new RideUpdated($ride));
         }else{
-            //event(new \App\Events\RideUpdated($ride));   
+            event(new RideCreated($ride));
         }
-        $ride->save();
-        
-        $this->order->ride_id = $ride->getKey();
-        $this->order->save();
-        //$ride->orders()->save($this->order);
-        
-        foreach($this->order->items()->where('type', OrderPoint::TYPE_START)->get() as $point){
-            $ride->points()->attach($point->getKey(), [
-                'created_at' => now(), 
-                'status' => RidePoint::STATUS_PING, 
-                'type' => RidePoint::TYPE_PICKUP
-            ]);
-        }
-        */
     }
 
     /**
@@ -75,4 +101,21 @@ class ProcessOrder implements ShouldQueue
     {
         // Send user notification of failure, etc...
     }
+
+    /**
+     * Get availbale ride
+     *
+     * @Param App\Models\Car $car
+     * @return mixed
+     */
+    public function getAvailableRide($car)
+    {
+        $from = now()->toDateTimeString(); // 2018-09-29 12:45:12
+        $to = now()->subMinute(60)->toDateTimeString(); // 2018-09-29 11:45:12
+        return Ride::where('car_id', $car->getKey())
+            ->where('status', Ride::STATUS_PING)
+            ->whereNull('started_at')
+            ->first();
+    }
+        
 }

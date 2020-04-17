@@ -41,6 +41,14 @@ class Car extends Model
     }
     
     /**
+     * Get the driver that owns the car.
+     */
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
+    
+    /**
      * Get the car's image.
      */
     public function image()
@@ -77,6 +85,6 @@ class Car extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user');
     }
 }

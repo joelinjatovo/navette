@@ -72,7 +72,15 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function cars()
     {
-        return $this->hasMany(Car::class);
+        return $this->hasMany(Car::class, 'user_id');
+    }
+    
+    /**
+     * The cars drived that belong to the user.
+     */
+    public function car()
+    {
+        return $this->hasOne(Car::class, 'driver_id');
     }
     
     /**

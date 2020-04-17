@@ -12,7 +12,7 @@ class Ride extends Model
     
     const STATUS_PING = 'ping';
     
-    const STATUS_STARTED = 'started';
+    const STATUS_ACTIVE = 'active';
     
     const STATUS_COMPLETED = 'completed';
     

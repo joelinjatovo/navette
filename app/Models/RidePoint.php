@@ -16,6 +16,8 @@ class RidePoint extends Pivot
     
     const STATUS_NEXT = 'next';
     
+    const STATUS_ONLINE = 'online';
+    
     const STATUS_COMPLETED = 'completed';
     
     const STATUS_CANCELED = 'canceled';

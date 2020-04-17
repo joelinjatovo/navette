@@ -18,20 +18,6 @@ class Order extends Model
     
     public const PAYMENT_TYPE_APPLE_PAY = 'apple_pay';
     
-    public const RIDE_STATUS_NONE = 'none';
-    
-    public const RIDE_STATUS_PING = 'ping';
-    
-    public const RIDE_STATUS_NEXT_UP = 'next-up';
-    
-    public const RIDE_STATUS_ONLINE = 'online';
-    
-    public const RIDE_STATUS_NEXT_DOWN = 'next-down';
-    
-    public const RIDE_STATUS_COMPLETED = 'completed';
-    
-    public const RIDE_STATUS_CANCELED = 'canceled';
-    
     public const STATUS_PING = 'ping'; 
     
     public const STATUS_ON_HOLD = 'on-hold';
@@ -51,6 +37,8 @@ class Order extends Model
     public const TYPE_BACK = 'back';
     
     public const TYPE_GO_BACK = 'go-back';
+    
+    public const TYPE_CUSTOM = 'custom';
     
     /**
      * The attributes that are mass assignable.

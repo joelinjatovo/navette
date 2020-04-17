@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     
+    public const TYPE_GO = 'go';
+    
+    public const TYPE_BACK = 'back';
+    
     /**
      * The attributes that are mass assignable.
      *

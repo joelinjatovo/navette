@@ -25,7 +25,6 @@ class CreateItemsTable extends Migration
                 $table->text('direction')->nullable();
                 $table->dateTime('rided_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
-                $table->string('ride_status', 50)->default('none')->nullable();
                 $table->unsignedBigInteger('ride_id')->index()->nullable();
                 $table->foreign('ride_id')->references('id')->on('rides');
                 $table->unsignedBigInteger('driver_id')->index()->nullable();

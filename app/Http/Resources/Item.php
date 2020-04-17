@@ -19,7 +19,6 @@ class Item extends JsonResource
                 'rid' => $this->id,
                 'type' => $this->type,
                 'status' => $this->status,
-                'ride_status' => $this->ride_status,
                 'distance_value' => $this->distance_value,
                 'distance' => $this->distance,
                 'delay_value' => $this->delay_value,
