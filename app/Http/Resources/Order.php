@@ -34,6 +34,7 @@ class Order extends JsonResource
             'items' => Item::collection($this->items),
             'user' => new User($this->user),
             'club' => new ClubSingle($this->club),
+            'club_point' => $this->club ? new Point($this->club->point) : null,
             'car' => new CarSingle($this->car),
         ];
     }

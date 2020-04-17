@@ -17,7 +17,7 @@ class NotificationController extends Controller
     {
         $user = \Auth::user();
         
-        return new NotificationCollection($user->notifications()->paginate());
+        return new NotificationCollection($user->notifications()->orderBy('created_at', 'desc')->paginate());
     }
     
     /**

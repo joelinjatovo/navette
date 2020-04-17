@@ -39,7 +39,7 @@ class OrderController extends Controller
      * @return Response
      */
     public function index(Request $request){
-        return new OrderCollection($request->user()->orders()->paginate());
+        return new OrderCollection($request->user()->orders()->orderBy('created_at', 'desc')->paginate());
     }
 
     /**
@@ -64,8 +64,10 @@ class OrderController extends Controller
         $distance = 0;
         $values = $request->input('items');
         foreach($values as $value){
-            $item = new Item($value['item']);
-            $distance += (int) $item->distance_value;
+            if(isset($value['item']) && $value['item']){
+                $item = new Item($value['item']);
+                $distance += (int) $item->distance_value;
+            }
         }
         
         if($distance == 0){
@@ -108,15 +110,17 @@ class OrderController extends Controller
         $distance = 0;
         $values = $request->input('items');
         foreach($values as $value){
-            $point = new Point($value['point']);
-            $point->save();
-            
-            $item = new Item($value['item']);
-            $item->point()->associate($point);
-            $item->order()->associate($order);
-            $item->save();
-            
-            $distance += (int) $item->distance_value;
+            if(isset($value['point']) && isset($value['item'])){
+                $point = new Point($value['point']);
+                $point->save();
+
+                $item = new Item($value['item']);
+                $item->point()->associate($point);
+                $item->order()->associate($order);
+                $item->save();
+
+                $distance += (int) $item->distance_value;
+            }
         }
         
         if($distance == 0){
