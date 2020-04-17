@@ -27,7 +27,7 @@ class RideEventSubscriber
      */
     public function handle(RideStatusChangedEvent $event) {
         if($event->ride && $event->ride->driver) {
-            $ride->driver->notify(new RideStatusNotification($event->ride, $event->oldStatus, $event->newStatus));
+            $event->ride->driver->notify(new RideStatusNotification($event->ride, $event->oldStatus, $event->newStatus));
         }
     }
 }

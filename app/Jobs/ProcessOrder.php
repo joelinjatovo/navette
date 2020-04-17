@@ -91,9 +91,9 @@ class ProcessOrder implements ShouldQueue
                     
         // Notify *driver
         if($updated){
-            event(new RideUpdated($ride));
+            event(new RideStatusChanged($ride, 'updated', null));
         }else{
-            event(new RideCreated($ride));
+            event(new RideStatusChanged($ride, 'created', null));
         }
     }
 
