@@ -77,4 +77,12 @@ class RidePoint extends Pivot
     {
         return $this->belongsTo(Point::class, 'point_id');
     }
+    
+    /**
+     * Get the ride related to this ride point.
+     */
+    public function ride()
+    {
+        return $this->belongsTo(Ride::class, 'ride_id');
+    }
 }

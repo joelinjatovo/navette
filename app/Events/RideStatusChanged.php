@@ -18,6 +18,8 @@ class RideStatusChanged implements ShouldBroadcastNow
 
     public $ride;
     
+    public $action;
+    
     public $oldStatus;
     
     public $newStatus;
@@ -27,9 +29,10 @@ class RideStatusChanged implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct(Ride $ride, $oldStatus, $newStatus)
+    public function __construct(Ride $ride, $action, $oldStatus, $newStatus)
     {
         $this->ride = $ride;
+        $this->action = $action;
         $this->oldStatus = $oldStatus;
         $this->newStatus = $newStatus;
     }
@@ -41,7 +44,15 @@ class RideStatusChanged implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.Ride.'.$this->ride->id);
+        $channels = [
+            new PrivateChannel('App.Ride.'.$this->ride->id),
+        ];
+        
+        if($this->ride->driver){
+            $channels[] = new PrivateChannel('App.User.'.$this->ride->driver->id);
+        }
+        
+        return $channels;
     }
     
     /**
@@ -51,7 +62,7 @@ class RideStatusChanged implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'ride.'.$this->newStatus;
+        return 'ride.'.$this->action;
     }
     
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\RideStatusChanged;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -88,7 +89,7 @@ class Ride extends Model
                         'status', 
                         'type', 
                         'order'
-                    ]);
+                    ])->orderBy('order', 'asc');
     }
     
     /**
@@ -112,9 +113,13 @@ class Ride extends Model
      */
     public function start()
     {
-        $this->status = self::STATUS_STARTED;
+        $oldStatus = $this->status;
+        $newStatus = self::STATUS_ACTIVE;
+        $this->status = $newStatus;
         $this->started_at = now();
         $this->save();
+        
+        event(new RideStatusChanged($this, 'started', $oldStatus, $newStatus));
     }
     
     /**
@@ -143,6 +148,98 @@ class Ride extends Model
         $this->status = self::STATUS_COMPLETED;
         $this->completed_at = now();
         $this->save();
+    }
+
+    /**
+     * Calculate direction
+     *
+     * @Param App\Models\Ride $ride
+     * @return mixed
+     */
+    public function verifyDirection($google)
+    {
+        $ride = $this;
+        
+        $car = $ride->car;
+        if(!$car){
+            return false;
+        }
+        
+        $club = $car->club;
+        if(!$club){
+            return false;
+        }
+        
+        $clubPoint = $club->point;
+        if(!$clubPoint){
+            return false;
+        }
+        
+        $points = $ride->points()->wherePivot('status', 'active')->get();
+        if(empty($points)){
+            return false;
+        }
+        
+        $origins = sprintf("%s,%s", $clubPoint->lat, $clubPoint->lng);
+        $destinations = sprintf("%s,%s", $clubPoint->lat, $clubPoint->lng);
+        
+        $array_waypoints = [];
+        $array_waypoints[] = 'optimize:true';
+        foreach($points as $point){
+            $array_waypoints[] = sprintf("%s,%s", $point->lat, $point->lng);
+        }
+        
+        $waypoints = null;
+        if(count($array_waypoints)>0){
+            $waypoints = implode("|", $array_waypoints);
+        }
+        
+        $direction = $google->getDirection($origins, $destinations, $waypoints);
+        
+        if($direction && isset($direction['status']) && $direction['status'] == "OK"){
+            if(isset($direction['routes'])){
+                $routes = $direction['routes'];
+                if(is_array($routes) && !empty($routes)){
+                    $route = $routes[0];
+                    
+                    $orders = [];
+                    if(isset($route['waypoint_order'])){
+                        $orders = $route['waypoint_order'];
+                        foreach($orders as $key => $order){
+                            if(isset($points[$order])){
+                                $point = $points[$order];
+                                $ride->points()->updateExistingPivot($point->getKey(), ['order' => $key + 1]);
+                            }
+                        }
+                    }
+                    
+                    if(isset($route['legs'])){
+                        $distance = 0;
+                        $delay = 0;
+                        $legs = $route['legs'];
+                        foreach($legs as $leg){
+                            if(isset($leg['distance']) && isset($leg['distance']['value'])){
+                                $distance += $leg['distance']['value'];
+                            }
+                            if(isset($leg['duration']) && isset($leg['duration']['value'])){
+                                $delay += $leg['duration']['value'];
+                            }
+                        }
+                        
+                        $ride->distance = $distance;
+                        $ride->delay = $delay;
+                    }
+                    
+                    if(isset($route['overview_polyline']) && isset($route['overview_polyline']['points'])){
+                        $ride->direction = $route['overview_polyline']['points'];
+                    }
+                    
+                    return $ride->save();
+                }
+            }
+        }
+        
+        return false;
     }
     
 }

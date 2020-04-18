@@ -2,13 +2,26 @@
 
 namespace App\Listeners;
 
+use App\Models\Ride;
 use App\Events\RideStatusChanged as RideStatusChangedEvent;
 use App\Notifications\RideStatus as RideStatusNotification;
+use App\Services\GoogleApiService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class RideEventSubscriber
 {
+    protected $google;
+
+    /**
+     * Paginate orders
+     *
+     * @return Response
+     */
+    public function __construct(GoogleApiService $google){
+        $this->google = $google;
+    }
+    
     /**
      * Register the listeners for the subscriber.
      *
@@ -26,8 +39,31 @@ class RideEventSubscriber
      * Hande Ride status changed events.
      */
     public function handle(RideStatusChangedEvent $event) {
-        if($event->ride && $event->ride->driver) {
-            $event->ride->driver->notify(new RideStatusNotification($event->ride, $event->oldStatus, $event->newStatus));
+        $ride = $event->ride;
+        if($ride == null){
+            return;
         }
+        
+        $driver = $ride->driver;
+        if($driver == null){
+            return;
+        }
+        
+        $driver->notify(new RideStatusNotification($ride, $event->oldStatus, $event->newStatus));
+        
+        if($event->newStatus == Ride::STATUS_ACTIVE){
+            $this->performTask($ride);
+        }
+    }
+
+    /**
+     * Perform task for this ride.
+     *
+     * @Param App\Models\Ride $ride
+     * @return mixed
+     */
+    public function performTask(Ride $ride)
+    {
+        return $ride->verifyDirection($this->google);
     }
 }

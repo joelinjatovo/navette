@@ -18,6 +18,8 @@ class OrderStatusChanged implements ShouldBroadcastNow
 
     public $order;
     
+    public $action;
+    
     public $oldStatus;
     
     public $newStatus;
@@ -27,9 +29,10 @@ class OrderStatusChanged implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct(Order $order, $oldStatus, $newStatus)
+    public function __construct(Order $order, $action, $oldStatus, $newStatus)
     {
         $this->order = $order;
+        $this->action = $action;
         $this->oldStatus = $oldStatus;
         $this->newStatus = $newStatus;
     }
@@ -51,7 +54,7 @@ class OrderStatusChanged implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'order.'.$this->newStatus;
+        return 'order.'.$this->action;
     }
     
     /**

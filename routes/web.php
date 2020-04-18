@@ -21,8 +21,10 @@ Route::get('mailable', function () {
     return new App\Mail\UserLogin($user);
 });
 
-Route::get('cron', function () {
-    return response()->json('ok');
+Route::get('runevent', function () {
+    $ride = \App\Models\Ride::find(2);
+    event(new \App\Events\RideStatusChanged($ride, 'started', 'ping', 'active'));
+    return response()->json($ride);
 });
 
 Route::middleware(['auth'])->group(function () {

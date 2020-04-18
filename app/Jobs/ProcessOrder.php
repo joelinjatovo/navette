@@ -81,7 +81,7 @@ class ProcessOrder implements ShouldQueue
                 $item->save();
 
                 // Notify *customer
-                event(new ItemStatusChanged($item, $oldStatus, $newStatus));
+                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
                 break;
             case Order::TYPE_GO_BACK:
             case Order::TYPE_CUSTOM:
@@ -91,9 +91,9 @@ class ProcessOrder implements ShouldQueue
                     
         // Notify *driver
         if($updated){
-            event(new RideStatusChanged($ride, 'updated', null));
+            event(new RideStatusChanged($ride, 'updated', $ride->status, null));
         }else{
-            event(new RideStatusChanged($ride, 'created', null));
+            event(new RideStatusChanged($ride, 'created', $ride->status, null));
         }
     }
 
@@ -121,6 +121,8 @@ class ProcessOrder implements ShouldQueue
         return Ride::where('car_id', $car->getKey())
             ->where('status', Ride::STATUS_PING)
             ->whereNull('started_at')
+            ->whereNull('canceled_at')
+            //->where('will_start_at', '>', $from)->where('will_start_at', '<', $to)
             ->first();
     }
         

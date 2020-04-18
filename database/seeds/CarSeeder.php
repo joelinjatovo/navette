@@ -70,6 +70,7 @@ class CarSeeder extends Seeder
             'year' => '2020',
             'place' => 4,
             'car_model_id' => 1,
+            'driver_id' => 1,
             'user_id' => 1,
             'club_id' => 1,
             'created_at' => now(),

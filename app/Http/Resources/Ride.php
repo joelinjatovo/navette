@@ -18,6 +18,9 @@ class Ride extends JsonResource
             'ride' => [
                 'id' => $this->id,
                 'status' => $this->status,
+                'distance' => $this->distance,
+                'delay' => $this->delay,
+                'direction' => $this->direction,
             ],
             'driver' => $this->driver ? new User($this->driver) : null,
             'car' => $this->car ? new CarSingle($this->car) : null,

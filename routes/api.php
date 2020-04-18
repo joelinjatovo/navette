@@ -52,7 +52,8 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::get('notifications/unread', 'NotificationController@unread')->name('notifications.unread');
         
         Route::get('rides', 'RideController@index')->name('rides');
-        Route::get('ride/{ride}/orders', 'RideController@orders')->name('ride.orders');
+        Route::get('ride/{ride}', 'RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/items', 'RideController@items')->name('ride.items');
         Route::get('ride/{ride}/points', 'RideController@points')->name('ride.points');
         Route::post('ride/start', 'RideController@start')->name('ride.start');
         Route::post('ride/cancel', 'RideController@cancel')->name('ride.cancel');

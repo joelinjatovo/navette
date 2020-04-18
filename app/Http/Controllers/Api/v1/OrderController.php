@@ -136,7 +136,7 @@ class OrderController extends Controller
         $order->setZone($zone);
         $order->save();
 
-        event(new OrderStatusChanged($order, null, Order::STATUS_PING));
+        event(new OrderStatusChanged($order, 'created', null, Order::STATUS_PING));
         
         ProcessOrder::dispatchAfterResponse($order);
 

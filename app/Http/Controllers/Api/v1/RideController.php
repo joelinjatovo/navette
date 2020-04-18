@@ -5,13 +5,26 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RideCollection;
 use App\Http\Resources\OrderCollection;
+use App\Http\Resources\ItemCollection;
 use App\Http\Resources\RidePointCollection;
 use App\Http\Resources\RideItem as RideItemResource;
 use App\Models\Ride;
+use App\Services\GoogleApiService;
 use Illuminate\Http\Request;
 
 class RideController extends Controller
 {
+    protected $google;
+
+    /**
+     * Paginate orders
+     *
+     * @return Response
+     */
+    public function __construct(GoogleApiService $google){
+        $this->google = $google;
+    }
+
     /**
      * Paginate rides
      *
@@ -29,9 +42,22 @@ class RideController extends Controller
      *
      * @return Response
      */
-    public function orders(Request $request, Ride $ride)
+    public function show(Request $request, Ride $ride)
     {
-        return new OrderCollection($ride->orders()->paginate());
+        return new RideItemResource($ride);
+    }
+    
+    /**
+     * Get items.
+     *
+     * @param  Request  $request
+     * @param  Ride  $ride
+     *
+     * @return Response
+     */
+    public function items(Request $request, Ride $ride)
+    {
+        return new ItemCollection($ride->items()->paginate());
     }
     
     /**
@@ -64,6 +90,25 @@ class RideController extends Controller
         }
         
         $ride->start();
+        
+        return new RideItemResource($ride);
+    }
+    
+    /**
+     * Verify a ride direction.
+     *
+     * @param  Request  $request
+     * @param  Ride  $ride
+     *
+     * @return Response
+     */
+    public function direction(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('ride_id'));
+        
+        if(!$ride->verifyDirection($this->google)){
+            return $this->error(400, 114, "Ride direction not verified");
+        }
         
         return new RideItemResource($ride);
     }
