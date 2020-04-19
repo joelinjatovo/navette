@@ -56,6 +56,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::get('ride/{ride}/items', 'RideController@items')->name('ride.items');
         Route::get('ride/{ride}/points', 'RideController@points')->name('ride.points');
         Route::post('ride/start', 'RideController@start')->name('ride.start');
+        Route::post('ride/direction', 'RideController@direction')->name('ride.direction');
         Route::post('ride/cancel', 'RideController@cancel')->name('ride.cancel');
         Route::post('ride/complete', 'RideController@complete')->name('ride.complete');
     });

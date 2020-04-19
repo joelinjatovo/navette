@@ -14,6 +14,8 @@ class RidePoint extends Pivot
     
     const STATUS_PING = 'ping';
     
+    const STATUS_ACTIVE = 'active';
+    
     const STATUS_NEXT = 'next';
     
     const STATUS_ONLINE = 'online';
@@ -53,17 +55,41 @@ class RidePoint extends Pivot
     }
     
     /**
+     * Get the item related to this point.
+     */
+    public function item()
+    {
+        if($this->point){
+            return $this->point->items()->first();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get the order related to this point.
+     */
+    public function order()
+    {
+        if($this->point){
+            $item = $this->point->items()->first();
+            if($item){
+                return $item->order;
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
      * Get the user related to this point.
      */
     public function user()
     {
         if($this->point){
-            $items = $this->point->items;
-            if(is_array($items) && isset($items[0])){
-                $order = $items[0]->order;
-                if($order){
-                    return $order->user();
-                }
+            $item = $this->point->items()->first();
+            if($item && ($order = $item->order)){
+                return $order->user;
             }
         }
         

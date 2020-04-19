@@ -29,7 +29,7 @@ class RidePoint extends JsonResource
                 'alt' => $this->alt,
                 'created_at' => $this->created_at,
             ],
-            'user' => new User($this->user),
+            'user' => $this->when($this->pivot, new User($this->pivot->user())),
         ];
     }
 }

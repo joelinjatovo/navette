@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ItemStatusChanged;
 use App\Events\RideStatusChanged;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -115,11 +116,31 @@ class Ride extends Model
     {
         $oldStatus = $this->status;
         $newStatus = self::STATUS_ACTIVE;
+        
         $this->status = $newStatus;
         $this->started_at = now();
         $this->save();
         
-        event(new RideStatusChanged($this, 'started', $oldStatus, $newStatus));
+        // Notify *driver
+        event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
+        
+        // Set all RidePoint as active
+        $points = $this->points()->wherePivot('status', RidePoint::STATUS_PING)->get();
+        foreach($points as $point){
+            $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_ACTIVE]);
+            
+            $item = $point->pivot->item();
+            if($item){
+                $oldStatus = $item->status;
+                $newStatus = Item::STATUS_ACTIVE;
+                
+                $item->status = $newStatus;
+                $item->save();
+                
+                // Notify *customer
+                event(new ItemStatusChanged($this, 'updated', $oldStatus, $newStatus));
+            }
+        }
     }
     
     /**
@@ -135,9 +156,14 @@ class Ride extends Model
      */
     public function cancel()
     {
-        $this->status = self::STATUS_CANCELED;
+        $oldStatus = $this->status;
+        $newStatus = self::STATUS_CANCELED;
+        
+        $this->status = $newStatus;
         $this->canceled_at = now();
         $this->save();
+        
+        event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
     }
     
     /**
@@ -145,9 +171,14 @@ class Ride extends Model
      */
     public function complete()
     {
-        $this->status = self::STATUS_COMPLETED;
+        $oldStatus = $this->status;
+        $newStatus = self::STATUS_COMPLETED;
+        
+        $this->status = $newStatus;
         $this->completed_at = now();
         $this->save();
+        
+        event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
     }
 
     /**
@@ -175,7 +206,7 @@ class Ride extends Model
             return false;
         }
         
-        $points = $ride->points()->wherePivot('status', 'active')->get();
+        $points = $ride->points()->wherePivotIn('status', [RidePoint::STATUS_ACTIVE, RidePoint::STATUS_NEXT])->get();
         if(empty($points)){
             return false;
         }

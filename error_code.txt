@@ -12,4 +12,5 @@
 111: Order not cancelable
 112: Ride not startable
 113: Ride not cancelable
-114: Ride dirrection not calculated
+114: Empty ride location
+115: Ride dirrection not calculated

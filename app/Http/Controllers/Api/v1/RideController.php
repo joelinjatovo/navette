@@ -9,6 +9,7 @@ use App\Http\Resources\ItemCollection;
 use App\Http\Resources\RidePointCollection;
 use App\Http\Resources\RideItem as RideItemResource;
 use App\Models\Ride;
+use App\Models\RidePoint;
 use App\Services\GoogleApiService;
 use Illuminate\Http\Request;
 
@@ -106,9 +107,17 @@ class RideController extends Controller
     {
         $ride = Ride::findOrFail($request->input('ride_id'));
         
-        if(!$ride->verifyDirection($this->google)){
-            return $this->error(400, 114, "Ride direction not verified");
+        $points = $ride->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->get();
+        if(empty($points)){
+            return $this->error(400, 114, "Empty ride locations");
         }
+        
+        if(!$ride->verifyDirection($this->google)){
+            return $this->error(400, 115, "Ride direction not verified");
+        }
+        
+        // Set first as next
+        $point = $ride->points()->first();
         
         return new RideItemResource($ride);
     }

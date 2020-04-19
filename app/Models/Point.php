@@ -65,7 +65,7 @@ class Point extends Model
      */
     public function items()
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(Item::class, 'point_id');
     }
     
     /**

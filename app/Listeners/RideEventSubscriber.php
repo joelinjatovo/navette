@@ -50,20 +50,5 @@ class RideEventSubscriber
         }
         
         $driver->notify(new RideStatusNotification($ride, $event->oldStatus, $event->newStatus));
-        
-        if($event->newStatus == Ride::STATUS_ACTIVE){
-            $this->performTask($ride);
-        }
-    }
-
-    /**
-     * Perform task for this ride.
-     *
-     * @Param App\Models\Ride $ride
-     * @return mixed
-     */
-    public function performTask(Ride $ride)
-    {
-        return $ride->verifyDirection($this->google);
     }
 }
