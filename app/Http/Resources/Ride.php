@@ -14,6 +14,20 @@ class Ride extends JsonResource
      */
     public function toArray($request)
     {
+        $club = null;
+        if($this->car && $this->car->club){
+            $club = $this->car->club;
+            $club = [
+                'club' => [
+                    'id' => $club->id,
+                    'name' => $club->name,
+                    'created_at' => $club->created_at,
+                    'image_url' => $club->image ? $club->image->url : null,
+                ],
+                'point' => $club->point ? new Point($club->point) : null,
+            ];
+        }
+        
         return [
             'ride' => [
                 'id' => $this->id,
@@ -22,6 +36,7 @@ class Ride extends JsonResource
                 'delay' => $this->delay,
                 'direction' => $this->direction,
             ],
+            'club' => $club,
             'driver' => $this->driver ? new User($this->driver) : null,
             'car' => $this->car ? new CarSingle($this->car) : null,
             'points' => RidePoint::collection($this->points),
