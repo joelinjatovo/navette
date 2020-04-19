@@ -47,24 +47,26 @@ class ProcessOrder implements ShouldQueue
         $club = $order->club;
         
         $ride = $this->getAvailableRide($car);
-        $updated = true;
         if(!$ride){
-            $updated = false;
             $ride = new Ride();
             $ride->status = Ride::STATUS_PING;
             $ride->car()->associate($car);
             $ride->driver()->associate($driver);
             $ride->save();
+            
+            // Notify *driver
+            event(new RideStatusChanged($ride, 'updated', null, $ride->status));
+        }else{
+            // Notify *driver
+            event(new RideStatusChanged($ride, 'created', null, $ride->status));
         }
         
         switch($order->type){
             case Order::TYPE_GO:
             case Order::TYPE_BACK:
                 $item = $order->items()->first();
-                
-                $oldStatus = $item->status;
-                $newStatus = Item::STATUS_PING;
 
+                // Attach the item's order point to the ride
                 $type = RidePoint::TYPE_PICKUP;
                 if($item->type == Item::TYPE_BACK){
                     $type = RidePoint::TYPE_DROP;
@@ -75,6 +77,9 @@ class ProcessOrder implements ShouldQueue
                         'order' => 0,
                     ]);
 
+                // Set item status ACTIVE
+                $oldStatus = $item->status;
+                $newStatus = Item::STATUS_ACTIVE;
                 $item->status = $newStatus;
                 $item->ride()->associate($ride);
                 $item->driver()->associate($driver);
@@ -88,13 +93,16 @@ class ProcessOrder implements ShouldQueue
                 // @TODO Implement processor GO BACK Order Items
                 break;
         }
-                    
-        // Notify *driver
-        if($updated){
-            event(new RideStatusChanged($ride, 'updated', $ride->status, null));
-        }else{
-            event(new RideStatusChanged($ride, 'created', $ride->status, null));
-        }
+        
+        // Set order status ACTIVE
+        $oldStatus = $order->status;
+        $newStatus = Order::STATUS_ACTIVE;
+        
+        $order->status = $newStatus;
+        $order->save();
+        
+        // Notify *customer
+        event(new OrderStatusChanged($order, 'created', $ride->status, null));
     }
 
     /**

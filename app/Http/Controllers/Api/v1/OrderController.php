@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\OrderItem as OrderItemResource;
 use App\Http\Resources\OrderCollection;
-use App\Jobs\ProcessOrder;
 use App\Models\Car;
 use App\Models\Club;
 use App\Models\Order;
@@ -137,8 +136,6 @@ class OrderController extends Controller
         $order->save();
 
         event(new OrderStatusChanged($order, 'created', null, Order::STATUS_PING));
-        
-        ProcessOrder::dispatchAfterResponse($order);
 
         return new OrderItemResource($order);
     }
