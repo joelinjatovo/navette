@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Events\ItemStatusChanged;
+use App\Events\RideStatusChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RideCollection;
 use App\Http\Resources\OrderCollection;
@@ -10,6 +12,7 @@ use App\Http\Resources\RidePointCollection;
 use App\Http\Resources\RideItem as RideItemResource;
 use App\Models\Ride;
 use App\Models\RidePoint;
+use App\Models\Item;
 use App\Services\GoogleApiService;
 use Illuminate\Http\Request;
 
@@ -92,7 +95,7 @@ class RideController extends Controller
         
         $ride->start();
         
-        return new RideItemResource($ride);
+        return $this->direction($request);
     }
     
     /**
@@ -116,8 +119,7 @@ class RideController extends Controller
             return $this->error(400, 115, "Ride direction not verified");
         }
         
-        // Set first as next
-        $point = $ride->points()->first();
+        $ride->next();
         
         return new RideItemResource($ride);
     }

@@ -59,5 +59,9 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('ride/direction', 'RideController@direction')->name('ride.direction');
         Route::post('ride/cancel', 'RideController@cancel')->name('ride.cancel');
         Route::post('ride/complete', 'RideController@complete')->name('ride.complete');
+        Route::post('item/finish', 'ItemController@finish')->name('item.finish'); // Customer
+        Route::post('item/cancel', 'ItemController@cancel')->name('item.cancel'); // Customer
+        Route::post('ridepoint/finish', 'RidePointController@finish')->name('ridepoint.finish'); // Driver
+        Route::post('ridepoint/cancel', 'RidePointController@cancel')->name('ridepoint.cancel'); // Driver
     });
 });

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Events\ItemStatusChanged;
+use App\Events\RideStatusChanged;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Str;
 
@@ -110,5 +112,77 @@ class RidePoint extends Pivot
     public function ride()
     {
         return $this->belongsTo(Ride::class, 'ride_id');
+    }
+    
+    /**
+     * Check if ride is finishable
+     */
+    public function finishable()
+    {
+        return self::STATUS_NEXT == $this->status;
+    }
+    
+    /**
+     * Finish ride point
+     */
+    public function finish()
+    {
+        $oldStatus = $this->status;
+        if($this->type == self::TYPE_PICKUP){
+            $newStatus = self::STATUS_ONLINE;
+        }else{
+            $newStatus = self::STATUS_COMPLETED;
+        }
+        
+        $this->status = $newStatus;
+        $this->save();
+        
+        $item = $this->item();
+        if($item){
+            if($item->type == Item::TYPE_GO){
+                $newStatus = Item::STATUS_ONLINE;
+            }else{
+                $newStatus = Item::STATUS_COMPLETED;
+            }
+            
+            $item->status = $newStatus;
+            $item->save();
+                
+            // Notify *customer
+            event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+        }
+        
+    }
+    
+    /**
+     * Check if ride is cancelable
+     */
+    public function cancelable()
+    {
+        return (self::STATUS_COMPLETED != $this->status) && (self::STATUS_CANCELED != $this->status) ;
+    }
+    
+    /**
+     * Cancel ride point
+     */
+    public function cancel()
+    {
+        $oldStatus = $this->status;
+        $newStatus = self::STATUS_CANCELED;
+        
+        $this->status = $newStatus;
+        $this->save();
+        
+        $item = $this->item();
+        if($item){
+            $oldStatus = $item->status;
+            $newStatus = Item::STATUS_CANCELED;
+            $item->status = $newStatus;
+            $item->save();
+                
+            // Notify *customer
+            event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+        }
+        
     }
 }

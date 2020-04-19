@@ -16,6 +16,8 @@ class Ride extends Model
     
     const STATUS_ACTIVE = 'active';
     
+    const STATUS_COMPLETABLE = 'completable';
+    
     const STATUS_COMPLETED = 'completed';
     
     const STATUS_CANCELED = 'canceled';
@@ -110,6 +112,46 @@ class Ride extends Model
     }
     
     /**
+     * Mark first item as next
+     */
+    public function next()
+    {
+        // Check if ride has next point
+        $next = $this->points()->where('status', RidePoint::STATUS_NEXT)->first();
+        if(!$next){
+            // Set first active point as next
+            $point = $this->points()->where('status', RidePoint::STATUS_ACTIVE)->first();
+            if($point){
+                $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_NEXT]);
+
+                $item = $point->pivot->item();
+                if($item){
+                    $oldStatus = $item->status;
+                    $newStatus = Item::STATUS_NEXT;
+
+                    $item->status = $newStatus;
+                    $item->save();
+
+                    // Notify *customer
+                    event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+                }
+                
+                return true;
+            }
+        }
+        
+        $oldStatus = $this->status;
+        $newStatus = self::STATUS_COMPLETABLE;
+        
+        $this->status = $newStatus;
+        $this->save();
+    
+        event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
+        
+        return false;
+    }
+    
+    /**
      * Mark ride as started
      */
     public function start()
@@ -138,13 +180,13 @@ class Ride extends Model
                 $item->save();
                 
                 // Notify *customer
-                event(new ItemStatusChanged($this, 'updated', $oldStatus, $newStatus));
+                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
             }
         }
     }
     
     /**
-     * Check if order is cancelable
+     * Check if ride is cancelable
      */
     public function cancelable()
     {
@@ -162,8 +204,34 @@ class Ride extends Model
         $this->status = $newStatus;
         $this->canceled_at = now();
         $this->save();
-        
+    
         event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
+        
+        // Mark RidePoint NOT COMPLETED as CANCELED
+        $points = $this->points()->wherePivotNot('status', RidePoint::STATUS_COMPLETED)->get();
+        foreach($points as $point){
+            $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_CANCELED]);
+            
+            $item = $point->pivot->item();
+            if($item){
+                $oldStatus = $item->status;
+                $newStatus = Item::STATUS_CANCELED;
+                
+                $item->status = $newStatus;
+                $item->save();
+                
+                // Notify *customer
+                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+            }
+        }
+    }
+    
+    /**
+     * Check if ride is completable
+     */
+    public function completable()
+    {
+        return true;
     }
     
     /**
@@ -179,6 +247,24 @@ class Ride extends Model
         $this->save();
         
         event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
+        
+        // Mark RidePoint ONLINE as COMPLETED
+        $points = $this->points()->wherePivot('status', RidePoint::STATUS_ONLINE)->get();
+        foreach($points as $point){
+            $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_COMPLETED]);
+            
+            $item = $point->pivot->item();
+            if($item){
+                $oldStatus = $item->status;
+                $newStatus = Item::STATUS_COMPLETED;
+                
+                $item->status = $newStatus;
+                $item->save();
+                
+                // Notify *customer
+                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+            }
+        }
     }
 
     /**
