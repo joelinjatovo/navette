@@ -118,36 +118,40 @@ class Ride extends Model
     {
         // Check if ride has next point
         $next = $this->points()->where('status', RidePoint::STATUS_NEXT)->first();
-        if(!$next){
-            // Set first active point as next
-            $point = $this->points()->where('status', RidePoint::STATUS_ACTIVE)->first();
-            if($point){
-                $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_NEXT]);
-
-                $item = $point->pivot->item();
-                if($item){
-                    $oldStatus = $item->status;
-                    $newStatus = Item::STATUS_NEXT;
-
-                    $item->status = $newStatus;
-                    $item->save();
-
-                    // Notify *customer
-                    event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-                }
-                
-                return true;
-            }
+        if($next)
+        {
+            return true;
         }
         
+        // Set first active point as next
+        $point = $this->points()->where('status', RidePoint::STATUS_ACTIVE)->first();
+        if($point)
+        {
+            $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_NEXT]);
+
+            $item = $point->pivot->item();
+            if($item){
+                $oldStatus = $item->status;
+                $newStatus = Item::STATUS_NEXT;
+
+                $item->status = $newStatus;
+                $item->save();
+
+                // Notify *customer
+                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+            }
+
+            return true;
+        }
+
         $oldStatus = $this->status;
         $newStatus = self::STATUS_COMPLETABLE;
-        
+
         $this->status = $newStatus;
         $this->save();
-    
+
         event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
-        
+
         return false;
     }
     
@@ -231,7 +235,7 @@ class Ride extends Model
      */
     public function completable()
     {
-        return true;
+        return self::STATUS_COMPLETABLE == $this->status;
     }
     
     /**

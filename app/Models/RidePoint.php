@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\ItemStatusChanged;
+use App\Events\OrderStatusChanged;
 use App\Events\RideStatusChanged;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Str;
@@ -138,7 +139,9 @@ class RidePoint extends Pivot
         $this->save();
         
         $item = $this->item();
-        if($item){
+        if($item)
+        {
+            $oldStatus = $item->status;
             if($item->type == Item::TYPE_GO){
                 $newStatus = Item::STATUS_ONLINE;
             }else{
@@ -174,7 +177,8 @@ class RidePoint extends Pivot
         $this->save();
         
         $item = $this->item();
-        if($item){
+        if($item)
+        {
             $oldStatus = $item->status;
             $newStatus = Item::STATUS_CANCELED;
             $item->status = $newStatus;

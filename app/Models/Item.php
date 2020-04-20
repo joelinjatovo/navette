@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\ItemStatusChanged;
+use App\Events\OrderStatusChanged;
+use App\Events\RideStatusChanged;
 use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
@@ -37,6 +40,37 @@ class Item extends Model
         'direction',
         'rided_at',
     ];
+
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::updating(function ($model) {
+            if($model->status = Item::STATUS_COMPLETED)
+            {
+                $order = $model->order;
+                if($order)
+                {
+                    $item = $order->items()->where('status', Order::STATUS_PING)->first();
+                    if($item){
+                        $oldStatus = $order->status;
+                        $newStatus = Order::STATUS_OK;
+                    }else{
+                        $oldStatus = $order->status;
+                        $newStatus = Order::STATUS_COMPLETED;
+                    }
+
+                    // Notify *customer
+                    event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
+                }
+            }
+        });
+    }
     
     /**
      * Get the driver that owns the order.
@@ -114,6 +148,7 @@ class Item extends Model
             }
             $ride->points()->updateExistingPivot($point->getKey(), ['status' => $newStatus]);
         }
+            
         
     }
     
