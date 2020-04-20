@@ -108,6 +108,17 @@ class Ride extends Model
      */
     public function startable()
     {
+        $car = $this->car;
+        if($car){
+            // Check if car is not disponible
+            $active_ride = $car->rides()
+                ->where('id', '!=', $this->getKey())
+                ->where('status', self::STATUS_ACTIVE)
+                ->first();
+            if($active_ride){
+                return false;
+            }
+        }
         return self::STATUS_COMPLETED != $this->status;
     }
     
