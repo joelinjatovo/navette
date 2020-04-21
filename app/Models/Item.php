@@ -35,8 +35,8 @@ class Item extends Model
         'type',
         'distance',
         'distance_value',
-        'delay',
-        'delay_value',
+        'duration',
+        'duration_value',
         'direction',
         'rided_at',
     ];

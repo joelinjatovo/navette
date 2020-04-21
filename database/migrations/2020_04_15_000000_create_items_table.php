@@ -20,8 +20,8 @@ class CreateItemsTable extends Migration
                 $table->string('status', 50)->default('ping')->nullable();
                 $table->bigInteger('distance_value')->nullable();
                 $table->string('distance')->nullable();
-                $table->bigInteger('delay_value')->nullable();
-                $table->string('delay')->nullable();
+                $table->bigInteger('duration_value')->nullable();
+                $table->string('duration')->nullable();
                 $table->text('direction')->nullable();
                 $table->dateTime('ride_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
