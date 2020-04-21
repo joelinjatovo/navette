@@ -23,6 +23,7 @@ class CreateRidesTable extends Migration
                 $table->bigInteger('distance')->nullable();
                 $table->bigInteger('duration')->nullable();
                 $table->text('direction')->nullable();
+                $table->json('route')->nullable();
                 $table->unsignedBigInteger('car_id')->index()->nullable();
                 $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
                 $table->unsignedBigInteger('driver_id')->index()->nullable();

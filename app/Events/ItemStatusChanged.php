@@ -62,10 +62,8 @@ class ItemStatusChanged implements ShouldBroadcastNow
      *
      * @return array
      */
-    /*
     public function broadcastWith()
     {
-        return ['id' => $this->ride->id];
+        return ['id' => $this->item->id];
     }
-    */
 }

@@ -70,10 +70,8 @@ class RideStatusChanged implements ShouldBroadcastNow
      *
      * @return array
      */
-    /*
     public function broadcastWith()
     {
         return ['id' => $this->ride->id];
     }
-    */
 }

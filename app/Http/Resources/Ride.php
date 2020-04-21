@@ -35,6 +35,7 @@ class Ride extends JsonResource
                 'distance' => $this->distance,
                 'duration' => $this->duration,
                 'direction' => $this->direction,
+                'route' => is_array($this->route)?$this->route:json_decode($this->route),
             ],
             'club' => $club,
             'driver' => $this->driver ? new User($this->driver) : null,
