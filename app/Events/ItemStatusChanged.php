@@ -44,7 +44,7 @@ class ItemStatusChanged implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->item->order->user->id);
+        return new PrivateChannel('App.Item.'.$this->item->id);
     }
     
     /**

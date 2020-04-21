@@ -22,4 +22,8 @@ Broadcast::channel('App.Ride.{id}', function ($user, $id) {
     return true;
 });
 
+Broadcast::channel('App.Item.{id}', function ($user, $id) {
+    return true;
+});
+
 //Broadcast::channel('App.Ride.{ride}', RideChannel::class);
