@@ -104,25 +104,6 @@ class Ride extends Model
     }
     
     /**
-     * Check if ride is startable
-     */
-    public function startable()
-    {
-        $car = $this->car;
-        if($car){
-            // Check if car is not disponible
-            $active_ride = $car->rides()
-                ->where('id', '!=', $this->getKey())
-                ->where('status', self::STATUS_ACTIVE)
-                ->first();
-            if($active_ride){
-                return false;
-            }
-        }
-        return self::STATUS_COMPLETED != $this->status;
-    }
-    
-    /**
      * Mark first item as next
      */
     public function next()
@@ -167,9 +148,29 @@ class Ride extends Model
     }
     
     /**
-     * Mark ride as started
+     * Check if ride is activable
      */
-    public function start()
+    public function activable()
+    {
+        $car = $this->car;
+        if($car){
+            // Check if car is not disponible
+            $active_ride = $car->rides()
+                ->where('id', '!=', $this->getKey())
+                ->where('status', self::STATUS_ACTIVE)
+                ->first();
+            if($active_ride){
+                return false;
+            }
+        }
+        
+        return !in_array($this->status, [self::STATUS_COMPLETED, self::STATUS_CANCELED]);
+    }
+    
+    /**
+     * Mark ride as active
+     */
+    public function active()
     {
         $oldStatus = $this->status;
         $newStatus = self::STATUS_ACTIVE;

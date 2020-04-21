@@ -37,6 +37,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         
         Route::get('orders', 'OrderController@index')->name('orders');
+        Route::get('order/{order}', 'OrderController@show')->name('order.show');
         Route::middleware('verified')->group(function () {
             Route::post('order', 'OrderController@store')->name('order.create');
             Route::post('order/cancel', 'OrderController@cancel')->name('order.cancel');
@@ -59,6 +60,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('ride/direction', 'RideController@direction')->name('ride.direction');
         Route::post('ride/cancel', 'RideController@cancel')->name('ride.cancel');
         Route::post('ride/complete', 'RideController@complete')->name('ride.complete');
+        Route::get('item/{item}', 'ItemController@show')->name('item.show');
         Route::post('item/finish', 'ItemController@finish')->name('item.finish'); // Customer
         Route::post('item/cancel', 'ItemController@cancel')->name('item.cancel'); // Customer
         Route::post('ridepoint/finish', 'RidePointController@finish')->name('ridepoint.finish'); // Driver

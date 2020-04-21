@@ -36,6 +36,7 @@ class Order extends JsonResource
             'club' => new ClubSingle($this->club),
             'club_point' => $this->club ? new Point($this->club->point) : null,
             'car' => new CarSingle($this->car),
+            'car_driver' => $this->car && $this->car->driver ? new User($this->car->driver) : null,
         ];
     }
 }

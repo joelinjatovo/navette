@@ -23,6 +23,7 @@ class Car extends JsonResource
                 'image_url' => $this->image ? $this->image->url : null,
             ],
             'car_model' => $this->model ? new CarModel($this->model) : null,
+            'car_driver' => $this->driver ? new User($this->driver) : null,
         ];
     }
 }

@@ -89,11 +89,11 @@ class RideController extends Controller
     {
         $ride = Ride::findOrFail($request->input('ride_id'));
         
-        if(!$ride->startable()){
-            return $this->error(400, 112, "Ride not startable");
+        if(!$ride->activable()){
+            return $this->error(400, 112, "Ride not activable");
         }
         
-        $ride->start();
+        $ride->active();
         
         return $this->direction($request);
     }

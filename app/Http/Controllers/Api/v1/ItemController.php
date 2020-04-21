@@ -3,12 +3,26 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\Item;
+use App\Http\Resources\ItemItem as ItemItemResource;
 use App\Http\Resources\RideItem as RideItemResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    
+    /**
+     * Active a ride point.
+     *
+     * @param  Request  $request
+     * @param  Ride  $ride
+     *
+     * @return Response
+     */
+    public function show(Request $request, Item $item)
+    {
+        return new ItemItemResource($item);
+    }
     
     /**
      * Active a ride point.

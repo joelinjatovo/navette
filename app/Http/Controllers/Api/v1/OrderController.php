@@ -42,6 +42,15 @@ class OrderController extends Controller
     }
 
     /**
+     * Show order
+     *
+     * @return Response
+     */
+    public function show(Request $request, Order $order){
+        return new OrderItemResource($order);
+    }
+
+    /**
      * Get cart info
      *
      * @param  Request $request
