@@ -94,8 +94,8 @@ class Ride extends Model
                         'order', 
                         'distance', 
                         'distance_value', 
-                        'duration'
-                        'duration_value'
+                        'duration',
+                        'duration_value',
                         'direction'
                     ])->orderBy('order', 'asc');
     }
@@ -378,21 +378,29 @@ class Ride extends Model
                                 $leg_duration_text = $leg['duration']['text'];
                             }
                             
-                            // Update polyline
-                            if(isset($leg['polyline']) && isset($leg['polyline']['points'])){
-                                $polyline = $leg['polyline']['points'];
-                                if(is_array($orders)&&isset($orders[$key])){
-                                    $order = $orders[$key];
-                                    if(isset($points[$order])){
-                                        $point = $points[$order];
-                                        $ride->points()->updateExistingPivot($point->getKey(), [
-                                            'direction' => $polyline,
-                                            'distance_value' => $leg_distance,
-                                            'distance' => $leg_distance_text,
-                                            'duration_value' => $leg_duration,
-                                            'duration' => $leg_duration_text,
-                                        ]);
+                            // Polyline
+                            $polyline = null;
+                            if(isset($leg['steps'])){
+                                $steps = $leg['steps'];
+                                foreach($steps as $step){
+                                    if(isset($step['polyline']) && isset($step['polyline']['points'])){
+                                        $polyline .= $step['polyline']['points'];
                                     }
+                                }
+                            }
+                            
+                            // Update polyline
+                            if(is_array($orders)&&isset($orders[$key])){
+                                $order = $orders[$key];
+                                if(isset($points[$order])){
+                                    $point = $points[$order];
+                                    $ride->points()->updateExistingPivot($point->getKey(), [
+                                        'direction' => $polyline,
+                                        'distance_value' => $leg_distance,
+                                        'distance' => $leg_distance_text,
+                                        'duration_value' => $leg_duration,
+                                        'duration' => $leg_duration_text,
+                                    ]);
                                 }
                             }
                             
