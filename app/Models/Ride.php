@@ -379,7 +379,7 @@ class Ride extends Model
                             }
                             
                             // Polyline
-                            $polyline = null;
+                            $polyline = '';
                             if(isset($leg['steps'])){
                                 $steps = $leg['steps'];
                                 foreach($steps as $step){
@@ -414,6 +414,7 @@ class Ride extends Model
                         $ride->direction = $route['overview_polyline']['points'];
                     }
                     
+                    $ride->route = $route;
                     return $ride->save();
                 }
             }

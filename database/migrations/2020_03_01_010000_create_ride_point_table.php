@@ -24,6 +24,7 @@ class CreateRidePointTable extends Migration
                 $table->bigInteger('duration_value')->nullable();
                 $table->string('duration')->nullable();
                 $table->text('direction')->nullable();
+                $table->json('route')->nullable();
                 $table->unsignedBigInteger('ride_id')->index();
                 $table->foreign('ride_id')->references('id')->on('rides')->onDelete('cascade');
                 $table->uuid('point_id')->index();
