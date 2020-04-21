@@ -61,7 +61,7 @@ class Point extends Model
     }
     
     /**
-     * The orders that belong to the point.
+     * The items that belong to the point.
      */
     public function items()
     {

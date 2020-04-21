@@ -33,7 +33,7 @@ class Ride extends JsonResource
                 'id' => $this->id,
                 'status' => $this->status,
                 'distance' => $this->distance,
-                'delay' => $this->delay,
+                'duration' => $this->duration,
                 'direction' => $this->direction,
             ],
             'club' => $club,

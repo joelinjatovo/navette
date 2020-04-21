@@ -20,6 +20,9 @@ class RidePoint extends JsonResource
                 'type' => $this->when($this->pivot, $this->pivot->type),
                 'status' => $this->when($this->pivot, $this->pivot->status),
                 'order' => $this->when($this->pivot, $this->pivot->order),
+                'duration' => $this->when($this->pivot, $this->pivot->duration),
+                'distance' => $this->when($this->pivot, $this->pivot->distance),
+                'direction' => $this->when($this->pivot, $this->pivot->direction),
             ],
             'point' => [
                 'id' => $this->id,

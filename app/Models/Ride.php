@@ -348,19 +348,43 @@ class Ride extends Model
                     
                     if(isset($route['legs'])){
                         $distance = 0;
-                        $delay = 0;
+                        $duration = 0;
                         $legs = $route['legs'];
-                        foreach($legs as $leg){
+                        foreach($legs as $key => $leg){
+                            // Calculate distance
+                            $leg_distance = 0;
                             if(isset($leg['distance']) && isset($leg['distance']['value'])){
-                                $distance += $leg['distance']['value'];
+                                $leg_distance = $leg['distance']['value'];
+                                $distance += $leg_distance;
                             }
+                            
+                            // Calculate duration
+                            $leg_duration = 0;
                             if(isset($leg['duration']) && isset($leg['duration']['value'])){
-                                $delay += $leg['duration']['value'];
+                                $leg_duration = $leg['duration']['value'];
+                                $duration += $leg_duration;
                             }
+                            
+                            // Update polyline
+                            if(isset($leg['polyline']) && isset($leg['polyline']['points'])){
+                                $polyline = $leg['polyline']['points'];
+                                if(is_array($orders)&&isset($orders[$key])){
+                                    $order = $orders[$key];
+                                    if(isset($points[$order])){
+                                        $point = $points[$order];
+                                        $ride->points()->updateExistingPivot($point->getKey(), [
+                                            'direction' => $polyline,
+                                            'distance' => $leg_distance,
+                                            'duration' => $leg_duration,
+                                        ]);
+                                    }
+                                }
+                            }
+                            
                         }
                         
                         $ride->distance = $distance;
-                        $ride->delay = $delay;
+                        $ride->duration = $duration;
                     }
                     
                     if(isset($route['overview_polyline']) && isset($route['overview_polyline']['points'])){
