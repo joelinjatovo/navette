@@ -91,7 +91,12 @@ class Ride extends Model
                         'id', 
                         'status', 
                         'type', 
-                        'order'
+                        'order', 
+                        'distance', 
+                        'distance_value', 
+                        'duration'
+                        'duration_value'
+                        'direction'
                     ])->orderBy('order', 'asc');
     }
     

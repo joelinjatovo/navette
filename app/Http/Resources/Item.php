@@ -14,6 +14,22 @@ class Item extends JsonResource
      */
     public function toArray($request)
     {
+        $ridepoints = [];
+        if($this->point){
+            foreach($this->point->ridepoints as $ridepoint){
+                $ridepoints[] = [
+                    'rid' => $ridepoint->id,
+                    'type' => $ridepoint->type,
+                    'status' => $ridepoint->status,
+                    'order' => $ridepoint->order,
+                    'duration' => $ridepoint->duration,
+                    'distance' => $ridepoint->distance,
+                    'direction' => $ridepoint->direction,
+                    'duration_value' => $ridepoint->duration_value,
+                    'distance_value' => $ridepoint->distance_value,
+                ];
+            }
+        }
         return [
             'item' => [
                 'rid' => $this->id,
@@ -29,6 +45,7 @@ class Item extends JsonResource
                 'created_at' => $this->created_at,
             ],
             'point' => new Point($this->point),
+            'ridepoints' => $ridepoints,
             'ride' => new RideSingle($this->ride),
             'driver' => new User($this->driver),
             //'order' => new Order($this->order),

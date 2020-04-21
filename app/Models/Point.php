@@ -75,6 +75,14 @@ class Point extends Model
     {
         return $this->belongsToMany(Ride::class, 'ride_point')->using(RidePoint::class);
     }
+    
+    /**
+     * The ridepoints that belong to the point. (Pivot)
+     */
+    public function ridepoints()
+    {
+        return $this->hasMany(RidePoint::class, 'point_id', 'id');
+    }
 
     /**
      * Get the user what creates the point.
