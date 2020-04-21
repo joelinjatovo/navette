@@ -357,12 +357,20 @@ class Ride extends Model
                                 $leg_distance = $leg['distance']['value'];
                                 $distance += $leg_distance;
                             }
+                            $leg_distance_text = null;
+                            if(isset($leg['distance']) && isset($leg['distance']['text'])){
+                                $leg_distance_text = $leg['distance']['text'];
+                            }
                             
                             // Calculate duration
                             $leg_duration = 0;
                             if(isset($leg['duration']) && isset($leg['duration']['value'])){
                                 $leg_duration = $leg['duration']['value'];
                                 $duration += $leg_duration;
+                            }
+                            $leg_duration_text = null;
+                            if(isset($leg['duration']) && isset($leg['duration']['text'])){
+                                $leg_duration_text = $leg['duration']['text'];
                             }
                             
                             // Update polyline
@@ -374,8 +382,10 @@ class Ride extends Model
                                         $point = $points[$order];
                                         $ride->points()->updateExistingPivot($point->getKey(), [
                                             'direction' => $polyline,
-                                            'distance' => $leg_distance,
-                                            'duration' => $leg_duration,
+                                            'distance_value' => $leg_distance,
+                                            'distance' => $leg_distance_text,
+                                            'duration_value' => $leg_duration,
+                                            'duration' => $leg_duration_text,
                                         ]);
                                     }
                                 }
