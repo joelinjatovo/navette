@@ -38,7 +38,7 @@ class Item extends Model
         'duration',
         'duration_value',
         'direction',
-        'rided_at',
+        'ride_at',
     ];
 
     /**
