@@ -17,7 +17,7 @@ class CreateAccessTokensTable extends Migration
             Schema::create('access_tokens', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->text('scopes');
-                $table->unsignedBigInteger('user_id')->index();
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->boolean('revoked')->default(false);
                 $table->dateTime('expires_at')->nullable();

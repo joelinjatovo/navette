@@ -22,7 +22,7 @@ class CreateZonesTable extends Migration
                 $table->float('privatizedPrice', 20, 4); // HT
                 $table->float('price', 20, 4); // HT
                 $table->string('currency', 3);
-                $table->unsignedBigInteger('user_id')->index();
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
                 $table->softDeletes();

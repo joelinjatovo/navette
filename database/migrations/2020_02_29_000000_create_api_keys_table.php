@@ -22,7 +22,7 @@ class CreateApiKeysTable extends Migration
                 $table->string('user_agent', 50)->nullable();
                 $table->boolean('revoked')->default(0);
                 $table->dateTime('expires_at')->nullable();
-                $table->unsignedBigInteger('user_id')->index();
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });

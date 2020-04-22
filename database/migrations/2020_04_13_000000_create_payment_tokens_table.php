@@ -20,9 +20,9 @@ class CreatePaymentTokensTable extends Migration
                 $table->float('amount', 20, 4)->nullable();
                 $table->string('currency', 3)->nullable();
                 $table->text('token')->nullable();
-                $table->unsignedBigInteger('order_id')->index()->nullable();
+                $table->unsignedBigInteger('order_id')->nullable();
                 $table->foreign('order_id')->references('id')->on('orders');
-                $table->unsignedBigInteger('user_id')->index()->nullable();
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });

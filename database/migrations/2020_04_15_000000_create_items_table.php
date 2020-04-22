@@ -25,13 +25,13 @@ class CreateItemsTable extends Migration
                 $table->text('direction')->nullable();
                 $table->dateTime('ride_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
-                $table->unsignedBigInteger('ride_id')->index()->nullable();
+                $table->unsignedBigInteger('ride_id')->nullable();
                 $table->foreign('ride_id')->references('id')->on('rides');
-                $table->unsignedBigInteger('driver_id')->index()->nullable();
+                $table->unsignedBigInteger('driver_id')->nullable();
                 $table->foreign('driver_id')->references('id')->on('users');
-                $table->uuid('point_id')->index()->nullable();
+                $table->uuid('point_id')->nullable();
                 $table->foreign('point_id')->references('id')->on('points');
-                $table->unsignedBigInteger('order_id')->index();
+                $table->unsignedBigInteger('order_id')->nullable();
                 $table->foreign('order_id')->references('id')->on('orders');
                 $table->timestamps();
                 $table->softDeletes();

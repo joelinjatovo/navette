@@ -17,9 +17,9 @@ class CreateClubsTable extends Migration
             Schema::create('clubs', function (Blueprint $table) {
                 $table->id();
                 $table->string('name', 200);
-                $table->uuid('point_id')->index();
+                $table->uuid('point_id')->nullable();
                 $table->foreign('point_id')->references('id')->on('points');
-                $table->unsignedBigInteger('user_id')->index();
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
                 $table->softDeletes();
