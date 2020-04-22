@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('database', function () {
+Route::get('database/', function () {
     // Test database connection
     try {
         DB::connection()->getPdo();
