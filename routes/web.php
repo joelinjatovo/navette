@@ -16,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('database', function () {
+    // Test database connection
+    try {
+        DB::connection()->getPdo();
+    } catch (\Exception $e) {
+        die("Could not connect to the database.  Please check your configuration. error:" . $e );
+    }
+});
+
 Route::get('migrate/refresh', function () {
     Artisan::queue('migrate:refresh', [
         '--seed' => ''
