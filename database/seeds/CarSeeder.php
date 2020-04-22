@@ -66,9 +66,9 @@ class CarSeeder extends Seeder
         
         DB::table('cars')->insert([
             'id' => 1,
-            'name' => 'Mazda',
+            'name' => 'Economics',
             'year' => '2020',
-            'place' => 4,
+            'place' => 3,
             'car_model_id' => 1,
             'driver_id' => 1,
             'user_id' => 1,
@@ -86,9 +86,9 @@ class CarSeeder extends Seeder
         
         DB::table('cars')->insert([
             'id' => 2,
-            'name' => 'Mazda',
+            'name' => 'Moyen',
             'year' => '2019',
-            'place' => 4,
+            'place' => 3,
             'car_model_id' => 2,
             'user_id' => 1,
             'club_id' => 1,
@@ -99,6 +99,44 @@ class CarSeeder extends Seeder
             'type' => "image/jpeg",
             'url' => "uploads/car-02.jpg",
             'imageable_id' => 2,
+            'imageable_type' => "App\Models\Car",
+            'created_at' => now(),
+        ]);
+        
+        DB::table('cars')->insert([
+            'id' => 3,
+            'name' => 'Van',
+            'year' => '2019',
+            'place' => 6,
+            'car_model_id' => 2,
+            'user_id' => 1,
+            'club_id' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('images')->insert([
+            'name' => 'car-01.jpg',
+            'type' => "image/jpeg",
+            'url' => "uploads/car-01.jpg",
+            'imageable_id' => 3,
+            'imageable_type' => "App\Models\Car",
+            'created_at' => now(),
+        ]);
+        
+        DB::table('cars')->insert([
+            'id' => 4,
+            'name' => 'Van XL',
+            'year' => '2019',
+            'place' => 8,
+            'car_model_id' => 2,
+            'user_id' => 1,
+            'club_id' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('images')->insert([
+            'name' => 'car-01.jpg',
+            'type' => "image/jpeg",
+            'url' => "uploads/car-01.jpg",
+            'imageable_id' => 4,
             'imageable_type' => "App\Models\Car",
             'created_at' => now(),
         ]);
