@@ -49,6 +49,10 @@ class Item extends JsonResource
             'ride' => new RideSingle($this->ride),
             'driver' => new User($this->driver),
             //'order' => new Order($this->order),
+            'club' => [
+                'club' => $this->order && $this->order->club ? new ClubSingle($this->order->club) : null,
+                'point' => $this->order && $this->order->club && $this->order->club->point ? new Point($this->order->club->point) : null,
+            ]
         ];
     }
 }

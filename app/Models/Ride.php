@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Events\ItemStatusChanged;
 use App\Events\RideStatusChanged;
+use App\Events\OrderStatusChanged;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -229,7 +230,7 @@ class Ride extends Model
         event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
         
         // Mark RidePoint NOT COMPLETED as CANCELED
-        $points = $this->points()->wherePivotNot('status', RidePoint::STATUS_COMPLETED)->get();
+        $points = $this->points()->wherePivotNotIn('status', [RidePoint::STATUS_COMPLETED])->get();
         foreach($points as $point){
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_CANCELED]);
             
@@ -284,6 +285,24 @@ class Ride extends Model
                 
                 // Notify *customer
                 event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+                
+                $order = $item->order;
+                if($order){
+                    if($order->items()->where('tems.status', Item::STATUS_PING)->get()){
+                        $oldStatus = $order->status;
+                        $newStatus = Order::STATUS_OK;
+                    }else{
+                        $oldStatus = $order->status;
+                        $newStatus = Order::STATUS_COMPLETED;
+                    }
+
+                    $order->status = $newStatus;
+                    $order->save();
+
+                    // Notify *customer
+                    event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
+                    
+                }
             }
         }
     }
