@@ -25,11 +25,11 @@ class CreateRidesTable extends Migration
                 $table->text('direction')->nullable();
                 $table->json('route')->nullable();
                 $table->unsignedBigInteger('car_id')->index()->nullable();
-                $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
+                $table->foreign('car_id')->references('id')->on('cars');
                 $table->unsignedBigInteger('driver_id')->index()->nullable();
-                $table->foreign('driver_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('driver_id')->references('id')->on('users');
                 $table->unsignedBigInteger('user_id')->index()->nullable();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
                 $table->softDeletes();
             });

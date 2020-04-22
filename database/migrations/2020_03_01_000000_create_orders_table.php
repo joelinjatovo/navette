@@ -38,13 +38,13 @@ class CreateOrdersTable extends Migration
                 $table->unsignedBigInteger('canceler_id')->index()->nullable();
                 $table->foreign('canceler_id')->references('id')->on('users');
                 $table->unsignedBigInteger('car_id')->index()->nullable();
-                $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
+                $table->foreign('car_id')->references('id')->on('cars');
                 $table->unsignedBigInteger('club_id')->index()->nullable();
-                $table->foreign('club_id')->references('id')->on('clubs')->onDelete('cascade');
+                $table->foreign('club_id')->references('id')->on('clubs');
                 $table->unsignedBigInteger('zone_id')->index()->nullable();
-                $table->foreign('zone_id')->references('id')->on('zones')->onDelete('cascade');
+                $table->foreign('zone_id')->references('id')->on('zones');
                 $table->unsignedBigInteger('user_id')->index()->nullable();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
                 $table->softDeletes();
             });

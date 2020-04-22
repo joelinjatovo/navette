@@ -32,7 +32,7 @@ class CreateItemsTable extends Migration
                 $table->uuid('point_id')->index()->nullable();
                 $table->foreign('point_id')->references('id')->on('points');
                 $table->unsignedBigInteger('order_id')->index();
-                $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+                $table->foreign('order_id')->references('id')->on('orders');
                 $table->timestamps();
                 $table->softDeletes();
             });

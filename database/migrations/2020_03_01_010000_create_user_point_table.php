@@ -17,9 +17,9 @@ class CreateUserPointTable extends Migration
             Schema::create('user_point', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->unsignedBigInteger('user_id')->index();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->uuid('point_id')->index();
-                $table->foreign('point_id')->references('id')->on('points')->onDelete('cascade');
+                $table->foreign('point_id')->references('id')->on('points');
                 $table->timestamps();
             });
         }

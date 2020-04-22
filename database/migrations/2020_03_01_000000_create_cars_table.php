@@ -20,9 +20,9 @@ class CreateCarsTable extends Migration
                 $table->string('year', 4);
                 $table->integer('place');
                 $table->unsignedBigInteger('club_id')->index()->nullable();
-                $table->foreign('club_id')->references('id')->on('clubs')->onDelete('cascade');
+                $table->foreign('club_id')->references('id')->on('clubs');
                 $table->unsignedBigInteger('car_model_id')->index();
-                $table->foreign('car_model_id')->references('id')->on('car_models')->onDelete('cascade');
+                $table->foreign('car_model_id')->references('id')->on('car_models');
                 $table->unsignedBigInteger('driver_id')->index()->nullable();
                 $table->foreign('driver_id')->references('id')->on('users');
                 $table->unsignedBigInteger('user_id')->index()->nullable();

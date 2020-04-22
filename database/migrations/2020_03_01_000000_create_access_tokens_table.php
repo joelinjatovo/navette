@@ -18,7 +18,7 @@ class CreateAccessTokensTable extends Migration
                 $table->uuid('id')->primary();
                 $table->text('scopes');
                 $table->unsignedBigInteger('user_id')->index();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->boolean('revoked')->default(false);
                 $table->dateTime('expires_at')->nullable();
                 $table->timestamps();

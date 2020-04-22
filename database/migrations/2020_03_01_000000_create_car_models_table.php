@@ -20,9 +20,9 @@ class CreateCarModelsTable extends Migration
                 $table->string('year', 4);
                 $table->integer('place');
                 $table->unsignedBigInteger('car_brand_id')->index();
-                $table->foreign('car_brand_id')->references('id')->on('car_brands')->onDelete('cascade');
+                $table->foreign('car_brand_id')->references('id')->on('car_brands');
                 $table->unsignedBigInteger('car_type_id')->index();
-                $table->foreign('car_type_id')->references('id')->on('car_types')->onDelete('cascade');
+                $table->foreign('car_type_id')->references('id')->on('car_types');
                 $table->unsignedBigInteger('user_id')->index()->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();

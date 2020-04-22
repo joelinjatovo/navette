@@ -21,7 +21,7 @@ class CreatePhonesTable extends Migration
                 $table->string('phone_number', 20);
                 $table->string('phone', 30);
                 $table->unsignedBigInteger('user_id')->index()->nullable();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });
         }

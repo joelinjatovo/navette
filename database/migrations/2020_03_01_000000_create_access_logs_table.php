@@ -17,7 +17,7 @@ class CreateAccessLogsTable extends Migration
             Schema::create('access_logs', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->unsignedBigInteger('user_id')->index()->nullable();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->integer('status')->default(0);
                 $table->string('url')->nullable();
                 $table->string('referer')->nullable();
@@ -27,7 +27,7 @@ class CreateAccessLogsTable extends Migration
                 $table->string('platform', 100)->nullable();
                 $table->boolean('api')->default(false);
                 $table->unsignedBigInteger('api_key_id')->index()->nullable();
-                $table->foreign('api_key_id')->references('id')->on('api_keys')->onDelete('cascade');
+                $table->foreign('api_key_id')->references('id')->on('api_keys');
                 $table->timestamps();
             });
         }

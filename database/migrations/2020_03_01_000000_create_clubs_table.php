@@ -18,7 +18,7 @@ class CreateClubsTable extends Migration
                 $table->id();
                 $table->string('name', 200);
                 $table->unsignedBigInteger('point_id')->index();
-                $table->foreign('point_id')->references('id')->on('points')->onDelete('cascade');
+                $table->foreign('point_id')->references('id')->on('points');
                 $table->unsignedBigInteger('user_id')->index();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
