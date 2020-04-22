@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('migrate/refresh', function () {
+    Artisan::queue('migrate:refresh', [
+        '--seed' => ''
+    ]);
+});
+
 Route::get('mailable', function () {
     $user = App\Models\User::find(1);
     return new App\Mail\UserLogin($user);
