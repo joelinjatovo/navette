@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\Ride;
 use App\Models\RidePoint;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -76,6 +77,10 @@ class ProcessOrder implements ShouldQueue
                         'type' => $type,
                         'order' => 0,
                     ]);
+                
+                if($item->ride_at == null){
+                    $item->ride_at = Carbon::now()->addMinutes(10);
+                }
 
                 // Set item status ACTIVE
                 $oldStatus = $item->status;
