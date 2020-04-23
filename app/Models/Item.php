@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\ItemStatusChanged;
 use App\Events\OrderStatusChanged;
 use App\Events\RideStatusChanged;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
@@ -70,6 +71,11 @@ class Item extends Model
                 }
             }
         });
+    }
+    
+    public function setRideAtAttribute($value)
+    {
+       $this->attributes['ride_at'] = Carbon::parse($value);
     }
     
     /**
