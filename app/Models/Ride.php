@@ -288,7 +288,7 @@ class Ride extends Model
                 
                 $order = $item->order;
                 if($order){
-                    if($order->items()->where('tems.status', Item::STATUS_PING)->get()){
+                    if($order->items()->where('status', Item::STATUS_PING)->get()){
                         $oldStatus = $order->status;
                         $newStatus = Order::STATUS_OK;
                     }else{
