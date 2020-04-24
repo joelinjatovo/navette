@@ -35,7 +35,7 @@ class RideController extends Controller
      * @return Response
      */
     public function index(Request $request){
-        return new RideCollection($request->user()->ridesDrived()->paginate());
+        return new RideCollection($request->user()->ridesDrived()->orderBy('rides.started_at', 'desc')->paginate());
     }
     
     /**

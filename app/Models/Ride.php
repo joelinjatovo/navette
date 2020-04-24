@@ -115,14 +115,14 @@ class Ride extends Model
     public function next()
     {
         // Check if ride has next point
-        $next = $this->points()->where('status', RidePoint::STATUS_NEXT)->first();
+        $next = $this->points()->wherePivot('status', RidePoint::STATUS_NEXT)->first();
         if($next)
         {
             return true;
         }
         
         // Set first active point as next
-        $point = $this->points()->where('status', RidePoint::STATUS_ACTIVE)->first();
+        $point = $this->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->first();
         if($point)
         {
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_NEXT]);
@@ -288,7 +288,8 @@ class Ride extends Model
                 
                 $order = $item->order;
                 if($order){
-                    if($order->items()->where('status', Item::STATUS_PING)->get()){
+                    $ping_item = $order->items()->where('items.status', Item::STATUS_PING)->exists();
+                    if($ping_item){
                         $oldStatus = $order->status;
                         $newStatus = Order::STATUS_OK;
                     }else{
