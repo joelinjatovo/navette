@@ -52,7 +52,11 @@ class ItemStatus extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id' => $this->item->id,
+            'item_id' => $this->item->getKey(),
+            'order_id' => $this->item->order?$this->item->order->getKey():null,
+            'user_id' => $this->item->order&&$this->item->order->user?$this->item->order->user->getKey():null,
+            'oldStatus' => $this->oldStatus,
+            'newStatus' => $this->newStatus,
         ];
     }
     

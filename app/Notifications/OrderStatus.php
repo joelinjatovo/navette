@@ -52,8 +52,10 @@ class OrderStatus extends Notification
     public function toArray($notifiable)
     {
         return [
-            'order_id' => $this->order->id,
-            'order' => $this->order->user,
+            'order_id' => $this->order->getKey(),
+            'user_id' => $this->order->user?$this->order->user->getKey():null,
+            'oldStatus' => $this->oldStatus,
+            'newStatus' => $this->newStatus,
         ];
     }
     

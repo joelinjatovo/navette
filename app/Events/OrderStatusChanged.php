@@ -44,7 +44,7 @@ class OrderStatusChanged implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->order->user->id);
+        return new PrivateChannel('App.User.'.$this->order->user->getKey());
     }
     
     /**
@@ -62,10 +62,13 @@ class OrderStatusChanged implements ShouldBroadcastNow
      *
      * @return array
      */
-    /*
     public function broadcastWith()
     {
-        return ['id' => $this->ride->id];
+        return [
+            'order_id' => $this->order->getKey(),
+            'user_id' => $this->order->user?$this->order->user->getKey():null,
+            'oldStatus' => $this->oldStatus,
+            'newStatus' => $this->newStatus,
+        ];
     }
-    */
 }

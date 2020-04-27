@@ -52,7 +52,10 @@ class RideStatus extends Notification
     public function toArray($notifiable)
     {
         return [
-            'id' => $this->ride->id,
+            'ride_id' => $this->ride->getKey(),
+            'driver_id' => $this->ride->driver?$this->ride->driver->getKey():null,
+            'oldStatus' => $this->oldStatus,
+            'newStatus' => $this->newStatus,
         ];
     }
     

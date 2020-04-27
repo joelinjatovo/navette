@@ -50,27 +50,6 @@ class Item extends Model
     public static function boot()
     {
         parent::boot();
-        
-        static::updating(function ($model) {
-            if($model->status = Item::STATUS_COMPLETED)
-            {
-                $order = $model->order;
-                if($order)
-                {
-                    $item = $order->items()->where('status', Order::STATUS_PING)->first();
-                    if($item){
-                        $oldStatus = $order->status;
-                        $newStatus = Order::STATUS_OK;
-                    }else{
-                        $oldStatus = $order->status;
-                        $newStatus = Order::STATUS_COMPLETED;
-                    }
-
-                    // Notify *customer
-                    event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
-                }
-            }
-        });
     }
     
     public function setRideAtAttribute($value)

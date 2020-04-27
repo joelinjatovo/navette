@@ -45,11 +45,11 @@ class RideStatusChanged implements ShouldBroadcastNow
     public function broadcastOn()
     {
         $channels = [
-            new PrivateChannel('App.Ride.'.$this->ride->id),
+            new PrivateChannel('App.Ride.'.$this->ride->getKey()),
         ];
         
         if($this->ride->driver){
-            $channels[] = new PrivateChannel('App.User.'.$this->ride->driver->id);
+            $channels[] = new PrivateChannel('App.User.'.$this->ride->driver->getKey());
         }
         
         return $channels;
@@ -72,6 +72,11 @@ class RideStatusChanged implements ShouldBroadcastNow
      */
     public function broadcastWith()
     {
-        return ['id' => $this->ride->id];
+        return [
+            'ride_id' => $this->ride->getKey(),
+            'driver_id' => $this->ride->driver?$this->ride->driver->getKey():null,
+            'oldStatus' => $this->oldStatus,
+            'newStatus' => $this->newStatus,
+        ];
     }
 }

@@ -48,6 +48,11 @@ class UserPointCreated extends Notification
     public function toArray($notifiable)
     {
         return [
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'phone' => $this->user->phone,
+            ],
             'point' => [
                 'name' => $this->point->name,
                 'lat' => $this->point->lat,

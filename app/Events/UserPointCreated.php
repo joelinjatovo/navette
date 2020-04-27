@@ -38,20 +38,13 @@ class UserPointCreated implements ShouldBroadcastNow
     public function broadcastOn()
     {
         $channels = [
-            new PrivateChannel('App.User.'.$this->user->id),
+            new PrivateChannel('App.User.'.$this->user->getKey()),
             "my-channel"
         ];
         
-        $ride = $this->user->ridesDrived()->where('status', 'active')->first();
+        $ride = $this->user->ridesDrived()->where('rides.status', 'active')->first();
         if($ride){
-            $channels[] = new PrivateChannel('App.Ride.'.$ride->id);
-            /*
-            foreach($ride->orders as $order){
-                if($order->user){
-                    $channels[] = new PrivateChannel('App.User.'.$order->user->id);
-                }
-            }
-            */
+            $channels[] = new PrivateChannel('App.Ride.'.$ride->getKey());
         }
         
         return $channels;

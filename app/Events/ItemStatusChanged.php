@@ -44,7 +44,10 @@ class ItemStatusChanged implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.Item.'.$this->item->id);
+        return [
+            new PrivateChannel('App.User.'.$this->item->order->user->getKey()),
+            new PrivateChannel('App.Item.'.$this->item->getKey())
+        ];
     }
     
     /**
@@ -64,6 +67,12 @@ class ItemStatusChanged implements ShouldBroadcastNow
      */
     public function broadcastWith()
     {
-        return ['id' => $this->item->id];
+        return [
+            'item_id' => $this->item->getKey(),
+            'order_id' => $this->item->order?$this->item->order->getKey():null,
+            'user_id' => $this->item->order&&$this->item->order->user?$this->item->order->user->getKey():null,
+            'oldStatus' => $this->oldStatus,
+            'newStatus' => $this->newStatus,
+        ];
     }
 }
