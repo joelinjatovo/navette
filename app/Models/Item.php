@@ -94,7 +94,7 @@ class Item extends Model
      */
     public function point()
     {
-        return $this->belongsTo(Point::class);
+        return $this->belongsTo(Point::class, 'point_id');
     }
     
     /**
@@ -164,6 +164,34 @@ class Item extends Model
         if($point && $ride){
             $newStatus = RidePoint::STATUS_CANCELED;
             $ride->points()->updateExistingPivot($point->getKey(), ['status' => $newStatus]);
+        }
+        
+        
+        // Cancel order
+        $order = $this->order;
+        if($order){
+            if(in_array($order->status, [Order::TYPE_BACK, Order::TYPE_BACK])){
+                $oldStatus = $order->status;
+                $newStatus = Order::STATUS_CANCELED;
+                
+                $order->status = $newStatus;
+                $order->save();
+                
+                // Notify *customer
+                event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
+            }else{
+                $item = $order->items()->where('items.status', Item::STATUS_PING)->first();
+                if(!$item){
+                    $oldStatus = $order->status;
+                    $newStatus = Order::STATUS_CANCELED;
+                
+                    $order->status = $newStatus;
+                    $order->save();
+
+                    // Notify *customer
+                    event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
+                }
+            }
         }
         
     }

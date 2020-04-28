@@ -48,7 +48,7 @@ class ItemController extends Controller
             $ride->next();
         }
         
-        return new RideItemResource($ride);
+        return new ItemItemResource($item);
     }
     
     /**
@@ -75,6 +75,6 @@ class ItemController extends Controller
             $ride->next();
         }
         
-        return new RideItemResource($ride);
+        return new ItemItemResource($item);
     }
 }
