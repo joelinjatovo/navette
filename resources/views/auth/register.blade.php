@@ -1,72 +1,73 @@
 @extends('layouts.app')
 
+@section('stylesheet')
+<link href="{{ asset('css/login.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+        <div class="col-md-4">
+            <div class="card rounded-0 shadow px-3 py-3">
+                <div class="card-header border-bottom-0 text-uppercase">{{ __('Register') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                            <label class="mdl-textfield__label" for="name">{{ __('Name') }}</label>
+
+                            <input id="name" type="text" class="mdl-textfield__input @error('name') is-invalid @enderror" name="name"  value="{{ __('Jean Pierre') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                            </div>
-                        </div>
+                          </div>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 
-                        <div class="form-group row">
-                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
+                            <label class="mdl-textfield__label" for="phone">{{ __('Phone Number') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
+                            <input id="phone" type="text" class="mdl-textfield__input @error('phone') is-invalid @enderror" name="phone"  value="{{ __('+33 x xx xx xx xx') }}" required autocomplete="phone">
 
                                 @error('phone')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                            </div>
-                        </div>
+                          </div>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                            <label class="mdl-textfield__label" for="password">{{ __('Password') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                            <input id="password" type="password" class="mdl-textfield__input @error('password') is-invalid @enderror" name="password"  value="{{ __('password') }}" required autocomplete="new-password">
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                            </div>
-                        </div>
+                          </div>
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+                            <label class="mdl-textfield__label" for="password-confirm">{{ __('Confirm Password') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
+                            <input id="password-confirm" type="password" class="mdl-textfield__input @error('password') is-invalid @enderror" name="password_confirmation" required autocomplete="new-password" value="{{ __('password') }}">
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                          </div>
+
+                        <div class="form-group">
+                                <button type="submit" class="btn btn-primary rounded-0">
                                     {{ __('Register') }}
                                 </button>
-                            </div>
                         </div>
                     </form>
                 </div>

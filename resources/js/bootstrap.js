@@ -11,6 +11,8 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
+    require('material-design-lite/material.js');
+
 } catch (e) {}
 
 /**
