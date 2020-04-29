@@ -3,9 +3,9 @@
 namespace App\Broadcasting;
 
 use App\Models\User;
-use App\Models\Ride;
+use App\Models\Order;
 
-class RideChannel
+class OrderChannel
 {
     /**
      * Create a new channel instance.
@@ -20,11 +20,12 @@ class RideChannel
     /**
      * Authenticate the user's access to the channel.
      *
-     * @param  \App\Models\User  $user
+     * @param  \App\Models\User $user
+     * @param  \App\Models\Order $order
      * @return array|bool
      */
-    public function join(User $user, Ride $ride)
+    public function join(User $user, Order $order)
     {
-        return $user->canJoinRide($ride->getKey());
+        return $order->user && ($user->getKey() == $order->user->getKey());
     }
 }
