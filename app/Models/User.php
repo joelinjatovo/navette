@@ -295,7 +295,7 @@ class User extends Authenticatable implements MustVerifyPhone
     */
     public function canJoinRide($ride_id)
     {
-        return null !== $this->rides()->where('id', $ride_id)->first();
+        return null !== $this->ridesDrived()->where('id', $ride_id)->first();
     }
 
     /**

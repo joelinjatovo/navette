@@ -25,6 +25,6 @@ class RideChannel
      */
     public function join(User $user, Ride $ride)
     {
-        return $user->canJoinRide($ride->getKey());
+        return true; //$user->canJoinRide($ride->getKey());
     }
 }
