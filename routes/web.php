@@ -56,3 +56,18 @@ Route::middleware(['auth'])->group(function () {
     });
     
 });
+
+/*ROUTES USER PANEL*/
+Route::get('/user/tableau-de-bord', function () {
+    return view('user/dashboard', ['active_dashboard' => true]);
+});
+Route::get('/user/mon-profil', function () {
+    return view('user/profile', ['active_profile' => true]);
+});
+Route::get('/user/reservation', function () {
+    return view('user/new_ride', ['active_new_ride' => true]);
+});
+Route::get('/user/historiques', function () {
+    return view('user/my_rides', ['active_my_rides' => true]);
+});
+/*END ROUTES USER PANEL*/
