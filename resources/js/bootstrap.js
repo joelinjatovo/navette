@@ -12,6 +12,18 @@ try {
 
     require('bootstrap');
     require('material-design-lite/material.js');
+    window.pW = require('please-wait/build/please-wait.js');
+    
+    
+    window.loading_screen = window.pW.pleaseWait({
+        logo: '/img/preload.jpg',
+        backgroundColor: '#1a2035',
+        loadingHtml: '<div class="sk-chase mx-auto"><div class="sk-chase-dot"></div><div class="sk-chase-dot"></div><div class="sk-chase-dot"></div><div class="sk-chase-dot"></div><div class="sk-chase-dot"></div><div class="sk-chase-dot"></div></div>'
+    });
+
+    window.addEventListener('load', function () {
+      window.loading_screen.finish();
+    });
 
 } catch (e) {}
 

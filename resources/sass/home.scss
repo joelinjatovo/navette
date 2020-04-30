@@ -1,5 +1,5 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('http://fonts.googleapis.com/css?family=Grand+Hotel');
 
 // Variables
 @import 'variables';
@@ -7,8 +7,11 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-//Material Design Lite
-@import '~material-design-lite/src/material-design-lite';
+// Fontawesome
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+
+// Animate
+@import url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.4.0/animate.min.css');
 
 //Please Wait
 @import '~please-wait/src/please-wait';

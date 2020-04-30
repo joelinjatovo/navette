@@ -71,3 +71,9 @@ Route::get('/user/historiques', function () {
     return view('user/my_rides', ['active_my_rides' => true]);
 });
 /*END ROUTES USER PANEL*/
+
+/*ROUTES HOME*/
+Route::get('/accueil', function () {
+    return view('home/index');
+});
+/*END ROUTES HOME*/
