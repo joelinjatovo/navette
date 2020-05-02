@@ -38,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('profile', 'Account\ProfileController@update');
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', 'Admin\IndexController@index')->name('dashboard');
         Route::get('users', 'Admin\UserController@index')->name('users');
         Route::get('user', 'Admin\UserController@create')->name('user.create');
         Route::get('user', 'Admin\UserController@store');
