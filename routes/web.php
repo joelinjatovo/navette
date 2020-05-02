@@ -106,6 +106,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ride/{ride}/edit', 'Admin\RideController@edit')->name('ride.edit');
         Route::post('ride/{ride}/edit', 'Admin\RideController@update');
         Route::post('ride/{ride}/delete', 'Admin\RideController@delete');
+        
+        Route::get('apikeys', 'Admin\ApiKeyController@index')->name('apikeys');
+        Route::get('apikey', 'Admin\ApiKeyController@create')->name('apikey.create');
+        Route::post('apikey', 'Admin\ApiKeyController@store');
+        Route::get('apikey/{apikey}', 'Admin\ApiKeyController@show')->name('apikey.show');
+        Route::get('apikey/{apikey}/edit', 'Admin\ApiKeyController@edit')->name('apikey.edit');
+        Route::post('apikey/{apikey}/edit', 'Admin\ApiKeyController@update');
+        Route::post('apikey/{apikey}/delete', 'Admin\ApiKeyController@delete');
+        
+        Route::get('/settings', 'Admin\SettingController@index')->name('settings');
     });
     
     Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {

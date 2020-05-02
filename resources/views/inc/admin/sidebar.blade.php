@@ -165,11 +165,21 @@ Tip 2: you can also add an image using data-image tag
         </ul>
       </div>
     </li>
-    <li class="nav-item ">
-      <a class="nav-link" href="../examples/charts.html">
-        <i class="material-icons">timeline</i>
-        <p> Charts </p>
+    <li class="nav-item {{ Route::is('admin.setting*') ? 'active' : '' }} ">
+      <a class="nav-link" data-toggle="collapse" href="#settings" {{ Route::is('admin.setting*') ? 'aria-expanded="true"' : '' }}>
+        <i class="material-icons"></i>
+        <p>{{ __('messages.settings') }}<b class="caret"></b></p>
       </a>
+      <div class="collapse {{ Route::is('admin.setting*') ? 'show' : '' }}" id="settings">
+        <ul class="nav">
+          <li class="nav-item {{ Route::is('admin.apikeys') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.apikeys') }}">
+              <span class="sidebar-mini"> P </span>
+              <span class="sidebar-normal">{{ __('messages.apikeys') }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     </li>
   </ul>
 </div>

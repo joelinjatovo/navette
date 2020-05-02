@@ -53,7 +53,7 @@ The above copyright notice and this permission notice shall be included in all c
   <!-- CSS Files -->
   <link href="/css/material-dashboard.min.css?v=2.1.2" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="/demo/demo.css" rel="stylesheet" />
+  <link href="/css/material-demo.css" rel="stylesheet" />
   <!-- Google Tag Manager -->
   <script>
     (function(w, d, s, l, i) {
@@ -201,7 +201,7 @@ The above copyright notice and this permission notice shall be included in all c
     
   <!--   Core JS Files   -->
   <script src="/js/core/jquery.min.js"></script>
-  <script src="js/core/popper.min.js"></script>
+  <script src="/js/core/popper.min.js"></script>
   <script src="/js/core/bootstrap-material-design.min.js"></script>
   <script src="/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!-- Plugin for the momentJs  -->
@@ -255,7 +255,6 @@ The above copyright notice and this permission notice shall be included in all c
 
         $sidebar_responsive = $('body > .navbar-collapse');
 
-<<<<<<< HEAD
         window_width = $(window).width();
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
@@ -425,16 +424,6 @@ The above copyright notice and this permission notice shall be included in all c
 
     });
   </script>
-=======
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @yield('stylesheet')
-</head>
-<body>
-    @yield('body')
-    
-    @yield('javascript')
->>>>>>> master
 </body>
 
 </html>
