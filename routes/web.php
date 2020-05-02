@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', 'Admin\IndexController@index')->name('dashboard');
         Route::get('users', 'Admin\UserController@index')->name('users');
         Route::get('user', 'Admin\UserController@create')->name('user.create');
-        Route::get('user', 'Admin\UserController@store');
+        Route::post('user', 'Admin\UserController@store');
         Route::get('user/{user}', 'Admin\UserController@show')->name('user.show');
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('user.edit');
         Route::post('user/{user}/edit', 'Admin\UserController@update');
