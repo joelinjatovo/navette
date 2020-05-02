@@ -121,6 +121,50 @@ Tip 2: you can also add an image using data-image tag
         </ul>
       </div>
     </li>
+    <li class="nav-item {{ Route::is('admin.order*') ? 'active' : '' }} ">
+      <a class="nav-link" data-toggle="collapse" href="#orders" {{ Route::is('admin.order*') ? 'aria-expanded="true"' : '' }}>
+        <i class="material-icons"></i>
+        <p>{{ __('messages.orders') }}<b class="caret"></b></p>
+      </a>
+      <div class="collapse {{ Route::is('admin.order*') ? 'show' : '' }}" id="orders">
+        <ul class="nav">
+          <li class="nav-item {{ Route::is('admin.orders') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.orders') }}">
+              <span class="sidebar-mini"> P </span>
+              <span class="sidebar-normal">{{ __('messages.list') }}</span>
+            </a>
+          </li>
+          <li class="nav-item {{ Route::is('admin.order.create') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.order.create') }}">
+              <span class="sidebar-mini"> A </span>
+              <span class="sidebar-normal">{{ __('messages.order.create') }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item {{ Route::is('admin.ride*') ? 'active' : '' }} ">
+      <a class="nav-link" data-toggle="collapse" href="#rides" {{ Route::is('admin.ride*') ? 'aria-expanded="true"' : '' }}>
+        <i class="material-icons"></i>
+        <p>{{ __('messages.rides') }}<b class="caret"></b></p>
+      </a>
+      <div class="collapse {{ Route::is('admin.ride*') ? 'show' : '' }}" id="rides">
+        <ul class="nav">
+          <li class="nav-item {{ Route::is('admin.rides') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.rides') }}">
+              <span class="sidebar-mini"> P </span>
+              <span class="sidebar-normal">{{ __('messages.list') }}</span>
+            </a>
+          </li>
+          <li class="nav-item {{ Route::is('admin.ride.create') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.ride.create') }}">
+              <span class="sidebar-mini"> A </span>
+              <span class="sidebar-normal">{{ __('messages.ride.create') }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
     <li class="nav-item ">
       <a class="nav-link" href="../examples/charts.html">
         <i class="material-icons">timeline</i>

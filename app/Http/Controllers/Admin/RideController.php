@@ -4,47 +4,47 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Order;
+use App\Models\Ride;
 
-class OrderController extends Controller
+class RideController extends Controller
 {
     
     /**
-     * Show the list of all order
+     * Show the list of all ride
      *
      * @return Response
      */
     public function index()
     {
-        $orders = Order::all();
+        $rides = Ride::all();
         
-        return view('admin.order.index', ['models' => $orders]);
+        return view('admin.ride.index', ['models' => $rides]);
     }
 
     /**
-     * Show the order info.
+     * Show the ride info.
      *
-     * @param Order $order
+     * @param Ride $ride
      * @return Response
      */
-    public function show(Order $order)
+    public function show(Ride $ride)
     {
-        return view('admin.order.show', ['model' => $order]);
+        return view('admin.ride.show', ['model' => $ride]);
     }
     
     /**
-     * Show the form to create a new order.
+     * Show the form to create a new ride.
      *
      * @return Response
      */
     public function create()
     {
-        $model = new Order();
-        return view('admin.order.create', ['model' => $model]);
+        $model = new Ride();
+        return view('admin.ride.create', ['model' => $model]);
     }
 
     /**
-     * Store a new order.
+     * Store a new ride.
      *
      * @param  Request  $request
      * @return Response
@@ -56,37 +56,37 @@ class OrderController extends Controller
     }
     
     /**
-     * Show the form to edit specified order.
+     * Show the form to edit specified ride.
      *
-     * @param Order $order
+     * @param Ride $ride
      * @return Response
      */
-    public function edit(Order $order)
+    public function edit(Ride $ride)
     {
-        return view('admin.order.edit', ['model' => $order]);
+        return view('admin.ride.edit', ['model' => $ride]);
     }
 
     /**
-     * Update the specified order.
+     * Update the specified ride.
      *
      * @param Request  $request
-     * @param Order $order
+     * @param Ride $ride
      * @return Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Ride $ride)
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
     }
 
     /**
-     * Delete the specified order.
+     * Delete the specified ride.
      *
      * @param Request  $request
-     * @param Order $order
+     * @param Ride $ride
      * @return Response
      */
-    public function delete(Order $order)
+    public function delete(Ride $ride)
     {
         $club->delete();
 

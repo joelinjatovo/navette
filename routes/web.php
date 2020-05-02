@@ -63,6 +63,22 @@ Route::middleware(['auth'])->group(function () {
         Route::get('car/{car}/edit', 'Admin\CarController@edit')->name('car.edit');
         Route::post('car/{car}/edit', 'Admin\CarController@update');
         Route::post('car/{car}/delete', 'Admin\CarController@delete');
+        
+        Route::get('orders', 'Admin\OrderController@index')->name('orders');
+        Route::get('order', 'Admin\OrderController@create')->name('order.create');
+        Route::post('order', 'Admin\OrderController@store');
+        Route::get('order/{order}', 'Admin\OrderController@show')->name('order.show');
+        Route::get('order/{order}/edit', 'Admin\OrderController@edit')->name('order.edit');
+        Route::post('order/{order}/edit', 'Admin\OrderController@update');
+        Route::post('order/{order}/delete', 'Admin\OrderController@delete');
+        
+        Route::get('rides', 'Admin\RideController@index')->name('rides');
+        Route::get('ride', 'Admin\RideController@create')->name('ride.create');
+        Route::post('ride', 'Admin\RideController@store');
+        Route::get('ride/{ride}', 'Admin\RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/edit', 'Admin\RideController@edit')->name('ride.edit');
+        Route::post('ride/{ride}/edit', 'Admin\RideController@update');
+        Route::post('ride/{ride}/delete', 'Admin\RideController@delete');
     });
     
     Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {
