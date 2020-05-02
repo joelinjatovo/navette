@@ -16,7 +16,7 @@
               <label class="col-sm-2 col-form-label">{{ __('messages.name') }}</label>
               <div class="col-sm-10">
                 <div class="form-group has-success bmd-form-group">
-                  <input type="text" name="user[name]" class="form-control">
+                  <input type="text" name="user[name]" class="form-control" value="{{ old('user.name') }}">
                   <!--<span class="form-control-feedback">
                     <i class="material-icons">done</i>
                   </span>-->
@@ -27,7 +27,7 @@
               <label class="col-sm-2 col-form-label">{{ __('messages.phone') }}</label>
               <div class="col-sm-10">
                 <div class="form-group has-danger bmd-form-group">
-                  <input type="text" name="user[phone]" class="form-control">
+                  <input type="text" name="user[phone]" class="form-control" value="{{ old('user.phone') }}">
                   <!--<span class="form-control-feedback">
                     <i class="material-icons">clear</i>
                   </span>-->
@@ -38,7 +38,7 @@
               <label class="col-sm-2 col-form-label">{{ __('messages.email') }}</label>
               <div class="col-sm-10">
                 <div class="form-group has-danger bmd-form-group">
-                  <input type="email" name="user[email]" class="form-control">
+                  <input type="email" name="user[email]" class="form-control" value="{{ old('user.email') }}">
                   <!--<span class="form-control-feedback">
                     <i class="material-icons">clear</i>
                   </span>-->

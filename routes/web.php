@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', 'Admin\IndexController@index')->name('dashboard');
+        
         Route::get('users', 'Admin\UserController@index')->name('users');
         Route::get('user', 'Admin\UserController@create')->name('user.create');
         Route::post('user', 'Admin\UserController@store');
@@ -46,6 +47,22 @@ Route::middleware(['auth'])->group(function () {
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('user.edit');
         Route::post('user/{user}/edit', 'Admin\UserController@update');
         Route::post('user/{user}/delete', 'Admin\UserController@delete');
+        
+        Route::get('clubs', 'Admin\ClubController@index')->name('clubs');
+        Route::get('club', 'Admin\ClubController@create')->name('club.create');
+        Route::post('club', 'Admin\ClubController@store');
+        Route::get('club/{club}', 'Admin\ClubController@show')->name('club.show');
+        Route::get('club/{club}/edit', 'Admin\ClubController@edit')->name('club.edit');
+        Route::post('club/{club}/edit', 'Admin\ClubController@update');
+        Route::post('club/{club}/delete', 'Admin\ClubController@delete');
+        
+        Route::get('cars', 'Admin\CarController@index')->name('cars');
+        Route::get('car', 'Admin\CarController@create')->name('car.create');
+        Route::post('car', 'Admin\CarController@store');
+        Route::get('car/{car}', 'Admin\CarController@show')->name('car.show');
+        Route::get('car/{car}/edit', 'Admin\CarController@edit')->name('car.edit');
+        Route::post('car/{car}/edit', 'Admin\CarController@update');
+        Route::post('car/{car}/delete', 'Admin\CarController@delete');
     });
     
     Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {

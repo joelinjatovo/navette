@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateUser as UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-
 class UserController extends Controller
 {
     
