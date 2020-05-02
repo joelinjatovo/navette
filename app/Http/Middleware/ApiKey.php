@@ -17,17 +17,17 @@ class ApiKey
      */
     public function handle($request, Closure $next)
     {
-        $token = $request->header('x-api-key');
-        if( empty($token) || !$this->isValidApiKey($token)){
+        $apikey = $request->header('x-api-key');
+        if( empty($apikey) || !$this->isValidApiKey($apikey)){
             abort(403, 'Invalid Api Key');
         }
         
         return $next($request);
     }
     
-    private function isValidApiKey($token){
+    private function isValidApiKey($apikey){
         try {
-            $decrypted = decrypt($token);
+            $decrypted = decrypt($apikey);
         } catch (DecryptException $e) {
             return false;
         }

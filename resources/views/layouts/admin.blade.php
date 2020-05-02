@@ -255,6 +255,7 @@ The above copyright notice and this permission notice shall be included in all c
 
         $sidebar_responsive = $('body > .navbar-collapse');
 
+<<<<<<< HEAD
         window_width = $(window).width();
 
         fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
@@ -424,6 +425,16 @@ The above copyright notice and this permission notice shall be included in all c
 
     });
   </script>
+=======
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('stylesheet')
+</head>
+<body>
+    @yield('body')
+    
+    @yield('javascript')
+>>>>>>> master
 </body>
 
 </html>

@@ -2,12 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Events\OrderCreated as OrderCreatedEvent;
-use App\Events\OrderChanged as OrderChangedEvent;
+use App\Events\OrderStatusChanged as OrderStatusChangedEvent;
 use App\Notifications\OrderStatus as OrderStatusNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-
 
 class OrderEventSubscriber
 {
@@ -19,34 +17,17 @@ class OrderEventSubscriber
     public function subscribe($events)
     {
         $events->listen(
-            'App\Events\OrderCreated',
-            'App\Listeners\OrderEventSubscriber@handleOrderCreated'
-        );
-        $events->listen(
-            'App\Events\OrderUpdated',
-            'App\Listeners\OrderEventSubscriber@handleOrderUpdated'
+            'App\Events\OrderStatusChanged',
+            'App\Listeners\OrderEventSubscriber@handle'
         );
     }
     
     /**
      * Handle order created events.
      */
-    public function handleOrderCreated(OrderCreatedEvent $event) {
-        $order = $event->order;
-        $user = $order->user;
-        if( null != $user ) {
-            $user->notify(new OrderStatusNotification($order, 'created'));
-        }
-    }
-    
-    /**
-     * Handle order updated events.
-     */
-    public function handleOrderUpdated(OrderChangedEvent $event) {
-        $order = $event->order;
-        $user = $order->user;
-        if( null != $user ) {
-            $user->notify(new OrderStatusNotification($order, 'updated'));
+    public function handle(OrderStatusChangedEvent $event) {
+        if( $event->order && $event->order->user ) {
+            $event->order->user->notify(new OrderStatusNotification($event->order, $event->oldStatus, $event->newStatus));
         }
     }
 }

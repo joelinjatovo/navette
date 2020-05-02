@@ -11,14 +11,14 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
-    protected function success($status, $message){
+    protected function success($status, $message, $data = null){
         return response()->json([
-            'status' => 200,
+            'status' => $status,
             'code' => 0,
             'message' => $message,
             'errors' => [],
-            'data' => null,
-        ])->setStatusCode($status);;
+            'data' => $data,
+        ])->setStatusCode(200);;
     }
     
     protected function error($status, $code, $message){
@@ -28,6 +28,6 @@ class Controller extends BaseController
             'message' => $message,
             'errors' => [],
             'data' => null,
-        ])->setStatusCode($status);
+        ])->setStatusCode(200);
     }
 }

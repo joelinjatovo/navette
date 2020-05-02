@@ -9,25 +9,49 @@ class Order extends Model
 {
     
     use SoftDeletes;
-
-    /**
-     * The attributes that are datetime type.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'created_at', 'updated_at', 'deleted_at',
-    ];
-
+    
+    public const PAYMENT_TYPE_CASH = 'cash';
+    
+    public const PAYMENT_TYPE_STRIPE = 'stripe';
+    
+    public const PAYMENT_TYPE_PAYPAL = 'paypal';
+    
+    public const PAYMENT_TYPE_APPLE_PAY = 'apple_pay';
+    
+    public const STATUS_PING = 'ping'; 
+    
+    public const STATUS_ON_HOLD = 'on-hold';
+    
+    public const STATUS_PROCESSING = 'processing';
+    
+    public const STATUS_OK = 'ok';
+    
+    public const STATUS_ACTIVE = 'active';
+    
+    public const STATUS_CANCELED = 'canceled';
+    
+    public const STATUS_COMPLETED = 'completed';
+    
+    public const TYPE_GO = 'go';
+    
+    public const TYPE_BACK = 'back';
+    
+    public const TYPE_GO_BACK = 'go-back';
+    
+    public const TYPE_CUSTOM = 'custom';
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'status', 'place', 'amount', 'total', 'subtotal', 'currency', 'vat', 'preordered', 'privatized', 'ip_address', 'mac_address',
+        'type',
+        'place',
+        'privatized',
+        'preordered',
     ];
-
+    
     /**
      * Bootstrap the model and its traits.
      *
@@ -45,11 +69,43 @@ class Order extends Model
     }
     
     /**
-     * Get the first order.
+     * Get the user that canceled the order.
      */
-    public function first()
+    public function canceler()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(User::class, 'canceler_id');
+    }
+    
+    /**
+     * Get the car privatized with the order.
+     */
+    public function car()
+    {
+        return $this->belongsTo(Car::class, 'car_id');
+    }
+    
+    /**
+     * Get the club that owns the order.
+     */
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
+    }
+    
+    /**
+     * Get the order items
+     */
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'order_id');
+    }
+    
+    /**
+     * Get the order's note.
+     */
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
     }
     
     /**
@@ -61,35 +117,11 @@ class Order extends Model
     }
     
     /**
-     * Get the travel that owns the order.
+     * Get the payment tokens
      */
-    public function travel()
+    public function paymentTokens()
     {
-        return $this->belongsTo(Travel::class);
-    }
-    
-    /**
-     * Get the phones that owns the order.
-     */
-    public function phones()
-    {
-        return $this->hasMany(Phone::class);
-    }
-    
-    /**
-     * The points that belong to the order.
-     */
-    public function points()
-    {
-        return $this->belongsToMany(Point::class, 'order_point')->using(UserPoint::class)->withPivot(['type']);
-    }
-    
-    /**
-     * Get second order that owns the first order
-     */
-    public function second()
-    {
-        return $this->hasOne(Order::class);
+        return $this->hasMany(PaymentToken::class, 'order_id');
     }
     
     /**
@@ -98,5 +130,62 @@ class Order extends Model
     public function zone()
     {
         return $this->belongsTo(Zone::class);
+    }
+    
+    /**
+     * Set VAT tax
+     */
+    public function setVat($vat)
+    {
+        $this->vat = $vat;
+        $this->total = $this->subtotal + $this->subtotal * $this->vat;
+        
+        return $this;
+    }
+    
+    /**
+     * Set zone and calculate
+     */
+    public function setZone(Zone $zone)
+    {
+        $this->zone_id = $zone->getKey();
+        if($this->privatized){
+            $this->amount = $zone->privatizedPrice;
+        }else{
+            $this->amount = $zone->price;
+        }
+        $this->currency = $zone->currency;
+        $this->subtotal = $this->place * $this->amount;
+        $this->total = $this->subtotal + $this->subtotal * $this->vat;
+        
+        return $this;
+    }
+    
+    /**
+     * Check if order is cancelable
+     */
+    public function cancelable()
+    {
+        switch($this->status){
+            case self::STATUS_COMPLETED:
+            case self::STATUS_CANCELED:
+                return false;
+            default:
+                return true;
+        }
+    
+        return true;
+    }
+    
+    /**
+     * Cancel order
+     */
+    public function cancel(User $user)
+    {
+        $this->status = self::STATUS_CANCELED;
+        $this->canceled_at = now();
+        $this->canceler_role = $user->isAdmin() ? Role::ADMIN : ( $user->isDriver() ? Role::DRIVER : Role::CUSTOMER );
+        $this->canceler_id = $user->getKey();
+        $this->save();
     }
 }

@@ -9,3 +9,12 @@
 108: Invalid Verification Code
 109: Phone Already Verified
 110: Invalid Refresh Token
+111: Order not cancelable
+112: Ride not activable
+113: Ride not cancelable
+114: Empty ride location
+115: Ride dirrection not calculated
+116: Ride Point not finishable
+117: Ride Point not cancelable
+118: Item not finishable
+119: Item not cancelable

@@ -32,9 +32,29 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
+<<<<<<< HEAD
             'user.name' => 'required|max:255',
             'user.phone' => 'required|numeric|unique:users',
             'user.password' => 'required|max:8',
+=======
+            'name' => 'max:255',
+            'phone' => 'unique:users',
+            'password' => 'max:8',
+        ];
+    }
+    
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Your name is required',
+            'phone.required'  => 'Your phone number is required',
+            'password.required'  => 'A password is required',
+>>>>>>> master
         ];
     }
 }

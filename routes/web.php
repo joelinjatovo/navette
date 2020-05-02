@@ -16,9 +16,30 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('database/', function () {
+    // Test database connection
+    try {
+        DB::connection()->getPdo();
+    } catch (\Exception $e) {
+        die("Could not connect to the database.  Please check your configuration. error:" . $e );
+    }
+});
+
+Route::get('migrate/refresh', function () {
+    Artisan::queue('migrate:refresh', [
+        '--seed' => ''
+    ]);
+});
+
 Route::get('mailable', function () {
     $user = App\Models\User::find(1);
     return new App\Mail\UserLogin($user);
+});
+
+Route::get('runevent', function () {
+    $ride = \App\Models\Ride::find(2);
+    event(new \App\Events\RideStatusChanged($ride, 'started', 'ping', 'active'));
+    return response()->json($ride);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -27,7 +48,13 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/home', function () {return view('welcome');});
     
-    Route::get('/broadcast', function () {return view('broadcast');});
+    Route::get('/event', function () {
+        event(new \App\Events\MyEvent('hello world'));}
+    );
+    
+    Route::get('/broadcast', function () {
+        return view('event');
+    });
 
     Route::get('/logout', function () {
         \Auth::logout();

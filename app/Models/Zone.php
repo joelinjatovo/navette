@@ -41,4 +41,14 @@ class Zone extends Model
     {
         return $this->hasMany(Order::class);
     }
+    
+    /**
+     * Find zone by distance
+     */
+    public static function findByDistance($distance)
+    {
+        return Zone::where('distance', '>=', $distance)
+                ->orderBy('distance', 'ASC')
+                ->first();
+    }
 }

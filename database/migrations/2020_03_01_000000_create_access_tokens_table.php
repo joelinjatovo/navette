@@ -17,8 +17,8 @@ class CreateAccessTokensTable extends Migration
             Schema::create('access_tokens', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->text('scopes');
-                $table->unsignedBigInteger('user_id')->index();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->unsignedBigInteger('user_id')->nullable();
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->boolean('revoked')->default(false);
                 $table->dateTime('expires_at')->nullable();
                 $table->timestamps();
@@ -33,6 +33,7 @@ class CreateAccessTokensTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('access_tokens');
     }
 }
