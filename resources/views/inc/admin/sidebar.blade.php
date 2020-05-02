@@ -14,7 +14,7 @@ Tip 2: you can also add an image using data-image tag
   @auth
   <div class="user">
     <div class="photo">
-      <img src="{{ auth()->user()->image ? auth()->user()->image->url : '/img/faces/avatar.jpg' }}" />
+      <img src="{{ auth()->user()->image ? url(auth()->user()->image->url) : asset('/img/faces/avatar.jpg') }}" />
     </div>
     <div class="user-info">
       <a data-toggle="collapse" href="#collapseExample" class="username">
