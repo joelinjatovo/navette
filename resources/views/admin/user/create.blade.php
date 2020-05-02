@@ -13,39 +13,6 @@
           <form id="main-form" method="post" action="{{ url()->current() }}" class="form-horizontal">
             @csrf
             <div class="row">
-              <label class="col-sm-2 col-form-label label-checkbox">{{ __('messages.roles') }}</label>
-              <div class="col-sm-4 col-sm-offset-1 checkbox-radios">
-                <div class="form-check disabled">
-                  <label class="form-check-label">
-                    <input type="hidden" value="0" name="user[roles][customer]">
-                    <input class="form-check-input" type="checkbox" value="1" name="user[roles][customer]" disabled="" checked=""> {{ __('messages.customer') }}
-                    <span class="form-check-sign">
-                      <span class="check"></span>
-                    </span>
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input type="hidden" value="0" name="user[roles][driver]">
-                    <input class="form-check-input" type="checkbox" value="1" name="user[roles][driver]"> {{ __('messages.driver') }}
-                    <span class="form-check-sign">
-                      <span class="check"></span>
-                    </span>
-                  </label>
-                </div>
-                <div class="form-check">
-                  <label class="form-check-label">
-                    <input type="hidden" value="0" name="user[roles][admin]">
-                    <input class="form-check-input" type="checkbox" value="1" name="user[roles][admin]"> {{ __('messages.admin') }}
-                    <span class="form-check-sign">
-                      <span class="check"></span>
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-              
-            <div class="row">
               <label class="col-sm-2 col-form-label">{{ __('messages.name') }}</label>
               <div class="col-sm-10">
                 <div class="form-group has-success bmd-form-group">
@@ -75,6 +42,38 @@
                   <!--<span class="form-control-feedback">
                     <i class="material-icons">clear</i>
                   </span>-->
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label label-checkbox">{{ __('messages.roles') }}</label>
+              <div class="col-sm-4 col-sm-offset-1 checkbox-radios">
+                <div class="form-check disabled">
+                  <label class="form-check-label">
+                    <input type="hidden" value="0" name="user[roles][customer]">
+                    <input class="form-check-input" type="checkbox" value="1" name="user[roles][customer]" disabled="" checked=""> {{ __('messages.customer') }}
+                    <span class="form-check-sign">
+                      <span class="check"></span>
+                    </span>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="hidden" value="0" name="user[roles][driver]">
+                    <input class="form-check-input" type="checkbox" value="1" name="user[roles][driver]"> {{ __('messages.driver') }}
+                    <span class="form-check-sign">
+                      <span class="check"></span>
+                    </span>
+                  </label>
+                </div>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="hidden" value="0" name="user[roles][admin]">
+                    <input class="form-check-input" type="checkbox" value="1" name="user[roles][admin]"> {{ __('messages.admin') }}
+                    <span class="form-check-sign">
+                      <span class="check"></span>
+                    </span>
+                  </label>
                 </div>
               </div>
             </div>

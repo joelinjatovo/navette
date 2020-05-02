@@ -62,22 +62,16 @@ Tip 2: you can also add an image using data-image tag
       </a>
       <div class="collapse {{ Route::is('admin.user*') ? 'show' : '' }}" id="users">
         <ul class="nav">
-          <li class="nav-item ">
+          <li class="nav-item {{ Route::is('admin.users') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.users') }}">
               <span class="sidebar-mini"> P </span>
               <span class="sidebar-normal">{{ __('messages.list') }}</span>
             </a>
           </li>
-          <li class="nav-item ">
+          <li class="nav-item {{ Route::is('admin.user.create') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.user.create') }}">
               <span class="sidebar-mini"> A </span>
               <span class="sidebar-normal">{{ __('messages.user.create') }}</span>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="../examples/pages/rtl.html">
-              <span class="sidebar-mini"> RS </span>
-              <span class="sidebar-normal"> RTL Support </span>
             </a>
           </li>
         </ul>
