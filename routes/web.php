@@ -63,6 +63,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('profile', 'Account\ProfileController@show')->name('profile');
     Route::post('profile', 'Account\ProfileController@update');
+
+    Route::get('notifications', 'Account\NotificationController@index')->name('notifications');
+    Route::get('notifications/unread', 'Account\NotificationController@unread')->name('notifications.unread');
+    Route::post('notifications', 'Account\NotificationController@markAsRead');
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', 'Admin\IndexController@index')->name('dashboard');
