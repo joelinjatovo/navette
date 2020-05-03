@@ -1899,6 +1899,96 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notification.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Notification.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Notification",
+  props: ['notification'],
+  computed: {
+    created_at: function created_at() {
+      return moment(this.notification.created_at).format('MMMM Do YYYY');
+    },
+    avatar: function avatar() {
+      return "https://api.adorable.io/avatars/48/".concat(this.comment.author, "@adorable.io.png");
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notifications.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Notifications.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _Notification__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Notification */ "./resources/js/components/Notification.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Notifications",
+  components: {
+    Notification: _Notification__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: ['user'],
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$store.dispatch('GET_NOTIFICATIONS');
+    window.Echo["private"]('App.User.' + this.user.id).notification(function (data) {
+      console.log(data);
+
+      _this.$store.commit('ADD_NOTIFICATION', data.notification);
+    });
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['notifications']))
+});
+
+/***/ }),
+
 /***/ "./node_modules/base64-js/index.js":
 /*!*****************************************!*\
   !*** ./node_modules/base64-js/index.js ***!
@@ -8393,6 +8483,112 @@ function isnan (val) {
 }
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--8-2!./node_modules/sass-loader/dist/cjs.js??ref--8-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".notification-wrapper[data-v-6a4ce154] {\n  list-style: none;\n  text-align: left;\n  overflow: hidden;\n  margin-bottom: 2em;\n  padding: 0.4em;\n}\n.notification-wrapper .profile[data-v-6a4ce154] {\n  width: 80px;\n  float: left;\n}\n.notification-wrapper .msg-body[data-v-6a4ce154] {\n  padding: 0.8em;\n  color: #666;\n  line-height: 1.5;\n}\n.notification-wrapper .msg[data-v-6a4ce154] {\n  width: 86%;\n  float: left;\n  background-color: #fff;\n  border-radius: 0 5px 5px 5px;\n  position: relative;\n}\n.notification-wrapper .msg[data-v-6a4ce154]::after {\n  content: \" \";\n  position: absolute;\n  left: -13px;\n  top: 0;\n  border: 14px solid transparent;\n  border-top-color: #fff;\n}\n.notification-wrapper .date[data-v-6a4ce154] {\n  float: right;\n}\n.notification-wrapper .name[data-v-6a4ce154] {\n  margin: 0;\n  color: #999;\n  font-weight: 700;\n  font-size: 0.8em;\n}\n.notification-wrapper p[data-v-6a4ce154]:last-child {\n  margin-top: 0.6em;\n  margin-bottom: 0;\n}", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/lib/css-base.js":
+/*!*************************************************!*\
+  !*** ./node_modules/css-loader/lib/css-base.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
 
 /***/ }),
 
@@ -37504,6 +37700,4312 @@ var Echo = function () {
 
 /***/ }),
 
+/***/ "./node_modules/material-design-lite/material.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/material-design-lite/material.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+;(function() {
+"use strict";
+
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * A component handler interface using the revealing module design pattern.
+ * More details on this design pattern here:
+ * https://github.com/jasonmayes/mdl-component-design-pattern
+ *
+ * @author Jason Mayes.
+ */
+/* exported componentHandler */
+
+// Pre-defining the componentHandler interface, for closure documentation and
+// static verification.
+var componentHandler = {
+  /**
+   * Searches existing DOM for elements of our component type and upgrades them
+   * if they have not already been upgraded.
+   *
+   * @param {string=} optJsClass the programatic name of the element class we
+   * need to create a new instance of.
+   * @param {string=} optCssClass the name of the CSS class elements of this
+   * type will have.
+   */
+  upgradeDom: function(optJsClass, optCssClass) {},
+  /**
+   * Upgrades a specific element rather than all in the DOM.
+   *
+   * @param {!Element} element The element we wish to upgrade.
+   * @param {string=} optJsClass Optional name of the class we want to upgrade
+   * the element to.
+   */
+  upgradeElement: function(element, optJsClass) {},
+  /**
+   * Upgrades a specific list of elements rather than all in the DOM.
+   *
+   * @param {!Element|!Array<!Element>|!NodeList|!HTMLCollection} elements
+   * The elements we wish to upgrade.
+   */
+  upgradeElements: function(elements) {},
+  /**
+   * Upgrades all registered components found in the current DOM. This is
+   * automatically called on window load.
+   */
+  upgradeAllRegistered: function() {},
+  /**
+   * Allows user to be alerted to any upgrades that are performed for a given
+   * component type
+   *
+   * @param {string} jsClass The class name of the MDL component we wish
+   * to hook into for any upgrades performed.
+   * @param {function(!HTMLElement)} callback The function to call upon an
+   * upgrade. This function should expect 1 parameter - the HTMLElement which
+   * got upgraded.
+   */
+  registerUpgradedCallback: function(jsClass, callback) {},
+  /**
+   * Registers a class for future use and attempts to upgrade existing DOM.
+   *
+   * @param {componentHandler.ComponentConfigPublic} config the registration configuration
+   */
+  register: function(config) {},
+  /**
+   * Downgrade either a given node, an array of nodes, or a NodeList.
+   *
+   * @param {!Node|!Array<!Node>|!NodeList} nodes
+   */
+  downgradeElements: function(nodes) {}
+};
+
+componentHandler = (function() {
+  'use strict';
+
+  /** @type {!Array<componentHandler.ComponentConfig>} */
+  var registeredComponents_ = [];
+
+  /** @type {!Array<componentHandler.Component>} */
+  var createdComponents_ = [];
+
+  var componentConfigProperty_ = 'mdlComponentConfigInternal_';
+
+  /**
+   * Searches registered components for a class we are interested in using.
+   * Optionally replaces a match with passed object if specified.
+   *
+   * @param {string} name The name of a class we want to use.
+   * @param {componentHandler.ComponentConfig=} optReplace Optional object to replace match with.
+   * @return {!Object|boolean}
+   * @private
+   */
+  function findRegisteredClass_(name, optReplace) {
+    for (var i = 0; i < registeredComponents_.length; i++) {
+      if (registeredComponents_[i].className === name) {
+        if (typeof optReplace !== 'undefined') {
+          registeredComponents_[i] = optReplace;
+        }
+        return registeredComponents_[i];
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Returns an array of the classNames of the upgraded classes on the element.
+   *
+   * @param {!Element} element The element to fetch data from.
+   * @return {!Array<string>}
+   * @private
+   */
+  function getUpgradedListOfElement_(element) {
+    var dataUpgraded = element.getAttribute('data-upgraded');
+    // Use `['']` as default value to conform the `,name,name...` style.
+    return dataUpgraded === null ? [''] : dataUpgraded.split(',');
+  }
+
+  /**
+   * Returns true if the given element has already been upgraded for the given
+   * class.
+   *
+   * @param {!Element} element The element we want to check.
+   * @param {string} jsClass The class to check for.
+   * @returns {boolean}
+   * @private
+   */
+  function isElementUpgraded_(element, jsClass) {
+    var upgradedList = getUpgradedListOfElement_(element);
+    return upgradedList.indexOf(jsClass) !== -1;
+  }
+
+  /**
+   * Create an event object.
+   *
+   * @param {string} eventType The type name of the event.
+   * @param {boolean} bubbles Whether the event should bubble up the DOM.
+   * @param {boolean} cancelable Whether the event can be canceled.
+   * @returns {!Event}
+   */
+  function createEvent_(eventType, bubbles, cancelable) {
+    if ('CustomEvent' in window && typeof window.CustomEvent === 'function') {
+      return new CustomEvent(eventType, {
+        bubbles: bubbles,
+        cancelable: cancelable
+      });
+    } else {
+      var ev = document.createEvent('Events');
+      ev.initEvent(eventType, bubbles, cancelable);
+      return ev;
+    }
+  }
+
+  /**
+   * Searches existing DOM for elements of our component type and upgrades them
+   * if they have not already been upgraded.
+   *
+   * @param {string=} optJsClass the programatic name of the element class we
+   * need to create a new instance of.
+   * @param {string=} optCssClass the name of the CSS class elements of this
+   * type will have.
+   */
+  function upgradeDomInternal(optJsClass, optCssClass) {
+    if (typeof optJsClass === 'undefined' &&
+        typeof optCssClass === 'undefined') {
+      for (var i = 0; i < registeredComponents_.length; i++) {
+        upgradeDomInternal(registeredComponents_[i].className,
+            registeredComponents_[i].cssClass);
+      }
+    } else {
+      var jsClass = /** @type {string} */ (optJsClass);
+      if (typeof optCssClass === 'undefined') {
+        var registeredClass = findRegisteredClass_(jsClass);
+        if (registeredClass) {
+          optCssClass = registeredClass.cssClass;
+        }
+      }
+
+      var elements = document.querySelectorAll('.' + optCssClass);
+      for (var n = 0; n < elements.length; n++) {
+        upgradeElementInternal(elements[n], jsClass);
+      }
+    }
+  }
+
+  /**
+   * Upgrades a specific element rather than all in the DOM.
+   *
+   * @param {!Element} element The element we wish to upgrade.
+   * @param {string=} optJsClass Optional name of the class we want to upgrade
+   * the element to.
+   */
+  function upgradeElementInternal(element, optJsClass) {
+    // Verify argument type.
+    if (!(typeof element === 'object' && element instanceof Element)) {
+      throw new Error('Invalid argument provided to upgrade MDL element.');
+    }
+    // Allow upgrade to be canceled by canceling emitted event.
+    var upgradingEv = createEvent_('mdl-componentupgrading', true, true);
+    element.dispatchEvent(upgradingEv);
+    if (upgradingEv.defaultPrevented) {
+      return;
+    }
+
+    var upgradedList = getUpgradedListOfElement_(element);
+    var classesToUpgrade = [];
+    // If jsClass is not provided scan the registered components to find the
+    // ones matching the element's CSS classList.
+    if (!optJsClass) {
+      var classList = element.classList;
+      registeredComponents_.forEach(function(component) {
+        // Match CSS & Not to be upgraded & Not upgraded.
+        if (classList.contains(component.cssClass) &&
+            classesToUpgrade.indexOf(component) === -1 &&
+            !isElementUpgraded_(element, component.className)) {
+          classesToUpgrade.push(component);
+        }
+      });
+    } else if (!isElementUpgraded_(element, optJsClass)) {
+      classesToUpgrade.push(findRegisteredClass_(optJsClass));
+    }
+
+    // Upgrade the element for each classes.
+    for (var i = 0, n = classesToUpgrade.length, registeredClass; i < n; i++) {
+      registeredClass = classesToUpgrade[i];
+      if (registeredClass) {
+        // Mark element as upgraded.
+        upgradedList.push(registeredClass.className);
+        element.setAttribute('data-upgraded', upgradedList.join(','));
+        var instance = new registeredClass.classConstructor(element);
+        instance[componentConfigProperty_] = registeredClass;
+        createdComponents_.push(instance);
+        // Call any callbacks the user has registered with this component type.
+        for (var j = 0, m = registeredClass.callbacks.length; j < m; j++) {
+          registeredClass.callbacks[j](element);
+        }
+
+        if (registeredClass.widget) {
+          // Assign per element instance for control over API
+          element[registeredClass.className] = instance;
+        }
+      } else {
+        throw new Error(
+          'Unable to find a registered component for the given class.');
+      }
+
+      var upgradedEv = createEvent_('mdl-componentupgraded', true, false);
+      element.dispatchEvent(upgradedEv);
+    }
+  }
+
+  /**
+   * Upgrades a specific list of elements rather than all in the DOM.
+   *
+   * @param {!Element|!Array<!Element>|!NodeList|!HTMLCollection} elements
+   * The elements we wish to upgrade.
+   */
+  function upgradeElementsInternal(elements) {
+    if (!Array.isArray(elements)) {
+      if (elements instanceof Element) {
+        elements = [elements];
+      } else {
+        elements = Array.prototype.slice.call(elements);
+      }
+    }
+    for (var i = 0, n = elements.length, element; i < n; i++) {
+      element = elements[i];
+      if (element instanceof HTMLElement) {
+        upgradeElementInternal(element);
+        if (element.children.length > 0) {
+          upgradeElementsInternal(element.children);
+        }
+      }
+    }
+  }
+
+  /**
+   * Registers a class for future use and attempts to upgrade existing DOM.
+   *
+   * @param {componentHandler.ComponentConfigPublic} config
+   */
+  function registerInternal(config) {
+    // In order to support both Closure-compiled and uncompiled code accessing
+    // this method, we need to allow for both the dot and array syntax for
+    // property access. You'll therefore see the `foo.bar || foo['bar']`
+    // pattern repeated across this method.
+    var widgetMissing = (typeof config.widget === 'undefined' &&
+        typeof config['widget'] === 'undefined');
+    var widget = true;
+
+    if (!widgetMissing) {
+      widget = config.widget || config['widget'];
+    }
+
+    var newConfig = /** @type {componentHandler.ComponentConfig} */ ({
+      classConstructor: config.constructor || config['constructor'],
+      className: config.classAsString || config['classAsString'],
+      cssClass: config.cssClass || config['cssClass'],
+      widget: widget,
+      callbacks: []
+    });
+
+    registeredComponents_.forEach(function(item) {
+      if (item.cssClass === newConfig.cssClass) {
+        throw new Error('The provided cssClass has already been registered: ' + item.cssClass);
+      }
+      if (item.className === newConfig.className) {
+        throw new Error('The provided className has already been registered');
+      }
+    });
+
+    if (config.constructor.prototype
+        .hasOwnProperty(componentConfigProperty_)) {
+      throw new Error(
+          'MDL component classes must not have ' + componentConfigProperty_ +
+          ' defined as a property.');
+    }
+
+    var found = findRegisteredClass_(config.classAsString, newConfig);
+
+    if (!found) {
+      registeredComponents_.push(newConfig);
+    }
+  }
+
+  /**
+   * Allows user to be alerted to any upgrades that are performed for a given
+   * component type
+   *
+   * @param {string} jsClass The class name of the MDL component we wish
+   * to hook into for any upgrades performed.
+   * @param {function(!HTMLElement)} callback The function to call upon an
+   * upgrade. This function should expect 1 parameter - the HTMLElement which
+   * got upgraded.
+   */
+  function registerUpgradedCallbackInternal(jsClass, callback) {
+    var regClass = findRegisteredClass_(jsClass);
+    if (regClass) {
+      regClass.callbacks.push(callback);
+    }
+  }
+
+  /**
+   * Upgrades all registered components found in the current DOM. This is
+   * automatically called on window load.
+   */
+  function upgradeAllRegisteredInternal() {
+    for (var n = 0; n < registeredComponents_.length; n++) {
+      upgradeDomInternal(registeredComponents_[n].className);
+    }
+  }
+
+  /**
+   * Check the component for the downgrade method.
+   * Execute if found.
+   * Remove component from createdComponents list.
+   *
+   * @param {?componentHandler.Component} component
+   */
+  function deconstructComponentInternal(component) {
+    if (component) {
+      var componentIndex = createdComponents_.indexOf(component);
+      createdComponents_.splice(componentIndex, 1);
+
+      var upgrades = component.element_.getAttribute('data-upgraded').split(',');
+      var componentPlace = upgrades.indexOf(component[componentConfigProperty_].classAsString);
+      upgrades.splice(componentPlace, 1);
+      component.element_.setAttribute('data-upgraded', upgrades.join(','));
+
+      var ev = createEvent_('mdl-componentdowngraded', true, false);
+      component.element_.dispatchEvent(ev);
+    }
+  }
+
+  /**
+   * Downgrade either a given node, an array of nodes, or a NodeList.
+   *
+   * @param {!Node|!Array<!Node>|!NodeList} nodes
+   */
+  function downgradeNodesInternal(nodes) {
+    /**
+     * Auxiliary function to downgrade a single node.
+     * @param  {!Node} node the node to be downgraded
+     */
+    var downgradeNode = function(node) {
+      createdComponents_.filter(function(item) {
+        return item.element_ === node;
+      }).forEach(deconstructComponentInternal);
+    };
+    if (nodes instanceof Array || nodes instanceof NodeList) {
+      for (var n = 0; n < nodes.length; n++) {
+        downgradeNode(nodes[n]);
+      }
+    } else if (nodes instanceof Node) {
+      downgradeNode(nodes);
+    } else {
+      throw new Error('Invalid argument provided to downgrade MDL nodes.');
+    }
+  }
+
+  // Now return the functions that should be made public with their publicly
+  // facing names...
+  return {
+    upgradeDom: upgradeDomInternal,
+    upgradeElement: upgradeElementInternal,
+    upgradeElements: upgradeElementsInternal,
+    upgradeAllRegistered: upgradeAllRegisteredInternal,
+    registerUpgradedCallback: registerUpgradedCallbackInternal,
+    register: registerInternal,
+    downgradeElements: downgradeNodesInternal
+  };
+})();
+
+/**
+ * Describes the type of a registered component type managed by
+ * componentHandler. Provided for benefit of the Closure compiler.
+ *
+ * @typedef {{
+ *   constructor: Function,
+ *   classAsString: string,
+ *   cssClass: string,
+ *   widget: (string|boolean|undefined)
+ * }}
+ */
+componentHandler.ComponentConfigPublic;  // jshint ignore:line
+
+/**
+ * Describes the type of a registered component type managed by
+ * componentHandler. Provided for benefit of the Closure compiler.
+ *
+ * @typedef {{
+ *   constructor: !Function,
+ *   className: string,
+ *   cssClass: string,
+ *   widget: (string|boolean),
+ *   callbacks: !Array<function(!HTMLElement)>
+ * }}
+ */
+componentHandler.ComponentConfig;  // jshint ignore:line
+
+/**
+ * Created component (i.e., upgraded element) type as managed by
+ * componentHandler. Provided for benefit of the Closure compiler.
+ *
+ * @typedef {{
+ *   element_: !HTMLElement,
+ *   className: string,
+ *   classAsString: string,
+ *   cssClass: string,
+ *   widget: string
+ * }}
+ */
+componentHandler.Component;  // jshint ignore:line
+
+// Export all symbols, for the benefit of Closure compiler.
+// No effect on uncompiled code.
+componentHandler['upgradeDom'] = componentHandler.upgradeDom;
+componentHandler['upgradeElement'] = componentHandler.upgradeElement;
+componentHandler['upgradeElements'] = componentHandler.upgradeElements;
+componentHandler['upgradeAllRegistered'] =
+    componentHandler.upgradeAllRegistered;
+componentHandler['registerUpgradedCallback'] =
+    componentHandler.registerUpgradedCallback;
+componentHandler['register'] = componentHandler.register;
+componentHandler['downgradeElements'] = componentHandler.downgradeElements;
+window.componentHandler = componentHandler;
+window['componentHandler'] = componentHandler;
+
+window.addEventListener('load', function() {
+  'use strict';
+
+  /**
+   * Performs a "Cutting the mustard" test. If the browser supports the features
+   * tested, adds a mdl-js class to the <html> element. It then upgrades all MDL
+   * components requiring JavaScript.
+   */
+  if ('classList' in document.createElement('div') &&
+      'querySelector' in document &&
+      'addEventListener' in window && Array.prototype.forEach) {
+    document.documentElement.classList.add('mdl-js');
+    componentHandler.upgradeAllRegistered();
+  } else {
+    /**
+     * Dummy function to avoid JS errors.
+     */
+    componentHandler.upgradeElement = function() {};
+    /**
+     * Dummy function to avoid JS errors.
+     */
+    componentHandler.register = function() {};
+  }
+});
+
+// Source: https://github.com/darius/requestAnimationFrame/blob/master/requestAnimationFrame.js
+// Adapted from https://gist.github.com/paulirish/1579671 which derived from
+// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+// requestAnimationFrame polyfill by Erik Möller.
+// Fixes from Paul Irish, Tino Zijdel, Andrew Mao, Klemen Slavič, Darius Bacon
+// MIT license
+if (!Date.now) {
+    /**
+     * Date.now polyfill.
+     * @return {number} the current Date
+     */
+    Date.now = function () {
+        return new Date().getTime();
+    };
+    Date['now'] = Date.now;
+}
+var vendors = [
+    'webkit',
+    'moz'
+];
+for (var i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) {
+    var vp = vendors[i];
+    window.requestAnimationFrame = window[vp + 'RequestAnimationFrame'];
+    window.cancelAnimationFrame = window[vp + 'CancelAnimationFrame'] || window[vp + 'CancelRequestAnimationFrame'];
+    window['requestAnimationFrame'] = window.requestAnimationFrame;
+    window['cancelAnimationFrame'] = window.cancelAnimationFrame;
+}
+if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+    var lastTime = 0;
+    /**
+     * requestAnimationFrame polyfill.
+     * @param  {!Function} callback the callback function.
+     */
+    window.requestAnimationFrame = function (callback) {
+        var now = Date.now();
+        var nextTime = Math.max(lastTime + 16, now);
+        return setTimeout(function () {
+            callback(lastTime = nextTime);
+        }, nextTime - now);
+    };
+    window.cancelAnimationFrame = clearTimeout;
+    window['requestAnimationFrame'] = window.requestAnimationFrame;
+    window['cancelAnimationFrame'] = window.cancelAnimationFrame;
+}
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Button MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialButton = function MaterialButton(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialButton'] = MaterialButton;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialButton.prototype.Constant_ = {};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialButton.prototype.CssClasses_ = {
+    RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    RIPPLE_CONTAINER: 'mdl-button__ripple-container',
+    RIPPLE: 'mdl-ripple'
+};
+/**
+   * Handle blur of element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialButton.prototype.blurHandler_ = function (event) {
+    if (event) {
+        this.element_.blur();
+    }
+};
+// Public methods.
+/**
+   * Disable button.
+   *
+   * @public
+   */
+MaterialButton.prototype.disable = function () {
+    this.element_.disabled = true;
+};
+MaterialButton.prototype['disable'] = MaterialButton.prototype.disable;
+/**
+   * Enable button.
+   *
+   * @public
+   */
+MaterialButton.prototype.enable = function () {
+    this.element_.disabled = false;
+};
+MaterialButton.prototype['enable'] = MaterialButton.prototype.enable;
+/**
+   * Initialize element.
+   */
+MaterialButton.prototype.init = function () {
+    if (this.element_) {
+        if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
+            var rippleContainer = document.createElement('span');
+            rippleContainer.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
+            this.rippleElement_ = document.createElement('span');
+            this.rippleElement_.classList.add(this.CssClasses_.RIPPLE);
+            rippleContainer.appendChild(this.rippleElement_);
+            this.boundRippleBlurHandler = this.blurHandler_.bind(this);
+            this.rippleElement_.addEventListener('mouseup', this.boundRippleBlurHandler);
+            this.element_.appendChild(rippleContainer);
+        }
+        this.boundButtonBlurHandler = this.blurHandler_.bind(this);
+        this.element_.addEventListener('mouseup', this.boundButtonBlurHandler);
+        this.element_.addEventListener('mouseleave', this.boundButtonBlurHandler);
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialButton,
+    classAsString: 'MaterialButton',
+    cssClass: 'mdl-js-button',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Checkbox MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialCheckbox = function MaterialCheckbox(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialCheckbox'] = MaterialCheckbox;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialCheckbox.prototype.Constant_ = { TINY_TIMEOUT: 0.001 };
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialCheckbox.prototype.CssClasses_ = {
+    INPUT: 'mdl-checkbox__input',
+    BOX_OUTLINE: 'mdl-checkbox__box-outline',
+    FOCUS_HELPER: 'mdl-checkbox__focus-helper',
+    TICK_OUTLINE: 'mdl-checkbox__tick-outline',
+    RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
+    RIPPLE_CONTAINER: 'mdl-checkbox__ripple-container',
+    RIPPLE_CENTER: 'mdl-ripple--center',
+    RIPPLE: 'mdl-ripple',
+    IS_FOCUSED: 'is-focused',
+    IS_DISABLED: 'is-disabled',
+    IS_CHECKED: 'is-checked',
+    IS_UPGRADED: 'is-upgraded'
+};
+/**
+   * Handle change of state.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialCheckbox.prototype.onChange_ = function (event) {
+    this.updateClasses_();
+};
+/**
+   * Handle focus of element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialCheckbox.prototype.onFocus_ = function (event) {
+    this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle lost focus of element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialCheckbox.prototype.onBlur_ = function (event) {
+    this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle mouseup.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialCheckbox.prototype.onMouseUp_ = function (event) {
+    this.blur_();
+};
+/**
+   * Handle class updates.
+   *
+   * @private
+   */
+MaterialCheckbox.prototype.updateClasses_ = function () {
+    this.checkDisabled();
+    this.checkToggleState();
+};
+/**
+   * Add blur.
+   *
+   * @private
+   */
+MaterialCheckbox.prototype.blur_ = function () {
+    // TODO: figure out why there's a focus event being fired after our blur,
+    // so that we can avoid this hack.
+    window.setTimeout(function () {
+        this.inputElement_.blur();
+    }.bind(this), this.Constant_.TINY_TIMEOUT);
+};
+// Public methods.
+/**
+   * Check the inputs toggle state and update display.
+   *
+   * @public
+   */
+MaterialCheckbox.prototype.checkToggleState = function () {
+    if (this.inputElement_.checked) {
+        this.element_.classList.add(this.CssClasses_.IS_CHECKED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_CHECKED);
+    }
+};
+MaterialCheckbox.prototype['checkToggleState'] = MaterialCheckbox.prototype.checkToggleState;
+/**
+   * Check the inputs disabled state and update display.
+   *
+   * @public
+   */
+MaterialCheckbox.prototype.checkDisabled = function () {
+    if (this.inputElement_.disabled) {
+        this.element_.classList.add(this.CssClasses_.IS_DISABLED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
+    }
+};
+MaterialCheckbox.prototype['checkDisabled'] = MaterialCheckbox.prototype.checkDisabled;
+/**
+   * Disable checkbox.
+   *
+   * @public
+   */
+MaterialCheckbox.prototype.disable = function () {
+    this.inputElement_.disabled = true;
+    this.updateClasses_();
+};
+MaterialCheckbox.prototype['disable'] = MaterialCheckbox.prototype.disable;
+/**
+   * Enable checkbox.
+   *
+   * @public
+   */
+MaterialCheckbox.prototype.enable = function () {
+    this.inputElement_.disabled = false;
+    this.updateClasses_();
+};
+MaterialCheckbox.prototype['enable'] = MaterialCheckbox.prototype.enable;
+/**
+   * Check checkbox.
+   *
+   * @public
+   */
+MaterialCheckbox.prototype.check = function () {
+    this.inputElement_.checked = true;
+    this.updateClasses_();
+};
+MaterialCheckbox.prototype['check'] = MaterialCheckbox.prototype.check;
+/**
+   * Uncheck checkbox.
+   *
+   * @public
+   */
+MaterialCheckbox.prototype.uncheck = function () {
+    this.inputElement_.checked = false;
+    this.updateClasses_();
+};
+MaterialCheckbox.prototype['uncheck'] = MaterialCheckbox.prototype.uncheck;
+/**
+   * Initialize element.
+   */
+MaterialCheckbox.prototype.init = function () {
+    if (this.element_) {
+        this.inputElement_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
+        var boxOutline = document.createElement('span');
+        boxOutline.classList.add(this.CssClasses_.BOX_OUTLINE);
+        var tickContainer = document.createElement('span');
+        tickContainer.classList.add(this.CssClasses_.FOCUS_HELPER);
+        var tickOutline = document.createElement('span');
+        tickOutline.classList.add(this.CssClasses_.TICK_OUTLINE);
+        boxOutline.appendChild(tickOutline);
+        this.element_.appendChild(tickContainer);
+        this.element_.appendChild(boxOutline);
+        if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
+            this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
+            this.rippleContainerElement_ = document.createElement('span');
+            this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
+            this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_EFFECT);
+            this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CENTER);
+            this.boundRippleMouseUp = this.onMouseUp_.bind(this);
+            this.rippleContainerElement_.addEventListener('mouseup', this.boundRippleMouseUp);
+            var ripple = document.createElement('span');
+            ripple.classList.add(this.CssClasses_.RIPPLE);
+            this.rippleContainerElement_.appendChild(ripple);
+            this.element_.appendChild(this.rippleContainerElement_);
+        }
+        this.boundInputOnChange = this.onChange_.bind(this);
+        this.boundInputOnFocus = this.onFocus_.bind(this);
+        this.boundInputOnBlur = this.onBlur_.bind(this);
+        this.boundElementMouseUp = this.onMouseUp_.bind(this);
+        this.inputElement_.addEventListener('change', this.boundInputOnChange);
+        this.inputElement_.addEventListener('focus', this.boundInputOnFocus);
+        this.inputElement_.addEventListener('blur', this.boundInputOnBlur);
+        this.element_.addEventListener('mouseup', this.boundElementMouseUp);
+        this.updateClasses_();
+        this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialCheckbox,
+    classAsString: 'MaterialCheckbox',
+    cssClass: 'mdl-js-checkbox',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for icon toggle MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialIconToggle = function MaterialIconToggle(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialIconToggle'] = MaterialIconToggle;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialIconToggle.prototype.Constant_ = { TINY_TIMEOUT: 0.001 };
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialIconToggle.prototype.CssClasses_ = {
+    INPUT: 'mdl-icon-toggle__input',
+    JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
+    RIPPLE_CONTAINER: 'mdl-icon-toggle__ripple-container',
+    RIPPLE_CENTER: 'mdl-ripple--center',
+    RIPPLE: 'mdl-ripple',
+    IS_FOCUSED: 'is-focused',
+    IS_DISABLED: 'is-disabled',
+    IS_CHECKED: 'is-checked'
+};
+/**
+   * Handle change of state.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialIconToggle.prototype.onChange_ = function (event) {
+    this.updateClasses_();
+};
+/**
+   * Handle focus of element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialIconToggle.prototype.onFocus_ = function (event) {
+    this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle lost focus of element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialIconToggle.prototype.onBlur_ = function (event) {
+    this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle mouseup.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialIconToggle.prototype.onMouseUp_ = function (event) {
+    this.blur_();
+};
+/**
+   * Handle class updates.
+   *
+   * @private
+   */
+MaterialIconToggle.prototype.updateClasses_ = function () {
+    this.checkDisabled();
+    this.checkToggleState();
+};
+/**
+   * Add blur.
+   *
+   * @private
+   */
+MaterialIconToggle.prototype.blur_ = function () {
+    // TODO: figure out why there's a focus event being fired after our blur,
+    // so that we can avoid this hack.
+    window.setTimeout(function () {
+        this.inputElement_.blur();
+    }.bind(this), this.Constant_.TINY_TIMEOUT);
+};
+// Public methods.
+/**
+   * Check the inputs toggle state and update display.
+   *
+   * @public
+   */
+MaterialIconToggle.prototype.checkToggleState = function () {
+    if (this.inputElement_.checked) {
+        this.element_.classList.add(this.CssClasses_.IS_CHECKED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_CHECKED);
+    }
+};
+MaterialIconToggle.prototype['checkToggleState'] = MaterialIconToggle.prototype.checkToggleState;
+/**
+   * Check the inputs disabled state and update display.
+   *
+   * @public
+   */
+MaterialIconToggle.prototype.checkDisabled = function () {
+    if (this.inputElement_.disabled) {
+        this.element_.classList.add(this.CssClasses_.IS_DISABLED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
+    }
+};
+MaterialIconToggle.prototype['checkDisabled'] = MaterialIconToggle.prototype.checkDisabled;
+/**
+   * Disable icon toggle.
+   *
+   * @public
+   */
+MaterialIconToggle.prototype.disable = function () {
+    this.inputElement_.disabled = true;
+    this.updateClasses_();
+};
+MaterialIconToggle.prototype['disable'] = MaterialIconToggle.prototype.disable;
+/**
+   * Enable icon toggle.
+   *
+   * @public
+   */
+MaterialIconToggle.prototype.enable = function () {
+    this.inputElement_.disabled = false;
+    this.updateClasses_();
+};
+MaterialIconToggle.prototype['enable'] = MaterialIconToggle.prototype.enable;
+/**
+   * Check icon toggle.
+   *
+   * @public
+   */
+MaterialIconToggle.prototype.check = function () {
+    this.inputElement_.checked = true;
+    this.updateClasses_();
+};
+MaterialIconToggle.prototype['check'] = MaterialIconToggle.prototype.check;
+/**
+   * Uncheck icon toggle.
+   *
+   * @public
+   */
+MaterialIconToggle.prototype.uncheck = function () {
+    this.inputElement_.checked = false;
+    this.updateClasses_();
+};
+MaterialIconToggle.prototype['uncheck'] = MaterialIconToggle.prototype.uncheck;
+/**
+   * Initialize element.
+   */
+MaterialIconToggle.prototype.init = function () {
+    if (this.element_) {
+        this.inputElement_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
+        if (this.element_.classList.contains(this.CssClasses_.JS_RIPPLE_EFFECT)) {
+            this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
+            this.rippleContainerElement_ = document.createElement('span');
+            this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
+            this.rippleContainerElement_.classList.add(this.CssClasses_.JS_RIPPLE_EFFECT);
+            this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CENTER);
+            this.boundRippleMouseUp = this.onMouseUp_.bind(this);
+            this.rippleContainerElement_.addEventListener('mouseup', this.boundRippleMouseUp);
+            var ripple = document.createElement('span');
+            ripple.classList.add(this.CssClasses_.RIPPLE);
+            this.rippleContainerElement_.appendChild(ripple);
+            this.element_.appendChild(this.rippleContainerElement_);
+        }
+        this.boundInputOnChange = this.onChange_.bind(this);
+        this.boundInputOnFocus = this.onFocus_.bind(this);
+        this.boundInputOnBlur = this.onBlur_.bind(this);
+        this.boundElementOnMouseUp = this.onMouseUp_.bind(this);
+        this.inputElement_.addEventListener('change', this.boundInputOnChange);
+        this.inputElement_.addEventListener('focus', this.boundInputOnFocus);
+        this.inputElement_.addEventListener('blur', this.boundInputOnBlur);
+        this.element_.addEventListener('mouseup', this.boundElementOnMouseUp);
+        this.updateClasses_();
+        this.element_.classList.add('is-upgraded');
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialIconToggle,
+    classAsString: 'MaterialIconToggle',
+    cssClass: 'mdl-js-icon-toggle',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for dropdown MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialMenu = function MaterialMenu(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialMenu'] = MaterialMenu;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialMenu.prototype.Constant_ = {
+    // Total duration of the menu animation.
+    TRANSITION_DURATION_SECONDS: 0.3,
+    // The fraction of the total duration we want to use for menu item animations.
+    TRANSITION_DURATION_FRACTION: 0.8,
+    // How long the menu stays open after choosing an option (so the user can see
+    // the ripple).
+    CLOSE_TIMEOUT: 150
+};
+/**
+   * Keycodes, for code readability.
+   *
+   * @enum {number}
+   * @private
+   */
+MaterialMenu.prototype.Keycodes_ = {
+    ENTER: 13,
+    ESCAPE: 27,
+    SPACE: 32,
+    UP_ARROW: 38,
+    DOWN_ARROW: 40
+};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialMenu.prototype.CssClasses_ = {
+    CONTAINER: 'mdl-menu__container',
+    OUTLINE: 'mdl-menu__outline',
+    ITEM: 'mdl-menu__item',
+    ITEM_RIPPLE_CONTAINER: 'mdl-menu__item-ripple-container',
+    RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
+    RIPPLE: 'mdl-ripple',
+    // Statuses
+    IS_UPGRADED: 'is-upgraded',
+    IS_VISIBLE: 'is-visible',
+    IS_ANIMATING: 'is-animating',
+    // Alignment options
+    BOTTOM_LEFT: 'mdl-menu--bottom-left',
+    // This is the default.
+    BOTTOM_RIGHT: 'mdl-menu--bottom-right',
+    TOP_LEFT: 'mdl-menu--top-left',
+    TOP_RIGHT: 'mdl-menu--top-right',
+    UNALIGNED: 'mdl-menu--unaligned'
+};
+/**
+   * Initialize element.
+   */
+MaterialMenu.prototype.init = function () {
+    if (this.element_) {
+        // Create container for the menu.
+        var container = document.createElement('div');
+        container.classList.add(this.CssClasses_.CONTAINER);
+        this.element_.parentElement.insertBefore(container, this.element_);
+        this.element_.parentElement.removeChild(this.element_);
+        container.appendChild(this.element_);
+        this.container_ = container;
+        // Create outline for the menu (shadow and background).
+        var outline = document.createElement('div');
+        outline.classList.add(this.CssClasses_.OUTLINE);
+        this.outline_ = outline;
+        container.insertBefore(outline, this.element_);
+        // Find the "for" element and bind events to it.
+        var forElId = this.element_.getAttribute('for') || this.element_.getAttribute('data-mdl-for');
+        var forEl = null;
+        if (forElId) {
+            forEl = document.getElementById(forElId);
+            if (forEl) {
+                this.forElement_ = forEl;
+                forEl.addEventListener('click', this.handleForClick_.bind(this));
+                forEl.addEventListener('keydown', this.handleForKeyboardEvent_.bind(this));
+            }
+        }
+        var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM);
+        this.boundItemKeydown_ = this.handleItemKeyboardEvent_.bind(this);
+        this.boundItemClick_ = this.handleItemClick_.bind(this);
+        for (var i = 0; i < items.length; i++) {
+            // Add a listener to each menu item.
+            items[i].addEventListener('click', this.boundItemClick_);
+            // Add a tab index to each menu item.
+            items[i].tabIndex = '-1';
+            // Add a keyboard listener to each menu item.
+            items[i].addEventListener('keydown', this.boundItemKeydown_);
+        }
+        // Add ripple classes to each item, if the user has enabled ripples.
+        if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
+            this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
+            for (i = 0; i < items.length; i++) {
+                var item = items[i];
+                var rippleContainer = document.createElement('span');
+                rippleContainer.classList.add(this.CssClasses_.ITEM_RIPPLE_CONTAINER);
+                var ripple = document.createElement('span');
+                ripple.classList.add(this.CssClasses_.RIPPLE);
+                rippleContainer.appendChild(ripple);
+                item.appendChild(rippleContainer);
+                item.classList.add(this.CssClasses_.RIPPLE_EFFECT);
+            }
+        }
+        // Copy alignment classes to the container, so the outline can use them.
+        if (this.element_.classList.contains(this.CssClasses_.BOTTOM_LEFT)) {
+            this.outline_.classList.add(this.CssClasses_.BOTTOM_LEFT);
+        }
+        if (this.element_.classList.contains(this.CssClasses_.BOTTOM_RIGHT)) {
+            this.outline_.classList.add(this.CssClasses_.BOTTOM_RIGHT);
+        }
+        if (this.element_.classList.contains(this.CssClasses_.TOP_LEFT)) {
+            this.outline_.classList.add(this.CssClasses_.TOP_LEFT);
+        }
+        if (this.element_.classList.contains(this.CssClasses_.TOP_RIGHT)) {
+            this.outline_.classList.add(this.CssClasses_.TOP_RIGHT);
+        }
+        if (this.element_.classList.contains(this.CssClasses_.UNALIGNED)) {
+            this.outline_.classList.add(this.CssClasses_.UNALIGNED);
+        }
+        container.classList.add(this.CssClasses_.IS_UPGRADED);
+    }
+};
+/**
+   * Handles a click on the "for" element, by positioning the menu and then
+   * toggling it.
+   *
+   * @param {Event} evt The event that fired.
+   * @private
+   */
+MaterialMenu.prototype.handleForClick_ = function (evt) {
+    if (this.element_ && this.forElement_) {
+        var rect = this.forElement_.getBoundingClientRect();
+        var forRect = this.forElement_.parentElement.getBoundingClientRect();
+        if (this.element_.classList.contains(this.CssClasses_.UNALIGNED)) {
+        } else if (this.element_.classList.contains(this.CssClasses_.BOTTOM_RIGHT)) {
+            // Position below the "for" element, aligned to its right.
+            this.container_.style.right = forRect.right - rect.right + 'px';
+            this.container_.style.top = this.forElement_.offsetTop + this.forElement_.offsetHeight + 'px';
+        } else if (this.element_.classList.contains(this.CssClasses_.TOP_LEFT)) {
+            // Position above the "for" element, aligned to its left.
+            this.container_.style.left = this.forElement_.offsetLeft + 'px';
+            this.container_.style.bottom = forRect.bottom - rect.top + 'px';
+        } else if (this.element_.classList.contains(this.CssClasses_.TOP_RIGHT)) {
+            // Position above the "for" element, aligned to its right.
+            this.container_.style.right = forRect.right - rect.right + 'px';
+            this.container_.style.bottom = forRect.bottom - rect.top + 'px';
+        } else {
+            // Default: position below the "for" element, aligned to its left.
+            this.container_.style.left = this.forElement_.offsetLeft + 'px';
+            this.container_.style.top = this.forElement_.offsetTop + this.forElement_.offsetHeight + 'px';
+        }
+    }
+    this.toggle(evt);
+};
+/**
+   * Handles a keyboard event on the "for" element.
+   *
+   * @param {Event} evt The event that fired.
+   * @private
+   */
+MaterialMenu.prototype.handleForKeyboardEvent_ = function (evt) {
+    if (this.element_ && this.container_ && this.forElement_) {
+        var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM + ':not([disabled])');
+        if (items && items.length > 0 && this.container_.classList.contains(this.CssClasses_.IS_VISIBLE)) {
+            if (evt.keyCode === this.Keycodes_.UP_ARROW) {
+                evt.preventDefault();
+                items[items.length - 1].focus();
+            } else if (evt.keyCode === this.Keycodes_.DOWN_ARROW) {
+                evt.preventDefault();
+                items[0].focus();
+            }
+        }
+    }
+};
+/**
+   * Handles a keyboard event on an item.
+   *
+   * @param {Event} evt The event that fired.
+   * @private
+   */
+MaterialMenu.prototype.handleItemKeyboardEvent_ = function (evt) {
+    if (this.element_ && this.container_) {
+        var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM + ':not([disabled])');
+        if (items && items.length > 0 && this.container_.classList.contains(this.CssClasses_.IS_VISIBLE)) {
+            var currentIndex = Array.prototype.slice.call(items).indexOf(evt.target);
+            if (evt.keyCode === this.Keycodes_.UP_ARROW) {
+                evt.preventDefault();
+                if (currentIndex > 0) {
+                    items[currentIndex - 1].focus();
+                } else {
+                    items[items.length - 1].focus();
+                }
+            } else if (evt.keyCode === this.Keycodes_.DOWN_ARROW) {
+                evt.preventDefault();
+                if (items.length > currentIndex + 1) {
+                    items[currentIndex + 1].focus();
+                } else {
+                    items[0].focus();
+                }
+            } else if (evt.keyCode === this.Keycodes_.SPACE || evt.keyCode === this.Keycodes_.ENTER) {
+                evt.preventDefault();
+                // Send mousedown and mouseup to trigger ripple.
+                var e = new MouseEvent('mousedown');
+                evt.target.dispatchEvent(e);
+                e = new MouseEvent('mouseup');
+                evt.target.dispatchEvent(e);
+                // Send click.
+                evt.target.click();
+            } else if (evt.keyCode === this.Keycodes_.ESCAPE) {
+                evt.preventDefault();
+                this.hide();
+            }
+        }
+    }
+};
+/**
+   * Handles a click event on an item.
+   *
+   * @param {Event} evt The event that fired.
+   * @private
+   */
+MaterialMenu.prototype.handleItemClick_ = function (evt) {
+    if (evt.target.hasAttribute('disabled')) {
+        evt.stopPropagation();
+    } else {
+        // Wait some time before closing menu, so the user can see the ripple.
+        this.closing_ = true;
+        window.setTimeout(function (evt) {
+            this.hide();
+            this.closing_ = false;
+        }.bind(this), this.Constant_.CLOSE_TIMEOUT);
+    }
+};
+/**
+   * Calculates the initial clip (for opening the menu) or final clip (for closing
+   * it), and applies it. This allows us to animate from or to the correct point,
+   * that is, the point it's aligned to in the "for" element.
+   *
+   * @param {number} height Height of the clip rectangle
+   * @param {number} width Width of the clip rectangle
+   * @private
+   */
+MaterialMenu.prototype.applyClip_ = function (height, width) {
+    if (this.element_.classList.contains(this.CssClasses_.UNALIGNED)) {
+        // Do not clip.
+        this.element_.style.clip = '';
+    } else if (this.element_.classList.contains(this.CssClasses_.BOTTOM_RIGHT)) {
+        // Clip to the top right corner of the menu.
+        this.element_.style.clip = 'rect(0 ' + width + 'px ' + '0 ' + width + 'px)';
+    } else if (this.element_.classList.contains(this.CssClasses_.TOP_LEFT)) {
+        // Clip to the bottom left corner of the menu.
+        this.element_.style.clip = 'rect(' + height + 'px 0 ' + height + 'px 0)';
+    } else if (this.element_.classList.contains(this.CssClasses_.TOP_RIGHT)) {
+        // Clip to the bottom right corner of the menu.
+        this.element_.style.clip = 'rect(' + height + 'px ' + width + 'px ' + height + 'px ' + width + 'px)';
+    } else {
+        // Default: do not clip (same as clipping to the top left corner).
+        this.element_.style.clip = '';
+    }
+};
+/**
+   * Cleanup function to remove animation listeners.
+   *
+   * @param {Event} evt
+   * @private
+   */
+MaterialMenu.prototype.removeAnimationEndListener_ = function (evt) {
+    evt.target.classList.remove(MaterialMenu.prototype.CssClasses_.IS_ANIMATING);
+};
+/**
+   * Adds an event listener to clean up after the animation ends.
+   *
+   * @private
+   */
+MaterialMenu.prototype.addAnimationEndListener_ = function () {
+    this.element_.addEventListener('transitionend', this.removeAnimationEndListener_);
+    this.element_.addEventListener('webkitTransitionEnd', this.removeAnimationEndListener_);
+};
+/**
+   * Displays the menu.
+   *
+   * @public
+   */
+MaterialMenu.prototype.show = function (evt) {
+    if (this.element_ && this.container_ && this.outline_) {
+        // Measure the inner element.
+        var height = this.element_.getBoundingClientRect().height;
+        var width = this.element_.getBoundingClientRect().width;
+        // Apply the inner element's size to the container and outline.
+        this.container_.style.width = width + 'px';
+        this.container_.style.height = height + 'px';
+        this.outline_.style.width = width + 'px';
+        this.outline_.style.height = height + 'px';
+        var transitionDuration = this.Constant_.TRANSITION_DURATION_SECONDS * this.Constant_.TRANSITION_DURATION_FRACTION;
+        // Calculate transition delays for individual menu items, so that they fade
+        // in one at a time.
+        var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM);
+        for (var i = 0; i < items.length; i++) {
+            var itemDelay = null;
+            if (this.element_.classList.contains(this.CssClasses_.TOP_LEFT) || this.element_.classList.contains(this.CssClasses_.TOP_RIGHT)) {
+                itemDelay = (height - items[i].offsetTop - items[i].offsetHeight) / height * transitionDuration + 's';
+            } else {
+                itemDelay = items[i].offsetTop / height * transitionDuration + 's';
+            }
+            items[i].style.transitionDelay = itemDelay;
+        }
+        // Apply the initial clip to the text before we start animating.
+        this.applyClip_(height, width);
+        // Wait for the next frame, turn on animation, and apply the final clip.
+        // Also make it visible. This triggers the transitions.
+        window.requestAnimationFrame(function () {
+            this.element_.classList.add(this.CssClasses_.IS_ANIMATING);
+            this.element_.style.clip = 'rect(0 ' + width + 'px ' + height + 'px 0)';
+            this.container_.classList.add(this.CssClasses_.IS_VISIBLE);
+        }.bind(this));
+        // Clean up after the animation is complete.
+        this.addAnimationEndListener_();
+        // Add a click listener to the document, to close the menu.
+        var callback = function (e) {
+            // Check to see if the document is processing the same event that
+            // displayed the menu in the first place. If so, do nothing.
+            // Also check to see if the menu is in the process of closing itself, and
+            // do nothing in that case.
+            // Also check if the clicked element is a menu item
+            // if so, do nothing.
+            if (e !== evt && !this.closing_ && e.target.parentNode !== this.element_) {
+                document.removeEventListener('click', callback);
+                this.hide();
+            }
+        }.bind(this);
+        document.addEventListener('click', callback);
+    }
+};
+MaterialMenu.prototype['show'] = MaterialMenu.prototype.show;
+/**
+   * Hides the menu.
+   *
+   * @public
+   */
+MaterialMenu.prototype.hide = function () {
+    if (this.element_ && this.container_ && this.outline_) {
+        var items = this.element_.querySelectorAll('.' + this.CssClasses_.ITEM);
+        // Remove all transition delays; menu items fade out concurrently.
+        for (var i = 0; i < items.length; i++) {
+            items[i].style.removeProperty('transition-delay');
+        }
+        // Measure the inner element.
+        var rect = this.element_.getBoundingClientRect();
+        var height = rect.height;
+        var width = rect.width;
+        // Turn on animation, and apply the final clip. Also make invisible.
+        // This triggers the transitions.
+        this.element_.classList.add(this.CssClasses_.IS_ANIMATING);
+        this.applyClip_(height, width);
+        this.container_.classList.remove(this.CssClasses_.IS_VISIBLE);
+        // Clean up after the animation is complete.
+        this.addAnimationEndListener_();
+    }
+};
+MaterialMenu.prototype['hide'] = MaterialMenu.prototype.hide;
+/**
+   * Displays or hides the menu, depending on current state.
+   *
+   * @public
+   */
+MaterialMenu.prototype.toggle = function (evt) {
+    if (this.container_.classList.contains(this.CssClasses_.IS_VISIBLE)) {
+        this.hide();
+    } else {
+        this.show(evt);
+    }
+};
+MaterialMenu.prototype['toggle'] = MaterialMenu.prototype.toggle;
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialMenu,
+    classAsString: 'MaterialMenu',
+    cssClass: 'mdl-js-menu',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Progress MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialProgress = function MaterialProgress(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialProgress'] = MaterialProgress;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialProgress.prototype.Constant_ = {};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialProgress.prototype.CssClasses_ = { INDETERMINATE_CLASS: 'mdl-progress__indeterminate' };
+/**
+   * Set the current progress of the progressbar.
+   *
+   * @param {number} p Percentage of the progress (0-100)
+   * @public
+   */
+MaterialProgress.prototype.setProgress = function (p) {
+    if (this.element_.classList.contains(this.CssClasses_.INDETERMINATE_CLASS)) {
+        return;
+    }
+    this.progressbar_.style.width = p + '%';
+};
+MaterialProgress.prototype['setProgress'] = MaterialProgress.prototype.setProgress;
+/**
+   * Set the current progress of the buffer.
+   *
+   * @param {number} p Percentage of the buffer (0-100)
+   * @public
+   */
+MaterialProgress.prototype.setBuffer = function (p) {
+    this.bufferbar_.style.width = p + '%';
+    this.auxbar_.style.width = 100 - p + '%';
+};
+MaterialProgress.prototype['setBuffer'] = MaterialProgress.prototype.setBuffer;
+/**
+   * Initialize element.
+   */
+MaterialProgress.prototype.init = function () {
+    if (this.element_) {
+        var el = document.createElement('div');
+        el.className = 'progressbar bar bar1';
+        this.element_.appendChild(el);
+        this.progressbar_ = el;
+        el = document.createElement('div');
+        el.className = 'bufferbar bar bar2';
+        this.element_.appendChild(el);
+        this.bufferbar_ = el;
+        el = document.createElement('div');
+        el.className = 'auxbar bar bar3';
+        this.element_.appendChild(el);
+        this.auxbar_ = el;
+        this.progressbar_.style.width = '0%';
+        this.bufferbar_.style.width = '100%';
+        this.auxbar_.style.width = '0%';
+        this.element_.classList.add('is-upgraded');
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialProgress,
+    classAsString: 'MaterialProgress',
+    cssClass: 'mdl-js-progress',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Radio MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialRadio = function MaterialRadio(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialRadio'] = MaterialRadio;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialRadio.prototype.Constant_ = { TINY_TIMEOUT: 0.001 };
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialRadio.prototype.CssClasses_ = {
+    IS_FOCUSED: 'is-focused',
+    IS_DISABLED: 'is-disabled',
+    IS_CHECKED: 'is-checked',
+    IS_UPGRADED: 'is-upgraded',
+    JS_RADIO: 'mdl-js-radio',
+    RADIO_BTN: 'mdl-radio__button',
+    RADIO_OUTER_CIRCLE: 'mdl-radio__outer-circle',
+    RADIO_INNER_CIRCLE: 'mdl-radio__inner-circle',
+    RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
+    RIPPLE_CONTAINER: 'mdl-radio__ripple-container',
+    RIPPLE_CENTER: 'mdl-ripple--center',
+    RIPPLE: 'mdl-ripple'
+};
+/**
+   * Handle change of state.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialRadio.prototype.onChange_ = function (event) {
+    // Since other radio buttons don't get change events, we need to look for
+    // them to update their classes.
+    var radios = document.getElementsByClassName(this.CssClasses_.JS_RADIO);
+    for (var i = 0; i < radios.length; i++) {
+        var button = radios[i].querySelector('.' + this.CssClasses_.RADIO_BTN);
+        // Different name == different group, so no point updating those.
+        if (button.getAttribute('name') === this.btnElement_.getAttribute('name')) {
+            if (typeof radios[i]['MaterialRadio'] !== 'undefined') {
+                radios[i]['MaterialRadio'].updateClasses_();
+            }
+        }
+    }
+};
+/**
+   * Handle focus.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialRadio.prototype.onFocus_ = function (event) {
+    this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle lost focus.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialRadio.prototype.onBlur_ = function (event) {
+    this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle mouseup.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialRadio.prototype.onMouseup_ = function (event) {
+    this.blur_();
+};
+/**
+   * Update classes.
+   *
+   * @private
+   */
+MaterialRadio.prototype.updateClasses_ = function () {
+    this.checkDisabled();
+    this.checkToggleState();
+};
+/**
+   * Add blur.
+   *
+   * @private
+   */
+MaterialRadio.prototype.blur_ = function () {
+    // TODO: figure out why there's a focus event being fired after our blur,
+    // so that we can avoid this hack.
+    window.setTimeout(function () {
+        this.btnElement_.blur();
+    }.bind(this), this.Constant_.TINY_TIMEOUT);
+};
+// Public methods.
+/**
+   * Check the components disabled state.
+   *
+   * @public
+   */
+MaterialRadio.prototype.checkDisabled = function () {
+    if (this.btnElement_.disabled) {
+        this.element_.classList.add(this.CssClasses_.IS_DISABLED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
+    }
+};
+MaterialRadio.prototype['checkDisabled'] = MaterialRadio.prototype.checkDisabled;
+/**
+   * Check the components toggled state.
+   *
+   * @public
+   */
+MaterialRadio.prototype.checkToggleState = function () {
+    if (this.btnElement_.checked) {
+        this.element_.classList.add(this.CssClasses_.IS_CHECKED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_CHECKED);
+    }
+};
+MaterialRadio.prototype['checkToggleState'] = MaterialRadio.prototype.checkToggleState;
+/**
+   * Disable radio.
+   *
+   * @public
+   */
+MaterialRadio.prototype.disable = function () {
+    this.btnElement_.disabled = true;
+    this.updateClasses_();
+};
+MaterialRadio.prototype['disable'] = MaterialRadio.prototype.disable;
+/**
+   * Enable radio.
+   *
+   * @public
+   */
+MaterialRadio.prototype.enable = function () {
+    this.btnElement_.disabled = false;
+    this.updateClasses_();
+};
+MaterialRadio.prototype['enable'] = MaterialRadio.prototype.enable;
+/**
+   * Check radio.
+   *
+   * @public
+   */
+MaterialRadio.prototype.check = function () {
+    this.btnElement_.checked = true;
+    this.onChange_(null);
+};
+MaterialRadio.prototype['check'] = MaterialRadio.prototype.check;
+/**
+   * Uncheck radio.
+   *
+   * @public
+   */
+MaterialRadio.prototype.uncheck = function () {
+    this.btnElement_.checked = false;
+    this.onChange_(null);
+};
+MaterialRadio.prototype['uncheck'] = MaterialRadio.prototype.uncheck;
+/**
+   * Initialize element.
+   */
+MaterialRadio.prototype.init = function () {
+    if (this.element_) {
+        this.btnElement_ = this.element_.querySelector('.' + this.CssClasses_.RADIO_BTN);
+        this.boundChangeHandler_ = this.onChange_.bind(this);
+        this.boundFocusHandler_ = this.onChange_.bind(this);
+        this.boundBlurHandler_ = this.onBlur_.bind(this);
+        this.boundMouseUpHandler_ = this.onMouseup_.bind(this);
+        var outerCircle = document.createElement('span');
+        outerCircle.classList.add(this.CssClasses_.RADIO_OUTER_CIRCLE);
+        var innerCircle = document.createElement('span');
+        innerCircle.classList.add(this.CssClasses_.RADIO_INNER_CIRCLE);
+        this.element_.appendChild(outerCircle);
+        this.element_.appendChild(innerCircle);
+        var rippleContainer;
+        if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
+            this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
+            rippleContainer = document.createElement('span');
+            rippleContainer.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
+            rippleContainer.classList.add(this.CssClasses_.RIPPLE_EFFECT);
+            rippleContainer.classList.add(this.CssClasses_.RIPPLE_CENTER);
+            rippleContainer.addEventListener('mouseup', this.boundMouseUpHandler_);
+            var ripple = document.createElement('span');
+            ripple.classList.add(this.CssClasses_.RIPPLE);
+            rippleContainer.appendChild(ripple);
+            this.element_.appendChild(rippleContainer);
+        }
+        this.btnElement_.addEventListener('change', this.boundChangeHandler_);
+        this.btnElement_.addEventListener('focus', this.boundFocusHandler_);
+        this.btnElement_.addEventListener('blur', this.boundBlurHandler_);
+        this.element_.addEventListener('mouseup', this.boundMouseUpHandler_);
+        this.updateClasses_();
+        this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialRadio,
+    classAsString: 'MaterialRadio',
+    cssClass: 'mdl-js-radio',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Slider MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialSlider = function MaterialSlider(element) {
+    this.element_ = element;
+    // Browser feature detection.
+    this.isIE_ = window.navigator.msPointerEnabled;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialSlider'] = MaterialSlider;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialSlider.prototype.Constant_ = {};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialSlider.prototype.CssClasses_ = {
+    IE_CONTAINER: 'mdl-slider__ie-container',
+    SLIDER_CONTAINER: 'mdl-slider__container',
+    BACKGROUND_FLEX: 'mdl-slider__background-flex',
+    BACKGROUND_LOWER: 'mdl-slider__background-lower',
+    BACKGROUND_UPPER: 'mdl-slider__background-upper',
+    IS_LOWEST_VALUE: 'is-lowest-value',
+    IS_UPGRADED: 'is-upgraded'
+};
+/**
+   * Handle input on element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialSlider.prototype.onInput_ = function (event) {
+    this.updateValueStyles_();
+};
+/**
+   * Handle change on element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialSlider.prototype.onChange_ = function (event) {
+    this.updateValueStyles_();
+};
+/**
+   * Handle mouseup on element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialSlider.prototype.onMouseUp_ = function (event) {
+    event.target.blur();
+};
+/**
+   * Handle mousedown on container element.
+   * This handler is purpose is to not require the use to click
+   * exactly on the 2px slider element, as FireFox seems to be very
+   * strict about this.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   * @suppress {missingProperties}
+   */
+MaterialSlider.prototype.onContainerMouseDown_ = function (event) {
+    // If this click is not on the parent element (but rather some child)
+    // ignore. It may still bubble up.
+    if (event.target !== this.element_.parentElement) {
+        return;
+    }
+    // Discard the original event and create a new event that
+    // is on the slider element.
+    event.preventDefault();
+    var newEvent = new MouseEvent('mousedown', {
+        target: event.target,
+        buttons: event.buttons,
+        clientX: event.clientX,
+        clientY: this.element_.getBoundingClientRect().y
+    });
+    this.element_.dispatchEvent(newEvent);
+};
+/**
+   * Handle updating of values.
+   *
+   * @private
+   */
+MaterialSlider.prototype.updateValueStyles_ = function () {
+    // Calculate and apply percentages to div structure behind slider.
+    var fraction = (this.element_.value - this.element_.min) / (this.element_.max - this.element_.min);
+    if (fraction === 0) {
+        this.element_.classList.add(this.CssClasses_.IS_LOWEST_VALUE);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_LOWEST_VALUE);
+    }
+    if (!this.isIE_) {
+        this.backgroundLower_.style.flex = fraction;
+        this.backgroundLower_.style.webkitFlex = fraction;
+        this.backgroundUpper_.style.flex = 1 - fraction;
+        this.backgroundUpper_.style.webkitFlex = 1 - fraction;
+    }
+};
+// Public methods.
+/**
+   * Disable slider.
+   *
+   * @public
+   */
+MaterialSlider.prototype.disable = function () {
+    this.element_.disabled = true;
+};
+MaterialSlider.prototype['disable'] = MaterialSlider.prototype.disable;
+/**
+   * Enable slider.
+   *
+   * @public
+   */
+MaterialSlider.prototype.enable = function () {
+    this.element_.disabled = false;
+};
+MaterialSlider.prototype['enable'] = MaterialSlider.prototype.enable;
+/**
+   * Update slider value.
+   *
+   * @param {number} value The value to which to set the control (optional).
+   * @public
+   */
+MaterialSlider.prototype.change = function (value) {
+    if (typeof value !== 'undefined') {
+        this.element_.value = value;
+    }
+    this.updateValueStyles_();
+};
+MaterialSlider.prototype['change'] = MaterialSlider.prototype.change;
+/**
+   * Initialize element.
+   */
+MaterialSlider.prototype.init = function () {
+    if (this.element_) {
+        if (this.isIE_) {
+            // Since we need to specify a very large height in IE due to
+            // implementation limitations, we add a parent here that trims it down to
+            // a reasonable size.
+            var containerIE = document.createElement('div');
+            containerIE.classList.add(this.CssClasses_.IE_CONTAINER);
+            this.element_.parentElement.insertBefore(containerIE, this.element_);
+            this.element_.parentElement.removeChild(this.element_);
+            containerIE.appendChild(this.element_);
+        } else {
+            // For non-IE browsers, we need a div structure that sits behind the
+            // slider and allows us to style the left and right sides of it with
+            // different colors.
+            var container = document.createElement('div');
+            container.classList.add(this.CssClasses_.SLIDER_CONTAINER);
+            this.element_.parentElement.insertBefore(container, this.element_);
+            this.element_.parentElement.removeChild(this.element_);
+            container.appendChild(this.element_);
+            var backgroundFlex = document.createElement('div');
+            backgroundFlex.classList.add(this.CssClasses_.BACKGROUND_FLEX);
+            container.appendChild(backgroundFlex);
+            this.backgroundLower_ = document.createElement('div');
+            this.backgroundLower_.classList.add(this.CssClasses_.BACKGROUND_LOWER);
+            backgroundFlex.appendChild(this.backgroundLower_);
+            this.backgroundUpper_ = document.createElement('div');
+            this.backgroundUpper_.classList.add(this.CssClasses_.BACKGROUND_UPPER);
+            backgroundFlex.appendChild(this.backgroundUpper_);
+        }
+        this.boundInputHandler = this.onInput_.bind(this);
+        this.boundChangeHandler = this.onChange_.bind(this);
+        this.boundMouseUpHandler = this.onMouseUp_.bind(this);
+        this.boundContainerMouseDownHandler = this.onContainerMouseDown_.bind(this);
+        this.element_.addEventListener('input', this.boundInputHandler);
+        this.element_.addEventListener('change', this.boundChangeHandler);
+        this.element_.addEventListener('mouseup', this.boundMouseUpHandler);
+        this.element_.parentElement.addEventListener('mousedown', this.boundContainerMouseDownHandler);
+        this.updateValueStyles_();
+        this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialSlider,
+    classAsString: 'MaterialSlider',
+    cssClass: 'mdl-js-slider',
+    widget: true
+});
+/**
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Snackbar MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialSnackbar = function MaterialSnackbar(element) {
+    this.element_ = element;
+    this.textElement_ = this.element_.querySelector('.' + this.cssClasses_.MESSAGE);
+    this.actionElement_ = this.element_.querySelector('.' + this.cssClasses_.ACTION);
+    if (!this.textElement_) {
+        throw new Error('There must be a message element for a snackbar.');
+    }
+    if (!this.actionElement_) {
+        throw new Error('There must be an action element for a snackbar.');
+    }
+    this.active = false;
+    this.actionHandler_ = undefined;
+    this.message_ = undefined;
+    this.actionText_ = undefined;
+    this.queuedNotifications_ = [];
+    this.setActionHidden_(true);
+};
+window['MaterialSnackbar'] = MaterialSnackbar;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialSnackbar.prototype.Constant_ = {
+    // The duration of the snackbar show/hide animation, in ms.
+    ANIMATION_LENGTH: 250
+};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialSnackbar.prototype.cssClasses_ = {
+    SNACKBAR: 'mdl-snackbar',
+    MESSAGE: 'mdl-snackbar__text',
+    ACTION: 'mdl-snackbar__action',
+    ACTIVE: 'mdl-snackbar--active'
+};
+/**
+   * Display the snackbar.
+   *
+   * @private
+   */
+MaterialSnackbar.prototype.displaySnackbar_ = function () {
+    this.element_.setAttribute('aria-hidden', 'true');
+    if (this.actionHandler_) {
+        this.actionElement_.textContent = this.actionText_;
+        this.actionElement_.addEventListener('click', this.actionHandler_);
+        this.setActionHidden_(false);
+    }
+    this.textElement_.textContent = this.message_;
+    this.element_.classList.add(this.cssClasses_.ACTIVE);
+    this.element_.setAttribute('aria-hidden', 'false');
+    setTimeout(this.cleanup_.bind(this), this.timeout_);
+};
+/**
+   * Show the snackbar.
+   *
+   * @param {Object} data The data for the notification.
+   * @public
+   */
+MaterialSnackbar.prototype.showSnackbar = function (data) {
+    if (data === undefined) {
+        throw new Error('Please provide a data object with at least a message to display.');
+    }
+    if (data['message'] === undefined) {
+        throw new Error('Please provide a message to be displayed.');
+    }
+    if (data['actionHandler'] && !data['actionText']) {
+        throw new Error('Please provide action text with the handler.');
+    }
+    if (this.active) {
+        this.queuedNotifications_.push(data);
+    } else {
+        this.active = true;
+        this.message_ = data['message'];
+        if (data['timeout']) {
+            this.timeout_ = data['timeout'];
+        } else {
+            this.timeout_ = 2750;
+        }
+        if (data['actionHandler']) {
+            this.actionHandler_ = data['actionHandler'];
+        }
+        if (data['actionText']) {
+            this.actionText_ = data['actionText'];
+        }
+        this.displaySnackbar_();
+    }
+};
+MaterialSnackbar.prototype['showSnackbar'] = MaterialSnackbar.prototype.showSnackbar;
+/**
+   * Check if the queue has items within it.
+   * If it does, display the next entry.
+   *
+   * @private
+   */
+MaterialSnackbar.prototype.checkQueue_ = function () {
+    if (this.queuedNotifications_.length > 0) {
+        this.showSnackbar(this.queuedNotifications_.shift());
+    }
+};
+/**
+   * Cleanup the snackbar event listeners and accessiblity attributes.
+   *
+   * @private
+   */
+MaterialSnackbar.prototype.cleanup_ = function () {
+    this.element_.classList.remove(this.cssClasses_.ACTIVE);
+    setTimeout(function () {
+        this.element_.setAttribute('aria-hidden', 'true');
+        this.textElement_.textContent = '';
+        if (!Boolean(this.actionElement_.getAttribute('aria-hidden'))) {
+            this.setActionHidden_(true);
+            this.actionElement_.textContent = '';
+            this.actionElement_.removeEventListener('click', this.actionHandler_);
+        }
+        this.actionHandler_ = undefined;
+        this.message_ = undefined;
+        this.actionText_ = undefined;
+        this.active = false;
+        this.checkQueue_();
+    }.bind(this), this.Constant_.ANIMATION_LENGTH);
+};
+/**
+   * Set the action handler hidden state.
+   *
+   * @param {boolean} value
+   * @private
+   */
+MaterialSnackbar.prototype.setActionHidden_ = function (value) {
+    if (value) {
+        this.actionElement_.setAttribute('aria-hidden', 'true');
+    } else {
+        this.actionElement_.removeAttribute('aria-hidden');
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialSnackbar,
+    classAsString: 'MaterialSnackbar',
+    cssClass: 'mdl-js-snackbar',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Spinner MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @param {HTMLElement} element The element that will be upgraded.
+   * @constructor
+   */
+var MaterialSpinner = function MaterialSpinner(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialSpinner'] = MaterialSpinner;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialSpinner.prototype.Constant_ = { MDL_SPINNER_LAYER_COUNT: 4 };
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialSpinner.prototype.CssClasses_ = {
+    MDL_SPINNER_LAYER: 'mdl-spinner__layer',
+    MDL_SPINNER_CIRCLE_CLIPPER: 'mdl-spinner__circle-clipper',
+    MDL_SPINNER_CIRCLE: 'mdl-spinner__circle',
+    MDL_SPINNER_GAP_PATCH: 'mdl-spinner__gap-patch',
+    MDL_SPINNER_LEFT: 'mdl-spinner__left',
+    MDL_SPINNER_RIGHT: 'mdl-spinner__right'
+};
+/**
+   * Auxiliary method to create a spinner layer.
+   *
+   * @param {number} index Index of the layer to be created.
+   * @public
+   */
+MaterialSpinner.prototype.createLayer = function (index) {
+    var layer = document.createElement('div');
+    layer.classList.add(this.CssClasses_.MDL_SPINNER_LAYER);
+    layer.classList.add(this.CssClasses_.MDL_SPINNER_LAYER + '-' + index);
+    var leftClipper = document.createElement('div');
+    leftClipper.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE_CLIPPER);
+    leftClipper.classList.add(this.CssClasses_.MDL_SPINNER_LEFT);
+    var gapPatch = document.createElement('div');
+    gapPatch.classList.add(this.CssClasses_.MDL_SPINNER_GAP_PATCH);
+    var rightClipper = document.createElement('div');
+    rightClipper.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE_CLIPPER);
+    rightClipper.classList.add(this.CssClasses_.MDL_SPINNER_RIGHT);
+    var circleOwners = [
+        leftClipper,
+        gapPatch,
+        rightClipper
+    ];
+    for (var i = 0; i < circleOwners.length; i++) {
+        var circle = document.createElement('div');
+        circle.classList.add(this.CssClasses_.MDL_SPINNER_CIRCLE);
+        circleOwners[i].appendChild(circle);
+    }
+    layer.appendChild(leftClipper);
+    layer.appendChild(gapPatch);
+    layer.appendChild(rightClipper);
+    this.element_.appendChild(layer);
+};
+MaterialSpinner.prototype['createLayer'] = MaterialSpinner.prototype.createLayer;
+/**
+   * Stops the spinner animation.
+   * Public method for users who need to stop the spinner for any reason.
+   *
+   * @public
+   */
+MaterialSpinner.prototype.stop = function () {
+    this.element_.classList.remove('is-active');
+};
+MaterialSpinner.prototype['stop'] = MaterialSpinner.prototype.stop;
+/**
+   * Starts the spinner animation.
+   * Public method for users who need to manually start the spinner for any reason
+   * (instead of just adding the 'is-active' class to their markup).
+   *
+   * @public
+   */
+MaterialSpinner.prototype.start = function () {
+    this.element_.classList.add('is-active');
+};
+MaterialSpinner.prototype['start'] = MaterialSpinner.prototype.start;
+/**
+   * Initialize element.
+   */
+MaterialSpinner.prototype.init = function () {
+    if (this.element_) {
+        for (var i = 1; i <= this.Constant_.MDL_SPINNER_LAYER_COUNT; i++) {
+            this.createLayer(i);
+        }
+        this.element_.classList.add('is-upgraded');
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialSpinner,
+    classAsString: 'MaterialSpinner',
+    cssClass: 'mdl-js-spinner',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Checkbox MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialSwitch = function MaterialSwitch(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialSwitch'] = MaterialSwitch;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialSwitch.prototype.Constant_ = { TINY_TIMEOUT: 0.001 };
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialSwitch.prototype.CssClasses_ = {
+    INPUT: 'mdl-switch__input',
+    TRACK: 'mdl-switch__track',
+    THUMB: 'mdl-switch__thumb',
+    FOCUS_HELPER: 'mdl-switch__focus-helper',
+    RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
+    RIPPLE_CONTAINER: 'mdl-switch__ripple-container',
+    RIPPLE_CENTER: 'mdl-ripple--center',
+    RIPPLE: 'mdl-ripple',
+    IS_FOCUSED: 'is-focused',
+    IS_DISABLED: 'is-disabled',
+    IS_CHECKED: 'is-checked'
+};
+/**
+   * Handle change of state.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialSwitch.prototype.onChange_ = function (event) {
+    this.updateClasses_();
+};
+/**
+   * Handle focus of element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialSwitch.prototype.onFocus_ = function (event) {
+    this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle lost focus of element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialSwitch.prototype.onBlur_ = function (event) {
+    this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle mouseup.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialSwitch.prototype.onMouseUp_ = function (event) {
+    this.blur_();
+};
+/**
+   * Handle class updates.
+   *
+   * @private
+   */
+MaterialSwitch.prototype.updateClasses_ = function () {
+    this.checkDisabled();
+    this.checkToggleState();
+};
+/**
+   * Add blur.
+   *
+   * @private
+   */
+MaterialSwitch.prototype.blur_ = function () {
+    // TODO: figure out why there's a focus event being fired after our blur,
+    // so that we can avoid this hack.
+    window.setTimeout(function () {
+        this.inputElement_.blur();
+    }.bind(this), this.Constant_.TINY_TIMEOUT);
+};
+// Public methods.
+/**
+   * Check the components disabled state.
+   *
+   * @public
+   */
+MaterialSwitch.prototype.checkDisabled = function () {
+    if (this.inputElement_.disabled) {
+        this.element_.classList.add(this.CssClasses_.IS_DISABLED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
+    }
+};
+MaterialSwitch.prototype['checkDisabled'] = MaterialSwitch.prototype.checkDisabled;
+/**
+   * Check the components toggled state.
+   *
+   * @public
+   */
+MaterialSwitch.prototype.checkToggleState = function () {
+    if (this.inputElement_.checked) {
+        this.element_.classList.add(this.CssClasses_.IS_CHECKED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_CHECKED);
+    }
+};
+MaterialSwitch.prototype['checkToggleState'] = MaterialSwitch.prototype.checkToggleState;
+/**
+   * Disable switch.
+   *
+   * @public
+   */
+MaterialSwitch.prototype.disable = function () {
+    this.inputElement_.disabled = true;
+    this.updateClasses_();
+};
+MaterialSwitch.prototype['disable'] = MaterialSwitch.prototype.disable;
+/**
+   * Enable switch.
+   *
+   * @public
+   */
+MaterialSwitch.prototype.enable = function () {
+    this.inputElement_.disabled = false;
+    this.updateClasses_();
+};
+MaterialSwitch.prototype['enable'] = MaterialSwitch.prototype.enable;
+/**
+   * Activate switch.
+   *
+   * @public
+   */
+MaterialSwitch.prototype.on = function () {
+    this.inputElement_.checked = true;
+    this.updateClasses_();
+};
+MaterialSwitch.prototype['on'] = MaterialSwitch.prototype.on;
+/**
+   * Deactivate switch.
+   *
+   * @public
+   */
+MaterialSwitch.prototype.off = function () {
+    this.inputElement_.checked = false;
+    this.updateClasses_();
+};
+MaterialSwitch.prototype['off'] = MaterialSwitch.prototype.off;
+/**
+   * Initialize element.
+   */
+MaterialSwitch.prototype.init = function () {
+    if (this.element_) {
+        this.inputElement_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
+        var track = document.createElement('div');
+        track.classList.add(this.CssClasses_.TRACK);
+        var thumb = document.createElement('div');
+        thumb.classList.add(this.CssClasses_.THUMB);
+        var focusHelper = document.createElement('span');
+        focusHelper.classList.add(this.CssClasses_.FOCUS_HELPER);
+        thumb.appendChild(focusHelper);
+        this.element_.appendChild(track);
+        this.element_.appendChild(thumb);
+        this.boundMouseUpHandler = this.onMouseUp_.bind(this);
+        if (this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT)) {
+            this.element_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
+            this.rippleContainerElement_ = document.createElement('span');
+            this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CONTAINER);
+            this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_EFFECT);
+            this.rippleContainerElement_.classList.add(this.CssClasses_.RIPPLE_CENTER);
+            this.rippleContainerElement_.addEventListener('mouseup', this.boundMouseUpHandler);
+            var ripple = document.createElement('span');
+            ripple.classList.add(this.CssClasses_.RIPPLE);
+            this.rippleContainerElement_.appendChild(ripple);
+            this.element_.appendChild(this.rippleContainerElement_);
+        }
+        this.boundChangeHandler = this.onChange_.bind(this);
+        this.boundFocusHandler = this.onFocus_.bind(this);
+        this.boundBlurHandler = this.onBlur_.bind(this);
+        this.inputElement_.addEventListener('change', this.boundChangeHandler);
+        this.inputElement_.addEventListener('focus', this.boundFocusHandler);
+        this.inputElement_.addEventListener('blur', this.boundBlurHandler);
+        this.element_.addEventListener('mouseup', this.boundMouseUpHandler);
+        this.updateClasses_();
+        this.element_.classList.add('is-upgraded');
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialSwitch,
+    classAsString: 'MaterialSwitch',
+    cssClass: 'mdl-js-switch',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Tabs MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {Element} element The element that will be upgraded.
+   */
+var MaterialTabs = function MaterialTabs(element) {
+    // Stores the HTML element.
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialTabs'] = MaterialTabs;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialTabs.prototype.Constant_ = {};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialTabs.prototype.CssClasses_ = {
+    TAB_CLASS: 'mdl-tabs__tab',
+    PANEL_CLASS: 'mdl-tabs__panel',
+    ACTIVE_CLASS: 'is-active',
+    UPGRADED_CLASS: 'is-upgraded',
+    MDL_JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    MDL_RIPPLE_CONTAINER: 'mdl-tabs__ripple-container',
+    MDL_RIPPLE: 'mdl-ripple',
+    MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events'
+};
+/**
+   * Handle clicks to a tabs component
+   *
+   * @private
+   */
+MaterialTabs.prototype.initTabs_ = function () {
+    if (this.element_.classList.contains(this.CssClasses_.MDL_JS_RIPPLE_EFFECT)) {
+        this.element_.classList.add(this.CssClasses_.MDL_JS_RIPPLE_EFFECT_IGNORE_EVENTS);
+    }
+    // Select element tabs, document panels
+    this.tabs_ = this.element_.querySelectorAll('.' + this.CssClasses_.TAB_CLASS);
+    this.panels_ = this.element_.querySelectorAll('.' + this.CssClasses_.PANEL_CLASS);
+    // Create new tabs for each tab element
+    for (var i = 0; i < this.tabs_.length; i++) {
+        new MaterialTab(this.tabs_[i], this);
+    }
+    this.element_.classList.add(this.CssClasses_.UPGRADED_CLASS);
+};
+/**
+   * Reset tab state, dropping active classes
+   *
+   * @private
+   */
+MaterialTabs.prototype.resetTabState_ = function () {
+    for (var k = 0; k < this.tabs_.length; k++) {
+        this.tabs_[k].classList.remove(this.CssClasses_.ACTIVE_CLASS);
+    }
+};
+/**
+   * Reset panel state, droping active classes
+   *
+   * @private
+   */
+MaterialTabs.prototype.resetPanelState_ = function () {
+    for (var j = 0; j < this.panels_.length; j++) {
+        this.panels_[j].classList.remove(this.CssClasses_.ACTIVE_CLASS);
+    }
+};
+/**
+   * Initialize element.
+   */
+MaterialTabs.prototype.init = function () {
+    if (this.element_) {
+        this.initTabs_();
+    }
+};
+/**
+   * Constructor for an individual tab.
+   *
+   * @constructor
+   * @param {Element} tab The HTML element for the tab.
+   * @param {MaterialTabs} ctx The MaterialTabs object that owns the tab.
+   */
+function MaterialTab(tab, ctx) {
+    if (tab) {
+        if (ctx.element_.classList.contains(ctx.CssClasses_.MDL_JS_RIPPLE_EFFECT)) {
+            var rippleContainer = document.createElement('span');
+            rippleContainer.classList.add(ctx.CssClasses_.MDL_RIPPLE_CONTAINER);
+            rippleContainer.classList.add(ctx.CssClasses_.MDL_JS_RIPPLE_EFFECT);
+            var ripple = document.createElement('span');
+            ripple.classList.add(ctx.CssClasses_.MDL_RIPPLE);
+            rippleContainer.appendChild(ripple);
+            tab.appendChild(rippleContainer);
+        }
+        tab.addEventListener('click', function (e) {
+            if (tab.getAttribute('href').charAt(0) === '#') {
+                e.preventDefault();
+                var href = tab.href.split('#')[1];
+                var panel = ctx.element_.querySelector('#' + href);
+                ctx.resetTabState_();
+                ctx.resetPanelState_();
+                tab.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
+                panel.classList.add(ctx.CssClasses_.ACTIVE_CLASS);
+            }
+        });
+    }
+}
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialTabs,
+    classAsString: 'MaterialTabs',
+    cssClass: 'mdl-js-tabs'
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Textfield MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialTextfield = function MaterialTextfield(element) {
+    this.element_ = element;
+    this.maxRows = this.Constant_.NO_MAX_ROWS;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialTextfield'] = MaterialTextfield;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialTextfield.prototype.Constant_ = {
+    NO_MAX_ROWS: -1,
+    MAX_ROWS_ATTRIBUTE: 'maxrows'
+};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialTextfield.prototype.CssClasses_ = {
+    LABEL: 'mdl-textfield__label',
+    INPUT: 'mdl-textfield__input',
+    IS_DIRTY: 'is-dirty',
+    IS_FOCUSED: 'is-focused',
+    IS_DISABLED: 'is-disabled',
+    IS_INVALID: 'is-invalid',
+    IS_UPGRADED: 'is-upgraded',
+    HAS_PLACEHOLDER: 'has-placeholder'
+};
+/**
+   * Handle input being entered.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialTextfield.prototype.onKeyDown_ = function (event) {
+    var currentRowCount = event.target.value.split('\n').length;
+    if (event.keyCode === 13) {
+        if (currentRowCount >= this.maxRows) {
+            event.preventDefault();
+        }
+    }
+};
+/**
+   * Handle focus.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialTextfield.prototype.onFocus_ = function (event) {
+    this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle lost focus.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialTextfield.prototype.onBlur_ = function (event) {
+    this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
+};
+/**
+   * Handle reset event from out side.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialTextfield.prototype.onReset_ = function (event) {
+    this.updateClasses_();
+};
+/**
+   * Handle class updates.
+   *
+   * @private
+   */
+MaterialTextfield.prototype.updateClasses_ = function () {
+    this.checkDisabled();
+    this.checkValidity();
+    this.checkDirty();
+    this.checkFocus();
+};
+// Public methods.
+/**
+   * Check the disabled state and update field accordingly.
+   *
+   * @public
+   */
+MaterialTextfield.prototype.checkDisabled = function () {
+    if (this.input_.disabled) {
+        this.element_.classList.add(this.CssClasses_.IS_DISABLED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_DISABLED);
+    }
+};
+MaterialTextfield.prototype['checkDisabled'] = MaterialTextfield.prototype.checkDisabled;
+/**
+  * Check the focus state and update field accordingly.
+  *
+  * @public
+  */
+MaterialTextfield.prototype.checkFocus = function () {
+    if (Boolean(this.element_.querySelector(':focus'))) {
+        this.element_.classList.add(this.CssClasses_.IS_FOCUSED);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_FOCUSED);
+    }
+};
+MaterialTextfield.prototype['checkFocus'] = MaterialTextfield.prototype.checkFocus;
+/**
+   * Check the validity state and update field accordingly.
+   *
+   * @public
+   */
+MaterialTextfield.prototype.checkValidity = function () {
+    if (this.input_.validity) {
+        if (this.input_.validity.valid) {
+            this.element_.classList.remove(this.CssClasses_.IS_INVALID);
+        } else {
+            this.element_.classList.add(this.CssClasses_.IS_INVALID);
+        }
+    }
+};
+MaterialTextfield.prototype['checkValidity'] = MaterialTextfield.prototype.checkValidity;
+/**
+   * Check the dirty state and update field accordingly.
+   *
+   * @public
+   */
+MaterialTextfield.prototype.checkDirty = function () {
+    if (this.input_.value && this.input_.value.length > 0) {
+        this.element_.classList.add(this.CssClasses_.IS_DIRTY);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_DIRTY);
+    }
+};
+MaterialTextfield.prototype['checkDirty'] = MaterialTextfield.prototype.checkDirty;
+/**
+   * Disable text field.
+   *
+   * @public
+   */
+MaterialTextfield.prototype.disable = function () {
+    this.input_.disabled = true;
+    this.updateClasses_();
+};
+MaterialTextfield.prototype['disable'] = MaterialTextfield.prototype.disable;
+/**
+   * Enable text field.
+   *
+   * @public
+   */
+MaterialTextfield.prototype.enable = function () {
+    this.input_.disabled = false;
+    this.updateClasses_();
+};
+MaterialTextfield.prototype['enable'] = MaterialTextfield.prototype.enable;
+/**
+   * Update text field value.
+   *
+   * @param {string} value The value to which to set the control (optional).
+   * @public
+   */
+MaterialTextfield.prototype.change = function (value) {
+    this.input_.value = value || '';
+    this.updateClasses_();
+};
+MaterialTextfield.prototype['change'] = MaterialTextfield.prototype.change;
+/**
+   * Initialize element.
+   */
+MaterialTextfield.prototype.init = function () {
+    if (this.element_) {
+        this.label_ = this.element_.querySelector('.' + this.CssClasses_.LABEL);
+        this.input_ = this.element_.querySelector('.' + this.CssClasses_.INPUT);
+        if (this.input_) {
+            if (this.input_.hasAttribute(this.Constant_.MAX_ROWS_ATTRIBUTE)) {
+                this.maxRows = parseInt(this.input_.getAttribute(this.Constant_.MAX_ROWS_ATTRIBUTE), 10);
+                if (isNaN(this.maxRows)) {
+                    this.maxRows = this.Constant_.NO_MAX_ROWS;
+                }
+            }
+            if (this.input_.hasAttribute('placeholder')) {
+                this.element_.classList.add(this.CssClasses_.HAS_PLACEHOLDER);
+            }
+            this.boundUpdateClassesHandler = this.updateClasses_.bind(this);
+            this.boundFocusHandler = this.onFocus_.bind(this);
+            this.boundBlurHandler = this.onBlur_.bind(this);
+            this.boundResetHandler = this.onReset_.bind(this);
+            this.input_.addEventListener('input', this.boundUpdateClassesHandler);
+            this.input_.addEventListener('focus', this.boundFocusHandler);
+            this.input_.addEventListener('blur', this.boundBlurHandler);
+            this.input_.addEventListener('reset', this.boundResetHandler);
+            if (this.maxRows !== this.Constant_.NO_MAX_ROWS) {
+                // TODO: This should handle pasting multi line text.
+                // Currently doesn't.
+                this.boundKeyDownHandler = this.onKeyDown_.bind(this);
+                this.input_.addEventListener('keydown', this.boundKeyDownHandler);
+            }
+            var invalid = this.element_.classList.contains(this.CssClasses_.IS_INVALID);
+            this.updateClasses_();
+            this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
+            if (invalid) {
+                this.element_.classList.add(this.CssClasses_.IS_INVALID);
+            }
+            if (this.input_.hasAttribute('autofocus')) {
+                this.element_.focus();
+                this.checkFocus();
+            }
+        }
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialTextfield,
+    classAsString: 'MaterialTextfield',
+    cssClass: 'mdl-js-textfield',
+    widget: true
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Tooltip MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialTooltip = function MaterialTooltip(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialTooltip'] = MaterialTooltip;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialTooltip.prototype.Constant_ = {};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialTooltip.prototype.CssClasses_ = {
+    IS_ACTIVE: 'is-active',
+    BOTTOM: 'mdl-tooltip--bottom',
+    LEFT: 'mdl-tooltip--left',
+    RIGHT: 'mdl-tooltip--right',
+    TOP: 'mdl-tooltip--top'
+};
+/**
+   * Handle mouseenter for tooltip.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialTooltip.prototype.handleMouseEnter_ = function (event) {
+    var props = event.target.getBoundingClientRect();
+    var left = props.left + props.width / 2;
+    var top = props.top + props.height / 2;
+    var marginLeft = -1 * (this.element_.offsetWidth / 2);
+    var marginTop = -1 * (this.element_.offsetHeight / 2);
+    if (this.element_.classList.contains(this.CssClasses_.LEFT) || this.element_.classList.contains(this.CssClasses_.RIGHT)) {
+        left = props.width / 2;
+        if (top + marginTop < 0) {
+            this.element_.style.top = '0';
+            this.element_.style.marginTop = '0';
+        } else {
+            this.element_.style.top = top + 'px';
+            this.element_.style.marginTop = marginTop + 'px';
+        }
+    } else {
+        if (left + marginLeft < 0) {
+            this.element_.style.left = '0';
+            this.element_.style.marginLeft = '0';
+        } else {
+            this.element_.style.left = left + 'px';
+            this.element_.style.marginLeft = marginLeft + 'px';
+        }
+    }
+    if (this.element_.classList.contains(this.CssClasses_.TOP)) {
+        this.element_.style.top = props.top - this.element_.offsetHeight - 10 + 'px';
+    } else if (this.element_.classList.contains(this.CssClasses_.RIGHT)) {
+        this.element_.style.left = props.left + props.width + 10 + 'px';
+    } else if (this.element_.classList.contains(this.CssClasses_.LEFT)) {
+        this.element_.style.left = props.left - this.element_.offsetWidth - 10 + 'px';
+    } else {
+        this.element_.style.top = props.top + props.height + 10 + 'px';
+    }
+    this.element_.classList.add(this.CssClasses_.IS_ACTIVE);
+};
+/**
+   * Hide tooltip on mouseleave or scroll
+   *
+   * @private
+   */
+MaterialTooltip.prototype.hideTooltip_ = function () {
+    this.element_.classList.remove(this.CssClasses_.IS_ACTIVE);
+};
+/**
+   * Initialize element.
+   */
+MaterialTooltip.prototype.init = function () {
+    if (this.element_) {
+        var forElId = this.element_.getAttribute('for') || this.element_.getAttribute('data-mdl-for');
+        if (forElId) {
+            this.forElement_ = document.getElementById(forElId);
+        }
+        if (this.forElement_) {
+            // It's left here because it prevents accidental text selection on Android
+            if (!this.forElement_.hasAttribute('tabindex')) {
+                this.forElement_.setAttribute('tabindex', '0');
+            }
+            this.boundMouseEnterHandler = this.handleMouseEnter_.bind(this);
+            this.boundMouseLeaveAndScrollHandler = this.hideTooltip_.bind(this);
+            this.forElement_.addEventListener('mouseenter', this.boundMouseEnterHandler, false);
+            this.forElement_.addEventListener('touchend', this.boundMouseEnterHandler, false);
+            this.forElement_.addEventListener('mouseleave', this.boundMouseLeaveAndScrollHandler, false);
+            window.addEventListener('scroll', this.boundMouseLeaveAndScrollHandler, true);
+            window.addEventListener('touchstart', this.boundMouseLeaveAndScrollHandler);
+        }
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialTooltip,
+    classAsString: 'MaterialTooltip',
+    cssClass: 'mdl-tooltip'
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Layout MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialLayout = function MaterialLayout(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialLayout'] = MaterialLayout;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialLayout.prototype.Constant_ = {
+    MAX_WIDTH: '(max-width: 1024px)',
+    TAB_SCROLL_PIXELS: 100,
+    RESIZE_TIMEOUT: 100,
+    MENU_ICON: '&#xE5D2;',
+    CHEVRON_LEFT: 'chevron_left',
+    CHEVRON_RIGHT: 'chevron_right'
+};
+/**
+   * Keycodes, for code readability.
+   *
+   * @enum {number}
+   * @private
+   */
+MaterialLayout.prototype.Keycodes_ = {
+    ENTER: 13,
+    ESCAPE: 27,
+    SPACE: 32
+};
+/**
+   * Modes.
+   *
+   * @enum {number}
+   * @private
+   */
+MaterialLayout.prototype.Mode_ = {
+    STANDARD: 0,
+    SEAMED: 1,
+    WATERFALL: 2,
+    SCROLL: 3
+};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialLayout.prototype.CssClasses_ = {
+    CONTAINER: 'mdl-layout__container',
+    HEADER: 'mdl-layout__header',
+    DRAWER: 'mdl-layout__drawer',
+    CONTENT: 'mdl-layout__content',
+    DRAWER_BTN: 'mdl-layout__drawer-button',
+    ICON: 'material-icons',
+    JS_RIPPLE_EFFECT: 'mdl-js-ripple-effect',
+    RIPPLE_CONTAINER: 'mdl-layout__tab-ripple-container',
+    RIPPLE: 'mdl-ripple',
+    RIPPLE_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
+    HEADER_SEAMED: 'mdl-layout__header--seamed',
+    HEADER_WATERFALL: 'mdl-layout__header--waterfall',
+    HEADER_SCROLL: 'mdl-layout__header--scroll',
+    FIXED_HEADER: 'mdl-layout--fixed-header',
+    OBFUSCATOR: 'mdl-layout__obfuscator',
+    TAB_BAR: 'mdl-layout__tab-bar',
+    TAB_CONTAINER: 'mdl-layout__tab-bar-container',
+    TAB: 'mdl-layout__tab',
+    TAB_BAR_BUTTON: 'mdl-layout__tab-bar-button',
+    TAB_BAR_LEFT_BUTTON: 'mdl-layout__tab-bar-left-button',
+    TAB_BAR_RIGHT_BUTTON: 'mdl-layout__tab-bar-right-button',
+    TAB_MANUAL_SWITCH: 'mdl-layout__tab-manual-switch',
+    PANEL: 'mdl-layout__tab-panel',
+    HAS_DRAWER: 'has-drawer',
+    HAS_TABS: 'has-tabs',
+    HAS_SCROLLING_HEADER: 'has-scrolling-header',
+    CASTING_SHADOW: 'is-casting-shadow',
+    IS_COMPACT: 'is-compact',
+    IS_SMALL_SCREEN: 'is-small-screen',
+    IS_DRAWER_OPEN: 'is-visible',
+    IS_ACTIVE: 'is-active',
+    IS_UPGRADED: 'is-upgraded',
+    IS_ANIMATING: 'is-animating',
+    ON_LARGE_SCREEN: 'mdl-layout--large-screen-only',
+    ON_SMALL_SCREEN: 'mdl-layout--small-screen-only'
+};
+/**
+   * Handles scrolling on the content.
+   *
+   * @private
+   */
+MaterialLayout.prototype.contentScrollHandler_ = function () {
+    if (this.header_.classList.contains(this.CssClasses_.IS_ANIMATING)) {
+        return;
+    }
+    var headerVisible = !this.element_.classList.contains(this.CssClasses_.IS_SMALL_SCREEN) || this.element_.classList.contains(this.CssClasses_.FIXED_HEADER);
+    if (this.content_.scrollTop > 0 && !this.header_.classList.contains(this.CssClasses_.IS_COMPACT)) {
+        this.header_.classList.add(this.CssClasses_.CASTING_SHADOW);
+        this.header_.classList.add(this.CssClasses_.IS_COMPACT);
+        if (headerVisible) {
+            this.header_.classList.add(this.CssClasses_.IS_ANIMATING);
+        }
+    } else if (this.content_.scrollTop <= 0 && this.header_.classList.contains(this.CssClasses_.IS_COMPACT)) {
+        this.header_.classList.remove(this.CssClasses_.CASTING_SHADOW);
+        this.header_.classList.remove(this.CssClasses_.IS_COMPACT);
+        if (headerVisible) {
+            this.header_.classList.add(this.CssClasses_.IS_ANIMATING);
+        }
+    }
+};
+/**
+   * Handles a keyboard event on the drawer.
+   *
+   * @param {Event} evt The event that fired.
+   * @private
+   */
+MaterialLayout.prototype.keyboardEventHandler_ = function (evt) {
+    // Only react when the drawer is open.
+    if (evt.keyCode === this.Keycodes_.ESCAPE && this.drawer_.classList.contains(this.CssClasses_.IS_DRAWER_OPEN)) {
+        this.toggleDrawer();
+    }
+};
+/**
+   * Handles changes in screen size.
+   *
+   * @private
+   */
+MaterialLayout.prototype.screenSizeHandler_ = function () {
+    if (this.screenSizeMediaQuery_.matches) {
+        this.element_.classList.add(this.CssClasses_.IS_SMALL_SCREEN);
+    } else {
+        this.element_.classList.remove(this.CssClasses_.IS_SMALL_SCREEN);
+        // Collapse drawer (if any) when moving to a large screen size.
+        if (this.drawer_) {
+            this.drawer_.classList.remove(this.CssClasses_.IS_DRAWER_OPEN);
+            this.obfuscator_.classList.remove(this.CssClasses_.IS_DRAWER_OPEN);
+        }
+    }
+};
+/**
+   * Handles events of drawer button.
+   *
+   * @param {Event} evt The event that fired.
+   * @private
+   */
+MaterialLayout.prototype.drawerToggleHandler_ = function (evt) {
+    if (evt && evt.type === 'keydown') {
+        if (evt.keyCode === this.Keycodes_.SPACE || evt.keyCode === this.Keycodes_.ENTER) {
+            // prevent scrolling in drawer nav
+            evt.preventDefault();
+        } else {
+            // prevent other keys
+            return;
+        }
+    }
+    this.toggleDrawer();
+};
+/**
+   * Handles (un)setting the `is-animating` class
+   *
+   * @private
+   */
+MaterialLayout.prototype.headerTransitionEndHandler_ = function () {
+    this.header_.classList.remove(this.CssClasses_.IS_ANIMATING);
+};
+/**
+   * Handles expanding the header on click
+   *
+   * @private
+   */
+MaterialLayout.prototype.headerClickHandler_ = function () {
+    if (this.header_.classList.contains(this.CssClasses_.IS_COMPACT)) {
+        this.header_.classList.remove(this.CssClasses_.IS_COMPACT);
+        this.header_.classList.add(this.CssClasses_.IS_ANIMATING);
+    }
+};
+/**
+   * Reset tab state, dropping active classes
+   *
+   * @private
+   */
+MaterialLayout.prototype.resetTabState_ = function (tabBar) {
+    for (var k = 0; k < tabBar.length; k++) {
+        tabBar[k].classList.remove(this.CssClasses_.IS_ACTIVE);
+    }
+};
+/**
+   * Reset panel state, droping active classes
+   *
+   * @private
+   */
+MaterialLayout.prototype.resetPanelState_ = function (panels) {
+    for (var j = 0; j < panels.length; j++) {
+        panels[j].classList.remove(this.CssClasses_.IS_ACTIVE);
+    }
+};
+/**
+  * Toggle drawer state
+  *
+  * @public
+  */
+MaterialLayout.prototype.toggleDrawer = function () {
+    var drawerButton = this.element_.querySelector('.' + this.CssClasses_.DRAWER_BTN);
+    this.drawer_.classList.toggle(this.CssClasses_.IS_DRAWER_OPEN);
+    this.obfuscator_.classList.toggle(this.CssClasses_.IS_DRAWER_OPEN);
+    // Set accessibility properties.
+    if (this.drawer_.classList.contains(this.CssClasses_.IS_DRAWER_OPEN)) {
+        this.drawer_.setAttribute('aria-hidden', 'false');
+        drawerButton.setAttribute('aria-expanded', 'true');
+    } else {
+        this.drawer_.setAttribute('aria-hidden', 'true');
+        drawerButton.setAttribute('aria-expanded', 'false');
+    }
+};
+MaterialLayout.prototype['toggleDrawer'] = MaterialLayout.prototype.toggleDrawer;
+/**
+   * Initialize element.
+   */
+MaterialLayout.prototype.init = function () {
+    if (this.element_) {
+        var container = document.createElement('div');
+        container.classList.add(this.CssClasses_.CONTAINER);
+        var focusedElement = this.element_.querySelector(':focus');
+        this.element_.parentElement.insertBefore(container, this.element_);
+        this.element_.parentElement.removeChild(this.element_);
+        container.appendChild(this.element_);
+        if (focusedElement) {
+            focusedElement.focus();
+        }
+        var directChildren = this.element_.childNodes;
+        var numChildren = directChildren.length;
+        for (var c = 0; c < numChildren; c++) {
+            var child = directChildren[c];
+            if (child.classList && child.classList.contains(this.CssClasses_.HEADER)) {
+                this.header_ = child;
+            }
+            if (child.classList && child.classList.contains(this.CssClasses_.DRAWER)) {
+                this.drawer_ = child;
+            }
+            if (child.classList && child.classList.contains(this.CssClasses_.CONTENT)) {
+                this.content_ = child;
+            }
+        }
+        window.addEventListener('pageshow', function (e) {
+            if (e.persisted) {
+                // when page is loaded from back/forward cache
+                // trigger repaint to let layout scroll in safari
+                this.element_.style.overflowY = 'hidden';
+                requestAnimationFrame(function () {
+                    this.element_.style.overflowY = '';
+                }.bind(this));
+            }
+        }.bind(this), false);
+        if (this.header_) {
+            this.tabBar_ = this.header_.querySelector('.' + this.CssClasses_.TAB_BAR);
+        }
+        var mode = this.Mode_.STANDARD;
+        if (this.header_) {
+            if (this.header_.classList.contains(this.CssClasses_.HEADER_SEAMED)) {
+                mode = this.Mode_.SEAMED;
+            } else if (this.header_.classList.contains(this.CssClasses_.HEADER_WATERFALL)) {
+                mode = this.Mode_.WATERFALL;
+                this.header_.addEventListener('transitionend', this.headerTransitionEndHandler_.bind(this));
+                this.header_.addEventListener('click', this.headerClickHandler_.bind(this));
+            } else if (this.header_.classList.contains(this.CssClasses_.HEADER_SCROLL)) {
+                mode = this.Mode_.SCROLL;
+                container.classList.add(this.CssClasses_.HAS_SCROLLING_HEADER);
+            }
+            if (mode === this.Mode_.STANDARD) {
+                this.header_.classList.add(this.CssClasses_.CASTING_SHADOW);
+                if (this.tabBar_) {
+                    this.tabBar_.classList.add(this.CssClasses_.CASTING_SHADOW);
+                }
+            } else if (mode === this.Mode_.SEAMED || mode === this.Mode_.SCROLL) {
+                this.header_.classList.remove(this.CssClasses_.CASTING_SHADOW);
+                if (this.tabBar_) {
+                    this.tabBar_.classList.remove(this.CssClasses_.CASTING_SHADOW);
+                }
+            } else if (mode === this.Mode_.WATERFALL) {
+                // Add and remove shadows depending on scroll position.
+                // Also add/remove auxiliary class for styling of the compact version of
+                // the header.
+                this.content_.addEventListener('scroll', this.contentScrollHandler_.bind(this));
+                this.contentScrollHandler_();
+            }
+        }
+        // Add drawer toggling button to our layout, if we have an openable drawer.
+        if (this.drawer_) {
+            var drawerButton = this.element_.querySelector('.' + this.CssClasses_.DRAWER_BTN);
+            if (!drawerButton) {
+                drawerButton = document.createElement('div');
+                drawerButton.setAttribute('aria-expanded', 'false');
+                drawerButton.setAttribute('role', 'button');
+                drawerButton.setAttribute('tabindex', '0');
+                drawerButton.classList.add(this.CssClasses_.DRAWER_BTN);
+                var drawerButtonIcon = document.createElement('i');
+                drawerButtonIcon.classList.add(this.CssClasses_.ICON);
+                drawerButtonIcon.innerHTML = this.Constant_.MENU_ICON;
+                drawerButton.appendChild(drawerButtonIcon);
+            }
+            if (this.drawer_.classList.contains(this.CssClasses_.ON_LARGE_SCREEN)) {
+                //If drawer has ON_LARGE_SCREEN class then add it to the drawer toggle button as well.
+                drawerButton.classList.add(this.CssClasses_.ON_LARGE_SCREEN);
+            } else if (this.drawer_.classList.contains(this.CssClasses_.ON_SMALL_SCREEN)) {
+                //If drawer has ON_SMALL_SCREEN class then add it to the drawer toggle button as well.
+                drawerButton.classList.add(this.CssClasses_.ON_SMALL_SCREEN);
+            }
+            drawerButton.addEventListener('click', this.drawerToggleHandler_.bind(this));
+            drawerButton.addEventListener('keydown', this.drawerToggleHandler_.bind(this));
+            // Add a class if the layout has a drawer, for altering the left padding.
+            // Adds the HAS_DRAWER to the elements since this.header_ may or may
+            // not be present.
+            this.element_.classList.add(this.CssClasses_.HAS_DRAWER);
+            // If we have a fixed header, add the button to the header rather than
+            // the layout.
+            if (this.element_.classList.contains(this.CssClasses_.FIXED_HEADER)) {
+                this.header_.insertBefore(drawerButton, this.header_.firstChild);
+            } else {
+                this.element_.insertBefore(drawerButton, this.content_);
+            }
+            var obfuscator = document.createElement('div');
+            obfuscator.classList.add(this.CssClasses_.OBFUSCATOR);
+            this.element_.appendChild(obfuscator);
+            obfuscator.addEventListener('click', this.drawerToggleHandler_.bind(this));
+            this.obfuscator_ = obfuscator;
+            this.drawer_.addEventListener('keydown', this.keyboardEventHandler_.bind(this));
+            this.drawer_.setAttribute('aria-hidden', 'true');
+        }
+        // Keep an eye on screen size, and add/remove auxiliary class for styling
+        // of small screens.
+        this.screenSizeMediaQuery_ = window.matchMedia(this.Constant_.MAX_WIDTH);
+        this.screenSizeMediaQuery_.addListener(this.screenSizeHandler_.bind(this));
+        this.screenSizeHandler_();
+        // Initialize tabs, if any.
+        if (this.header_ && this.tabBar_) {
+            this.element_.classList.add(this.CssClasses_.HAS_TABS);
+            var tabContainer = document.createElement('div');
+            tabContainer.classList.add(this.CssClasses_.TAB_CONTAINER);
+            this.header_.insertBefore(tabContainer, this.tabBar_);
+            this.header_.removeChild(this.tabBar_);
+            var leftButton = document.createElement('div');
+            leftButton.classList.add(this.CssClasses_.TAB_BAR_BUTTON);
+            leftButton.classList.add(this.CssClasses_.TAB_BAR_LEFT_BUTTON);
+            var leftButtonIcon = document.createElement('i');
+            leftButtonIcon.classList.add(this.CssClasses_.ICON);
+            leftButtonIcon.textContent = this.Constant_.CHEVRON_LEFT;
+            leftButton.appendChild(leftButtonIcon);
+            leftButton.addEventListener('click', function () {
+                this.tabBar_.scrollLeft -= this.Constant_.TAB_SCROLL_PIXELS;
+            }.bind(this));
+            var rightButton = document.createElement('div');
+            rightButton.classList.add(this.CssClasses_.TAB_BAR_BUTTON);
+            rightButton.classList.add(this.CssClasses_.TAB_BAR_RIGHT_BUTTON);
+            var rightButtonIcon = document.createElement('i');
+            rightButtonIcon.classList.add(this.CssClasses_.ICON);
+            rightButtonIcon.textContent = this.Constant_.CHEVRON_RIGHT;
+            rightButton.appendChild(rightButtonIcon);
+            rightButton.addEventListener('click', function () {
+                this.tabBar_.scrollLeft += this.Constant_.TAB_SCROLL_PIXELS;
+            }.bind(this));
+            tabContainer.appendChild(leftButton);
+            tabContainer.appendChild(this.tabBar_);
+            tabContainer.appendChild(rightButton);
+            // Add and remove tab buttons depending on scroll position and total
+            // window size.
+            var tabUpdateHandler = function () {
+                if (this.tabBar_.scrollLeft > 0) {
+                    leftButton.classList.add(this.CssClasses_.IS_ACTIVE);
+                } else {
+                    leftButton.classList.remove(this.CssClasses_.IS_ACTIVE);
+                }
+                if (this.tabBar_.scrollLeft < this.tabBar_.scrollWidth - this.tabBar_.offsetWidth) {
+                    rightButton.classList.add(this.CssClasses_.IS_ACTIVE);
+                } else {
+                    rightButton.classList.remove(this.CssClasses_.IS_ACTIVE);
+                }
+            }.bind(this);
+            this.tabBar_.addEventListener('scroll', tabUpdateHandler);
+            tabUpdateHandler();
+            // Update tabs when the window resizes.
+            var windowResizeHandler = function () {
+                // Use timeouts to make sure it doesn't happen too often.
+                if (this.resizeTimeoutId_) {
+                    clearTimeout(this.resizeTimeoutId_);
+                }
+                this.resizeTimeoutId_ = setTimeout(function () {
+                    tabUpdateHandler();
+                    this.resizeTimeoutId_ = null;
+                }.bind(this), this.Constant_.RESIZE_TIMEOUT);
+            }.bind(this);
+            window.addEventListener('resize', windowResizeHandler);
+            if (this.tabBar_.classList.contains(this.CssClasses_.JS_RIPPLE_EFFECT)) {
+                this.tabBar_.classList.add(this.CssClasses_.RIPPLE_IGNORE_EVENTS);
+            }
+            // Select element tabs, document panels
+            var tabs = this.tabBar_.querySelectorAll('.' + this.CssClasses_.TAB);
+            var panels = this.content_.querySelectorAll('.' + this.CssClasses_.PANEL);
+            // Create new tabs for each tab element
+            for (var i = 0; i < tabs.length; i++) {
+                new MaterialLayoutTab(tabs[i], tabs, panels, this);
+            }
+        }
+        this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
+    }
+};
+/**
+   * Constructor for an individual tab.
+   *
+   * @constructor
+   * @param {HTMLElement} tab The HTML element for the tab.
+   * @param {!Array<HTMLElement>} tabs Array with HTML elements for all tabs.
+   * @param {!Array<HTMLElement>} panels Array with HTML elements for all panels.
+   * @param {MaterialLayout} layout The MaterialLayout object that owns the tab.
+   */
+function MaterialLayoutTab(tab, tabs, panels, layout) {
+    /**
+     * Auxiliary method to programmatically select a tab in the UI.
+     */
+    function selectTab() {
+        var href = tab.href.split('#')[1];
+        var panel = layout.content_.querySelector('#' + href);
+        layout.resetTabState_(tabs);
+        layout.resetPanelState_(panels);
+        tab.classList.add(layout.CssClasses_.IS_ACTIVE);
+        panel.classList.add(layout.CssClasses_.IS_ACTIVE);
+    }
+    if (layout.tabBar_.classList.contains(layout.CssClasses_.JS_RIPPLE_EFFECT)) {
+        var rippleContainer = document.createElement('span');
+        rippleContainer.classList.add(layout.CssClasses_.RIPPLE_CONTAINER);
+        rippleContainer.classList.add(layout.CssClasses_.JS_RIPPLE_EFFECT);
+        var ripple = document.createElement('span');
+        ripple.classList.add(layout.CssClasses_.RIPPLE);
+        rippleContainer.appendChild(ripple);
+        tab.appendChild(rippleContainer);
+    }
+    if (!layout.tabBar_.classList.contains(layout.CssClasses_.TAB_MANUAL_SWITCH)) {
+        tab.addEventListener('click', function (e) {
+            if (tab.getAttribute('href').charAt(0) === '#') {
+                e.preventDefault();
+                selectTab();
+            }
+        });
+    }
+    tab.show = selectTab;
+}
+window['MaterialLayoutTab'] = MaterialLayoutTab;
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialLayout,
+    classAsString: 'MaterialLayout',
+    cssClass: 'mdl-js-layout'
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Data Table Card MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {Element} element The element that will be upgraded.
+   */
+var MaterialDataTable = function MaterialDataTable(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialDataTable'] = MaterialDataTable;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialDataTable.prototype.Constant_ = {};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialDataTable.prototype.CssClasses_ = {
+    DATA_TABLE: 'mdl-data-table',
+    SELECTABLE: 'mdl-data-table--selectable',
+    SELECT_ELEMENT: 'mdl-data-table__select',
+    IS_SELECTED: 'is-selected',
+    IS_UPGRADED: 'is-upgraded'
+};
+/**
+   * Generates and returns a function that toggles the selection state of a
+   * single row (or multiple rows).
+   *
+   * @param {Element} checkbox Checkbox that toggles the selection state.
+   * @param {Element} row Row to toggle when checkbox changes.
+   * @param {(Array<Object>|NodeList)=} opt_rows Rows to toggle when checkbox changes.
+   * @private
+   */
+MaterialDataTable.prototype.selectRow_ = function (checkbox, row, opt_rows) {
+    if (row) {
+        return function () {
+            if (checkbox.checked) {
+                row.classList.add(this.CssClasses_.IS_SELECTED);
+            } else {
+                row.classList.remove(this.CssClasses_.IS_SELECTED);
+            }
+        }.bind(this);
+    }
+    if (opt_rows) {
+        return function () {
+            var i;
+            var el;
+            if (checkbox.checked) {
+                for (i = 0; i < opt_rows.length; i++) {
+                    el = opt_rows[i].querySelector('td').querySelector('.mdl-checkbox');
+                    el['MaterialCheckbox'].check();
+                    opt_rows[i].classList.add(this.CssClasses_.IS_SELECTED);
+                }
+            } else {
+                for (i = 0; i < opt_rows.length; i++) {
+                    el = opt_rows[i].querySelector('td').querySelector('.mdl-checkbox');
+                    el['MaterialCheckbox'].uncheck();
+                    opt_rows[i].classList.remove(this.CssClasses_.IS_SELECTED);
+                }
+            }
+        }.bind(this);
+    }
+};
+/**
+   * Creates a checkbox for a single or or multiple rows and hooks up the
+   * event handling.
+   *
+   * @param {Element} row Row to toggle when checkbox changes.
+   * @param {(Array<Object>|NodeList)=} opt_rows Rows to toggle when checkbox changes.
+   * @private
+   */
+MaterialDataTable.prototype.createCheckbox_ = function (row, opt_rows) {
+    var label = document.createElement('label');
+    var labelClasses = [
+        'mdl-checkbox',
+        'mdl-js-checkbox',
+        'mdl-js-ripple-effect',
+        this.CssClasses_.SELECT_ELEMENT
+    ];
+    label.className = labelClasses.join(' ');
+    var checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.classList.add('mdl-checkbox__input');
+    if (row) {
+        checkbox.checked = row.classList.contains(this.CssClasses_.IS_SELECTED);
+        checkbox.addEventListener('change', this.selectRow_(checkbox, row));
+    } else if (opt_rows) {
+        checkbox.addEventListener('change', this.selectRow_(checkbox, null, opt_rows));
+    }
+    label.appendChild(checkbox);
+    componentHandler.upgradeElement(label, 'MaterialCheckbox');
+    return label;
+};
+/**
+   * Initialize element.
+   */
+MaterialDataTable.prototype.init = function () {
+    if (this.element_) {
+        var firstHeader = this.element_.querySelector('th');
+        var bodyRows = Array.prototype.slice.call(this.element_.querySelectorAll('tbody tr'));
+        var footRows = Array.prototype.slice.call(this.element_.querySelectorAll('tfoot tr'));
+        var rows = bodyRows.concat(footRows);
+        if (this.element_.classList.contains(this.CssClasses_.SELECTABLE)) {
+            var th = document.createElement('th');
+            var headerCheckbox = this.createCheckbox_(null, rows);
+            th.appendChild(headerCheckbox);
+            firstHeader.parentElement.insertBefore(th, firstHeader);
+            for (var i = 0; i < rows.length; i++) {
+                var firstCell = rows[i].querySelector('td');
+                if (firstCell) {
+                    var td = document.createElement('td');
+                    if (rows[i].parentNode.nodeName.toUpperCase() === 'TBODY') {
+                        var rowCheckbox = this.createCheckbox_(rows[i]);
+                        td.appendChild(rowCheckbox);
+                    }
+                    rows[i].insertBefore(td, firstCell);
+                }
+            }
+            this.element_.classList.add(this.CssClasses_.IS_UPGRADED);
+        }
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialDataTable,
+    classAsString: 'MaterialDataTable',
+    cssClass: 'mdl-js-data-table'
+});
+/**
+ * @license
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/**
+   * Class constructor for Ripple MDL component.
+   * Implements MDL component design pattern defined at:
+   * https://github.com/jasonmayes/mdl-component-design-pattern
+   *
+   * @constructor
+   * @param {HTMLElement} element The element that will be upgraded.
+   */
+var MaterialRipple = function MaterialRipple(element) {
+    this.element_ = element;
+    // Initialize instance.
+    this.init();
+};
+window['MaterialRipple'] = MaterialRipple;
+/**
+   * Store constants in one place so they can be updated easily.
+   *
+   * @enum {string | number}
+   * @private
+   */
+MaterialRipple.prototype.Constant_ = {
+    INITIAL_SCALE: 'scale(0.0001, 0.0001)',
+    INITIAL_SIZE: '1px',
+    INITIAL_OPACITY: '0.4',
+    FINAL_OPACITY: '0',
+    FINAL_SCALE: ''
+};
+/**
+   * Store strings for class names defined by this component that are used in
+   * JavaScript. This allows us to simply change it in one place should we
+   * decide to modify at a later date.
+   *
+   * @enum {string}
+   * @private
+   */
+MaterialRipple.prototype.CssClasses_ = {
+    RIPPLE_CENTER: 'mdl-ripple--center',
+    RIPPLE_EFFECT_IGNORE_EVENTS: 'mdl-js-ripple-effect--ignore-events',
+    RIPPLE: 'mdl-ripple',
+    IS_ANIMATING: 'is-animating',
+    IS_VISIBLE: 'is-visible'
+};
+/**
+   * Handle mouse / finger down on element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialRipple.prototype.downHandler_ = function (event) {
+    if (!this.rippleElement_.style.width && !this.rippleElement_.style.height) {
+        var rect = this.element_.getBoundingClientRect();
+        this.boundHeight = rect.height;
+        this.boundWidth = rect.width;
+        this.rippleSize_ = Math.sqrt(rect.width * rect.width + rect.height * rect.height) * 2 + 2;
+        this.rippleElement_.style.width = this.rippleSize_ + 'px';
+        this.rippleElement_.style.height = this.rippleSize_ + 'px';
+    }
+    this.rippleElement_.classList.add(this.CssClasses_.IS_VISIBLE);
+    if (event.type === 'mousedown' && this.ignoringMouseDown_) {
+        this.ignoringMouseDown_ = false;
+    } else {
+        if (event.type === 'touchstart') {
+            this.ignoringMouseDown_ = true;
+        }
+        var frameCount = this.getFrameCount();
+        if (frameCount > 0) {
+            return;
+        }
+        this.setFrameCount(1);
+        var bound = event.currentTarget.getBoundingClientRect();
+        var x;
+        var y;
+        // Check if we are handling a keyboard click.
+        if (event.clientX === 0 && event.clientY === 0) {
+            x = Math.round(bound.width / 2);
+            y = Math.round(bound.height / 2);
+        } else {
+            var clientX = event.clientX !== undefined ? event.clientX : event.touches[0].clientX;
+            var clientY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY;
+            x = Math.round(clientX - bound.left);
+            y = Math.round(clientY - bound.top);
+        }
+        this.setRippleXY(x, y);
+        this.setRippleStyles(true);
+        window.requestAnimationFrame(this.animFrameHandler.bind(this));
+    }
+};
+/**
+   * Handle mouse / finger up on element.
+   *
+   * @param {Event} event The event that fired.
+   * @private
+   */
+MaterialRipple.prototype.upHandler_ = function (event) {
+    // Don't fire for the artificial "mouseup" generated by a double-click.
+    if (event && event.detail !== 2) {
+        // Allow a repaint to occur before removing this class, so the animation
+        // shows for tap events, which seem to trigger a mouseup too soon after
+        // mousedown.
+        window.setTimeout(function () {
+            this.rippleElement_.classList.remove(this.CssClasses_.IS_VISIBLE);
+        }.bind(this), 0);
+    }
+};
+/**
+   * Initialize element.
+   */
+MaterialRipple.prototype.init = function () {
+    if (this.element_) {
+        var recentering = this.element_.classList.contains(this.CssClasses_.RIPPLE_CENTER);
+        if (!this.element_.classList.contains(this.CssClasses_.RIPPLE_EFFECT_IGNORE_EVENTS)) {
+            this.rippleElement_ = this.element_.querySelector('.' + this.CssClasses_.RIPPLE);
+            this.frameCount_ = 0;
+            this.rippleSize_ = 0;
+            this.x_ = 0;
+            this.y_ = 0;
+            // Touch start produces a compat mouse down event, which would cause a
+            // second ripples. To avoid that, we use this property to ignore the first
+            // mouse down after a touch start.
+            this.ignoringMouseDown_ = false;
+            this.boundDownHandler = this.downHandler_.bind(this);
+            this.element_.addEventListener('mousedown', this.boundDownHandler);
+            this.element_.addEventListener('touchstart', this.boundDownHandler);
+            this.boundUpHandler = this.upHandler_.bind(this);
+            this.element_.addEventListener('mouseup', this.boundUpHandler);
+            this.element_.addEventListener('mouseleave', this.boundUpHandler);
+            this.element_.addEventListener('touchend', this.boundUpHandler);
+            this.element_.addEventListener('blur', this.boundUpHandler);
+            /**
+         * Getter for frameCount_.
+         * @return {number} the frame count.
+         */
+            this.getFrameCount = function () {
+                return this.frameCount_;
+            };
+            /**
+         * Setter for frameCount_.
+         * @param {number} fC the frame count.
+         */
+            this.setFrameCount = function (fC) {
+                this.frameCount_ = fC;
+            };
+            /**
+         * Getter for rippleElement_.
+         * @return {Element} the ripple element.
+         */
+            this.getRippleElement = function () {
+                return this.rippleElement_;
+            };
+            /**
+         * Sets the ripple X and Y coordinates.
+         * @param  {number} newX the new X coordinate
+         * @param  {number} newY the new Y coordinate
+         */
+            this.setRippleXY = function (newX, newY) {
+                this.x_ = newX;
+                this.y_ = newY;
+            };
+            /**
+         * Sets the ripple styles.
+         * @param  {boolean} start whether or not this is the start frame.
+         */
+            this.setRippleStyles = function (start) {
+                if (this.rippleElement_ !== null) {
+                    var transformString;
+                    var scale;
+                    var size;
+                    var offset = 'translate(' + this.x_ + 'px, ' + this.y_ + 'px)';
+                    if (start) {
+                        scale = this.Constant_.INITIAL_SCALE;
+                        size = this.Constant_.INITIAL_SIZE;
+                    } else {
+                        scale = this.Constant_.FINAL_SCALE;
+                        size = this.rippleSize_ + 'px';
+                        if (recentering) {
+                            offset = 'translate(' + this.boundWidth / 2 + 'px, ' + this.boundHeight / 2 + 'px)';
+                        }
+                    }
+                    transformString = 'translate(-50%, -50%) ' + offset + scale;
+                    this.rippleElement_.style.webkitTransform = transformString;
+                    this.rippleElement_.style.msTransform = transformString;
+                    this.rippleElement_.style.transform = transformString;
+                    if (start) {
+                        this.rippleElement_.classList.remove(this.CssClasses_.IS_ANIMATING);
+                    } else {
+                        this.rippleElement_.classList.add(this.CssClasses_.IS_ANIMATING);
+                    }
+                }
+            };
+            /**
+         * Handles an animation frame.
+         */
+            this.animFrameHandler = function () {
+                if (this.frameCount_-- > 0) {
+                    window.requestAnimationFrame(this.animFrameHandler.bind(this));
+                } else {
+                    this.setRippleStyles(false);
+                }
+            };
+        }
+    }
+};
+// The component registers itself. It can assume componentHandler is available
+// in the global scope.
+componentHandler.register({
+    constructor: MaterialRipple,
+    classAsString: 'MaterialRipple',
+    cssClass: 'mdl-js-ripple-effect',
+    widget: false
+});
+}());
+
+
+/***/ }),
+
+/***/ "./node_modules/please-wait/build/please-wait.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/please-wait/build/please-wait.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+* please-wait
+* Display a nice loading screen while your app loads
+
+* @author Pathgather <tech@pathgather.com>
+* @copyright Pathgather 2015
+* @license MIT <http://opensource.org/licenses/mit-license.php>
+* @link https://github.com/Pathgather/please-wait
+* @module please-wait
+* @version 0.0.5
+*/
+(function(root, factory) {
+  if (true) {
+    factory(exports);
+  } else {}
+})(this, function(exports) {
+  var PleaseWait, addClass, animationEvent, animationSupport, domPrefixes, elm, key, pfx, pleaseWait, removeClass, transEndEventNames, transitionEvent, transitionSupport, val, _i, _len;
+  elm = document.createElement('fakeelement');
+  animationSupport = false;
+  transitionSupport = false;
+  animationEvent = 'animationend';
+  transitionEvent = null;
+  domPrefixes = 'Webkit Moz O ms'.split(' ');
+  transEndEventNames = {
+    'WebkitTransition': 'webkitTransitionEnd',
+    'MozTransition': 'transitionend',
+    'OTransition': 'oTransitionEnd',
+    'msTransition': 'MSTransitionEnd',
+    'transition': 'transitionend'
+  };
+  for (key in transEndEventNames) {
+    val = transEndEventNames[key];
+    if (elm.style[key] != null) {
+      transitionEvent = val;
+      transitionSupport = true;
+      break;
+    }
+  }
+  if (elm.style.animationName != null) {
+    animationSupport = true;
+  }
+  if (!animationSupport) {
+    for (_i = 0, _len = domPrefixes.length; _i < _len; _i++) {
+      pfx = domPrefixes[_i];
+      if (elm.style["" + pfx + "AnimationName"] != null) {
+        switch (pfx) {
+          case 'Webkit':
+            animationEvent = 'webkitAnimationEnd';
+            break;
+          case 'Moz':
+            animationEvent = 'animationend';
+            break;
+          case 'O':
+            animationEvent = 'oanimationend';
+            break;
+          case 'ms':
+            animationEvent = 'MSAnimationEnd';
+        }
+        animationSupport = true;
+        break;
+      }
+    }
+  }
+  addClass = function(classname, elem) {
+    if (elem.classList) {
+      return elem.classList.add(classname);
+    } else {
+      return elem.className += " " + classname;
+    }
+  };
+  removeClass = function(classname, elem) {
+    if (elem.classList) {
+      return elem.classList.remove(classname);
+    } else {
+      return elem.className = elem.className.replace(classname, "").trim();
+    }
+  };
+  PleaseWait = (function() {
+    PleaseWait._defaultOptions = {
+      backgroundColor: null,
+      logo: null,
+      loadingHtml: null,
+      template: "<div class='pg-loading-inner'>\n  <div class='pg-loading-center-outer'>\n    <div class='pg-loading-center-middle'>\n      <h1 class='pg-loading-logo-header'>\n        <img class='pg-loading-logo'></img>\n      </h1>\n      <div class='pg-loading-html'>\n      </div>\n    </div>\n  </div>\n</div>",
+      onLoadedCallback: null
+    };
+
+    function PleaseWait(options) {
+      var defaultOptions, k, listener, v;
+      defaultOptions = this.constructor._defaultOptions;
+      this.options = {};
+      this.loaded = false;
+      this.finishing = false;
+      for (k in defaultOptions) {
+        v = defaultOptions[k];
+        this.options[k] = options[k] != null ? options[k] : v;
+      }
+      this._loadingElem = document.createElement("div");
+      this._loadingHtmlToDisplay = [];
+      this._loadingElem.className = "pg-loading-screen";
+      if (this.options.backgroundColor != null) {
+        this._loadingElem.style.backgroundColor = this.options.backgroundColor;
+      }
+      this._loadingElem.innerHTML = this.options.template;
+      this._loadingHtmlElem = this._loadingElem.getElementsByClassName("pg-loading-html")[0];
+      if (this._loadingHtmlElem != null) {
+        this._loadingHtmlElem.innerHTML = this.options.loadingHtml;
+      }
+      this._readyToShowLoadingHtml = false;
+      this._logoElem = this._loadingElem.getElementsByClassName("pg-loading-logo")[0];
+      if (this._logoElem != null) {
+        this._logoElem.src = this.options.logo;
+      }
+      removeClass("pg-loaded", document.body);
+      addClass("pg-loading", document.body);
+      document.body.appendChild(this._loadingElem);
+      addClass("pg-loading", this._loadingElem);
+      this._onLoadedCallback = this.options.onLoadedCallback;
+      listener = (function(_this) {
+        return function(evt) {
+          _this.loaded = true;
+          _this._readyToShowLoadingHtml = true;
+          addClass("pg-loaded", _this._loadingHtmlElem);
+          if (animationSupport) {
+            _this._loadingHtmlElem.removeEventListener(animationEvent, listener);
+          }
+          if (_this._loadingHtmlToDisplay.length > 0) {
+            _this._changeLoadingHtml();
+          }
+          if (_this.finishing) {
+            if (evt != null) {
+              evt.stopPropagation();
+            }
+            return _this._finish();
+          }
+        };
+      })(this);
+      if (this._loadingHtmlElem != null) {
+        if (animationSupport) {
+          this._loadingHtmlElem.addEventListener(animationEvent, listener);
+        } else {
+          listener();
+        }
+        this._loadingHtmlListener = (function(_this) {
+          return function() {
+            _this._readyToShowLoadingHtml = true;
+            removeClass("pg-loading", _this._loadingHtmlElem);
+            if (transitionSupport) {
+              _this._loadingHtmlElem.removeEventListener(transitionEvent, _this._loadingHtmlListener);
+            }
+            if (_this._loadingHtmlToDisplay.length > 0) {
+              return _this._changeLoadingHtml();
+            }
+          };
+        })(this);
+        this._removingHtmlListener = (function(_this) {
+          return function() {
+            _this._loadingHtmlElem.innerHTML = _this._loadingHtmlToDisplay.shift();
+            removeClass("pg-removing", _this._loadingHtmlElem);
+            addClass("pg-loading", _this._loadingHtmlElem);
+            if (transitionSupport) {
+              _this._loadingHtmlElem.removeEventListener(transitionEvent, _this._removingHtmlListener);
+              return _this._loadingHtmlElem.addEventListener(transitionEvent, _this._loadingHtmlListener);
+            } else {
+              return _this._loadingHtmlListener();
+            }
+          };
+        })(this);
+      }
+    }
+
+    PleaseWait.prototype.finish = function(immediately, onLoadedCallback) {
+      if (immediately == null) {
+        immediately = false;
+      }
+      if (window.document.hidden) {
+        immediately = true;
+      }
+      this.finishing = true;
+      if (onLoadedCallback != null) {
+        this.updateOption('onLoadedCallback', onLoadedCallback);
+      }
+      if (this.loaded || immediately) {
+        return this._finish(immediately);
+      }
+    };
+
+    PleaseWait.prototype.updateOption = function(option, value) {
+      switch (option) {
+        case 'backgroundColor':
+          return this._loadingElem.style.backgroundColor = value;
+        case 'logo':
+          return this._logoElem.src = value;
+        case 'loadingHtml':
+          return this.updateLoadingHtml(value);
+        case 'onLoadedCallback':
+          return this._onLoadedCallback = value;
+        default:
+          throw new Error("Unknown option '" + option + "'");
+      }
+    };
+
+    PleaseWait.prototype.updateOptions = function(options) {
+      var k, v, _results;
+      if (options == null) {
+        options = {};
+      }
+      _results = [];
+      for (k in options) {
+        v = options[k];
+        _results.push(this.updateOption(k, v));
+      }
+      return _results;
+    };
+
+    PleaseWait.prototype.updateLoadingHtml = function(loadingHtml, immediately) {
+      if (immediately == null) {
+        immediately = false;
+      }
+      if (this._loadingHtmlElem == null) {
+        throw new Error("The loading template does not have an element of class 'pg-loading-html'");
+      }
+      if (immediately) {
+        this._loadingHtmlToDisplay = [loadingHtml];
+        this._readyToShowLoadingHtml = true;
+      } else {
+        this._loadingHtmlToDisplay.push(loadingHtml);
+      }
+      if (this._readyToShowLoadingHtml) {
+        return this._changeLoadingHtml();
+      }
+    };
+
+    PleaseWait.prototype._changeLoadingHtml = function() {
+      this._readyToShowLoadingHtml = false;
+      this._loadingHtmlElem.removeEventListener(transitionEvent, this._loadingHtmlListener);
+      this._loadingHtmlElem.removeEventListener(transitionEvent, this._removingHtmlListener);
+      removeClass("pg-loading", this._loadingHtmlElem);
+      removeClass("pg-removing", this._loadingHtmlElem);
+      if (transitionSupport) {
+        addClass("pg-removing", this._loadingHtmlElem);
+        return this._loadingHtmlElem.addEventListener(transitionEvent, this._removingHtmlListener);
+      } else {
+        return this._removingHtmlListener();
+      }
+    };
+
+    PleaseWait.prototype._finish = function(immediately) {
+      var listener;
+      if (immediately == null) {
+        immediately = false;
+      }
+      if (this._loadingElem == null) {
+        return;
+      }
+      addClass("pg-loaded", document.body);
+      if (typeof this._onLoadedCallback === "function") {
+        this._onLoadedCallback.apply(this);
+      }
+      listener = (function(_this) {
+        return function() {
+          document.body.removeChild(_this._loadingElem);
+          removeClass("pg-loading", document.body);
+          if (animationSupport) {
+            _this._loadingElem.removeEventListener(animationEvent, listener);
+          }
+          return _this._loadingElem = null;
+        };
+      })(this);
+      if (!immediately && animationSupport) {
+        addClass("pg-loaded", this._loadingElem);
+        return this._loadingElem.addEventListener(animationEvent, listener);
+      } else {
+        return listener();
+      }
+    };
+
+    return PleaseWait;
+
+  })();
+  pleaseWait = function(options) {
+    if (options == null) {
+      options = {};
+    }
+    return new PleaseWait(options);
+  };
+  exports.pleaseWait = pleaseWait;
+  return pleaseWait;
+});
+
+
+/***/ }),
+
 /***/ "./node_modules/popper.js/dist/esm/popper.js":
 /*!***************************************************!*\
   !*** ./node_modules/popper.js/dist/esm/popper.js ***!
@@ -47085,6 +51587,545 @@ runtime.setup(pusher_Pusher);
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--8-2!./node_modules/sass-loader/dist/cjs.js??ref--8-3!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--8-2!../../../node_modules/sass-loader/dist/cjs.js??ref--8-3!../../../node_modules/vue-loader/lib??vue-loader-options!./Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true& */ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/lib/addStyles.js":
+/*!****************************************************!*\
+  !*** ./node_modules/style-loader/lib/addStyles.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getTarget = function (target, parent) {
+  if (parent){
+    return parent.querySelector(target);
+  }
+  return document.querySelector(target);
+};
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(target, parent) {
+                // If passing function in options, then use it for resolve "head" element.
+                // Useful for Shadow Root style i.e
+                // {
+                //   insertInto: function () { return document.querySelector("#foo").shadowRoot }
+                // }
+                if (typeof target === 'function') {
+                        return target();
+                }
+                if (typeof memo[target] === "undefined") {
+			var styleTarget = getTarget.call(this, target, parent);
+			// Special case to return head of iframe instead of iframe itself
+			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
+				try {
+					// This will throw an exception if access to iframe is blocked
+					// due to cross-origin restrictions
+					styleTarget = styleTarget.contentDocument.head;
+				} catch(e) {
+					styleTarget = null;
+				}
+			}
+			memo[target] = styleTarget;
+		}
+		return memo[target]
+	};
+})();
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(/*! ./urls */ "./node_modules/style-loader/lib/urls.js");
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+        if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
+		var nextSibling = getElement(options.insertAt.before, target);
+		target.insertBefore(style, nextSibling);
+	} else {
+		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	if(options.attrs.type === undefined) {
+		options.attrs.type = "text/css";
+	}
+
+	if(options.attrs.nonce === undefined) {
+		var nonce = getNonce();
+		if (nonce) {
+			options.attrs.nonce = nonce;
+		}
+	}
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	if(options.attrs.type === undefined) {
+		options.attrs.type = "text/css";
+	}
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function getNonce() {
+	if (false) {}
+
+	return __webpack_require__.nc;
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = typeof options.transform === 'function'
+		 ? options.transform(obj.css) 
+		 : options.transform.default(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/lib/urls.js":
+/*!***********************************************!*\
+  !*** ./node_modules/style-loader/lib/urls.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/timers-browserify/main.js":
 /*!************************************************!*\
   !*** ./node_modules/timers-browserify/main.js ***!
@@ -47157,6 +52198,229 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (this && this.clearImmediate);
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notification.vue?vue&type=template&id=6a4ce154&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Notification.vue?vue&type=template&id=6a4ce154&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "li",
+    { staticClass: "notification-wrapper animate slideInLeft " },
+    [
+      _c("div", { staticClass: "profile" }, [
+        _c("img", { attrs: { src: _vm.avatar, alt: "" } })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "msg has-shadow" }, [
+        _c("div", { staticClass: "msg-body" }, [
+          _c("p", { staticClass: "name" }, [
+            _vm._v(_vm._s(_vm.notification.type) + " "),
+            _c("span", { staticClass: "date" }, [
+              _vm._v(_vm._s(_vm.created_at))
+            ])
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "content" }, [
+            _vm._v(_vm._s(_vm.notification.content))
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6&":
+/*!****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6& ***!
+  \****************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", { staticClass: "nav-item dropdown" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "dropdown-menu dropdown-menu-right",
+        attrs: { "aria-labelledby": "navbarDropdownMenuLink" }
+      },
+      _vm._l(_vm.notifications, function(notification) {
+        return _c("Notification", {
+          key: notification.id,
+          attrs: { notification: notification }
+        })
+      }),
+      1
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        staticClass: "nav-link",
+        attrs: {
+          href: "javascript:;#",
+          id: "navbarDropdownMenuLink",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "false"
+        }
+      },
+      [
+        _c("i", { staticClass: "material-icons" }, [_vm._v("notifications")]),
+        _vm._v(" "),
+        _c("span", { staticClass: "notification" }, [_vm._v("5")]),
+        _vm._v(" "),
+        _c("p", { staticClass: "d-lg-none d-md-block" }, [
+          _vm._v("\n        Some Actions\n      ")
+        ])
+      ]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode /* vue-cli only */
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functional component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
 
 /***/ }),
 
@@ -59146,6 +64410,1105 @@ if (false) {} else {
 
 /***/ }),
 
+/***/ "./node_modules/vuex/dist/vuex.esm.js":
+/*!********************************************!*\
+  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
+  \********************************************/
+/*! exports provided: default, Store, install, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/**
+ * vuex v3.3.0
+ * (c) 2020 Evan You
+ * @license MIT
+ */
+function applyMixin (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+}
+
+var target = typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+    ? global
+    : {};
+var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  }, { prepend: true });
+
+  store.subscribeAction(function (action, state) {
+    devtoolHook.emit('vuex:action', action, state);
+  }, { prepend: true });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+function partial (fn, arg) {
+  return function () {
+    return fn(arg)
+  }
+}
+
+// Base data struct for store's module, package with some attribute and method
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  // Store some children item
+  this._children = Object.create(null);
+  // Store the origin module object which passed by programmer
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+
+  // Store the origin module's state
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors = { namespaced: { configurable: true } };
+
+prototypeAccessors.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.hasChild = function hasChild (key) {
+  return key in this._children
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (true) {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+ModuleCollection.prototype.isRegistered = function isRegistered (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+
+  return parent.hasChild(key)
+};
+
+function update (path, targetModule, newModule) {
+  if (true) {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (true) {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (true) {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+  this._makeLocalGettersCache = Object.create(null);
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  var state = this._modules.root.state;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  var useDevtools = options.devtools !== undefined ? options.devtools : Vue.config.devtools;
+  if (useDevtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors$1 = { state: { configurable: true } };
+
+prototypeAccessors$1.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors$1.state.set = function (v) {
+  if (true) {
+    assert(false, "use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+
+  this._subscribers
+    .slice() // shallow copy to prevent iterator invalidation if subscriber synchronously calls unsubscribe
+    .forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+     true &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+
+  try {
+    this._actionSubscribers
+      .slice() // shallow copy to prevent iterator invalidation if subscriber synchronously calls unsubscribe
+      .filter(function (sub) { return sub.before; })
+      .forEach(function (sub) { return sub.before(action, this$1.state); });
+  } catch (e) {
+    if (true) {
+      console.warn("[vuex] error in before action subscribers: ");
+      console.error(e);
+    }
+  }
+
+  var result = entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload);
+
+  return result.then(function (res) {
+    try {
+      this$1._actionSubscribers
+        .filter(function (sub) { return sub.after; })
+        .forEach(function (sub) { return sub.after(action, this$1.state); });
+    } catch (e) {
+      if (true) {
+        console.warn("[vuex] error in after action subscribers: ");
+        console.error(e);
+      }
+    }
+    return res
+  })
+};
+
+Store.prototype.subscribe = function subscribe (fn, options) {
+  return genericSubscribe(fn, this._subscribers, options)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn, options) {
+  var subs = typeof fn === 'function' ? { before: fn } : fn;
+  return genericSubscribe(subs, this._actionSubscribers, options)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (true) {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hasModule = function hasModule (path) {
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  return this._modules.isRegistered(path)
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors$1 );
+
+function genericSubscribe (fn, subs, options) {
+  if (subs.indexOf(fn) < 0) {
+    options && options.prepend
+      ? subs.unshift(fn)
+      : subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  // reset local getters cache
+  store._makeLocalGettersCache = Object.create(null);
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure environment.
+    computed[key] = partial(fn, store);
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    if (store._modulesNamespaceMap[namespace] && "development" !== 'production') {
+      console.error(("[vuex] duplicate namespace " + namespace + " for the namespaced module " + (path.join('/'))));
+    }
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      if (true) {
+        if (moduleName in parentState) {
+          console.warn(
+            ("[vuex] state field \"" + moduleName + "\" was overridden by a module with the same name at \"" + (path.join('.')) + "\"")
+          );
+        }
+      }
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  if (!store._makeLocalGettersCache[namespace]) {
+    var gettersProxy = {};
+    var splitPos = namespace.length;
+    Object.keys(store.getters).forEach(function (type) {
+      // skip if the target getter is not match this namespace
+      if (type.slice(0, splitPos) !== namespace) { return }
+
+      // extract local getter type
+      var localType = type.slice(splitPos);
+
+      // Add a port to the getters proxy.
+      // Define as getter property because
+      // we do not want to evaluate the getters in this time.
+      Object.defineProperty(gettersProxy, localType, {
+        get: function () { return store.getters[type]; },
+        enumerable: true
+      });
+    });
+    store._makeLocalGettersCache[namespace] = gettersProxy;
+  }
+
+  return store._makeLocalGettersCache[namespace]
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (true) {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (true) {
+      assert(store._committing, "do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.reduce(function (state, key) { return state[key]; }, state)
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (true) {
+    assert(typeof type === 'string', ("expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (true) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+/**
+ * Reduce the code which written in Vue.js for getting the state.
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} states # Object's item can be a function which accept state and getters for param, you can do something for state and getters in it.
+ * @param {Object}
+ */
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  if ( true && !isValidMap(states)) {
+    console.error('[vuex] mapState: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for committing the mutation
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} mutations # Object's item can be a function which accept `commit` function as the first param, it can accept anthor params. You can commit mutation and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  if ( true && !isValidMap(mutations)) {
+    console.error('[vuex] mapMutations: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // Get the commit method from store
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for getting the getters
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} getters
+ * @return {Object}
+ */
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  if ( true && !isValidMap(getters)) {
+    console.error('[vuex] mapGetters: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    // The namespace has been mutated by normalizeNamespace
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if ( true && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for dispatch the action
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  if ( true && !isValidMap(actions)) {
+    console.error('[vuex] mapActions: mapper parameter must be either an Array or an Object');
+  }
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // get dispatch function from store
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Rebinding namespace param for mapXXX function in special scoped, and return them by simple object
+ * @param {String} namespace
+ * @return {Object}
+ */
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+/**
+ * Normalize the map
+ * normalizeMap([1, 2, 3]) => [ { key: 1, val: 1 }, { key: 2, val: 2 }, { key: 3, val: 3 } ]
+ * normalizeMap({a: 1, b: 2, c: 3}) => [ { key: 'a', val: 1 }, { key: 'b', val: 2 }, { key: 'c', val: 3 } ]
+ * @param {Array|Object} map
+ * @return {Object}
+ */
+function normalizeMap (map) {
+  if (!isValidMap(map)) {
+    return []
+  }
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+/**
+ * Validate whether given map is valid or not
+ * @param {*} map
+ * @return {Boolean}
+ */
+function isValidMap (map) {
+  return Array.isArray(map) || isObject(map)
+}
+
+/**
+ * Return a function expect two param contains namespace and map. it will normalize the namespace and then the param's function will handle the new namespace and the map.
+ * @param {Function} fn
+ * @return {Function}
+ */
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+/**
+ * Search a special module from store by namespace. if module not exist, print error message.
+ * @param {Object} store
+ * @param {String} helper
+ * @param {String} namespace
+ * @return {Object}
+ */
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if ( true && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.3.0',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (index_esm);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -59214,9 +65577,12 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -59236,6 +65602,13 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.component('notification', __webpack_require__(/*! ./components/Notification */ "./resources/js/components/Notification.vue"));
+Vue.component('notifications', __webpack_require__(/*! ./components/Notifications */ "./resources/js/components/Notifications.vue"));
+/**
+* Import our store app
+*/
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -59243,14 +65616,19 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  store: _store_index__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
-window.Echo["private"]('App.Ride.1').listen('.ride.user.position.created', function (e) {
-  console.error(e);
-});
-window.Echo.channel('my-channel').listen('.my-event', function (e) {
-  console.log(e);
-});
+/*
+window.Echo.private('App.Ride.1')
+    .listen('.ride.user.position.created', (e) => {
+        console.error(e);
+    });
+window.Echo.channel('my-channel')
+    .listen('.my-event', (e) => {
+        console.log(e);
+    });
+*/
 
 /***/ }),
 
@@ -59277,9 +65655,9 @@ try {
 
   __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 
-  __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'material-design-lite/material.js'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+  __webpack_require__(/*! material-design-lite/material.js */ "./node_modules/material-design-lite/material.js");
 
-  window.pW = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'please-wait/build/please-wait.js'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+  window.pW = __webpack_require__(/*! please-wait/build/please-wait.js */ "./node_modules/please-wait/build/please-wait.js");
   window.loading_screen = window.pW.pleaseWait({
     logo: '/img/preload.jpg',
     backgroundColor: '#1a2035',
@@ -59329,6 +65707,293 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 
 /***/ }),
 
+/***/ "./resources/js/components/Notification.vue":
+/*!**************************************************!*\
+  !*** ./resources/js/components/Notification.vue ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Notification_vue_vue_type_template_id_6a4ce154_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Notification.vue?vue&type=template&id=6a4ce154&scoped=true& */ "./resources/js/components/Notification.vue?vue&type=template&id=6a4ce154&scoped=true&");
+/* harmony import */ var _Notification_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Notification.vue?vue&type=script&lang=js& */ "./resources/js/components/Notification.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _Notification_vue_vue_type_style_index_0_id_6a4ce154_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true& */ "./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _Notification_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Notification_vue_vue_type_template_id_6a4ce154_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Notification_vue_vue_type_template_id_6a4ce154_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "6a4ce154",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Notification.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Notification.vue?vue&type=script&lang=js&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Notification.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Notification.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notification.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true& ***!
+  \************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_style_index_0_id_6a4ce154_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/style-loader!../../../node_modules/css-loader!../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../node_modules/postcss-loader/src??ref--8-2!../../../node_modules/sass-loader/dist/cjs.js??ref--8-3!../../../node_modules/vue-loader/lib??vue-loader-options!./Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/sass-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notification.vue?vue&type=style&index=0&id=6a4ce154&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_style_index_0_id_6a4ce154_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_style_index_0_id_6a4ce154_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_style_index_0_id_6a4ce154_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_style_index_0_id_6a4ce154_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_2_node_modules_sass_loader_dist_cjs_js_ref_8_3_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_style_index_0_id_6a4ce154_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Notification.vue?vue&type=template&id=6a4ce154&scoped=true&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/Notification.vue?vue&type=template&id=6a4ce154&scoped=true& ***!
+  \*********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_6a4ce154_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Notification.vue?vue&type=template&id=6a4ce154&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notification.vue?vue&type=template&id=6a4ce154&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_6a4ce154_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notification_vue_vue_type_template_id_6a4ce154_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Notifications.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/components/Notifications.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Notifications.vue?vue&type=template&id=d7f806e6& */ "./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6&");
+/* harmony import */ var _Notifications_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Notifications.vue?vue&type=script&lang=js& */ "./resources/js/components/Notifications.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Notifications_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Notifications.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Notifications.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/Notifications.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Notifications.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notifications.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Notifications.vue?vue&type=template&id=d7f806e6& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Notifications.vue?vue&type=template&id=d7f806e6&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Notifications_vue_vue_type_template_id_d7f806e6___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/store/actions.js":
+/*!***************************************!*\
+  !*** ./resources/js/store/actions.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var actions = {
+  ADD_NOTIFICATION: function ADD_NOTIFICATION(_ref, notification) {
+    var commit = _ref.commit;
+    return new Promise(function (resolve, reject) {
+      axios.post("/notifications", notification).then(function (response) {
+        resolve(response);
+      })["catch"](function (err) {
+        reject(err);
+      });
+    });
+  },
+  GET_NOTIFICATIONS: function GET_NOTIFICATIONS(_ref2) {
+    var commit = _ref2.commit;
+    axios.get('/notifications').then(function (res) {
+      {
+        console.log(res);
+        commit('GET_NOTIFICATIONS', res.data);
+      }
+    })["catch"](function (err) {
+      console.log(err);
+    });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (actions);
+
+/***/ }),
+
+/***/ "./resources/js/store/getters.js":
+/*!***************************************!*\
+  !*** ./resources/js/store/getters.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var getters = {
+  notifications: function notifications(state) {
+    return state.notifications;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (getters);
+
+/***/ }),
+
+/***/ "./resources/js/store/index.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/index.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./actions */ "./resources/js/store/actions.js");
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/mutations.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getters */ "./resources/js/store/getters.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./state */ "./resources/js/store/state.js");
+
+
+
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  state: _state__WEBPACK_IMPORTED_MODULE_5__["default"],
+  mutations: _mutations__WEBPACK_IMPORTED_MODULE_3__["default"],
+  getters: _getters__WEBPACK_IMPORTED_MODULE_4__["default"],
+  actions: _actions__WEBPACK_IMPORTED_MODULE_2__["default"]
+}));
+
+/***/ }),
+
+/***/ "./resources/js/store/mutations.js":
+/*!*****************************************!*\
+  !*** ./resources/js/store/mutations.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+var mutations = {
+  GET_NOTIFICATIONS: function GET_NOTIFICATIONS(state, notifications) {
+    state.notifications = notifications;
+  },
+  ADD_NOTIFICATION: function ADD_NOTIFICATION(state, notification) {
+    state.notifications = [].concat(_toConsumableArray(state.notifications), [notification]);
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (mutations);
+
+/***/ }),
+
+/***/ "./resources/js/store/state.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/state.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = {
+  notifications: []
+};
+/* harmony default export */ __webpack_exports__["default"] = (state);
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -59336,7 +66001,7 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nModuleBuildError: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):\nSassError: Invalid CSS after \"...css/bootstrap';\": expected 1 selector or at-rule, was \"<<<<<<< HEAD\"\n        on line 8 of C:\\wamp64\\www\\navette.com\\resources\\sass\\app.scss\n>> @import '~bootstrap/scss/bootstrap';\r\n   ------------------------------------^\n\n    at C:\\wamp64\\www\\navette.com\\node_modules\\webpack\\lib\\NormalModule.js:316:20\n    at C:\\wamp64\\www\\navette.com\\node_modules\\loader-runner\\lib\\LoaderRunner.js:367:11\n    at C:\\wamp64\\www\\navette.com\\node_modules\\loader-runner\\lib\\LoaderRunner.js:233:18\n    at context.callback (C:\\wamp64\\www\\navette.com\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Object.callback (C:\\wamp64\\www\\navette.com\\node_modules\\sass-loader\\dist\\index.js:73:7)\n    at Object.done [as callback] (C:\\wamp64\\www\\navette.com\\node_modules\\neo-async\\async.js:8067:18)\n    at options.error (C:\\wamp64\\www\\navette.com\\node_modules\\node-sass\\lib\\index.js:294:32)");
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 
@@ -59347,7 +66012,7 @@ throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nModuleBuildError: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):\nSassError: File to import not found or unreadable: ~please-wait/src/please-wait.\n        on line 17 of C:\\wamp64\\www\\navette.com\\resources\\sass\\home.scss\n>> @import '~please-wait/src/please-wait';\r\n   ^\n\n    at C:\\wamp64\\www\\navette.com\\node_modules\\webpack\\lib\\NormalModule.js:316:20\n    at C:\\wamp64\\www\\navette.com\\node_modules\\loader-runner\\lib\\LoaderRunner.js:367:11\n    at C:\\wamp64\\www\\navette.com\\node_modules\\loader-runner\\lib\\LoaderRunner.js:233:18\n    at context.callback (C:\\wamp64\\www\\navette.com\\node_modules\\loader-runner\\lib\\LoaderRunner.js:111:13)\n    at Object.callback (C:\\wamp64\\www\\navette.com\\node_modules\\sass-loader\\dist\\index.js:73:7)\n    at Object.done [as callback] (C:\\wamp64\\www\\navette.com\\node_modules\\neo-async\\async.js:8067:18)\n    at options.error (C:\\wamp64\\www\\navette.com\\node_modules\\node-sass\\lib\\index.js:294:32)");
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 

@@ -17,7 +17,7 @@ use App\Broadcasting\RideChannel;
 */
 
 Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->getKey() === (int) $id;
+    return (int) $user->id === (int) $id;
 });
 Broadcast::channel('App.Item.{item}', ItemChannel::class);
 Broadcast::channel('App.Order.{order}', OrderChannel::class);

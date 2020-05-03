@@ -20,6 +20,14 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('notification', require('./components/Notification'));
+Vue.component('notifications', require('./components/Notifications'));
+
+
+/**
+* Import our store app
+*/
+import store from './store/index'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,8 +37,11 @@ window.Vue = require('vue');
 
 const app = new Vue({
     el: '#app',
+    store
 });
 
+
+/*
 window.Echo.private('App.Ride.1')
     .listen('.ride.user.position.created', (e) => {
         console.error(e);
@@ -39,3 +50,4 @@ window.Echo.channel('my-channel')
     .listen('.my-event', (e) => {
         console.log(e);
     });
+*/
