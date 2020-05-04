@@ -36,6 +36,45 @@ class Club extends Model
     }
     
     /**
+     * Get the cars for the club
+     */
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
+    
+    /**
+     * Get the club's image.
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+    
+    /**
+     * Get the orders for the club
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    
+    /**
+     * Get the order items for the club
+     */
+    public function items()
+    {
+        return $this->hasManyThrough(
+            Item::class, 
+            Order::class,
+            'club_id', // Foreign key on orders table...
+            'order_id', // Foreign key on items table...
+            'id', // Local key on clubs table...
+            'id' // Local key on orders table...
+        );
+    }
+    
+    /**
      * Get the point that owns the club.
      */
     public function point()

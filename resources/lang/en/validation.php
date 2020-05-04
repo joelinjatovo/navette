@@ -130,8 +130,26 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'car' => [
+            'name' => [
+                'required' => 'The name of the car is required',
+            ],
+        ],
+        'club' => [
+            'name' => [
+                'required' => 'The name of the club is required',
+            ],
+        ],
+        'user' => [
+            'name' => [
+                'required' => 'Your name is required',
+            ],
+            'phone' => [
+                'required' => 'Your phone number is required',
+            ],
+            'email' => [
+                'required' => 'Your email is required',
+            ],
         ],
     ],
 

@@ -27,8 +27,8 @@ class AccessLog
     {
         // Store the session data...
         AccessLogModel::create([
-                'user_id' => $request->user()?$request->user()->id:0,
-                'url' => $request->fullUrl(),
+                'user_id' => $request->user()?$request->user()->getKey():0,
+                'url' => $request->url(),
                 'status' => $response->status(),
                 'method' => $request->method(),
                 'referer' => $request->headers->get('referer'),

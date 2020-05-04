@@ -30,3 +30,12 @@ window.Vue = require('vue');
 const app = new Vue({
     el: '#app',
 });
+
+window.Echo.private('App.Ride.1')
+    .listen('.ride.user.position.created', (e) => {
+        console.error(e);
+    });
+window.Echo.channel('my-channel')
+    .listen('.my-event', (e) => {
+        console.log(e);
+    });

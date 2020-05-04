@@ -14,23 +14,21 @@ class User extends JsonResource
      */
     public function toArray($request)
     {
+        $roles = [];
+        foreach($this->roles as $role){
+            $roles[] = $role->name;
+        }
+        
         return [
-            'status' => 200,
-            'code' => 0,
-            'message' => null,
-            'errors' => [],
-            'data' => [
-                'id' => $this->getKey(),
-                'facebook_id' => $this->facebook_id,
-                'name' => $this->name,
-                'email' => $this->email,
-                'phone' => $this->phone,
-                'locale' => $this->locale,
-                'verified' => $this->hasVerifiedPhone(),
-                'is_admin' => $this->isAdmin(),
-                'is_driver' => $this->isDriver(),
-                'is_customer' => $this->isCustomer(),
-            ]
+            'id' => $this->getKey(),
+            'facebook_id' => $this->facebook_id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'locale' => $this->locale,
+            'verified' => $this->hasVerifiedPhone(),
+            'image_url' => $this->image ? $this->image->url : null,
+            'roles' => $roles
         ];
     }
 }

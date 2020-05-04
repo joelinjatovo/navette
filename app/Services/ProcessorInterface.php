@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Travel;
+use App\Models\Ride;
 
 interface ProcessorInterface
 {

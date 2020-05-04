@@ -16,9 +16,30 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('database/', function () {
+    // Test database connection
+    try {
+        DB::connection()->getPdo();
+    } catch (\Exception $e) {
+        die("Could not connect to the database.  Please check your configuration. error:" . $e );
+    }
+});
+
+Route::get('migrate/refresh', function () {
+    Artisan::queue('migrate:refresh', [
+        '--seed' => ''
+    ]);
+});
+
 Route::get('mailable', function () {
     $user = App\Models\User::find(1);
     return new App\Mail\UserLogin($user);
+});
+
+Route::get('runevent', function () {
+    $ride = \App\Models\Ride::find(2);
+    event(new \App\Events\RideStatusChanged($ride, 'started', 'ping', 'active'));
+    return response()->json($ride);
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -27,7 +48,13 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/home', function () {return view('welcome');});
     
-    Route::get('/broadcast', function () {return view('broadcast');});
+    Route::get('/event', function () {
+        event(new \App\Events\MyEvent('hello world'));}
+    );
+    
+    Route::get('/broadcast', function () {
+        return view('event');
+    });
 
     Route::get('/logout', function () {
         \Auth::logout();
@@ -36,15 +63,63 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('profile', 'Account\ProfileController@show')->name('profile');
     Route::post('profile', 'Account\ProfileController@update');
+
+    Route::get('notifications', 'Account\NotificationController@index')->name('notifications');
+    Route::get('notifications/unread', 'Account\NotificationController@unread')->name('notifications.unread');
+    Route::post('notifications', 'Account\NotificationController@markAsRead');
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', 'Admin\IndexController@index')->name('dashboard');
+        
         Route::get('users', 'Admin\UserController@index')->name('users');
         Route::get('user', 'Admin\UserController@create')->name('user.create');
-        Route::get('user', 'Admin\UserController@store');
+        Route::post('user', 'Admin\UserController@store');
         Route::get('user/{user}', 'Admin\UserController@show')->name('user.show');
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('user.edit');
         Route::post('user/{user}/edit', 'Admin\UserController@update');
         Route::post('user/{user}/delete', 'Admin\UserController@delete');
+        
+        Route::get('clubs', 'Admin\ClubController@index')->name('clubs');
+        Route::get('club', 'Admin\ClubController@create')->name('club.create');
+        Route::post('club', 'Admin\ClubController@store');
+        Route::get('club/{club}', 'Admin\ClubController@show')->name('club.show');
+        Route::get('club/{club}/edit', 'Admin\ClubController@edit')->name('club.edit');
+        Route::post('club/{club}/edit', 'Admin\ClubController@update');
+        Route::post('club/{club}/delete', 'Admin\ClubController@delete');
+        
+        Route::get('cars', 'Admin\CarController@index')->name('cars');
+        Route::get('car', 'Admin\CarController@create')->name('car.create');
+        Route::post('car', 'Admin\CarController@store');
+        Route::get('car/{car}', 'Admin\CarController@show')->name('car.show');
+        Route::get('car/{car}/edit', 'Admin\CarController@edit')->name('car.edit');
+        Route::post('car/{car}/edit', 'Admin\CarController@update');
+        Route::post('car/{car}/delete', 'Admin\CarController@delete');
+        
+        Route::get('orders', 'Admin\OrderController@index')->name('orders');
+        Route::get('order', 'Admin\OrderController@create')->name('order.create');
+        Route::post('order', 'Admin\OrderController@store');
+        Route::get('order/{order}', 'Admin\OrderController@show')->name('order.show');
+        Route::get('order/{order}/edit', 'Admin\OrderController@edit')->name('order.edit');
+        Route::post('order/{order}/edit', 'Admin\OrderController@update');
+        Route::post('order/{order}/delete', 'Admin\OrderController@delete');
+        
+        Route::get('rides', 'Admin\RideController@index')->name('rides');
+        Route::get('ride', 'Admin\RideController@create')->name('ride.create');
+        Route::post('ride', 'Admin\RideController@store');
+        Route::get('ride/{ride}', 'Admin\RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/edit', 'Admin\RideController@edit')->name('ride.edit');
+        Route::post('ride/{ride}/edit', 'Admin\RideController@update');
+        Route::post('ride/{ride}/delete', 'Admin\RideController@delete');
+        
+        Route::get('apikeys', 'Admin\ApiKeyController@index')->name('apikeys');
+        Route::get('apikey', 'Admin\ApiKeyController@create')->name('apikey.create');
+        Route::post('apikey', 'Admin\ApiKeyController@store');
+        Route::get('apikey/{apikey}', 'Admin\ApiKeyController@show')->name('apikey.show');
+        Route::get('apikey/{apikey}/edit', 'Admin\ApiKeyController@edit')->name('apikey.edit');
+        Route::post('apikey/{apikey}/edit', 'Admin\ApiKeyController@update');
+        Route::post('apikey/{apikey}/delete', 'Admin\ApiKeyController@delete');
+        
+        Route::get('/settings', 'Admin\SettingController@index')->name('settings');
     });
     
     Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {

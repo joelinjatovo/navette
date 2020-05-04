@@ -30,7 +30,7 @@ class User extends Authenticatable implements MustVerifyPhone
      * @var array
      */
     protected $fillable = [
-        'name', 'phone', 'password',
+        'facebook_id', 'name', 'email', 'phone', 'password',
     ];
 
     /**
@@ -72,7 +72,15 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function cars()
     {
-        return $this->hasMany(Car::class);
+        return $this->hasMany(Car::class, 'user_id');
+    }
+    
+    /**
+     * The cars drived that belong to the user.
+     */
+    public function car()
+    {
+        return $this->hasOne(Car::class, 'driver_id');
     }
     
     /**
@@ -100,6 +108,14 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the orders canceled by the user.
+     */
+    public function canceledOrders()
+    {
+        return $this->hasMany(Order::class, 'canceler_id');
+    }
+    
+    /**
      * The clubs that belong to the user.
      */
     public function clubs()
@@ -108,11 +124,35 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the user's image.
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+    
+    /**
      * Get the orders for the user.
      */
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'user_id');
+    }
+    
+    /**
+     * Get the items order for the user.
+     */
+    public function items()
+    {
+        return $this->hasMany(Item::class, 'driver_id');
+    }
+    
+    /**
+     * Get the payment tokens for the user.
+     */
+    public function paymentTokens()
+    {
+        return $this->hasMany(PaymentToken::class, 'user_id');
     }
     
     /**
@@ -156,19 +196,19 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-     * Get the travels created by the user.
+     * Get the rides created by the user.
      */
-    public function travelsCreated()
+    public function ridesCreated()
     {
-        return $this->hasMany(Travel::class);
+        return $this->hasMany(Ride::class);
     }
     
     /**
-     * Get the travels drived by the user.
+     * Get the rides drived by the user.
      */
-    public function travelsDrived()
+    public function ridesDrived()
     {
-        return $this->hasMany(Travel::class, 'driver_id', 'id');
+        return $this->hasMany(Ride::class, 'driver_id', 'id');
     }
     
     /**
@@ -249,13 +289,13 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-    * Check user can join travel
+    * Check user can join ride
     *
-    * @param int $travel_id
+    * @param int $ride_id
     */
-    public function canJoinTravel($travel_id)
+    public function canJoinRide($ride_id)
     {
-        return null !== $this->travels()->where('id', $travel_id)->first();
+        return null !== $this->ridesDrived()->where('id', $ride_id)->first();
     }
 
     /**

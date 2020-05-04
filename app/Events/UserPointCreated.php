@@ -37,7 +37,17 @@ class UserPointCreated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('App.User.'.$this->user->id);
+        $channels = [
+            new PrivateChannel('App.User.'.$this->user->getKey()),
+            "my-channel"
+        ];
+        
+        $ride = $this->user->ridesDrived()->where('rides.status', 'active')->first();
+        if($ride){
+            $channels[] = new PrivateChannel('App.Ride.'.$ride->getKey());
+        }
+        
+        return $channels;
     }
     
     /**
@@ -64,10 +74,10 @@ class UserPointCreated implements ShouldBroadcastNow
                 'phone' => $this->user->phone,
             ],
             'point' => [
-                'lat' => $this->point->lat,
-                'long' => $this->point->long,
-                'alt' => $this->point->alt,
                 'name' => $this->point->name,
+                'lat' => $this->point->lat,
+                'lng' => $this->point->lng,
+                'alt' => $this->point->alt,
             ],
         ];
     }

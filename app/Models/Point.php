@@ -27,7 +27,10 @@ class Point extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'long', 'lat', 'alt',
+        'name', 
+        'lng', 
+        'lat', 
+        'alt',
     ];
 
     /**
@@ -58,19 +61,27 @@ class Point extends Model
     }
     
     /**
-     * The orders that belong to the point.
+     * The items that belong to the point.
      */
-    public function orders()
+    public function items()
     {
-        return $this->belongsToMany(Order::class, 'order_point')->using(OrderPoint::class);
+        return $this->hasMany(Item::class, 'point_id');
     }
     
     /**
-     * The travels that belong to the point.
+     * The rides that belong to the point.
      */
-    public function travels()
+    public function rides()
     {
-        return $this->belongsToMany(Travel::class, 'travel_point')->using(TravelPoint::class);
+        return $this->belongsToMany(Ride::class, 'ride_point')->using(RidePoint::class);
+    }
+    
+    /**
+     * The ridepoints that belong to the point. (Pivot)
+     */
+    public function ridepoints()
+    {
+        return $this->hasMany(RidePoint::class, 'point_id', 'id');
     }
 
     /**

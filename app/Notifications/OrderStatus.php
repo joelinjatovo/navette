@@ -16,20 +16,20 @@ class OrderStatus extends Notification
     
     protected $order;
     
-    protected $old_status;
+    protected $oldStatus;
     
-    protected $new_status;
+    protected $newStatus;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Order $order, $new_status, $old_status = null)
+    public function __construct(Order $order, $oldStatus, $newStatus)
     {
         $this->order = $order;
-        $this->old_status = $old_status;
-        $this->new_status = $new_status;
+        $this->oldStatus = $oldStatus;
+        $this->newStatus = $newStatus;
     }
 
     /**
@@ -52,8 +52,10 @@ class OrderStatus extends Notification
     public function toArray($notifiable)
     {
         return [
-            'order_id' => $this->order->id,
-            'order' => $this->order->user,
+            'order_id' => $this->order->getKey(),
+            'user_id' => $this->order->user?$this->order->user->getKey():null,
+            'oldStatus' => $this->oldStatus,
+            'newStatus' => $this->newStatus,
         ];
     }
     

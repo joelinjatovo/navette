@@ -7,6 +7,7 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+<<<<<<< HEAD
 //Material Design Lite
 @import '~material-design-lite/src/material-design-lite';
 
@@ -82,4 +83,8 @@ body.pg-loaded > .inner {
   } 100%, 0% {
     transform: scale(1.0); 
   } 
+=======
+.login{
+    color: #000;
+>>>>>>> master
 }

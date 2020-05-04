@@ -12,9 +12,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(UserSeeder::class);
+        $this->call(ApiKeySeeder::class);
+        $this->call(ClubMgSeeder::class);
         $this->call(ZoneSeeder::class);
         $this->call(CarSeeder::class);
-        $this->call(ApiKeySeeder::class);
-        $this->call(ClubSeeder::class);
+        $this->call(RideSeeder::class);
     }
 }

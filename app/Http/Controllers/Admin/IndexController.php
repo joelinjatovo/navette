@@ -13,8 +13,8 @@ class IndexController extends Controller
      * @param  int  $id
      * @return View
      */
-    public function show($id)
+    public function index()
     {
-        return 'user.profile.'.$id;
+        return view('admin.dashboard.index');
     }
 }

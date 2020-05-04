@@ -2,11 +2,62 @@
 
 namespace App\Services;
 
+use App\Models\Club;
+use App\Models\RidePoint;
+use App\Models\Ride;
 use App\Models\Point;
 use Illuminate\Support\Facades\Http;
 
 class GoogleApiService
 {
+    const BASE_URL = "https://maps.googleapis.com/maps/";
+    
+    const MODE_DRIVING = "driving";
+    const MODE_WALKING = "walking";
+    const MODE_BICYCLING = "bicycling";
+    const MODE_TRANSIT = "transit";
+    
+    const UNITS_METRIC = "metric";
+    const UNITS_IMPERIAL = "imperial";
+    
+    const TRAFFIC_MODEL_BEST_GUESS = "best_guess";
+    const TRAFFIC_MODEL_BEST_PESSIMISTIC = "pessimistic";
+    const TRAFFIC_MODEL_BEST_OPTIMISTIC = "optimistic";
+    
+    /**
+     * Get direction to each points
+     *
+     * @params $origins
+     * @params $destinations
+     * @params $waypoints
+     * @params $mode
+     */
+    public function getDirection($origins, $destinations, $waypoints = null, $mode = self::MODE_DRIVING)
+    {
+        \Log::info('directions ' . $origins);
+        \Log::info('directions ' . $destinations);
+        \Log::info('directions ' . $waypoints);
+        
+        $data = [
+            'key' => env('GOOGLE_API_KEY'),
+            'origin' => $origins,
+            'destination' => $destinations,
+            'mode' => $mode,
+            'units' => 'metric',
+        ];
+        
+        if($waypoints){
+            $data['waypoints'] = $waypoints;
+        }
+        
+        $url = self::BASE_URL. "api/directions/json";
+        
+        $response = Http::get($url . '?' . http_build_query($data));
+        
+        \Log::info('distancematrix ' . $response->body());
+        
+        return $response->json();
+    }
     
     /**
      *
@@ -46,27 +97,6 @@ class GoogleApiService
         $response = Http::get($url . '?' . http_build_query($data));
         
         \Log::info('geocode ' . $response->body());
-        
-        return $response->json();
-    }
-    
-    /**
-     *
-     * @params Point $pointA
-     * @params Point $pointB
-     */
-    public function getDirection(Point $pointA, Point $pointB)
-    {
-        $url = "https://maps.googleapis.com/maps/api/directions/json";
-        $data = [
-            'mode' => 'driving', // driving | walking | bicycling | transit 
-            'units' => 'metric', // metric | imperial
-            'traffic_model' => 'best_guess', // best_guess | pessimistic | optimistic 
-            'origin' => 'Disneyland',
-            'destination' => 'Universal+Studios+Hollywood',
-            'key' => env('GOOGLE_API_KEY'),
-        ];
-        $response = Http::get($url . '?' . http_build_query($data));
         
         return $response->json();
     }

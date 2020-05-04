@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GoogleApiService::class);
         
         //
-        $this->app->bind(\App\Services\ProcessorInterface::class, \App\Services\TravelProcessor::class);
+        $this->app->bind(\App\Services\ProcessorInterface::class, \App\Services\RideProcessor::class);
         
     }
 }

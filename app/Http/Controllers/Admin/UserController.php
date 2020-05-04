@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateUser as UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-
 class UserController extends Controller
 {
     
@@ -21,7 +20,7 @@ class UserController extends Controller
     {
         $users = User::all();
         
-        return view('admin.user.index', ['users' => $users]);
+        return view('admin.user.index', ['models' => $users]);
     }
 
     /**
@@ -32,7 +31,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.user.show', ['user' => $user]);
+        return view('admin.user.show', ['model' => $user]);
     }
     
     /**
@@ -42,7 +41,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.user.create');
+        $model = new User();
+        return view('admin.user.create', ['model' => $model]);
     }
 
     /**
@@ -65,7 +65,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.user.edit', ['user' => $user]);
+        return view('admin.user.edit', ['model' => $user]);
     }
 
     /**

@@ -19,7 +19,7 @@ class CreateRolesTable extends Migration
                 $table->string('name', 50)->unique();
                 $table->string('description');
                 $table->integer('priority');
-                $table->unsignedBigInteger('user_id')->index()->nullable();
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });
@@ -33,6 +33,7 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('roles');
     }
 }

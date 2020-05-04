@@ -33,19 +33,51 @@ class Car extends Model
     }
     
     /**
+     * Get the club that owns the car.
+     */
+    public function club()
+    {
+        return $this->belongsTo(Club::class);
+    }
+    
+    /**
+     * Get the driver that owns the car.
+     */
+    public function driver()
+    {
+        return $this->belongsTo(User::class, 'driver_id');
+    }
+    
+    /**
+     * Get the car's image.
+     */
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+    
+    /**
      * Get the model that owns the car.
      */
     public function model()
     {
-        return $this->belongsTo(CarModel::class);
+        return $this->belongsTo(CarModel::class, 'car_model_id');
     }
     
     /**
-     * Get the travels for the car.
+     * Get the rides for the car.
      */
-    public function travels()
+    public function rides()
     {
-        return $this->hasMany(Travel::class);
+        return $this->hasMany(Ride::class);
+    }
+    
+    /**
+     * Get the orders for the car.
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
     
     /**
@@ -53,6 +85,6 @@ class Car extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user');
     }
 }

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Events\OrderCreated;
+use App\Events\OrderStatusChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
-use App\Http\Resources\Order as OrderResource;
+use App\Http\Resources\OrderItem as OrderItemResource;
 use App\Http\Resources\OrderCollection;
+use App\Models\Car;
 use App\Models\Club;
 use App\Models\Order;
-use App\Models\OrderPoint;
+use App\Models\Item;
 use App\Models\Phone;
 use App\Models\Point;
 use App\Models\Zone;
@@ -37,95 +38,134 @@ class OrderController extends Controller
      * @return Response
      */
     public function index(Request $request){
-        return new OrderCollection($request->user()->orders()->paginate());
+        return new OrderCollection($request->user()->orders()->orderBy('created_at', 'desc')->paginate());
+    }
+
+    /**
+     * Show order
+     *
+     * @return Response
+     */
+    public function show(Request $request, Order $order){
+        return new OrderItemResource($order);
+    }
+
+    /**
+     * Get cart info
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function cart(Request $request)
+    {
+        $club = Club::findOrFail($request->input('order.club_id'));
+        $car = Car::find($request->input('order.car_id'));
+        
+        if( null === $club->point ) {
+            return $this->error(400, 105, "Club Without Position");
+        }
+        
+        $order = new Order($request->input('order'));
+        $order->status = Order::STATUS_PING;
+        $order->setVat(0);
+        
+        $distance = 0;
+        $values = $request->input('items');
+        foreach($values as $value){
+            if(isset($value['item']) && $value['item']){
+                $item = new Item($value['item']);
+                $distance += (int) $item->distance_value;
+            }
+        }
+        
+        if($distance == 0){
+            return $this->error(400, 106, "Invalid Distance Between User Position And Club");
+        }
+        
+        $distance = (int) ( $distance / 2 );
+        $zone = Zone::findByDistance($distance);
+        if(null == $zone){
+            return $this->error(400, 107, "No Zone Found");
+        }
+        $order->distance = $distance;
+        $order->setZone($zone);
+
+        return new OrderItemResource($order);
     }
 
     /**
      * Store a new order.
      *
-     * @param  Request  $request
-     * @param  Zone  $zone
+     * @param  Request $request
      * @return Response
      */
-    public function store(StoreOrderRequest $request, OrderRepository $orderRepository, ZoneRepository $zoneRrepository, Club $club)
+    public function store(Request $request)
     {
+        $club = Club::findOrFail($request->input('order.club_id'));
+        $car = Car::find($request->input('order.car_id'));
+        
         if( null === $club->point ) {
-            return $this->error(400, 105, "Invalid Club Position");
+            return $this->error(400, 105, "Club Without Position");
         }
         
-        $points = $request->input('points');
-        $point_a = null;
-        $point_b = null;
-        if( isset( $points['a'] ) ) {
-            $point_a = new Point($points['a']);
-            $point_a->save();
-        }
-        if( isset( $points['b'] ) ) {
-            $point_b = new Point($points['b']);
-            $point_b->save();
+        $order = new Order($request->input('order'));
+        $order->status = Order::STATUS_PING;
+        $order->setVat(0);
+        $order->club()->associate($club);
+        if($car) $order->car()->associate($car);
+        $order->save();
+        
+        $distance = 0;
+        $values = $request->input('items');
+        foreach($values as $value){
+            if(isset($value['point']) && isset($value['item'])){
+                $point = new Point($value['point']);
+                $point->save();
+
+                $item = new Item($value['item']);
+                $item->point()->associate($point);
+                $item->order()->associate($order);
+                $item->save();
+
+                $distance += (int) $item->distance_value;
+            }
         }
         
-        $phone = new Phone($request->input('phone'));
-        $phone->save();
-        
-        $distance = $this->calculateDistance($point_a, $club->point);
         if($distance == 0){
             return $this->error(400, 106, "Invalid Distance Between User Position And Club");
         }
         
-        $zone = $zoneRrepository->getByDistance($distance);
+        $distance = (int) ( $distance / 2 );
+        $zone = Zone::findByDistance($distance);
         if(null == $zone){
             return $this->error(400, 107, "No Zone Found");
         }
-        
-        $order = new Order($request->only('place', 'privatized', 'preordered'));
-        $order = $orderRepository->calculate($order, $zone);
-        
-        $zone->orders()->save($order);
-        
-        $order->phones()->save($phone);
-        $order->points()->attach($point_a->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
-        $order->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
+        $order->distance = $distance;
+        $order->setZone($zone);
+        $order->save();
 
-        if($point_b){
-            $second = $order->replicate();
-            $order->second()->save($second);
-            
-            $second->points()->attach($club->point->id, ['type' => OrderPoint::TYPE_START, 'created_at' => now()]);
-            $second->points()->attach($point_b->id, ['type' => OrderPoint::TYPE_END, 'created_at' => now()]);
-        }
+        event(new OrderStatusChanged($order, 'created', null, Order::STATUS_PING));
 
-        event(new \App\Events\OrderCreated($order));
-        
-        \App\Jobs\ProcessOrder::dispatchAfterResponse($order);
-        
-        return new OrderResource($order);
+        return new OrderItemResource($order);
     }
     
     /**
-     * calculateDistance
+     * Cancel order
      *
-     * @params Point $a
-     * @params Point $b
+     * @param  Request  $request
+     * @param  Order $order
+     * @return Response
      */
-    protected function calculateDistance(Point $a, Point $b)
+    public function cancel(Request $request)
     {
-        $response = $this->google->getDistance($a, $b);
-        if($response['status'] === 'OK'){
-            return ceil( $response['rows'][0]['elements'][0]['distance']['value'] / 1000 );
+        $order = Order::findOrFail($request->input('order_id'));
+
+        if(!$order->cancelable()){
+            return $this->error(400, 111, "Order not cancelable");
         }
         
-        return 0;
-    }
-    
-    /**
-     * Find zone
-     *
-     * @params Order $order
-     * @params Club $club
-     */
-    protected function getZone($distance)
-    {
-        return Zone::where('distance', '>=', $distance)->orderBy('distance', 'ASC')->first();
+        $order->cancel($request->user());
+        
+        return new OrderItemResource($order);
     }
 }

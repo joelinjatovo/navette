@@ -19,9 +19,13 @@ class CreateCarsTable extends Migration
                 $table->string('name', 100);
                 $table->string('year', 4);
                 $table->integer('place');
-                $table->unsignedBigInteger('car_model_id')->index();
-                $table->foreign('car_model_id')->references('id')->on('car_models')->onDelete('cascade');
-                $table->unsignedBigInteger('user_id')->index()->nullable();
+                $table->unsignedBigInteger('club_id')->nullable();
+                $table->foreign('club_id')->references('id')->on('clubs');
+                $table->unsignedBigInteger('car_model_id')->nullable();
+                $table->foreign('car_model_id')->references('id')->on('car_models');
+                $table->unsignedBigInteger('driver_id')->nullable();
+                $table->foreign('driver_id')->references('id')->on('users');
+                $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });
@@ -35,6 +39,7 @@ class CreateCarsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('cars');
     }
 }

@@ -45,7 +45,7 @@ class CarModel extends Model
      */
     public function type()
     {
-        return $this->belongsTo(CarType::class);
+        return $this->belongsTo(CarType::class, 'car_type_id');
     }
     
     /**
@@ -53,7 +53,7 @@ class CarModel extends Model
      */
     public function brand()
     {
-        return $this->belongsTo(CarBrand::class);
+        return $this->belongsTo(CarBrand::class, 'car_brand_id');
     }
     
     /**

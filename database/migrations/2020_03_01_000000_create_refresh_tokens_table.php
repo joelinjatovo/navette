@@ -17,10 +17,10 @@ class CreateRefreshTokensTable extends Migration
             Schema::create('refresh_tokens', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->text('scopes');
-                $table->uuid('access_token_id')->index();
-                $table->foreign('access_token_id')->references('id')->on('access_tokens')->onDelete('cascade');
-                $table->unsignedBigInteger('user_id')->index();
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+                $table->uuid('access_token_id')->nullable();
+                $table->foreign('access_token_id')->references('id')->on('access_tokens');
+                $table->unsignedBigInteger('user_id')->nullable();
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->boolean('revoked')->default(false);
                 $table->dateTime('expires_at')->nullable();
                 $table->timestamps();
@@ -35,6 +35,7 @@ class CreateRefreshTokensTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('refresh_tokens');
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-use App\Broadcasting\TravelChannel;
+use App\Broadcasting\ItemChannel;
+use App\Broadcasting\OrderChannel;
+use App\Broadcasting\RideChannel;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +17,8 @@ use App\Broadcasting\TravelChannel;
 */
 
 Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+    return (int) $user->getKey() === (int) $id;
 });
-
-Broadcast::channel('App.Travel.{id}', function ($user, $id) {
-    return true;
-});
-
-//Broadcast::channel('App.Travel.{travel}', TravelChannel::class);
+Broadcast::channel('App.Item.{item}', ItemChannel::class);
+Broadcast::channel('App.Order.{order}', OrderChannel::class);
+Broadcast::channel('App.Ride.{ride}', RideChannel::class);

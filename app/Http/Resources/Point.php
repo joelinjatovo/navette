@@ -16,10 +16,9 @@ class Point extends JsonResource
     {
         return [
             'id' => $this->id,
-            'type' => $this->when($this->pivot, $this->pivot->type),
             'name' => $this->name,
             'lat' => $this->lat,
-            'long' => $this->long,
+            'lng' => $this->lng,
             'alt' => $this->alt,
             'created_at' => $this->created_at,
         ];

@@ -13,65 +13,101 @@ class ClubSeeder extends Seeder
     {
         DB::table('points')->insert([
             'id' => 1,
-            'name' => 'Antananarivo, Madagascar',
-            'long' => -18.8873012,
-            'lat' => 47.3724257,
-            'alt' => 11,
+            'name' => 'Vegas Club',
+            'lat' => 49.127983,
+            'lng' => 2.2396556,
+            'alt' => 17,
             'user_id' => 1,
             'created_at' => now(),
         ]);
         DB::table('clubs')->insert([
-            'name' => 'Club Antananarivo',
+            'id' => 1,
+            'name' => 'Vegas Club',
             'point_id' => 1,
             'user_id' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('images')->insert([
+            'name' => 'vegas-club.png',
+            'type' => "image/png",
+            'url' => "uploads/vegas-club.png",
+            'imageable_id' => 1,
+            'imageable_type' => "App\Models\Club",
             'created_at' => now(),
         ]);
         
         DB::table('points')->insert([
             'id' => 2,
-            'name' => 'Toamasina, Madagascar',
-            'long' => -18.1303933,
-            'lat' => 49.3220981,
-            'alt' => 12,
+            'name' => 'Grisy Club',
+            'lat' => 48.8178148,
+            'lng' => 1.3483707,
+            'alt' => 8,
             'user_id' => 1,
             'created_at' => now(),
         ]);
         DB::table('clubs')->insert([
-            'name' => 'Club Toamasina',
+            'id' => 2,
+            'name' => 'Grisy Club',
             'point_id' => 2,
             'user_id' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('images')->insert([
+            'name' => 'grisy-club.png',
+            'type' => "image/jpeg",
+            'url' => "uploads/grisy-club.jpg",
+            'imageable_id' => 2,
+            'imageable_type' => "App\Models\Club",
             'created_at' => now(),
         ]);
         
         DB::table('points')->insert([
             'id' => 3,
-            'name' => 'Antsirabe, Madagascar',
-            'long' => -19.8549619,
-            'lat' => 46.9821708,
-            'alt' => 12,
-            'user_id' => 1,
-            'created_at' => now(),
-        ]);
-        DB::table('clubs')->insert([
-            'name' => 'Club Antsirabe',
-            'point_id' => 3,
-            'user_id' => 1,
-            'created_at' => now(),
-        ]);
-        
-        DB::table('points')->insert([
-            'id' => 4,
-            'name' => 'Antsirabe, Madagascar',
-            'long' => -25.1775697,
-            'lat' => 46.0723836,
+            'name' => 'LE R7 - Restaurant Lounge Club',
+            'lat' => 49.1270697,
+            'lng' => 2.0311066,
             'alt' => 14,
             'user_id' => 1,
             'created_at' => now(),
         ]);
         DB::table('clubs')->insert([
-            'name' => 'Club Antsirabe',
+            'id' => 3,
+            'name' => 'LE R7 - Restaurant Lounge Club',
+            'point_id' => 3,
+            'user_id' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('images')->insert([
+            'name' => 'r7-club.png',
+            'type' => "image/jpeg",
+            'url' => "uploads/r7-club.jpg",
+            'imageable_id' => 3,
+            'imageable_type' => "App\Models\Club",
+            'created_at' => now(),
+        ]);
+        
+        DB::table('points')->insert([
+            'id' => 4,
+            'name' => 'Pacha Club',
+            'lat' => 48.8482925,
+            'lng' => 2.1065443,
+            'alt' => 17,
+            'user_id' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('clubs')->insert([
+            'id' => 4,
+            'name' => 'Pacha Club',
             'point_id' => 4,
             'user_id' => 1,
+            'created_at' => now(),
+        ]);
+        DB::table('images')->insert([
+            'name' => 'pacha-club.png',
+            'type' => "image/jpeg",
+            'url' => "uploads/pacha-club.jpg",
+            'imageable_id' => 4,
+            'imageable_type' => "App\Models\Club",
             'created_at' => now(),
         ]);
     }
