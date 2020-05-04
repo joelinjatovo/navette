@@ -23,6 +23,15 @@ return [
     'dates' => 'Dates',
     'driver' => 'Driver',
     'email' => 'Email',
+    'form' => [
+        'club' => [
+            'name' => 'Club Name',
+        ],
+    ],
+    'success' => [
+        'club.created' => 'Club created successfully!',
+        'club.updated' => 'Club updated with success!',
+    ],
     'list' => 'Liste',
     'name' => 'Name',
     'order' => 'Order',

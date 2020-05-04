@@ -10,10 +10,10 @@
           </div>
         </div>
         <div class="card-body ">
-          <form id="main-form" method="post" action="{{ url()->current() }}" class="form-horizontal">
+          <form id="main-form" method="post" class="form-horizontal">
             @csrf
             <div class="row">
-              <label class="col-sm-2 col-form-label">{{ __('messages.name') }}</label>
+              <label class="col-sm-2 col-form-label">{{ __('messages.form.club.name') }}</label>
               <div class="col-sm-10">
                 <div class="form-group has-success bmd-form-group">
                   <input type="text" name="club[name]" class="form-control" value="{{ old('club.name') }}">
@@ -23,6 +23,14 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                  <input type="hidden" id="point-alt" name="point[alt]" value="{{ $model->point ? $model->point->alt : '' }}"/>
+                  <input type="hidden" id="point.lng" name="point[lng]" value="{{ $model->point ? $model->point->lng : '' }}"/>
+                  <input type="hidden" id="point.lat" name="point[lat]" value="{{ $model->point ? $model->point->lat : '' }}"/>
+                  <div id="regularMap" class="map" style="position: relative; overflow: hidden;"></div>
+                </div>
+            </div>
           </form>
         </div>
         <div class="card-footer ">
@@ -31,4 +39,13 @@
       </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+  @parent
+  <script>
+    $(document).ready(function() {
+      demo.initSmallGoogleMaps();
+    });
+  </script>
 @endsection

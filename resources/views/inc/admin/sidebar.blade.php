@@ -78,7 +78,7 @@ Tip 2: you can also add an image using data-image tag
       </div>
     </li>
     <li class="nav-item {{ Route::is('admin.club*') ? 'active' : '' }} ">
-      <a class="nav-link" data-toggle="collapse" href="#users" {{ Route::is('admin.club*') ? 'aria-expanded="true"' : '' }}>
+      <a class="nav-link" data-toggle="collapse" href="#clubs" {{ Route::is('admin.club*') ? 'aria-expanded="true"' : '' }}>
         <i class="material-icons"></i>
         <p>{{ __('messages.clubs') }}<b class="caret"></b></p>
       </a>

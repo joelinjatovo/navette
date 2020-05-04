@@ -74,6 +74,7 @@ The above copyright notice and this permission notice shall be included in all c
       <!-- End Navbar -->
       <div class="content">
           <div class="container-fluid">
+              @include('inc.alert')
               @yield('content')
           </div>
       </div>
@@ -184,7 +185,8 @@ The above copyright notice and this permission notice shall be included in all c
       </ul>
     </div>
   </div>
-    
+
+  @section('javascript')
   <!--   Core JS Files   -->
   <script src="/js/app.js"></script>
   <script src="/js/core/jquery.min.js"></script>
@@ -406,11 +408,9 @@ The above copyright notice and this permission notice shall be included in all c
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
       md.initDashboardPageCharts();
-
       md.initVectorMap();
-
     });
   </script>
+  @show
 </body>
-
 </html>

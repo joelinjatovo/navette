@@ -25,6 +25,8 @@ class StoreClub extends FormRequest
     {
         return [
             'club.name' => 'required|max:255',
+            'point.lat' => 'required',
+            'point.lng' => 'required',
         ];
     }
 }

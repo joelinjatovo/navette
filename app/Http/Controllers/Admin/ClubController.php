@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreClub as StoreClubRequest;
 use App\Http\Requests\UpdateClub as UpdateClubRequest;
 use App\Models\Club;
+use App\Models\Point;
 
 class ClubController extends Controller
 {
@@ -52,8 +53,16 @@ class ClubController extends Controller
      */
     public function store(StoreClubRequest $request)
     {
-        // Retrieve the validated input data...
         $validated = $request->validated();
+        
+        $point = new Point($validated['point']);
+        $point->save();
+        
+        $model = new Club($validated['club']);
+        $model->point()->associate($point);
+        $model->save();
+        
+        return back()->withInput()->with('success', __('messages.success.club.created'));
     }
     
     /**
@@ -76,8 +85,20 @@ class ClubController extends Controller
      */
     public function update(UpdateClubRequest $request, Club $club)
     {
-        // Retrieve the validated input data...
         $validated = $request->validated();
+        
+        $point = $club->point();
+        if(!$point) {
+            $point = new Point();
+        }
+        $point->fill($validated['point']);
+        $point->save();
+        
+        $club->fill($validated['club']);
+        $club->point()->associate($point);
+        $club->save();
+        
+        return back()->withInput()->with('success', __('messages.success.club.updated'));
     }
 
     /**

@@ -140,6 +140,14 @@ return [
                 'required' => 'The name of the club is required',
             ],
         ],
+        'point' => [
+            'lat' => [
+                'required' => 'The club location is required',
+            ],
+            'lng' => [
+                'required' => 'The club location is required',
+            ],
+        ],
         'user' => [
             'name' => [
                 'required' => 'Your name is required',
