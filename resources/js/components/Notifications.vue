@@ -15,16 +15,16 @@
 
 <script>
   import {mapGetters} from 'vuex'
-  import Notification from './Notification'
 
   export default {
     name: "Notifications",
     components: {Notification},
-    props: ['user'],
+    props: ['user_id'],
     mounted() {
       this.$store.dispatch('GET_NOTIFICATIONS')
+        console.log("User Id  = " + this.user_id);
       
-      window.Echo.private('App.User.' + this.user.id)
+      window.Echo.private('App.User.' + this.user_id)
             .notification((data) => {
                 console.log(data);
                 this.$store.commit('ADD_NOTIFICATION', data.notification)

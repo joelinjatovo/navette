@@ -20,8 +20,8 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('notification', require('./components/Notification'));
-Vue.component('notifications', require('./components/Notifications'));
+Vue.component('notification', require('./components/Notification.vue').default);
+Vue.component('notifications', require('./components/Notifications.vue').default);
 
 
 /**

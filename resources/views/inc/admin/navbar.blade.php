@@ -33,8 +33,7 @@
           </p>
         </a>
       </li>
-      <notifications @auth :user='@json(auth()->user())' @endauth></notifications>
-      
+      <app-notifications @auth :user_id="{{ auth()->user()->id }}" @endauth></app-notifications>
       <li class="nav-item dropdown">
         <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="material-icons">person</i>
