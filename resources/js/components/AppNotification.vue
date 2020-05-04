@@ -1,16 +1,10 @@
-<template>
-  <li class="notification-wrapper animate slideInLeft ">
-    <div class="profile"><img :src="avatar" alt=""></div>
-    <div class="msg has-shadow">
-      <div class="msg-body"><p class="name">{{notification.type}} <span class="date">{{created_at}}</span></p>
-        <p class="content">{{notification.data}}</p></div>
-    </div>
-  </li>
+<template
+  <a class="dropdown-item" href="#">{{notification.data}} <span class="date">{{created_at}}</span></a>
 </template>
 
 <script>
   export default {
-    name: "Notification",
+    name: "AppNotification",
     props: ['notification'],
     computed: {
       created_at() {

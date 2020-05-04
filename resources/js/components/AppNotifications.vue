@@ -8,17 +8,18 @@
           </p>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-          <Notification :key="notification.id" v-for="notification in notifications" :notification="notification"></Notification>
+          <AppNotification :key="notification.id" v-for="notification in notifications" :notification="notification"></AppNotification>
         </div>
     </li>
 </template>
 
 <script>
   import {mapGetters} from 'vuex'
+  import AppNotification from './AppNotification'
 
   export default {
-    name: "Notifications",
-    components: {Notification},
+    name: "AppNotifications",
+    components: {AppNotification},
     props: ['user_id'],
     mounted() {
       this.$store.dispatch('GET_NOTIFICATIONS')
