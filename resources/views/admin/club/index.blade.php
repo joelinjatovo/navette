@@ -28,7 +28,7 @@
                 @foreach ($models as $model)
                 <tr>
                   <td>
-                    <div class="img-container"><img src="{{ $model->image ? url($model->image->url) : '/img/product1.jpg' }}" alt="..."></div>
+                    <div class="img-container"><img src="{{ $model->image ? asset($model->image->url) : '/img/product1.jpg' }}" alt="..."></div>
                   </td>
                   <td class="td-name">
                     <a href="{{ route('admin.club.show', $model)}}">{{ $model->name }}</a>

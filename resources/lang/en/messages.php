@@ -8,13 +8,18 @@ return [
     'apikey.create' => 'Add API Key',
     'apikeys' => 'API Keys',
     'apikeys.list' => 'API Keys List',
-    'button.save' => 'Save',
+    'button' => [
+        'change' => 'Change',
+        'save' => 'Save',
+        'update' => 'Update',
+    ],
     'car' => 'Car',
     'car.create' => 'Add car',
     'cars' => 'Cars',
     'cars.list' => 'Cars List',
     'club' => 'Club',
     'club.create' => 'Add club',
+    'club.edit' => 'Edit club',
     'clubs' => 'Clubs',
     'clubs.list' => 'Clubs List',
     'customer' => 'Customer',
@@ -25,12 +30,26 @@ return [
     'email' => 'Email',
     'form' => [
         'club' => [
+            'create' => 'Add club',
+            'edit' => 'Edit club',
+            'image' => 'Club Image',
             'name' => 'Club Name',
+            'location' => 'Club Location',
+        ],
+        'image' => [
+            'select' => 'Select Image',
+        ],
+        'placeholder' => [
+            'alt' => 'Altitude',
+            'lat' => 'Latitude',
+            'lng' => 'Longitide',
         ],
     ],
     'success' => [
-        'club.created' => 'Club created successfully!',
-        'club.updated' => 'Club updated with success!',
+        'club' => [
+            'stored' => 'Club stored successfully!',
+            'updated' => 'Club updated with success!',
+        ],
     ],
     'list' => 'Liste',
     'name' => 'Name',
