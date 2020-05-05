@@ -78,7 +78,7 @@ class CarSeeder extends Seeder
         DB::table('images')->insert([
             'name' => 'car-01.png',
             'type' => "image/jpeg",
-            'url' => "uploads/car-01.jpg",
+            'url' => "img/cars/car-01.jpg",
             'imageable_id' => 1,
             'imageable_type' => "App\Models\Car",
             'created_at' => now(),
@@ -97,7 +97,7 @@ class CarSeeder extends Seeder
         DB::table('images')->insert([
             'name' => 'car-02.jpg',
             'type' => "image/jpeg",
-            'url' => "uploads/car-02.jpg",
+            'url' => "img/cars/car-02.jpg",
             'imageable_id' => 2,
             'imageable_type' => "App\Models\Car",
             'created_at' => now(),
@@ -116,7 +116,7 @@ class CarSeeder extends Seeder
         DB::table('images')->insert([
             'name' => 'car-01.jpg',
             'type' => "image/jpeg",
-            'url' => "uploads/car-01.jpg",
+            'url' => "img/cars/car-01.jpg",
             'imageable_id' => 3,
             'imageable_type' => "App\Models\Car",
             'created_at' => now(),
@@ -135,7 +135,7 @@ class CarSeeder extends Seeder
         DB::table('images')->insert([
             'name' => 'car-01.jpg',
             'type' => "image/jpeg",
-            'url' => "uploads/car-01.jpg",
+            'url' => "img/cars/car-01.jpg",
             'imageable_id' => 4,
             'imageable_type' => "App\Models\Car",
             'created_at' => now(),
