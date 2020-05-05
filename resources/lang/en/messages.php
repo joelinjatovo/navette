@@ -33,6 +33,16 @@ return [
     'drivers' => 'Drivers',
     'email' => 'Email',
     'form' => [
+        'car' => [
+            'create' => 'Add car',
+            'edit' => 'Edit car',
+            'image' => 'Car Image',
+            'name' => 'Car Name',
+            'model' => 'Car Model',
+            'driver' => 'Car driver',
+            'place' => 'Place count',
+            'year' => 'Year',
+        ],
         'club' => [
             'create' => 'Add club',
             'edit' => 'Edit club',
@@ -47,18 +57,6 @@ return [
             'alt' => 'Altitude',
             'lat' => 'Latitude',
             'lng' => 'Longitide',
-        ],
-    ],
-    'success' => [
-        'club' => [
-            'stored' => 'Club stored successfully!',
-            'updated' => 'Club updated with success!',
-            'deleted' => 'Club deleted with success!',
-        ],
-        'car' => [
-            'stored' => 'Car stored successfully!',
-            'updated' => 'Car updated with success!',
-            'deleted' => 'Car deleted with success!',
         ],
     ],
     'list' => 'Liste',
@@ -78,6 +76,18 @@ return [
     'role' => 'Role',
     'roles' => 'Roles',
     'settings' => 'Settings',
+    'success' => [
+        'club' => [
+            'stored' => 'Club stored successfully!',
+            'updated' => 'Club updated with success!',
+            'deleted' => 'Club deleted with success!',
+        ],
+        'car' => [
+            'stored' => 'Car stored successfully!',
+            'updated' => 'Car updated with success!',
+            'deleted' => 'Car deleted with success!',
+        ],
+    ],
     'title' => [
         'show' => [
             'driver' => 'Show the driver',

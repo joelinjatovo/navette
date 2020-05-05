@@ -24,7 +24,13 @@ class StoreCar extends FormRequest
     public function rules()
     {
         return [
+            'car.image' => 'file|mimes:jpeg,png,jpg',
             'car.name' => 'required|max:255',
+            'car.year' => 'required|numeric',
+            'car.place' => 'required|numeric',
+            'car.model' => 'required|exists:car_models,id',
+            'car.driver' => 'required|exists:users,id',
+            'car.club' => 'required|exists:clubs,id',
         ];
     }
 }

@@ -69,7 +69,7 @@ class ClubController extends Controller
             $file = $request->file('club.image');
             if ($file->isValid()) {
                 $name = md5(time()).'.'.$file->extension();
-                $path = $file->storeAs('uploads',  'club/' . $model->getKey() . '/' . $name);
+                $path = $file->storeAs('uploads',  'clubs/' . $model->getKey() . '/' . $name);
                 
                 $image = new Image([
                     'url' => $path, 
@@ -122,7 +122,7 @@ class ClubController extends Controller
             $file = $request->file('club.image');
             if ($file->isValid()) {
                 $name = md5(time()).'.'.$file->extension();
-                $path = $file->storeAs('uploads',  'club/' . $club->getKey() . '/' . $name);
+                $path = $file->storeAs('uploads',  'clubs/' . $club->getKey() . '/' . $name);
                 
                 $data = [
                     'url' => $path, 
