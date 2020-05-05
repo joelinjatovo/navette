@@ -17,7 +17,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = Car::all();
+        $cars = Car::paginate();
         
         return view('admin.car.index', ['models' => $cars]);
     }
@@ -89,11 +89,12 @@ class CarController extends Controller
      */
     public function delete(Car $car)
     {
-        $club->delete();
+        $car->delete();
 
         return response()->json([
             'code' => 200,
             'status' => "success",
+            'message' => __('messages.success.car.deleted'),
         ]);
     }
 }

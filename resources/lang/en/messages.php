@@ -23,10 +23,14 @@ return [
     'clubs' => 'Clubs',
     'clubs.list' => 'Clubs List',
     'customer' => 'Customer',
+    'count' => [
+        'places' => '{0} No place|{1} One place|[2,*] :value places',
+    ],
     'dashboard' => 'Dashboard',
     'date' => 'Date',
     'dates' => 'Dates',
     'driver' => 'Driver',
+    'drivers' => 'Drivers',
     'email' => 'Email',
     'form' => [
         'club' => [
@@ -51,13 +55,20 @@ return [
             'updated' => 'Club updated with success!',
             'deleted' => 'Club deleted with success!',
         ],
+        'car' => [
+            'stored' => 'Car stored successfully!',
+            'updated' => 'Car updated with success!',
+            'deleted' => 'Car deleted with success!',
+        ],
     ],
     'list' => 'Liste',
+    'models' => 'Models',
     'name' => 'Name',
     'order' => 'Order',
     'order.create' => 'Add order',
     'orders' => 'Orders',
     'orders.list' => 'Orders List',
+    'place' => 'Place',
     'phone' => 'Phone',
     'phones' => 'Phones',
     'ride' => 'Ride',
@@ -67,6 +78,18 @@ return [
     'role' => 'Role',
     'roles' => 'Roles',
     'settings' => 'Settings',
+    'title' => [
+        'show' => [
+            'driver' => 'Show the driver',
+            'club' => 'Show the club',
+        ],
+        'edit' => [
+            'car' => 'Edit this car',
+        ],
+        'remove' => [
+            'car' => 'Remove this car',
+        ],
+    ],
     'users' => 'Users',
     'user.create' => 'Add user',
     'users.list' => 'Users List',
