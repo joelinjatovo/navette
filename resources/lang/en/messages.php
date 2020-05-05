@@ -49,6 +49,7 @@ return [
         'club' => [
             'stored' => 'Club stored successfully!',
             'updated' => 'Club updated with success!',
+            'deleted' => 'Club deleted with success!',
         ],
     ],
     'list' => 'Liste',

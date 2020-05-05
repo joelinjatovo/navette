@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateClub as UpdateClubRequest;
 use App\Models\Club;
 use App\Models\Image;
 use App\Models\Point;
+use Illuminate\Http\Request;
 
 class ClubController extends Controller
 {
@@ -68,7 +69,7 @@ class ClubController extends Controller
             $file = $request->file('club.image');
             if ($file->isValid()) {
                 $name = md5(time()).'.'.$file->extension();
-                $path = $file->storeAs('images',  'club/' . $model->getKey() . '/' . $name);
+                $path = $file->storeAs('uploads',  'club/' . $model->getKey() . '/' . $name);
                 
                 $image = new Image([
                     'url' => $path, 
@@ -121,7 +122,7 @@ class ClubController extends Controller
             $file = $request->file('club.image');
             if ($file->isValid()) {
                 $name = md5(time()).'.'.$file->extension();
-                $path = $file->storeAs('images',  'club/' . $club->getKey() . '/' . $name);
+                $path = $file->storeAs('uploads',  'club/' . $club->getKey() . '/' . $name);
                 
                 $data = [
                     'url' => $path, 
@@ -147,16 +148,15 @@ class ClubController extends Controller
      * Delete the specified user.
      *
      * @param Request  $request
-     * @param Club $club
      * @return Response
      */
-    public function delete(Club $club)
+    public function delete(Request $request, Club $club)
     {
         $club->delete();
-
         return response()->json([
             'code' => 200,
             'status' => "success",
+            'message' => __('messages.success.club.deleted'),
         ]);
     }
 

@@ -24,7 +24,7 @@ class StoreClub extends FormRequest
     public function rules()
     {
         return [
-            'club.image' => 'file',
+            'club.image' => 'file|mimes:jpeg,png,jpg',
             'club.name' => 'required|max:255',
             'point.lat' => 'required',
             'point.lng' => 'required',

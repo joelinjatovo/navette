@@ -85,7 +85,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('club/{club}', 'Admin\ClubController@show')->name('club.show');
         Route::get('club/{club}/edit', 'Admin\ClubController@edit')->name('club.edit');
         Route::post('club/{club}/edit', 'Admin\ClubController@update');
-        Route::post('club/{club}/delete', 'Admin\ClubController@delete');
+        Route::delete('club/{club}', 'Admin\ClubController@delete')->name('club.delete');
         
         Route::get('cars', 'Admin\CarController@index')->name('cars');
         Route::get('car', 'Admin\CarController@create')->name('car.create');
@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('car/{car}', 'Admin\CarController@show')->name('car.show');
         Route::get('car/{car}/edit', 'Admin\CarController@edit')->name('car.edit');
         Route::post('car/{car}/edit', 'Admin\CarController@update');
-        Route::post('car/{car}/delete', 'Admin\CarController@delete');
+        Route::post('car/{car}/delete', 'Admin\CarController@delete')->name('car.delete');
         
         Route::get('orders', 'Admin\OrderController@index')->name('orders');
         Route::get('order', 'Admin\OrderController@create')->name('order.create');
@@ -101,7 +101,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('order/{order}', 'Admin\OrderController@show')->name('order.show');
         Route::get('order/{order}/edit', 'Admin\OrderController@edit')->name('order.edit');
         Route::post('order/{order}/edit', 'Admin\OrderController@update');
-        Route::post('order/{order}/delete', 'Admin\OrderController@delete');
+        Route::post('order/{order}/delete', 'Admin\OrderController@delete')->name('order.delete');
         
         Route::get('rides', 'Admin\RideController@index')->name('rides');
         Route::get('ride', 'Admin\RideController@create')->name('ride.create');
@@ -109,7 +109,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ride/{ride}', 'Admin\RideController@show')->name('ride.show');
         Route::get('ride/{ride}/edit', 'Admin\RideController@edit')->name('ride.edit');
         Route::post('ride/{ride}/edit', 'Admin\RideController@update');
-        Route::post('ride/{ride}/delete', 'Admin\RideController@delete');
+        Route::post('ride/{ride}/delete', 'Admin\RideController@delete')->name('ride.delete');
         
         Route::get('apikeys', 'Admin\ApiKeyController@index')->name('apikeys');
         Route::get('apikey', 'Admin\ApiKeyController@create')->name('apikey.create');
@@ -117,7 +117,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('apikey/{apikey}', 'Admin\ApiKeyController@show')->name('apikey.show');
         Route::get('apikey/{apikey}/edit', 'Admin\ApiKeyController@edit')->name('apikey.edit');
         Route::post('apikey/{apikey}/edit', 'Admin\ApiKeyController@update');
-        Route::post('apikey/{apikey}/delete', 'Admin\ApiKeyController@delete');
+        Route::post('apikey/{apikey}/delete', 'Admin\ApiKeyController@delete')->name('apikey.delete');
         
         Route::get('/settings', 'Admin\SettingController@index')->name('settings');
     });
