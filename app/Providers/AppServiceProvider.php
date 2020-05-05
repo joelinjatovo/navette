@@ -7,6 +7,7 @@ use App\Models\Club;
 use App\Models\CarModel;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\View;
@@ -54,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('models', CarModel::all());
             $view->with('clubs', Club::all());
         });
+        
         
     }
 }
