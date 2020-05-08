@@ -12,113 +12,53 @@
         </div>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table">
+            <table class="table table-shopping">
               <thead>
                 <tr>
-                  <th class="text-center">#</th>
-                  <th>{{ __('messages.name') }}</th>
-                  <th>{{ __('messages.phone') }}</th>
-                  <th>{{ __('messages.date') }}</th>
-                  <th class="text-right">{{ __('messages.role') }}</th>
-                  <th class="text-right">{{ __('messages.actions') }}</th>
+                  <th class="text-center"></th>
+                  <th>Product</th>
+                  <th class="th-description">Color</th>
+                  <th class="th-description">Size</th>
+                  <th class="text-right">Price</th>
+                  <th class="text-right">Amount</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
+                @foreach ($models as $model)
                 <tr>
-                  <td class="text-center">1</td>
-                  <td>Andrew Mike</td>
-                  <td>Develop</td>
-                  <td>2013</td>
-                  <td class="text-right">€ 99,225</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
+                  <td>
+                    <div class="img-container"><img src="{{ $model->image ? asset($model->image->url) : '/img/product1.jpg' }}" alt="..."></div>
+                  </td>
+                  <td class="td-name">
+                    <a href="{{ route('admin.club.show', $model)}}">{{ $model->name }}</a>
+                    <br>
+                    <small>by Dolce&amp;Gabbana</small>
+                  </td>
+                  <td>Red</td>
+                  <td>M</td>
+                  <td class="td-number text-right"><small>€</small>549</td>
+                  <td class="td-number"><small>€</small>549</td>
+                  <td class="td-actions">
+                    <button type="button" rel="tooltip" data-placement="left" title="" class="btn btn-link btn-delete" data-id="{{ $model->getKey() }}" data-original-title="Remove item">
                       <i class="material-icons">close</i>
                     </button>
                   </td>
                 </tr>
-                <tr>
-                  <td class="text-center">2</td>
-                  <td>John Doe</td>
-                  <td>Design</td>
-                  <td>2012</td>
-                  <td class="text-right">€ 89,241</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">3</td>
-                  <td>Alex Mike</td>
-                  <td>Design</td>
-                  <td>2010</td>
-                  <td class="text-right">€ 92,144</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">4</td>
-                  <td>Mike Monday</td>
-                  <td>Marketing</td>
-                  <td>2013</td>
-                  <td class="text-right">€ 49,990</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">5</td>
-                  <td>Paul Dickens</td>
-                  <td>Communication</td>
-                  <td>2015</td>
-                  <td class="text-right">€ 69,201</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
         </div>
+        <div class="card-footer">
+            {{ $models->links() }}
+        </div>
       </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+    @parent
+    @include('inc.admin.btn-delete', ['path' => '/admin/club/'])
 @endsection

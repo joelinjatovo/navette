@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreClub as StoreClubRequest;
 use App\Http\Requests\UpdateClub as UpdateClubRequest;
 use App\Models\Club;
+use App\Models\Image;
+use App\Models\Point;
+use Illuminate\Http\Request;
 
 class ClubController extends Controller
 {
@@ -17,7 +20,7 @@ class ClubController extends Controller
      */
     public function index()
     {
-        $clubs = Club::all();
+        $clubs = Club::paginate();
         
         return view('admin.club.index', ['models' => $clubs]);
     }
@@ -52,8 +55,33 @@ class ClubController extends Controller
      */
     public function store(StoreClubRequest $request)
     {
-        // Retrieve the validated input data...
         $validated = $request->validated();
+        
+        $point = new Point($validated['point']);
+        $point->name = $validated['club']['name'];
+        $point->save();
+        
+        $model = new Club($validated['club']);
+        $model->point()->associate($point);
+        $model->save();
+        
+        if ($request->hasFile('club.image')) {
+            $file = $request->file('club.image');
+            if ($file->isValid()) {
+                $name = md5(time()).'.'.$file->extension();
+                $path = $file->storeAs('uploads',  'clubs/' . $model->getKey() . '/' . $name);
+                
+                $image = new Image([
+                    'url' => $path, 
+                    'type' => $file->getClientMimeType(), 
+                    'name'=>$file->getClientOriginalName()
+                ]);
+                
+                $model->image()->save($image);
+            }
+        }
+        
+        return back()->withInput()->with('success', __('messages.success.club.stored'));
     }
     
     /**
@@ -76,24 +104,59 @@ class ClubController extends Controller
      */
     public function update(UpdateClubRequest $request, Club $club)
     {
-        // Retrieve the validated input data...
         $validated = $request->validated();
+        
+        $point = $club->point;
+        if(!$point) {
+            $point = new Point();
+        }
+        $point->fill($validated['point']);
+        $point->name = $validated['club']['name'];
+        $point->save();
+        
+        $club->fill($validated['club']);
+        $club->point()->associate($point);
+        $club->save();
+        
+        if ($request->hasFile('club.image')) {
+            $file = $request->file('club.image');
+            if ($file->isValid()) {
+                $name = md5(time()).'.'.$file->extension();
+                $path = $file->storeAs('uploads',  'clubs/' . $club->getKey() . '/' . $name);
+                
+                $data = [
+                    'url' => $path, 
+                    'type' => $file->getClientMimeType(), 
+                    'name' => $file->getClientOriginalName()
+                ];
+                $image = $club->image;
+                if(!$image){
+                    $image = new Image($data);
+                    $club->image()->save($image);
+                }else{
+                    $image->fill($data);
+                    $club->image()->save($image);
+                }
+                
+            }
+        }
+        
+        return back()->withInput()->with('success', __('messages.success.club.updated'));
     }
 
     /**
      * Delete the specified user.
      *
      * @param Request  $request
-     * @param Club $club
      * @return Response
      */
-    public function delete(Club $club)
+    public function delete(Request $request, Club $club)
     {
         $club->delete();
-
         return response()->json([
             'code' => 200,
             'status' => "success",
+            'message' => __('messages.success.club.deleted'),
         ]);
     }
 

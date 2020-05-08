@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCar as StoreCarRequest;
 use App\Http\Requests\UpdateCar as UpdateCarRequest;
 use App\Models\Car;
+use App\Models\Image;
 
 class CarController extends Controller
 {
@@ -17,7 +18,7 @@ class CarController extends Controller
      */
     public function index()
     {
-        $cars = Car::all();
+        $cars = Car::paginate();
         
         return view('admin.car.index', ['models' => $cars]);
     }
@@ -54,6 +55,30 @@ class CarController extends Controller
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
+        
+        $car = new Car($validated['car']);
+        $car->car_model_id = $request->input('car.model');
+        $car->driver_id = $request->input('car.driver');
+        $car->club_id = $request->input('car.club');
+        $car->save();
+        
+        if ($request->hasFile('car.image')) {
+            $file = $request->file('car.image');
+            if ($file->isValid()) {
+                $name = md5(time()).'.'.$file->extension();
+                $path = $file->storeAs('uploads',  'cars/' . $car->getKey() . '/' . $name);
+                
+                $image = new Image([
+                    'url' => $path, 
+                    'type' => $file->getClientMimeType(), 
+                    'name' => $file->getClientOriginalName()
+                ]);
+                
+                $car->image()->save($image);
+            }
+        }
+        
+        return back()->withInput()->with('success', __('messages.success.car.stored'));
     }
     
     /**
@@ -64,7 +89,7 @@ class CarController extends Controller
      */
     public function edit(Car $car)
     {
-        return view('admin.club.edit', ['model' => $car]);
+        return view('admin.car.edit', ['model' => $car]);
     }
 
     /**
@@ -78,6 +103,30 @@ class CarController extends Controller
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
+        
+        $car->fill($validated['car']);
+        $car->car_model_id = $request->input('car.model');
+        $car->driver_id = $request->input('car.driver');
+        $car->club_id = $request->input('car.club');
+        $car->save();
+        
+        if ($request->hasFile('car.image')) {
+            $file = $request->file('car.image');
+            if ($file->isValid()) {
+                $name = md5(time()).'.'.$file->extension();
+                $path = $file->storeAs('uploads',  'cars/' . $car->getKey() . '/' . $name);
+                
+                $image = new Image([
+                    'url' => $path, 
+                    'type' => $file->getClientMimeType(), 
+                    'name' => $file->getClientOriginalName()
+                ]);
+                
+                $car->image()->save($image);
+            }
+        }
+        
+        return back()->withInput()->with('success', __('messages.success.car.update'));
     }
 
     /**
@@ -89,11 +138,12 @@ class CarController extends Controller
      */
     public function delete(Car $car)
     {
-        $club->delete();
+        $car->delete();
 
         return response()->json([
             'code' => 200,
             'status' => "success",
+            'message' => __('messages.success.car.deleted'),
         ]);
     }
 }

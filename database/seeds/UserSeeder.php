@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
         DB::table('images')->insert([
             'name' => 'haja.jpg',
             'type' => "image/jpeg",
-            'url' => "uploads/haja.jpg",
+            'url' => "img/users/haja.jpg",
             'imageable_id' => 1,
             'imageable_type' => "App\Models\User",
             'created_at' => now(),

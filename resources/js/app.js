@@ -12,14 +12,15 @@ window.Vue = require('vue');
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
  * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
+Vue.component('app-notification', require('./components/AppNotification.vue').default);
+Vue.component('app-notifications', require('./components/AppNotifications.vue').default);
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+/**
+* Import our store app
+*/
+import store from './store/index'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,13 +30,5 @@ window.Vue = require('vue');
 
 const app = new Vue({
     el: '#app',
+    store
 });
-
-window.Echo.private('App.Ride.1')
-    .listen('.ride.user.position.created', (e) => {
-        console.error(e);
-    });
-window.Echo.channel('my-channel')
-    .listen('.my-event', (e) => {
-        console.log(e);
-    });

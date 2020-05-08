@@ -1,83 +1,71 @@
-<template>
-    <div class="text-xs-center">
-        <v-menu offset-y>
-        <v-btn icon slot="activator">
-            <v-icon :color="color">add_alert</v-icon> {{ this.unreadCount }}
-        </v-btn>
-        
-        <v-list>
-            <v-list-tile
-            v-for="item in unread"
-            :key="item.id"
-            >
-            <router-link :to="item.path">
-                <v-list-tile-title @click="readIt(item)">{{ item.question }}</v-list-tile-title>
-            </router-link>
-            </v-list-tile>
-
-            <v-divider></v-divider>
-
-            <v-list-tile
-            v-for="item in read"
-            :key="item.id"
-            >
-            <v-list-tile-title>{{ item.question }}</v-list-tile-title>
-            </v-list-tile>
-        </v-list>
-        </v-menu>
-    </div>
-       
+<template
+  <a class="dropdown-item" href="#">{{notification.data}} <span class="date">{{created_at}}</span></a>
 </template>
 
 <script>
-export default {
-    data: () => ({
-        read: {},
-        unread: {},
-        unreadCount: 0,
-        sound: "http://soundbible.com/mp3/Air%20Plane%20Ding-SoundBible.com-496729130.mp3"
-    }),
-    created(){
-        if(User.loggedIn()){
-            this.getNotification()
-        }
-        Echo.private('App.User.' + User.id())
-            .notification((notification) => {
-                this.playSound()
-                this.unread.unshift(notification)
-                this.unreadCount ++
-            });
-    },
+  export default {
+    name: "AppNotification",
+    props: ['notification'],
     computed: {
-        color(){
-            return this.unreadCount > 0 ? 'red' : 'red lighten-4'
-        }
-    },
-    methods: {
-        playSound(){
-            let alert = new Audio(this.sound)
-            alert.play()
-        },
-        getNotification(){
-            axios.get('/notifications')
-            .then(res => {
-                this.read = res.data.read
-                this.unread = res.data.unread
-                this.unreadCount = res.data.unread.length
-            })
-            .catch(error => Exception.handle(error))
-        },
-       readIt(notification){
-           axios.post('/api/notification/markRead', {id:notification.id})
-           .then(res => {
-               this.unread.splice(notification,1)
-               this.read.push(notification)
-               this.unreadCount --
-           })
-       }
+      created_at() {
+        return moment(this.notification.created_at).format('MMMM Do YYYY')
+      },
+      avatar() {
+        return `https://api.adorable.io/avatars/48/${this.comment.author}@adorable.io.png`
+      }
     }
-}
+  }
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .notification-wrapper {
+    list-style: none;
+    text-align: left;
+    overflow: hidden;
+    margin-bottom: 2em;
+    padding: .4em;
+
+    .profile {
+      width: 80px;
+      float: left;
+    }
+
+    .msg-body {
+      padding: .8em;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .msg {
+      width: 86%;
+      float: left;
+      background-color: #fff;
+      border-radius: 0 5px 5px 5px;
+      position: relative;
+      &::after {
+        content: " ";
+        position: absolute;
+        left: -13px;
+        top: 0;
+        border: 14px solid transparent;
+        border-top-color: #fff;
+      }
+    }
+
+    .date {
+      float: right;
+    }
+    .name {
+      margin: 0;
+      color: #999;
+      font-weight: 700;
+      font-size: .8em;
+    }
+
+    p:last-child {
+      margin-top: .6em;
+      margin-bottom: 0;
+    }
+
+  }
 </style>

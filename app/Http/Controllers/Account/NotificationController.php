@@ -16,7 +16,7 @@ class NotificationController extends Controller
     {
         $user = \Auth::user();
         
-        return view('account.notification.index', ['notifications' => $user->notifications]);
+        return $user->notifications; //response()->json($user->notifications);
     }
     
     /**
@@ -28,7 +28,7 @@ class NotificationController extends Controller
     {
         $user = \Auth::user();
         
-        return view('account.notification.index', ['notifications' => $user->unreadNotifications]);
+        return $user->unreadNotifications;
     }
     
     /**

@@ -15,110 +15,48 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th class="text-center">#</th>
-                  <th>{{ __('messages.name') }}</th>
-                  <th>{{ __('messages.phone') }}</th>
-                  <th>{{ __('messages.date') }}</th>
-                  <th class="text-right">{{ __('messages.role') }}</th>
+                  <th>{{ __('messages.cars') }}</th>
+                  <th>{{ __('messages.models') }}</th>
+                  <th>{{ __('messages.place') }}</th>
+                  <th>{{ __('messages.drivers') }}</th>
+                  <th>{{ __('messages.clubs') }}</th>
                   <th class="text-right">{{ __('messages.actions') }}</th>
                 </tr>
               </thead>
               <tbody>
+                @foreach ($models as $model)
                 <tr>
-                  <td class="text-center">1</td>
-                  <td>Andrew Mike</td>
-                  <td>Develop</td>
-                  <td>2013</td>
-                  <td class="text-right">€ 99,225</td>
+                  <td> <a href="{{ route('admin.car.show',  $model ) }}">{{ $model->name }}</a></td>
+                  <td>{{ $model->model ? $model->model->name : '' }}</td>
+                  <td>{{ trans_choice('messages.count.places', $model->place, ['value' => $model->place]) }}</td>
+                  <td>{{ $model->driver ? $model->driver->name : '' }}</td>
+                  <td>{{ $model->club ? $model->club->name : '' }}</td>
                   <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
+                    <a href="{{ route('admin.car.show',  $model ) }}" rel="tooltip" class="btn btn-info btn-link" data-original-title="{{ __('messages.title.show.driver') }}" title="{{ __('messages.title.show.driver') }}">
                       <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
+                    </a>
+                    <a href="{{ route('admin.car.edit', $model ) }}" rel="tooltip" class="btn btn-success btn-link" data-original-title="{{ __('messages.title.edit.car') }}" title="{{ __('messages.title.edit.car') }}">
                       <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
+                    </a>
+                    <button type="button" rel="tooltip" class="btn btn-danger btn-link btn-delete" data-id="{{ $model->getKey() }}" data-original-title="{{ __('messages.title.remove.car') }}" title="{{ __('messages.title.remove.car') }}">
                       <i class="material-icons">close</i>
                     </button>
                   </td>
                 </tr>
-                <tr>
-                  <td class="text-center">2</td>
-                  <td>John Doe</td>
-                  <td>Design</td>
-                  <td>2012</td>
-                  <td class="text-right">€ 89,241</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">3</td>
-                  <td>Alex Mike</td>
-                  <td>Design</td>
-                  <td>2010</td>
-                  <td class="text-right">€ 92,144</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">4</td>
-                  <td>Mike Monday</td>
-                  <td>Marketing</td>
-                  <td>2013</td>
-                  <td class="text-right">€ 49,990</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">5</td>
-                  <td>Paul Dickens</td>
-                  <td>Communication</td>
-                  <td>2015</td>
-                  <td class="text-right">€ 69,201</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
         </div>
+        <div class="card-footer">
+            {{ $models->links() }}
+        </div>
       </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+    @parent
+    @include('inc.admin.btn-delete', ['path' => '/admin/car/'])
 @endsection

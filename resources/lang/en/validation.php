@@ -134,10 +134,33 @@ return [
             'name' => [
                 'required' => 'The name of the car is required',
             ],
+            'year' => [
+                'required' => 'The year of the car is required',
+            ],
+            'place' => [
+                'required' => 'The place count of the car is required',
+            ],
+            'model' => [
+                'required' => 'The model of the car is required',
+            ],
+            'driver' => [
+                'required' => 'The driver of the car is required',
+            ],
+            'club' => [
+                'required' => 'The club thqt owns the car is required',
+            ],
         ],
         'club' => [
             'name' => [
                 'required' => 'The name of the club is required',
+            ],
+        ],
+        'point' => [
+            'lat' => [
+                'required' => 'The club location is required',
+            ],
+            'lng' => [
+                'required' => 'The club location is required',
             ],
         ],
         'user' => [

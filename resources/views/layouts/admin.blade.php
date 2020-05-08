@@ -23,6 +23,10 @@ The above copyright notice and this permission notice shall be included in all c
     Material Dashboard PRO by Creative Tim
   </title>
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+    
   <!-- Extra details for Live View on GitHub Pages -->
   <!-- Canonical SEO -->
   <link rel="canonical" href="https://www.creative-tim.com/product/material-dashboard-pro" />
@@ -59,24 +63,6 @@ The above copyright notice and this permission notice shall be included in all c
   <link href="/css/material-dashboard.min.css?v=2.1.2" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="/css/material-demo.css" rel="stylesheet" />
-  <!-- Google Tag Manager -->
-  <script>
-    (function(w, d, s, l, i) {
-      w[l] = w[l] || [];
-      w[l].push({
-        'gtm.start': new Date().getTime(),
-        event: 'gtm.js'
-      });
-      var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s),
-        dl = l != 'dataLayer' ? '&l=' + l : '';
-      j.async = true;
-      j.src =
-        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-NKDMSK6');
-  </script>
-  <!-- End Google Tag Manager -->
 </head>
 
 <body class="">
@@ -87,7 +73,7 @@ The above copyright notice and this permission notice shall be included in all c
   </section>
 </section>
   <!-- Extra details for Live View on GitHub Pages -->
-  <div class="wrapper ">
+  <div class="wrapper" id="app">
     <div class="sidebar" data-color="rose" data-background-color="black" data-image="/img/sidebar-1.jpg">
         @include('inc.admin.sidebar')
     </div>
@@ -99,6 +85,7 @@ The above copyright notice and this permission notice shall be included in all c
       <!-- End Navbar -->
       <div class="content">
           <div class="container-fluid">
+              @include('inc.alert')
               @yield('content')
           </div>
       </div>
@@ -108,8 +95,9 @@ The above copyright notice and this permission notice shall be included in all c
     </div>
   </div>
 
-    
+  @section('javascript')
   <!--   Core JS Files   -->
+  <script src="/js/app.js"></script>
   <script src="{{ asset('user_panel') }}/js/jquery-2.2.0.js"></script>
   <script src="/js/core/popper.min.js"></script>
   <script src="/js/core/bootstrap-material-design.min.js"></script>
@@ -250,11 +238,23 @@ The above copyright notice and this permission notice shall be included in all c
         
 
       });
+<<<<<<< HEAD
 
 
     });
   </script>
 
+=======
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+      md.initVectorMap();
+    });
+  </script>
+  @show
+>>>>>>> 40a8fa8ea442e27a85843c6e3a8b81ebb7505877
 </body>
-
 </html>
