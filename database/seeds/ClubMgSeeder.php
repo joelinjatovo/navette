@@ -14,8 +14,8 @@ class ClubMgSeeder extends Seeder
         DB::table('points')->insert([
             'id' => 1,
             'name' => 'Restaurant Ravimpôntsy',
-            'lat' => -18.9175793,
-            'lng' => 47.5422862,
+            'lat' => -18.9175739,
+            'lng' => 47.5422863,
             'alt' => 17,
             'user_id' => 1,
             'created_at' => now(),
