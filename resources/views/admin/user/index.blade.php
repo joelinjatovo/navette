@@ -11,6 +11,22 @@
           <h4 class="card-title">{{ __('messages.users.list') }}</h4>
         </div>
         <div class="card-body">
+          @isset($success_delete)
+              <div class="alert w-50 alert-success alert-dismissible fade py-3 show" role="alert">
+                {{ $success_delete }}
+                <button type="button" class="close mt-2" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+          @endisset
+          @isset($error_delete)
+              <div class="alert w-50 alert-warning alert-dismissible fade py-3 show" role="alert">
+                {{ $error_delete }}
+                <button type="button" class="close mt-2 " data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+          @endisset
           <div class="table-responsive">
             <table class="table">
               <thead>
@@ -24,101 +40,36 @@
                 </tr>
               </thead>
               <tbody>
+                @foreach ($models as $user)
                 <tr>
-                  <td class="text-center">1</td>
-                  <td>Andrew Mike</td>
-                  <td>Develop</td>
-                  <td>2013</td>
-                  <td class="text-right">€ 99,225</td>
+                  <td class="text-center">{{ $user->id }}</td>
+                  <td>{{ $user->name }}</td>
+                  <td>{{ $user->phone }}</td>
+                  <td>{{ $user->created_at }}</td>
+                  <td class="text-right">-</td>
                   <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
+                    <button type="button" rel="tooltip" data-toggle="modal" data-target="#modal-edit-user"class="btn btn-success btn-link user-edit" data-original-title="" title="" data-id="{{ $user->id }}">
                       <i class="material-icons">edit</i>
                     </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
+                    <button type="button" rel="tooltip" class="btn btn-danger btn-link user-delete" data-id="{{ $user->id }}" data-original-title="" title="">
                       <i class="material-icons">close</i>
                     </button>
                   </td>
                 </tr>
-                <tr>
-                  <td class="text-center">2</td>
-                  <td>John Doe</td>
-                  <td>Design</td>
-                  <td>2012</td>
-                  <td class="text-right">€ 89,241</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">3</td>
-                  <td>Alex Mike</td>
-                  <td>Design</td>
-                  <td>2010</td>
-                  <td class="text-right">€ 92,144</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">4</td>
-                  <td>Mike Monday</td>
-                  <td>Marketing</td>
-                  <td>2013</td>
-                  <td class="text-right">€ 49,990</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">5</td>
-                  <td>Paul Dickens</td>
-                  <td>Communication</td>
-                  <td>2015</td>
-                  <td class="text-right">€ 69,201</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
+                @endforeach
+                
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
+</div>
+<div class="modal fade" id="modal-edit-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" id="edit-modal-content">
+      <img src="{{ asset('img/loader.gif') }}" style="width: 200px;margin: auto;">  
+    </div>
+  </div>
 </div>
 @endsection

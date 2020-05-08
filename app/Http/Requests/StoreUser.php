@@ -32,14 +32,14 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-<<<<<<< HEAD
-            'user.name' => 'required|max:255',
-            'user.phone' => 'required|numeric|unique:users',
-            'user.password' => 'required|max:8',
-=======
-            'name' => 'max:255',
+            'name' => 'required|max:255',
+            'phone' => 'required|numeric|unique:users',
+            'password' => 'required|max:8',
+            'email' => 'required|email|unique:users',
+
+           /* 'name' => 'max:255',
             'phone' => 'unique:users',
-            'password' => 'max:8',
+            'password' => 'max:8',*/
         ];
     }
     
@@ -54,7 +54,7 @@ class StoreUser extends FormRequest
             'name.required' => 'Your name is required',
             'phone.required'  => 'Your phone number is required',
             'password.required'  => 'A password is required',
->>>>>>> master
+            'email.required' => 'An email address is required',
         ];
     }
 }

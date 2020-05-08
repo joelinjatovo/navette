@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUser as StoreUserRequest;
 use App\Http\Requests\UpdateUser as UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -55,6 +56,14 @@ class UserController extends Controller
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
+        $user = new User([
+            'name' => $request->get('name'),
+            'phone' => $request->get('phone'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password'))
+        ]);
+        //$request->get('user_role');
+        return $user->save() ? view('admin.user.create', ['success' => 'Utilisateur ajouté!' ]) : view('admin.user.create', ['error' => 'Erreur, réessayez plus tard.' ]); 
     }
     
     /**
@@ -96,6 +105,73 @@ class UserController extends Controller
             'code' => 200,
             'status' => "success",
         ]);
+    }
+
+    /**
+     * Delete the specified user.
+     *
+     * @param  Request  $request
+     * @param  string  $id
+     * @return Response
+     */
+    public function delete_ajax(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+            if(isset($data['_id'])){
+                $user = User::findOrFail($data['_id']);
+                return $user->delete() ? 1 : 0;
+            }
+        }
+    }
+
+    /**
+     * Edit the specified user.
+     *
+     * @param  Request  $request
+     * @param  string  $id
+     * @return Response
+     */
+    public function edit_ajax(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+            if(isset($data['_id']) && isset($data['name']) && isset($data['phone']) && isset($data['email']) ){
+                $validated_data = $request->validate([
+                    'name' => 'required|max:255',
+                    'phone' => 'required|numeric',
+                    'email' => 'required|email',
+                ]);
+                var_dump($validated_data);
+                if( isset($validated_data->errors) ){
+                    return json_encode(array("error" => $validated_data->errors ));
+                }else{
+                    $user = User::findOrFail($data['_id']);
+                    $user->name = $validated_data['name'];
+                    $user->phone = $validated_data['phone'];
+                    $user->email = $validated_data['email'];
+                    return $user->save() ? 1 : 0;
+                }
+            }
+        }
+    }
+
+    /**
+     * Display user profile form.
+     *
+     * @param  Request  $request
+     * @param  string  $id
+     * @return Response
+     */
+    public function edit_modal(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+            if(isset($data['_id'])){
+                $user = User::findOrFail($data['_id']);
+                return view('admin.user.edit-modal', ['model' => $user]);
+            }
+        }
     }
 
 }

@@ -10,7 +10,7 @@ Tip 2: you can also add an image using data-image tag
     Creative Tim
   </a>
 </div>
-<div class="sidebar-wrapper">
+<div class="sidebar-wrapper" id="custom-sidebar">
   @auth
   <div class="user">
     <div class="photo">

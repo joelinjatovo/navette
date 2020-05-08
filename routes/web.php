@@ -44,9 +44,10 @@ Route::get('runevent', function () {
 
 Route::middleware(['auth'])->group(function () {
     
-    Route::get('/', function () {return view('welcome');});
+    Route::get('/', function () {return view('home/index');});
     
-    Route::get('/home', function () {return view('welcome');});
+    Route::get('/home', function () {return view('home/index');});
+    Route::get('/accueil', function () {return view('home/index');});
     
     Route::get('/event', function () {
         event(new \App\Events\MyEvent('hello world'));}
@@ -73,11 +74,14 @@ Route::middleware(['auth'])->group(function () {
         
         Route::get('users', 'Admin\UserController@index')->name('users');
         Route::get('user', 'Admin\UserController@create')->name('user.create');
-        Route::post('user', 'Admin\UserController@store');
+        Route::post('user', 'Admin\UserController@store')->name('user.store');
         Route::get('user/{user}', 'Admin\UserController@show')->name('user.show');
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('user.edit');
         Route::post('user/{user}/edit', 'Admin\UserController@update');
         Route::post('user/{user}/delete', 'Admin\UserController@delete');
+        Route::post('user/delete_ajax', 'Admin\UserController@delete_ajax')->name('user.ajax.delete');
+        Route::post('user/edit_ajax', 'Admin\UserController@edit_ajax')->name('user.ajax.edit');
+        Route::post('user/edit_modal', 'Admin\UserController@edit_modal')->name('user.modal.edit');
         
         Route::get('clubs', 'Admin\ClubController@index')->name('clubs');
         Route::get('club', 'Admin\ClubController@create')->name('club.create');
