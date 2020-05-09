@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::prefix('v1')->name('api.')->group(function () {
+    Route::get('scope', function (Request $request) {return response()->json(['data'=>encrypt('scopes')]);})->name('scopes');
+});
+
 Route::prefix('v1')->name('api.')->namespace('Api\v1\Gateway')->group(function () {
     Route::post('stripe/webhook', 'StripeController@webhook')->name('gateway.stripe.webhook');
     Route::post('paypal/webhook', 'PayPalController@webhook')->name('gateway.paypal.webhook');
