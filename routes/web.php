@@ -13,50 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Auth::routes();
 
-Route::get('database/', function () {
-    // Test database connection
-    try {
-        DB::connection()->getPdo();
-    } catch (\Exception $e) {
-        die("Could not connect to the database.  Please check your configuration. error:" . $e );
-    }
-});
-
-Route::get('migrate/refresh', function () {
-    Artisan::queue('migrate:refresh', [
-        '--seed' => ''
-    ]);
-});
-
-Route::get('mailable', function () {
-    $user = App\Models\User::find(1);
-    return new App\Mail\UserLogin($user);
-});
-
-Route::get('runevent', function () {
-    $ride = \App\Models\Ride::find(2);
-    event(new \App\Events\RideStatusChanged($ride, 'started', 'ping', 'active'));
-    return response()->json($ride);
-});
+Route::get('/', function () {return view('home/index');});
 
 Route::middleware(['auth'])->group(function () {
-    
-    Route::get('/', function () {return view('home/index');});
-    
-    Route::get('/home', function () {return view('home/index');});
-    Route::get('/accueil', function () {return view('home/index');});
-    
-    Route::get('/event', function () {
-        event(new \App\Events\MyEvent('hello world'));}
-    );
-    
-    Route::get('/broadcast', function () {
-        return view('event');
-    });
-
     Route::get('/logout', function () {
         \Auth::logout();
         return redirect('login');
@@ -131,7 +92,15 @@ Route::middleware(['auth'])->group(function () {
     });
     
     Route::middleware(['role:customer'])->prefix('customer')->name('customer.')->group(function () {
-        //
+        Route::get('/', 'Customer\IndexController@index')->name('dashboard');
+        
+        Route::get('/orders', 'Customer\OrderController@index')->name('orders');
+        Route::get('/order', 'Customer\OrderController@create')->name('order.create');
+        Route::post('/order', 'Customer\OrderController@store');
+        Route::get('/order/{order}', 'Customer\OrderController@show')->name('order.show');
+        Route::get('/order/{order}/edit', 'Customer\OrderController@edit')->name('order.edit');
+        Route::post('/order/{order}/edit', 'Customer\OrderController@update');
+        Route::delete('order/{order}', 'Customer\OrderController@delete')->name('order.delete');
     });
     
 });
@@ -150,9 +119,3 @@ Route::get('/user/historiques', function () {
     return view('user/my_rides', ['active_my_rides' => true]);
 });
 /*END ROUTES USER PANEL*/
-
-/*ROUTES HOME*/
-Route::get('/accueil', function () {
-    return view('home/index');
-});
-/*END ROUTES HOME*/
