@@ -12,6 +12,7 @@ use App\Http\Resources\UserItem as UserItemResource;
 use App\Http\Resources\UserCollection;
 use App\Models\AccessToken;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\RefreshToken;
 use App\Repositories\TokenRepository;
 use Illuminate\Auth\Events\Registered;
@@ -48,6 +49,11 @@ class UserController extends Controller
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
         ]);
+      
+        $role = Role::where('name', Role::CUSTOMER)->first();
+        if($role){
+            $user->roles()->attach($role->getKey(), ['approved' => true]);
+        }
         
         $user->sendPhoneVerificationNotification();
         
