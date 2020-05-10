@@ -69,6 +69,7 @@ class ItemStatusChanged implements ShouldBroadcastNow
     {
         return [
             'item_id' => $this->item->getKey(),
+            'ride_at' => $this->ride->ride_at,
             'order_id' => $this->item->order?$this->item->order->getKey():null,
             'user_id' => $this->item->order&&$this->item->order->user?$this->item->order->user->getKey():null,
             'oldStatus' => $this->oldStatus,

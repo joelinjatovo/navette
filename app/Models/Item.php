@@ -18,6 +18,8 @@ class Item extends Model
     public const STATUS_PING = 'ping';
     
     public const STATUS_ACTIVE = 'active';
+  
+    public const STATUS_ARRIVED = 'arrived';
     
     public const STATUS_ONLINE = 'online';
     

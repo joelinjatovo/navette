@@ -56,10 +56,10 @@ class ProcessOrder implements ShouldQueue
             $ride->save();
             
             // Notify *driver
-            event(new RideStatusChanged($ride, 'updated', null, $ride->status));
+            event(new RideStatusChanged($ride, 'created', null, $ride->status));
         }else{
             // Notify *driver
-            event(new RideStatusChanged($ride, 'created', null, $ride->status));
+            event(new RideStatusChanged($ride, 'updated', null, $ride->status));
         }
         
         switch($order->type){
@@ -79,6 +79,7 @@ class ProcessOrder implements ShouldQueue
                     ]);
                 
                 if($item->ride_at == null){
+                    // Calculate
                     $item->ride_at = Carbon::now()->addMinutes(10);
                 }
 
@@ -107,7 +108,7 @@ class ProcessOrder implements ShouldQueue
         $order->save();
         
         // Notify *customer
-        event(new OrderStatusChanged($order, 'created', $ride->status, null));
+        event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
     }
 
     /**
