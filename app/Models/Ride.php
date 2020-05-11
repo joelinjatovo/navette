@@ -21,6 +21,8 @@ class Ride extends Model
     
     const STATUS_COMPLETED = 'completed';
     
+    const STATUS_CANCELABLE = 'cancelable';
+    
     const STATUS_CANCELED = 'canceled';
     
     /**
@@ -115,7 +117,7 @@ class Ride extends Model
     public function next()
     {
         // Check if ride has next point
-        $next = $this->points()->wherePivot('status', RidePoint::STATUS_NEXT)->first();
+        $next = $this->points()->wherePivotIn('status', [RidePoint::STATUS_NEXT, RidePoint::STATUS_ARRIVED])->first();
         if($next)
         {
             return true;
@@ -142,8 +144,14 @@ class Ride extends Model
             return true;
         }
 
+        
         $oldStatus = $this->status;
-        $newStatus = self::STATUS_COMPLETABLE;
+        $count = $this->points()->wherePivot('status', '!=', RidePoint::STATUS_CANCELED)->count();
+        if($count==0){
+            $newStatus = self::STATUS_CANCELABLE;
+        }else{
+            $newStatus = self::STATUS_COMPLETABLE;
+        }
 
         $this->status = $newStatus;
         $this->save();

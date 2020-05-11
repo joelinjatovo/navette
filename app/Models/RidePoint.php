@@ -118,11 +118,45 @@ class RidePoint extends Pivot
     }
     
     /**
+     * Check if ride is arrivable
+     */
+    public function arrivable()
+    {
+        return (self::STATUS_NEXT == $this->status) 
+            && (self::TYPE_PICKUP == $this->type);
+    }
+    
+    /**
+     * Arrive ride point
+     */
+    public function arrive()
+    {
+        $oldStatus = $this->status;
+        $newStatus = self::STATUS_ARRIVED;
+        $this->status = $newStatus;
+        $this->save();
+        
+        $item = $this->item();
+        if($item)
+        {
+            $oldStatus = $item->status;
+            $newStatus = Item::STATUS_ARRIVED;
+            $item->status = $newStatus;
+            $item->save();
+                
+            // Notify *customer
+            event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+        }
+        
+    }
+    
+    /**
      * Check if ride is finishable
      */
     public function finishable()
     {
-        return self::STATUS_NEXT == $this->status;
+        return ((self::STATUS_ARRIVED == $this->status) && (self::TYPE_PICKUP == $this->type))
+            || ((self::STATUS_NEXT == $this->status) && (self::TYPE_DROP == $this->type));
     }
     
     /**
@@ -156,7 +190,6 @@ class RidePoint extends Pivot
             // Notify *customer
             event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
         }
-        
     }
     
     /**

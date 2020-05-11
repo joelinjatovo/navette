@@ -18,3 +18,4 @@
 117: Ride Point not cancelable
 118: Item not finishable
 119: Item not cancelable
+120: Ride Point not arrivable
