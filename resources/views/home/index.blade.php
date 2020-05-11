@@ -18,8 +18,8 @@
                     <div class="col-md-12 text-center">
                       <button class="btn btn-info text-uppercase">inscription</button>
                       <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                        <button type="button" class="btn btn-success"><i class="fab fa-android"></i>&nbsp;Download APK</button>
-                        <button type="button" class="btn btn-success"><i class="fas fa-download"></i></button>
+                        <a href="{{ asset('apps/android/prod.apk') }}" type="button" class="btn btn-success"><i class="fab fa-android"></i>&nbsp;Download APK</a>
+                        <a href="{{ asset('apps/android/prod.apk') }}" type="button" class="btn btn-success"><i class="fas fa-download"></i></a>
                       </div>
                     </div>
                 </div>
