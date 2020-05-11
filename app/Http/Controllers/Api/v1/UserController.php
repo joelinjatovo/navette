@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUser as StoreUserRequest;
-use App\Http\Requests\UpdateUser as UpdateUserRequest;
+use App\Http\Requests\ApiStoreUser as StoreUserRequest;
+use App\Http\Requests\ApiUpdateUser as UpdateUserRequest;
 use App\Http\Requests\VerifyPhone as VerifyPhoneRequest;
 use App\Http\Resources\AccessToken as AccessTokenResource;
 use App\Http\Resources\User as UserResource;
