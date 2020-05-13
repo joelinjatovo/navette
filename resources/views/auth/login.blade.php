@@ -1,11 +1,7 @@
 @extends('layouts.app')
 
 @section('stylesheet')
-<<<<<<< HEAD
 <link href="{{ asset('css/login.min.css') }}" rel="stylesheet">
-=======
-    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
->>>>>>> master
 @endsection
 
 @section('content')
