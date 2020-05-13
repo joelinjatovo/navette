@@ -64,8 +64,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $club = Club::findOrFail($request->input('order.club_id'));
-        $car = Car::find($request->input('order.car_id'));
+        $club = Club::findOrFail($request->input('order.club'));
+        $car = Car::find($request->input('order.car'));
         
         if( null === $club->point ) {
             return back()->with('error', "Club Without Position");
@@ -79,9 +79,12 @@ class OrderController extends Controller
         $order->save();
         
         $distance = 0;
-        $values = $request->input('items');
+        $values = $request->input('order.items');
         foreach($values as $value){
             if(isset($value['point']) && isset($value['item'])){
+                if($value['point']['lat'] == null) continue;
+                if($value['point']['lng'] == null) continue;
+
                 $point = new Point($value['point']);
                 $point->save();
 
