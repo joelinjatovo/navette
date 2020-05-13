@@ -43,8 +43,8 @@ class RefreshToken extends Model
             if ( empty( $model->{$model->getKeyName()} ) ) {
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
-            if( empty( $model->user_id ) && $this->accessToken && $this->accessToken->user ) {
-                $model->user_id = $this->accessToken->user->id;
+            if( empty( $model->user_id ) && $model->accessToken && $model->accessToken->user ) {
+                $model->user_id = $model->accessToken->user->id;
             }
         });
     }
