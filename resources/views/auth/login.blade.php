@@ -2,6 +2,7 @@
 
 @section('stylesheet')
 <link href="{{ asset('css/login.min.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
 @endsection
 
 @section('content')
@@ -55,6 +56,7 @@
                     </form>
                     <hr>
                     <div class="text-center">
+                    <small class="d-block mb-2">ou se connecter avec</small>
                     <a href="{{ url('/login/facebook') }}" class="btn btn-light px-0 py-0 rounded-circle"><i class="fab fa-3x fa-facebook"></i></a>
                     </div>
                 </div>
