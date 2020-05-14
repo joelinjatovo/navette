@@ -14,6 +14,7 @@ let actions = {
     axios.get('/notifications')
       .then(res => {
         {
+          console.log('/notifications');
           console.log(res);
           commit('GET_NOTIFICATIONS', res.data)
         }

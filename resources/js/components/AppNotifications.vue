@@ -23,12 +23,12 @@
     props: ['user_id'],
     mounted() {
       this.$store.dispatch('GET_NOTIFICATIONS')
-        console.log("User Id  = " + this.user_id);
-      
+      console.log("User Id  = " + this.user_id);
       window.Echo.private('App.User.' + this.user_id)
-            .notification((data) => {
-                console.log(data);
-                this.$store.commit('ADD_NOTIFICATION', data.notification)
+            .notification((response) => {
+                console.log("window.Echo.private");
+                console.log(response);
+                this.$store.commit('ADD_NOTIFICATION', response.data)
             });
     },
     computed: {

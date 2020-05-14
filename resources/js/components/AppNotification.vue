@@ -1,4 +1,4 @@
-<template
+<template>
   <a class="dropdown-item" href="#">{{notification.data}} <span class="date">{{created_at}}</span></a>
 </template>
 

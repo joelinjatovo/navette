@@ -238,13 +238,6 @@ The above copyright notice and this permission notice shall be included in all c
         
 
       });
-<<<<<<< HEAD
-
-
-    });
-  </script>
-
-=======
     });
   </script>
   <script>
@@ -255,6 +248,5 @@ The above copyright notice and this permission notice shall be included in all c
     });
   </script>
   @show
->>>>>>> 40a8fa8ea442e27a85843c6e3a8b81ebb7505877
 </body>
 </html>
