@@ -56,6 +56,10 @@ class AppServiceProvider extends ServiceProvider
             $view->with('clubs', Club::all());
         });
         
+        View::composer(['customer.order.create', 'customer.order.edit'], function ($view) {
+            $view->with('clubs', Club::with('point')->get());
+        });
+        
         
     }
 }

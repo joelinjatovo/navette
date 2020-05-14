@@ -135,8 +135,6 @@ class Item extends Model
             }
             $ride->points()->updateExistingPivot($point->getKey(), ['status' => $newStatus]);
         }
-            
-        
     }
     
     /**
@@ -169,30 +167,19 @@ class Item extends Model
         }
         
         
-        // Cancel order
+        // Cancel order if all items is canceled
         $order = $this->order;
         if($order){
-            if(in_array($order->status, [Order::TYPE_BACK, Order::TYPE_BACK])){
+            $count = $order->items()->where('items.status', '!=', Item::STATUS_CANCELED)->count();
+            if($count==0){
                 $oldStatus = $order->status;
                 $newStatus = Order::STATUS_CANCELED;
-                
+
                 $order->status = $newStatus;
                 $order->save();
-                
+
                 // Notify *customer
                 event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
-            }else{
-                $item = $order->items()->where('items.status', Item::STATUS_PING)->first();
-                if(!$item){
-                    $oldStatus = $order->status;
-                    $newStatus = Order::STATUS_CANCELED;
-                
-                    $order->status = $newStatus;
-                    $order->save();
-
-                    // Notify *customer
-                    event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
-                }
             }
         }
         
