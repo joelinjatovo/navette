@@ -13,7 +13,7 @@
 
                 <div class="card-body">
 
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" class="mb-5" action="{{ route('login') }}">
                         @csrf
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                             <input id="phone" type="text" class="mdl-textfield__input @error('phone') is-invalid @enderror" name="phone" required autocomplete="phone" value="+33 X XX XX XX XX">
@@ -53,6 +53,10 @@
                                 @endif
                         </div>
                     </form>
+                    <hr>
+                    <div class="text-center">
+                    <a href="{{ url('/login/facebook') }}" class="btn btn-light px-0 py-0 rounded-circle"><i class="fab fa-3x fa-facebook"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
