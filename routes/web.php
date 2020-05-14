@@ -17,6 +17,11 @@ Auth::routes();
 
 Route::get('/', function () {return view('home/index');});
 Route::get('/home', function () {return view('home/index');});
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallback');
+Route::get('register/success', function () {return view('auth/success');})->name('register.success');
+Route::get('register/error', function () {return view('auth/error');})->name('register.error');
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', function () {
