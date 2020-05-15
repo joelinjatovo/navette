@@ -4,16 +4,11 @@
 @endsection
 
 @section('content')
-<div class="card card-custom gutter-b example example-compact">
+<div class="card card-custom gutter-b">
 	<div class="card-header">
 		<h3 class="card-title">
 			Select2 Examples
 		</h3>
-		<div class="card-toolbar">
-			<div class="example-tools justify-content-center">
-				<span class="example-toggle" data-toggle="tooltip" title="View code"></span>				
-			</div>
-		</div>
 	</div>
 	<!--begin::Form-->
 	<form class="form">
@@ -283,17 +278,19 @@ function initMap() {
         center: uluru,
         zoom: zoom
     });
+    /*
     var map2 = new google.maps.Map(document.getElementById('map2'), {
         mapTypeControl: false,
         center: uluru,
         zoom: zoom
     });
+    */
     
     var input1 = document.getElementById('location-input-1');
     var input2 = document.getElementById('location-input-2');
     
     new AutocompleteDirectionsHandler(map1, club, input1);
-    new AutocompleteDirectionsHandler(map2, club, input2);
+    //new AutocompleteDirectionsHandler(map2, club, input2);
 }
 
 /**
@@ -306,11 +303,12 @@ function AutocompleteDirectionsHandler(map, club, input) {
   this.latLng = null;
   this.placeId = null;
   this.response = null;
-  this.autocomplete = new google.maps.places.Autocomplete(input);
+  this.marker = new google.maps.Marker({draggable: true, position: uluru, map: this.map});;
+  this.autocomplete = new google.maps.places.Autocomplete(this.input);
   this.geocoder = new google.maps.Geocoder;
   this.directionsService = new google.maps.DirectionsService;
-  this.setupPlaceChangedListener(autocomplete);
-  this.setupMapClickListener(map);
+  this.setupPlaceChangedListener();
+  this.setupMapClickListener();
 }
 
 AutocompleteDirectionsHandler.prototype.setClub = function(club) {
@@ -323,14 +321,16 @@ AutocompleteDirectionsHandler.prototype.setupMapClickListener = function(){
     me.latLng = e.latLng;
     me.placeId = null;
     me.route();
+    me.addMarker(e.latLng);
   });
 };
 
-AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete) {
+AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function() {
   var me = this;
-  autocomplete.bindTo('bounds', this.map);
-  autocomplete.addListener('place_changed', function() {
-    var place = autocomplete.getPlace();
+  me.autocomplete.bindTo('bounds', me.map);
+  me.autocomplete.addListener('place_changed', function() {
+    var place = this.autocomplete.getPlace();
+    console.log(place);
     if (!place.place_id) {
       window.alert('Please select an option from the dropdown list.');
       return;
@@ -341,6 +341,12 @@ AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(aut
   });
 };
   
+AutocompleteDirectionsHandler.prototype.addMarker = function(latLng) {
+    var me = this;
+    this.marker.setMap(null);
+    this.marker = new google.maps.Marker({draggable: true, position: latLng, map: me.map});
+    this.map.panTo(latLng);
+};
 AutocompleteDirectionsHandler.prototype.route = function() {
   if (!this.club || (!this.placeId && !this.latLng)) {
     return;
@@ -349,11 +355,12 @@ AutocompleteDirectionsHandler.prototype.route = function() {
 
   this.directionsService.route(
       {
-        origin: this.club,
-        destination: !this.placeId ? this.latLng : {'placeId': this.placeId},
+        origin: me.club,
+        destination: !me.placeId ? me.latLng : {'placeId': me.placeId},
         travelMode: 'DRIVING'
       },
       function(response, status) {
+        console.log(response);
         if (status === 'OK') {
           me.setResponse(response);
         } else {
