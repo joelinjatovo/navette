@@ -22,6 +22,12 @@ class CheckoutController extends Controller
                 ->with('error', "Votre panier est vide. Veuillez passer votre commande!");
         }
         
+        $order = $request->session()->get('cart');
+        $order->user_id = auth()->user()->getKey();
+        $order->save();
+        
+        $request->session()->put('cart', $order);
+        
         return view('shop.checkout', ['gateways' => ['cash', 'stripe']]);
     }
 }

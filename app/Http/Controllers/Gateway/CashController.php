@@ -35,9 +35,9 @@ class CashController extends Controller
         $order->payed_at = now();
         $order->save();
         
-        //ProcessOrder::dispatchAfterResponse($order);
+        ProcessOrder::dispatchAfterResponse($order);
         
-        //$request->session()->forget('cart');
+        $request->session()->forget('cart');
 
         return response()->json([
             'redirect' => route('shop.order'),

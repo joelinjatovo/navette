@@ -119,6 +119,7 @@
                 <div class="col-xl-12">
                     <div class="form-group">
                         <label>Select club</label>
+                        <input type="hidden" name="order[car]" id="order_car" value="1">
                         <select class="form-control select2" id="kt_select2" name="order[club]">
                             @foreach($clubs as $club)
                               <option value="{{ $club->getKey() }}" @if($club->getKey() == old('order.club'))selected="selected"@endif >{{ $club->name }}</option>

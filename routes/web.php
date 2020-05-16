@@ -26,11 +26,12 @@ Route::get('order', 'Shop\IndexController@create')->name('shop.order');
 Route::post('order', 'Shop\IndexController@store')->name('shop.order');
 Route::get('cart', 'Shop\CartController@index')->name('shop.cart');
 Route::post('cart/clear', 'Shop\CartController@clear')->name('shop.cart.clear');
-Route::get('checkout', 'Shop\CheckoutController@index')->name('shop.checkout');
-Route::post('gateway/cash/pay', 'Gateway\CashController@pay')->name('gateway.cash.pay');
-Route::post('gateway/stripe/pay', 'Gateway\StripeController@pay')->name('gateway.stripe.pay');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('checkout', 'Shop\CheckoutController@index')->name('shop.checkout');
+    Route::post('gateway/cash/pay', 'Gateway\CashController@pay')->name('gateway.cash.pay');
+    Route::post('gateway/stripe/pay', 'Gateway\StripeController@pay')->name('gateway.stripe.pay');
+    
     Route::get('/logout', function () {
         \Auth::logout();
         return redirect('login');
