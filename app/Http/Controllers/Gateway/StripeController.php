@@ -20,14 +20,24 @@ class StripeController extends Controller
      */
     public function pay(Request $request)
     {
-        $order = Order::findOrFail($request->input('order_id'));
-
+        if (!$request->session()->has('cart')) {
+            // redirect to shop order form
+            return response()->json([
+                'redirect' => route('shop.order'),
+                'status' => 'error',
+                'title' => 'Erreur',
+                'message' => 'Votre panier est vide. Veuillez passer une commande!'
+            ]);
+        }
+        
+        $order = $request->session()->get('cart');
+        
         // Set your secret key. Remember to switch to your live secret key in production!
         // See your keys here: https://dashboard.stripe.com/account/apikeys
         \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
 
         $intent = \Stripe\PaymentIntent::create([
-          'amount' => $order->total * 100,
+          'amount' => $order->total * 100 + 100,
           'currency' => $order->currency,
         ]);
         
@@ -37,13 +47,14 @@ class StripeController extends Controller
         
         PaymentToken::create([
            'payment_type' => Order::PAYMENT_TYPE_STRIPE,
-           'amount' => $order->total * 100,
+           'amount' => $order->total * 100 + 100,
            'currency' => $order->currency,
            'order_id' => $order->getKey(),
            'token' => md5($intent->client_secret),
         ]);
 
         $output = [
+            'redirect' => route('shop.order'),
             'publishable_key' => env('STRIPE_KEY_PUBLIC'),
             'client_secret' => $intent->client_secret,
         ];

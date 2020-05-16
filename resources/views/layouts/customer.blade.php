@@ -11,6 +11,8 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
         <!--end::Fonts-->
         
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
+        
         <!--begin::Page Custom Styles(used by this page)-->
         @yield('style')
         <!--end::Page Custom Styles-->
@@ -614,6 +616,13 @@
         <!--end::Global Theme Bundle-->
 
         <!--begin::Page Scripts(used by this page)-->
+        <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        </script>
         @yield('javascript')
         <!--end::Page Scripts-->
     </body>
