@@ -14,7 +14,7 @@ class CheckoutController extends Controller
      *
      * @return View
      */
-    public function checkout(Request $request)
+    public function index(Request $request)
     {
         if (!$request->session()->has('cart')) {
             // redirect to shop order form

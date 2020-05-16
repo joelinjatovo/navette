@@ -2,7 +2,21 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Events\OrderStatusChanged;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreOrder as StoreOrderRequest;
+use App\Http\Resources\OrderItem as OrderItemResource;
+use App\Http\Resources\OrderCollection;
+use App\Models\Car;
+use App\Models\Club;
+use App\Models\Order;
+use App\Models\Item;
+use App\Models\Phone;
+use App\Models\Point;
+use App\Models\Zone;
+use App\Services\GoogleApiService;
+use App\Repositories\OrderRepository;
+use App\Repositories\ZoneRepository;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -29,7 +43,7 @@ class IndexController extends Controller
         $club = Club::findOrFail($request->input('order.club'));
         $car = Car::find($request->input('order.car'));
         
-        if( null === $club->point ) {
+        if(!$club || null === $club->point ) {
             return back()->with('error', "Club Without Position");
         }
         
@@ -80,7 +94,7 @@ class IndexController extends Controller
         $order->setZone($zone);
         $order->save();
 
-        event(new OrderStatusChanged($order, 'created', null, Order::STATUS_PING));
+        //event(new OrderStatusChanged($order, 'created', null, Order::STATUS_PING));
       
         $request->session()->put('cart', $order);
         

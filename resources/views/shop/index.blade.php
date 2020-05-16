@@ -11,7 +11,8 @@
 		</h3>
 	</div>
 	<!--begin::Form-->
-	<form class="form">
+	<form class="form" method="post">
+        @csrf
 		<div class="card-body">
             <div class="form-group">
                 <div class="row">
@@ -19,7 +20,7 @@
                         <label class="option option-plain">
                             <span class="option-control">
                                 <span class="radio">
-                                    <input type="radio" name="m_option_1" value="1" checked="checked">
+                                    <input type="radio" name="order[type]" value="go" checked="checked">
                                     <span></span>
                                 </span>
                             </span>
@@ -39,7 +40,7 @@
                         <label class="option option-plain">
                             <span class="option-control">
                                 <span class="radio">
-                                    <input type="radio" name="m_option_1" value="2">
+                                    <input type="radio" name="order[type]" value="back">
                                     <span></span>
                                 </span>
                             </span>
@@ -59,7 +60,7 @@
                         <label class="option option option-plain">
                             <span class="option-control">
                                 <span class="radio">
-                                    <input type="radio" name="m_option_1" value="3">
+                                    <input type="radio" name="order[type]" value="go-back">
                                     <span></span>
                                 </span>
                             </span>
@@ -118,7 +119,7 @@
                 <div class="col-xl-12">
                     <div class="form-group">
                         <label>Select club</label>
-                        <select class="form-control select2" id="kt_select2" name="param">
+                        <select class="form-control select2" id="kt_select2" name="order[club]">
                             @foreach($clubs as $club)
                               <option value="{{ $club->getKey() }}" @if($club->getKey() == old('order.club'))selected="selected"@endif >{{ $club->name }}</option>
                             @endforeach
@@ -227,6 +228,9 @@
                 </div>
             </div>
         </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Résérver</button>
+        </div>
     </form>
 </div>
 
@@ -244,7 +248,7 @@
             </div>
             <div class="modal-footer">
                 <div id="order_items_0_detail"></div>
-                <button type="button" id="order_items_0_button_confirm" class="btn btn-primary font-weight-bold" data-dismiss="modal" aria-label="Close">Confirmer</button>
+                <button type="button" id="order_items_0_button_confirm"  class="btn btn-primary font-weight-bold" data-dismiss="modal" aria-label="Close">Confirmer</button>
             </div>
         </div>
     </div>

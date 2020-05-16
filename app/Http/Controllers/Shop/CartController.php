@@ -22,7 +22,7 @@ class CartController extends Controller
                 ->with('error', "Votre panier est vide. Veuillez passer votre commande!");
         }
         
-        return view('shop.cart');
+        return view('shop.cart', ['cart' => $request->session()->get('cart')]);
     }
     
     /**
