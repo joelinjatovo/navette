@@ -22,8 +22,10 @@ Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallb
 Route::get('register/success', function () {return view('auth/success');})->name('register.success');
 Route::get('register/error', function () {return view('auth/error');})->name('register.error');
 
-Route::get('order', 'Shop\IndexController@index')->name('shop.order');
+Route::get('order', 'Shop\IndexController@create')->name('shop.order');
+Route::post('order', 'Shop\IndexController@store')->name('shop.order');
 Route::get('cart', 'Shop\CartController@index')->name('shop.cart');
+Route::post('cart/clear', 'Shop\CartController@clear')->name('shop.cart.clear');
 Route::get('checkout', 'Shop\CheckoutController@index')->name('shop.checkout');
 
 Route::middleware(['auth'])->group(function () {

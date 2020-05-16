@@ -266,8 +266,8 @@ jQuery(document).ready(function(){
         document.getElementById('order_items_0_point_lat').value = leg.end_location.lat();
         document.getElementById('order_items_0_point_lng').value = leg.end_location.lng();
       
-        document.getElementById('order_items_0_item_label_distance').innerHTML  = leg.distance.text;
-        document.getElementById('order_items_0_item_label_duration').innerHTML  = leg.duration.text;
+        document.getElementById('order_items_0_item_label_distance').innerHTML = leg.distance.text;
+        document.getElementById('order_items_0_item_label_duration').innerHTML = leg.duration.text;
     }else{
         var leg = goAutocomplete.response.routes[0].legs[0];order_items_0_item_distance
         document.getElementById('order_items_1_item_direction').value = goAutocomplete.response.routes[0].overview_polyline;

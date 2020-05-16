@@ -85,7 +85,16 @@
                             <div class="input-group-prepend">
 								<button class="btn btn-success" type="button" data-toggle="modal" data-target="#mapModal1"><i class="la la-group icon-lg"></i></button>
 							</div>
-                            <input type="text" id="location-input-1" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="text" name="order[items][0][point][name]" id="order_items_0_point_name" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="hidden" name="order[items][0][point][lat]" id="order_items_0_point_lat" >
+                            <input type="hidden" name="order[items][0][point][lng]" id="order_items_0_point_lng">
+                            <input type="hidden" name="order[items][0][point][alt]" id="order_items_0_point_alt">
+                            <input type="hidden" name="order[items][0][item][type]" id="order_items_0_item_type" value="go">
+                            <input type="hidden" name="order[items][0][item][distance]" id="order_items_0_item_distance">
+                            <input type="hidden" name="order[items][0][item][distance_value]" id="order_items_0_item_distance_value">
+                            <input type="hidden" name="order[items][0][item][duration]" id="order_items_0_item_duration">
+                            <input type="hidden" name="order[items][0][item][duration_value]" id="order_items_0_item_duration_value">
+                            <input type="hidden" name="order[items][0][item][direction]" id="order_items_0_item_direction">
                         </div>
                         <span class="form-text text-muted">We'll never share your email with anyone else.</span>
                     </div>
@@ -231,10 +240,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="map1" style="width:100%; height: 400px;"></div>
+                <div id="map_0" style="width:100%; height: 400px;"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary font-weight-bold">Save changes</button>
+                <div id="order_items_0_detail"></div>
+                <button type="button" id="order_items_0_button_confirm" class="btn btn-primary font-weight-bold" data-dismiss="modal" aria-label="Close">Confirmer</button>
             </div>
         </div>
     </div>
@@ -250,10 +260,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="map2" style="width:100%; height: 400px;"></div>
+                <div id="map_1" style="width:100%; height: 400px;"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary font-weight-bold">Save changes</button>
+                <div id="order_items_1_detail"></div>
+                <button type="button" id="order_items_1_button_confirm" class="btn btn-primary font-weight-bold">Confirmer</button>
             </div>
         </div>
     </div>
@@ -262,49 +273,29 @@
 
 @section('javascript')
 <script>
-jQuery(document).ready(function($){
-    $("#kt_select2").select2({placeholder:"Select a state"});
-    var t;t=KTUtil.isRTL()?{leftArrow:'<i class="la la-angle-right"></i>',rightArrow:'<i class="la la-angle-left"></i>'}:{leftArrow:'<i class="la la-angle-left"></i>',rightArrow:'<i class="la la-angle-right"></i>'};
-    $("#kt_datepicker_1").datepicker({rtl:KTUtil.isRTL(),todayHighlight:!0,orientation:"bottom left",templates:t});
-    $("#kt_datepicker_2").datepicker({rtl:KTUtil.isRTL(),todayHighlight:!0,orientation:"bottom left",templates:t});
-    $("#kt_timepicker_1").timepicker({minuteStep:1,showSeconds:!0,showMeridian:!0})
-    $("#kt_timepicker_2").timepicker({minuteStep:1,showSeconds:!0,showMeridian:!0})
-});
+var clubs = @json($clubs);
+var club = {lat: {{ $clubs[0]->point->lat }}, lng: {{ $clubs[0]->point->lng }}};
 var zoom = {{env('MAP_ZOOM', 15)}};
 var uluru = {lat: {{ env('DEFAULT_LOCATION_LAT', -18.00) }}, lng: {{ env('DEFAULT_LOCATION_LNG', 47.00) }}};
+var go = null;
+var back = null;
 function initMap() {
-    var map1 = new google.maps.Map(document.getElementById('map1'), {
-        mapTypeControl: false,
-        center: uluru,
-        zoom: zoom
-    });
-    /*
-    var map2 = new google.maps.Map(document.getElementById('map2'), {
-        mapTypeControl: false,
-        center: uluru,
-        zoom: zoom
-    });
-    */
-    
-    var input1 = document.getElementById('location-input-1');
-    var input2 = document.getElementById('location-input-2');
-    
-    new AutocompleteDirectionsHandler(map1, club, input1);
-    //new AutocompleteDirectionsHandler(map2, club, input2);
+    go = new AutocompleteDirectionsHandler("map_0", 'order_items_0_', club);
+    back = new AutocompleteDirectionsHandler("map_1", 'order_items_1_', club);
 }
 
 /**
  * @constructor
  */
-function AutocompleteDirectionsHandler(map, club, input) {
-  this.map = map;
-  this.club = club;
-  this.input = input;
+function AutocompleteDirectionsHandler(mapDiv, id, clubPoint) {
+  this.map = new google.maps.Map(document.getElementById(mapDiv), {mapTypeControl: false, center: uluru, zoom: zoom});
+  this.id = id;
+  this.club = clubPoint;
   this.latLng = null;
   this.placeId = null;
   this.response = null;
   this.marker = new google.maps.Marker({draggable: true, position: uluru, map: this.map});;
-  this.autocomplete = new google.maps.places.Autocomplete(this.input);
+  this.autocomplete = new google.maps.places.Autocomplete(document.getElementById(this.id + "point_name"));
   this.geocoder = new google.maps.Geocoder;
   this.directionsService = new google.maps.DirectionsService;
   this.setupPlaceChangedListener();
@@ -312,7 +303,8 @@ function AutocompleteDirectionsHandler(map, club, input) {
 }
 
 AutocompleteDirectionsHandler.prototype.setClub = function(club) {
-  this.club = club;
+    this.club = club;
+    this.route();
 }
 
 AutocompleteDirectionsHandler.prototype.setupMapClickListener = function(){
@@ -343,39 +335,61 @@ AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function() {
   
 AutocompleteDirectionsHandler.prototype.addMarker = function(latLng) {
     var me = this;
-    this.marker.setMap(null);
-    this.marker = new google.maps.Marker({draggable: true, position: latLng, map: me.map});
-    this.map.panTo(latLng);
+    me.marker.setMap(null);
+    me.marker = new google.maps.Marker({draggable: true, position: latLng, map: me.map});
+    me.map.panTo(latLng);
 };
+    
 AutocompleteDirectionsHandler.prototype.route = function() {
-  if (!this.club || (!this.placeId && !this.latLng)) {
-    return;
-  }
-  var me = this;
+    if (!this.club || (!this.placeId && !this.latLng)) {
+        return;
+    }
+    var me = this;
 
-  this.directionsService.route(
-      {
+    me.directionsService.route({
         origin: me.club,
         destination: !me.placeId ? me.latLng : {'placeId': me.placeId},
         travelMode: 'DRIVING'
-      },
-      function(response, status) {
+    },function(response, status) {
         console.log(response);
         if (status === 'OK') {
-          me.setResponse(response);
+            me.setResponse(response);
         } else {
-          window.alert('Directions request failed due to ' + status);
+            window.alert('Directions request failed due to ' + status);
         }
-      });
+    });
 };
 
 AutocompleteDirectionsHandler.prototype.setResponse = function(response) {
     this.response = response;
-    if(!this.placeId){
-        var leg = response.routes[0].legs[0];order_items_0_item_distance
-        this.input.value = leg.end_address;
-    }
+    document.getElementById(this.id + 'detail').innerHTML = response.routes[0].legs[0].end_address;
 };
+    
+jQuery(document).ready(function($){
+    $("#kt_select2").select2({placeholder:"Select a state"});
+    var t;t=KTUtil.isRTL()?{leftArrow:'<i class="la la-angle-right"></i>',rightArrow:'<i class="la la-angle-left"></i>'}:{leftArrow:'<i class="la la-angle-left"></i>',rightArrow:'<i class="la la-angle-right"></i>'};
+    $("#kt_datepicker_1").datepicker({rtl:KTUtil.isRTL(),todayHighlight:!0,orientation:"bottom left",templates:t});
+    $("#kt_datepicker_2").datepicker({rtl:KTUtil.isRTL(),todayHighlight:!0,orientation:"bottom left",templates:t});
+    $("#kt_timepicker_1").timepicker({minuteStep:1,showSeconds:!0,showMeridian:!0});
+    $("#kt_timepicker_2").timepicker({minuteStep:1,showSeconds:!0,showMeridian:!0});
+    
+    $('#order_items_0_button_confirm').click(function(){
+        console.log(go.response);
+        alert(go.response);
+        if(go.response){
+            var response = go.response;
+            document.getElementById('order_items_0_item_direction').value = response.routes[0].overview_polyline;
+            var leg = response.routes[0].legs[0];
+            document.getElementById('order_items_0_item_distance').value = leg.distance.text;
+            document.getElementById('order_items_0_item_distance_value').value = leg.distance.value;
+            document.getElementById('order_items_0_item_duration').value = leg.duration.text;
+            document.getElementById('order_items_0_item_duration_value').value = leg.duration.value;
+            document.getElementById('order_items_0_point_name').value = leg.end_address;
+            document.getElementById('order_items_0_point_lat').value = leg.end_location.lat();
+            document.getElementById('order_items_0_point_lng').value = leg.end_location.lng();
+        }
+    });
+});
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
 @endsection
