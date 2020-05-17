@@ -122,7 +122,7 @@
 				<form class="form" id="kt_login_forgot_form" method="post">
                     @csrf
 					<div class="form-group mb-10">
-						<input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8 @error('phone') is-invalid @enderror" type="text" placeholder="{{ __('Téléphone') }}" name="phone" autocomplete="off"/>
+						<input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8 @error('phone') is-invalid @enderror" type="text" placeholder="{{ __('Téléphone') }}" name="phone" autocomplete="off" value="{{ old('phone') }}"/>
                         @error('phone')
                             <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
                         @enderror
