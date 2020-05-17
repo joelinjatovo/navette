@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('gateway/stripe/pay', 'Gateway\StripeController@pay')->name('gateway.stripe.pay');
     
     Route::get('order/{order}', 'Customer\OrderController@show')->name('order.show');
+    Route::get('item/{item}', 'Customer\ItemController@show')->name('item.show');
     
     Route::get('/logout', function () {
         \Auth::logout();

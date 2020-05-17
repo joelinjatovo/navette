@@ -20,7 +20,7 @@ Vue.component('app-notifications', require('./components/AppNotifications.vue').
 /**
 * Import our store app
 */
-import store from './store/index'
+import store from './notification/index'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

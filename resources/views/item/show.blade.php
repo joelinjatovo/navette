@@ -148,28 +148,63 @@ function initMap() {
 }
 // Enable pusher logging - don't include this in production
 Pusher.logToConsole = true;
-var pusher = new Pusher('{{ env("PUSHER_APP_KEY") }}', {cluster: '{{ env("PUSHER_APP_CLUSTER") }}'});
+var pusher = new Pusher('{{ env("PUSHER_APP_KEY") }}', {
+    cluster: '{{ env("PUSHER_APP_CLUSTER") }}', 
+    authEndpoint: '/broadcasting/auth',
+    auth: {headers: {'X-CSRF-Token': "{{ csrf_token() }}"}}
+});
+/**
+* Test driver location tracker from public channels
 var channel = pusher.subscribe('my-channel');
 channel.bind('user.point.created', function(data) {
     // Set driver location
     console.log(JSON.stringify(data));
-    var point = data.data.point;
+    var point = data.point;
     if(marker){
         marker.setMap(null);
     }
     marker = new google.maps.Marker({draggable: true, position: {lat:point.lat, lng:point.lng}, map: map});
 });
+*/
 
+var itemChannel = pusher.subscribe('private-App.Item.{{ $model->getKey() }}');
+itemChannel.bind('item.updated', function(data) {
+    // Set driver location
+    console.log(JSON.stringify(data));
+    loadItem();
+});
+
+var rideChannel;
+var driverMarker;
 function loadItem(){
-    // 8418635
-    jQuery.post("/gateway/stripe/pay", {})
+    KTApp.blockPage();
+    jQuery.get(window.location.pathname)
         .done(function( data ) {
+            KTApp.unblockPage();
+            console.log(data);
+            
+            if(!rideChannel && data.ride){
+                // Track driver location
+                rideChannel = pusher.subscribe('private-App.Ride.' + data.ride.id);
+                rideChannel.bind('user.point.created', function(res) {
+                    console.log(res);
+                    var point = res.point;
+                    if(driverMarker){
+                        driverMarker.setMap(null);
+                    }
+                    driverMarker = new google.maps.Marker({draggable: true, position: {lat:point.lat, lng:point.lng}, map: map});
+                });
+            }
         })
         .fail(function() {
             KTApp.unblockPage();
             Swal.fire("Erreur", "Une erreur s'est produite.", "error")
         });
 }
+
+jQuery(document).ready(function(){
+    loadItem();
+});
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
 @endsection

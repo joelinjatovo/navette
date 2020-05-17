@@ -137,7 +137,16 @@
                             <div class="input-group-prepend">
 								<button class="btn btn-success" type="button" data-toggle="modal" data-target="#mapModal2"><i class="la la-group icon-lg"></i></button>
 							</div>
-                            <input type="text" id="location-input-2" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            <input type="text" name="order[items][1][point][name]" id="order_items_1_point_name" class="form-control" placeholder="Point de retours" aria-describedby="basic-addon2">
+                            <input type="hidden" name="order[items][1][point][lat]" id="order_items_1_point_lat" >
+                            <input type="hidden" name="order[items][1][point][lng]" id="order_items_1_point_lng">
+                            <input type="hidden" name="order[items][1][point][alt]" id="order_items_1_point_alt">
+                            <input type="hidden" name="order[items][1][item][type]" id="order_items_1_item_type" value="go">
+                            <input type="hidden" name="order[items][1][item][distance]" id="order_items_1_item_distance">
+                            <input type="hidden" name="order[items][1][item][distance_value]" id="order_items_1_item_distance_value">
+                            <input type="hidden" name="order[items][1][item][duration]" id="order_items_1_item_duration">
+                            <input type="hidden" name="order[items][1][item][duration_value]" id="order_items_1_item_duration_value">
+                            <input type="hidden" name="order[items][1][item][direction]" id="order_items_1_item_direction">
                         </div>
                         <span class="form-text text-muted">We'll never share your email with anyone else.</span>
                     </div>
@@ -269,7 +278,7 @@
             </div>
             <div class="modal-footer">
                 <div id="order_items_1_detail"></div>
-                <button type="button" id="order_items_1_button_confirm" class="btn btn-primary font-weight-bold">Confirmer</button>
+                <button type="button" id="order_items_1_button_confirm" class="btn btn-primary font-weight-bold" data-dismiss="modal" aria-label="Close">Confirmer</button>
             </div>
         </div>
     </div>
@@ -379,8 +388,6 @@ jQuery(document).ready(function($){
     $("#kt_timepicker_2").timepicker({minuteStep:1,showSeconds:!0,showMeridian:!0});
     
     $('#order_items_0_button_confirm').click(function(){
-        console.log(go.response);
-        alert(go.response);
         if(go.response){
             var response = go.response;
             document.getElementById('order_items_0_item_direction').value = response.routes[0].overview_polyline;
@@ -392,6 +399,21 @@ jQuery(document).ready(function($){
             document.getElementById('order_items_0_point_name').value = leg.end_address;
             document.getElementById('order_items_0_point_lat').value = leg.end_location.lat();
             document.getElementById('order_items_0_point_lng').value = leg.end_location.lng();
+        }
+    });
+    
+    $('#order_items_1_button_confirm').click(function(){
+        if(back.response){
+            var response = back.response;
+            document.getElementById('order_items_1_item_direction').value = response.routes[0].overview_polyline;
+            var leg = response.routes[0].legs[0];
+            document.getElementById('order_items_1_item_distance').value = leg.distance.text;
+            document.getElementById('order_items_1_item_distance_value').value = leg.distance.value;
+            document.getElementById('order_items_1_item_duration').value = leg.duration.text;
+            document.getElementById('order_items_1_item_duration_value').value = leg.duration.value;
+            document.getElementById('order_items_1_point_name').value = leg.end_address;
+            document.getElementById('order_items_1_point_lat').value = leg.end_location.lat();
+            document.getElementById('order_items_1_point_lng').value = leg.end_location.lng();
         }
     });
 });
