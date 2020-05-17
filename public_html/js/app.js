@@ -65557,7 +65557,7 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _store_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./store/index */ "./resources/js/store/index.js");
+/* harmony import */ var _notification_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notification/index */ "./resources/js/notification/index.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -65587,7 +65587,7 @@ Vue.component('app-notifications', __webpack_require__(/*! ./components/AppNotif
 
 var app = new Vue({
   el: '#app',
-  store: _store_index__WEBPACK_IMPORTED_MODULE_0__["default"]
+  store: _notification_index__WEBPACK_IMPORTED_MODULE_0__["default"]
 });
 
 /***/ }),
@@ -65823,10 +65823,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/store/actions.js":
-/*!***************************************!*\
-  !*** ./resources/js/store/actions.js ***!
-  \***************************************/
+/***/ "./resources/js/notification/actions.js":
+/*!**********************************************!*\
+  !*** ./resources/js/notification/actions.js ***!
+  \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -65860,10 +65860,10 @@ var actions = {
 
 /***/ }),
 
-/***/ "./resources/js/store/getters.js":
-/*!***************************************!*\
-  !*** ./resources/js/store/getters.js ***!
-  \***************************************/
+/***/ "./resources/js/notification/getters.js":
+/*!**********************************************!*\
+  !*** ./resources/js/notification/getters.js ***!
+  \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -65878,10 +65878,10 @@ var getters = {
 
 /***/ }),
 
-/***/ "./resources/js/store/index.js":
-/*!*************************************!*\
-  !*** ./resources/js/store/index.js ***!
-  \*************************************/
+/***/ "./resources/js/notification/index.js":
+/*!********************************************!*\
+  !*** ./resources/js/notification/index.js ***!
+  \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -65890,10 +65890,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./actions */ "./resources/js/store/actions.js");
-/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mutations */ "./resources/js/store/mutations.js");
-/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getters */ "./resources/js/store/getters.js");
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./state */ "./resources/js/store/state.js");
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./actions */ "./resources/js/notification/actions.js");
+/* harmony import */ var _mutations__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./mutations */ "./resources/js/notification/mutations.js");
+/* harmony import */ var _getters__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./getters */ "./resources/js/notification/getters.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./state */ "./resources/js/notification/state.js");
 
 
 
@@ -65910,10 +65910,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
 /***/ }),
 
-/***/ "./resources/js/store/mutations.js":
-/*!*****************************************!*\
-  !*** ./resources/js/store/mutations.js ***!
-  \*****************************************/
+/***/ "./resources/js/notification/mutations.js":
+/*!************************************************!*\
+  !*** ./resources/js/notification/mutations.js ***!
+  \************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -65939,10 +65939,10 @@ var mutations = {
 
 /***/ }),
 
-/***/ "./resources/js/store/state.js":
-/*!*************************************!*\
-  !*** ./resources/js/store/state.js ***!
-  \*************************************/
+/***/ "./resources/js/notification/state.js":
+/*!********************************************!*\
+  !*** ./resources/js/notification/state.js ***!
+  \********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

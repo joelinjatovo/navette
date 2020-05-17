@@ -78,7 +78,7 @@
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 130px;">	                        
-                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
+                                    <a href="{{ route('customer.order.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -125,6 +125,34 @@
 @endsection
 
 @section('javascript')
-    @parent
-    @include('inc.admin.btn-delete', ['path' => '/admin/order/'])
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.btn-delete', function() {
+            var $this = $(this);
+            swal.fire({
+                title:"Vous êtes sûre?",
+                text:"Vous ne pourez pas revenir en arrière après!",
+                type:"warning",
+                showCancelButton:!0,
+                confirmButtonText:"Oui, supprimez la!",
+                cancelButtonText:"Annuler"
+            }).then(function(e){
+                if(e.value){
+                    KTApp.blockPage();
+                    axios.delete('/customer/order/' + $this.attr('data-id'))
+                        .then(res => {
+                            KTApp.unblockPage();
+                            if (res.data.status === "success"){
+                                $this.closest('tr').remove();
+                            }
+                            $.notify({icon:"add_alert", message:res.data.message}, {type:res.data.status});
+                        }).catch(err => {
+                            KTApp.unblockPage();
+                            $.notify({icon:"add_alert", message:"Une erreur s'est produite."}, {type:"danger"});
+                        })
+                }
+            })
+        });
+    });
+</script>
 @endsection

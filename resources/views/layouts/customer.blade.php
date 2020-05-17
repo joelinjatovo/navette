@@ -66,7 +66,7 @@
         </div>
         <!--end::Header Mobile-->
 	
-        <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-column flex-root" id="app">
 		    <!--begin::Page-->
             <div class="d-flex flex-row flex-column-fluid page">
                 <!--begin::Wrapper-->
@@ -487,7 +487,7 @@
                     <!--end:Item-->
 
                     <!--begin::Item-->
-                    <a href="3"  class="navi-item">
+                    <a href="{{ route('customer.orders') }}"  class="navi-item">
                         <div class="navi-link">
                             <div class="symbol symbol-40 bg-light mr-3">
                                 <div class="symbol-label">
@@ -571,6 +571,7 @@
         <!--end::Global Config-->
 
         <!--begin::Global Theme Bundle(used by all pages)-->
+        <script src="/js/main/customer.js"></script>
         <script src="/js/main/plugins.bundle.js"></script>
         <script src="/js/main/prismjs.bundle.js"></script>
         <script src="/js/main/scripts.bundle.js"></script>

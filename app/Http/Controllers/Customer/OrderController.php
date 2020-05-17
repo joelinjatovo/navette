@@ -151,8 +151,8 @@ class OrderController extends Controller
         $order->delete();
 
         return response()->json([
-            'code' => 200,
             'status' => "success",
+            'message' => "Votre commande a été bien supprimé",
         ]);
     }
 }

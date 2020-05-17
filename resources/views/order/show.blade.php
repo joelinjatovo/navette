@@ -81,7 +81,7 @@
                     
                     <!--begin: Card Footer-->
                     <div class="card-footer">
-                        <a href="{{ route('item.show', ['order' => $model, 'item' => $item]) }}" class="btn btn-primary">Live</a>
+                        <a href="{{ route('customer.item.show', ['order' => $model, 'item' => $item]) }}" class="btn btn-primary">Live</a>
                     </div>
                     <!--end: Card Footer-->
                     
@@ -164,7 +164,7 @@
                     
                     <!--begin: Card Footer-->
                     <div class="card-footer">
-                        <a href="{{ route('item.show', ['order' => $model, 'item' => $item]) }}" class="btn btn-primary">Live</a>
+                        <a href="{{ route('customer.item.show', ['order' => $model, 'item' => $item]) }}" class="btn btn-primary">Live</a>
                     </div>
                     <!--end: Card Footer-->
                 </div>

@@ -32,9 +32,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('gateway/cash/pay', 'Gateway\CashController@pay')->name('gateway.cash.pay');
     Route::post('gateway/stripe/pay', 'Gateway\StripeController@pay')->name('gateway.stripe.pay');
     
-    Route::get('order/{order}', 'Customer\OrderController@show')->name('order.show');
-    Route::get('order/{order}/item/{item}', 'Customer\ItemController@show')->name('item.show');
-    
     Route::get('/logout', function () {
         \Auth::logout();
         return redirect('login');
@@ -118,6 +115,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/order/{order}/edit', 'Customer\OrderController@edit')->name('order.edit');
         Route::post('/order/{order}/edit', 'Customer\OrderController@update');
         Route::delete('order/{order}', 'Customer\OrderController@delete')->name('order.delete');
+    
+        Route::get('order/{order}/item/{item}', 'Customer\ItemController@show')->name('item.show');
     });
     
 });
