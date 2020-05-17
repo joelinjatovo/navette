@@ -141,7 +141,7 @@
                             <input type="hidden" name="order[items][1][point][lat]" id="order_items_1_point_lat" >
                             <input type="hidden" name="order[items][1][point][lng]" id="order_items_1_point_lng">
                             <input type="hidden" name="order[items][1][point][alt]" id="order_items_1_point_alt">
-                            <input type="hidden" name="order[items][1][item][type]" id="order_items_1_item_type" value="go">
+                            <input type="hidden" name="order[items][1][item][type]" id="order_items_1_item_type" value="back">
                             <input type="hidden" name="order[items][1][item][distance]" id="order_items_1_item_distance">
                             <input type="hidden" name="order[items][1][item][distance_value]" id="order_items_1_item_distance_value">
                             <input type="hidden" name="order[items][1][item][duration]" id="order_items_1_item_duration">

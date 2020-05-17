@@ -38,6 +38,9 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('order', function ($value) {
             return \App\Models\Order::where('id', $value)->firstOrFail();
         });
+        Route::bind('item', function ($value) {
+            return \App\Models\Item::where('id', $value)->firstOrFail();
+        });
     }
 
     /**

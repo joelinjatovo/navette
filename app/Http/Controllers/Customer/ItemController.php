@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Models\Item;
+use App\Models\Order;
 use App\Http\Resources\ItemItem as ItemItemResource;
 use App\Http\Resources\RideItem as RideItemResource;
 use App\Http\Controllers\Controller;
@@ -19,13 +20,13 @@ class ItemController extends Controller
      *
      * @return Response
      */
-    public function show(Request $request, Item $item)
+    public function show(Request $request, Order $order, Item $item)
     {
         if($request->ajax()){
             return new ItemItemResource($item);
         }
         
-        return view('item.show', ['model' => $item]);
+        return view('item.show', ['model' => $item, 'order' => $order]);
     }
     
     /**
