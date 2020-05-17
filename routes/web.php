@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('gateway/cash/pay', 'Gateway\CashController@pay')->name('gateway.cash.pay');
     Route::post('gateway/stripe/pay', 'Gateway\StripeController@pay')->name('gateway.stripe.pay');
     
+    Route::get('order/{order}', 'Customer\OrderController@show')->name('order.show');
+    
     Route::get('/logout', function () {
         \Auth::logout();
         return redirect('login');

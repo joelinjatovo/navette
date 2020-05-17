@@ -42,7 +42,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return view('customer.order.show', ['model' => $order]);
+        return view('order.show', ['model' => $order]);
     }
     
     /**
