@@ -44,6 +44,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('notifications/unread', 'Account\NotificationController@unread')->name('notifications.unread');
     Route::post('notifications', 'Account\NotificationController@markAsRead');
     
+    Route::middleware(['role:customer'])->prefix('customer')->name('customer.')->group(function () {
+        Route::get('/', 'Customer\IndexController@index')->name('dashboard');
+        
+        Route::get('/orders', 'Customer\OrderController@index')->name('orders');
+        Route::get('/order', 'Customer\OrderController@create')->name('order.create');
+        Route::post('/order', 'Customer\OrderController@store');
+        Route::get('/order/{order}', 'Customer\OrderController@show')->name('order.show');
+        Route::get('/order/{order}/edit', 'Customer\OrderController@edit')->name('order.edit');
+        Route::post('/order/{order}/edit', 'Customer\OrderController@update');
+        Route::delete('order/{order}', 'Customer\OrderController@delete')->name('order.delete');
+    
+        Route::get('order/{order}/item/{item}', 'Customer\ItemController@show')->name('item.show');
+    });
+    
+    Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {
+        //
+    });
+    
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', 'Admin\IndexController@index')->name('dashboard');
         
@@ -99,24 +117,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('apikey/{apikey}/delete', 'Admin\ApiKeyController@delete')->name('apikey.delete');
         
         Route::get('/settings', 'Admin\SettingController@index')->name('settings');
-    });
-    
-    Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {
-        //
-    });
-    
-    Route::middleware(['role:customer'])->prefix('customer')->name('customer.')->group(function () {
-        Route::get('/', 'Customer\IndexController@index')->name('dashboard');
-        
-        Route::get('/orders', 'Customer\OrderController@index')->name('orders');
-        Route::get('/order', 'Customer\OrderController@create')->name('order.create');
-        Route::post('/order', 'Customer\OrderController@store');
-        Route::get('/order/{order}', 'Customer\OrderController@show')->name('order.show');
-        Route::get('/order/{order}/edit', 'Customer\OrderController@edit')->name('order.edit');
-        Route::post('/order/{order}/edit', 'Customer\OrderController@update');
-        Route::delete('order/{order}', 'Customer\OrderController@delete')->name('order.delete');
-    
-        Route::get('order/{order}/item/{item}', 'Customer\ItemController@show')->name('item.show');
     });
     
 });
