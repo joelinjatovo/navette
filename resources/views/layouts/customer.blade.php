@@ -32,7 +32,7 @@
     <!--end::Head-->
 
     <!--begin::Body-->
-    <body  id="kt_body"  class="header-fixed header-mobile-fixed page-loading"  >
+    <body  id="kt_body" class="header-fixed header-mobile-fixed page-loading"  >
     	<!--begin::Main-->
         
         <!--begin::Header Mobile-->
