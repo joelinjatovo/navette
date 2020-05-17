@@ -3,7 +3,7 @@
     <!--begin::Head-->
     <head>
         <meta charset="utf-8"/>
-        <title>Metronic | Layout Builder</title>
+        <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
         <meta name="description" content="Layout options builder"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
@@ -26,7 +26,7 @@
         <!--begin::Layout Themes(used by all pages)-->
         <!--end::Layout Themes-->
 
-        <link rel="shortcut icon" href="/favicon.ico"/>
+        <link rel="shortcut icon" href="/favicon.png"/>
 
     </head>
     <!--end::Head-->
@@ -80,8 +80,8 @@
                                 <!--begin::Left-->
                                 <div class="d-none d-lg-flex align-items-center mr-3">
                                     <!--begin::Logo-->
-                                    <a href="/metronic/preview/demo9/index.html" class="mr-20">
-                                        <img alt="Logo" src="/img/logo-letter-9.png" class="max-h-35px"/>
+                                    <a href="/" class="mr-20">
+                                        <img alt="Logo" src="/img/logo-white.png" class="max-h-35px"/>
                                     </a>
                                     <!--end::Logo-->
 
@@ -104,7 +104,7 @@
                                                     </span>
                                                 </div>
 
-                                                <input type="text" class="form-control h-45px" placeholder="Search..."/>
+                                                <input type="text" class="form-control h-45px" placeholder="{{ __('Recherche...') }}"/>
 
                                                 <div class="input-group-append">
                                                     <span class="input-group-text">
@@ -152,7 +152,7 @@
                                             </div>
                                         </div>
                                         <!--end::Toggle-->
-
+                                        
                                         <!--begin::Dropdown-->
                                         <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
                                             <form>
@@ -164,98 +164,42 @@
                                                         <span class="btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2">23 new</span>
                                                     </h4>
                                                     <!--end::Title-->
-
-                                                    <!--begin::Tabs-->
-                                                    <ul class="nav nav-bold nav-tabs nav-tabs-line nav-tabs-line-3x nav-tabs-primary mt-3 px-8" role="tablist">
-                                                        <li class="nav-item">
-                                                            <a class="nav-link active show" data-toggle="tab" href="#topbar_notifications_notifications"  >Alerts</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" data-toggle="tab" href="#topbar_notifications_events"  >Events</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" data-toggle="tab" href="#topbar_notifications_logs"  >Logs</a>
-                                                        </li>
-                                                    </ul>
-                                                    <!--end::Tabs-->
                                                 </div>
                                                 <!--end::Header-->
 
                                                 <!--begin::Content-->
-                                                <div class="tab-content">
-                                                    <!--begin::Tabpane-->
-                                                    <div class="tab-pane active show p-8" id="topbar_notifications_notifications" role="tabpanel">
-                                                        <!--begin::Scroll-->
-                                                        <div class="scroll pr-7 mr-n7" data-scroll="true" data-height="300" data-mobile-height="200">
-                                                            <!--begin::Item-->
-                                                            <div class="d-flex align-items-center mb-6">
-                                                                <!--begin::Symbol-->
-                                                                <div class="symbol symbol-40 symbol-light-primary mr-5">
-                                                                    <span class="symbol-label">
-                                                                        <span class="svg-icon svg-icon-lg svg-icon-primary">
-                                                                            <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Home/Library.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                                                    <rect x="0" y="0" width="24" height="24"/>
-                                                                                    <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"/>
-                                                                                    <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1"/>
-                                                                                </g>
-                                                                            </svg>
-                                                                            <!--end::Svg Icon-->
-                                                                        </span>
+                                                <div class="p-8" id="topbar_notifications_notifications" role="tabpanel">
+                                                    <!--begin::Scroll-->
+                                                    <div class="scroll pr-7 mr-n7" data-scroll="true" data-height="300" data-mobile-height="200">
+                                                        <!--begin::Item-->
+                                                        <div class="d-flex align-items-center mb-6">
+                                                            <!--begin::Symbol-->
+                                                            <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                                                <span class="symbol-label">
+                                                                    <span class="svg-icon svg-icon-lg svg-icon-primary">
+                                                                        <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Home/Library.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                                <rect x="0" y="0" width="24" height="24"/>
+                                                                                <path d="M5,3 L6,3 C6.55228475,3 7,3.44771525 7,4 L7,20 C7,20.5522847 6.55228475,21 6,21 L5,21 C4.44771525,21 4,20.5522847 4,20 L4,4 C4,3.44771525 4.44771525,3 5,3 Z M10,3 L11,3 C11.5522847,3 12,3.44771525 12,4 L12,20 C12,20.5522847 11.5522847,21 11,21 L10,21 C9.44771525,21 9,20.5522847 9,20 L9,4 C9,3.44771525 9.44771525,3 10,3 Z" fill="#000000"/>
+                                                                                <rect fill="#000000" opacity="0.3" transform="translate(17.825568, 11.945519) rotate(-19.000000) translate(-17.825568, -11.945519) " x="16.3255682" y="2.94551858" width="3" height="18" rx="1"/>
+                                                                            </g>
+                                                                        </svg>
+                                                                        <!--end::Svg Icon-->
                                                                     </span>
-                                                                </div>
-                                                                <!--end::Symbol-->
-
-                                                                <!--begin::Text-->
-                                                                <div class="d-flex flex-column font-weight-bold">
-                                                                    <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Cool App</a>
-                                                                    <span class="text-muted">Marketing campaign planning</span>
-                                                                </div>
-                                                                <!--end::Text-->
+                                                                </span>
                                                             </div>
-                                                            <!--end::Item-->
-                                                        </div>
-                                                        <!--end::Scroll-->
-                                                    </div>
-                                                    <!--end::Tabpane-->
+                                                            <!--end::Symbol-->
 
-                                                    <!--begin::Tabpane-->
-                                                    <div class="tab-pane" id="topbar_notifications_events" role="tabpanel">
-                                                        <!--begin::Nav-->
-                                                        <div class="navi navi-hover scroll my-4" data-scroll="true" data-height="300" data-mobile-height="200">
-                                                            <!--begin::Item-->
-                                                            <a href="#" class="navi-item">
-                                                                <div class="navi-link">
-                                                                    <div class="navi-icon mr-2">
-                                                                        <i class="flaticon2-line-chart text-success"></i>
-                                                                    </div>
-                                                                    <div class="navi-text">
-                                                                        <div class="font-weight-bold">
-                                                                            New report has been received
-                                                                        </div>
-                                                                        <div class="text-muted">
-                                                                            23 hrs ago
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </a>
-                                                            <!--end::Item-->
+                                                            <!--begin::Text-->
+                                                            <div class="d-flex flex-column font-weight-bold">
+                                                                <a href="#" class="text-dark text-hover-primary mb-1 font-size-lg">Cool App</a>
+                                                                <span class="text-muted">Marketing campaign planning</span>
+                                                            </div>
+                                                            <!--end::Text-->
                                                         </div>
-                                                        <!--end::Nav-->
+                                                        <!--end::Item-->
                                                     </div>
-                                                    <!--end::Tabpane-->
-
-                                                    <!--begin::Tabpane-->
-                                                    <div class="tab-pane" id="topbar_notifications_logs" role="tabpanel">
-                                                        <!--begin::Nav-->
-                                                        <div class="d-flex flex-center text-center text-muted min-h-200px">
-                                                            All caught up!
-                                                            <br/>
-                                                            No new notifications.
-                                                        </div>
-                                                        <!--end::Nav-->
-                                                    </div>
-                                                    <!--end::Tabpane-->
+                                                    <!--end::Scroll-->
                                                 </div>
                                                 <!--end::Content-->
                                             </form>
@@ -264,13 +208,108 @@
                                     </div>
                                     <!--end::Notifications-->
 
+                                    @if(Session::has('cart'))
+                                    <!--begin::Cart-->
+                                    <div class="dropdown">
+                                        <!--begin::Toggle-->
+                                        <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="false">
+                                            <div class="btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1">
+                                                <span class="svg-icon svg-icon-xl">
+                                                    <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo2/dist/assets/media/svg/icons/Shopping/Cart3.svg-->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <rect x="0" y="0" width="24" height="24"></rect>
+                                                            <path d="M12,4.56204994 L7.76822128,9.6401844 C7.4146572,10.0644613 6.7840925,10.1217854 6.3598156,9.76822128 C5.9355387,9.4146572 5.87821464,8.7840925 6.23177872,8.3598156 L11.2317787,2.3598156 C11.6315738,1.88006147 12.3684262,1.88006147 12.7682213,2.3598156 L17.7682213,8.3598156 C18.1217854,8.7840925 18.0644613,9.4146572 17.6401844,9.76822128 C17.2159075,10.1217854 16.5853428,10.0644613 16.2317787,9.6401844 L12,4.56204994 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                                            <path d="M3.5,9 L20.5,9 C21.0522847,9 21.5,9.44771525 21.5,10 C21.5,10.132026 21.4738562,10.2627452 21.4230769,10.3846154 L17.7692308,19.1538462 C17.3034221,20.271787 16.2111026,21 15,21 L9,21 C7.78889745,21 6.6965779,20.271787 6.23076923,19.1538462 L2.57692308,10.3846154 C2.36450587,9.87481408 2.60558331,9.28934029 3.11538462,9.07692308 C3.23725479,9.02614384 3.36797398,9 3.5,9 Z M12,17 C13.1045695,17 14,16.1045695 14,15 C14,13.8954305 13.1045695,13 12,13 C10.8954305,13 10,13.8954305 10,15 C10,16.1045695 10.8954305,17 12,17 Z" fill="#000000"></path>
+                                                        </g>
+                                                    </svg><!--end::Svg Icon-->
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!--end::Toggle-->
 
+                                        <!--begin::Dropdown-->
+                                        <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-xl dropdown-menu-anim-up" style="">
+                                            <form>
+                                                <!--begin::Header-->
+                                                <div class="d-flex align-items-center py-10 px-8 rounded-top">
+                                                    <span class="btn btn-md btn-icon mr-4">
+                                                        <i class="flaticon2-shopping-cart-1 text-success"></i>
+                                                    </span>
+                                                    <h4 class="m-0 flex-grow-1 mr-3">{{ __('Mon Panier') }}</h4>
+                                                    <button type="button" class="btn btn-success btn-sm">
+                                                        @if(Session::get('cart')->type == 'go')
+                                                            {{ __('Aller Simple') }}
+                                                        @elseif(Session::get('cart')->type == 'back')
+                                                            {{ __('Retours Simple') }}
+                                                        @elseif(Session::get('cart')->type == 'go-back')
+                                                            {{ __('Aller et Retours') }}
+                                                        @endif
+                                                    </button>
+                                                </div>
+                                                <!--end::Header-->
+
+                                                <!--begin::Scroll-->
+                                                <div class="scroll scroll-push ps" data-scroll="true" data-height="250" data-mobile-height="200" style="height: 250px; overflow: hidden;">
+
+                                                    @foreach(Session::get('cart')->items as $item)
+                                                    <!--begin::Separator-->
+                                                    <div class="separator separator-solid"></div>
+                                                    <!--end::Separator-->
+
+                                                    <!--begin::Item-->
+                                                    <div class="d-flex align-items-center justify-content-between p-8">
+                                                        <div class="d-flex flex-column mr-2">
+                                                            <a href="#" class="font-weight-bold text-dark-75 font-size-lg text-hover-primary">
+                                                                @if($item->type == 'back')
+                                                                    {{ __('Drop Off') }}
+                                                                @else
+                                                                    {{ __('Pick Up') }}
+                                                                @endif
+                                                            </a>
+                                                            <span class="text-muted">
+                                                                {{ $item->point->name }}
+                                                            </span>
+                                                        </div>
+                                                        <a href="#" class="symbol symbol-70 flex-shrink-0">
+                                                            <img src="{{ Session::get('cart')->image ? asset(Session::get('cart')->image->url) : asset('/img/image_placeholder.jpg') }}" title="" alt="">
+                                                        </a>
+                                                    </div>
+                                                    <!--end::Item-->
+                                                    @endforeach
+                                               
+                                                    <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 5px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
+                                                    <!--end::Scroll-->
+
+                                                    <!--begin::Summary-->
+                                                    <div class="p-8">
+                                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                                                        <span class="font-weight-bold text-muted font-size-sm mr-2">{{ __('Total') }}</span>
+                                                        <span class="font-weight-bolder text-dark-50 text-right">{{ Session::get('cart')->currency }} {{ Session::get('cart')->total }}</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-between mb-7">
+                                                        <span class="font-weight-bold text-muted font-size-sm mr-2">{{ __('Sous total') }}</span>
+                                                        <span class="font-weight-bolder text-primary text-right">{{ Session::get('cart')->currency }} {{ Session::get('cart')->subtotal }}</span>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <a href="{{ route('shop.checkout') }}" class="btn btn-primary text-weight-bold">{{ __('Payer maintenant') }}</a>
+                                                    </div>
+                                                </div>
+                                                <!--end::Summary-->
+                                            </form>
+                                        </div>
+                                        <!--end::Dropdown-->
+                                    </div>
+                                    <!--end::Cart-->
+                                    @endif
+                                    
+                                    @auth
                                     <!--begin::User-->
                                     <div class="topbar-item">
                                         <div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
                                             <div class="d-flex flex-column text-right pr-3">
-                                                <span class="text-white opacity-50 font-weight-bold font-size-sm d-none d-md-inline">Sean</span>
-                                                <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">UX Designer</span>
+                                                <span class="text-white opacity-50 font-weight-bold font-size-sm d-none d-md-inline">{{ auth()->user()->name }}</span>
+                                                <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">{{ auth()->user()->isAdmin() ? __('Administrator') : ( auth()->user()->isDriver() ? __('Driver') : __('Customer') ) }}</span>
                                             </div>
                                             <span class="symbol symbol-35">
                                                 <span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30">S</span>
@@ -278,67 +317,13 @@
                                         </div>
                                     </div>
                                     <!--end::User-->
+                                    @endauth
                                 </div>
                                 <!--end::Topbar-->
                             </div>
                             <!--end::Container-->
                         </div>
                         <!--end::Top-->
-                        
-                        <!--begin::Bottom-->
-                        <div class="header-bottom">
-                            <!--begin::Container-->
-                            <div class=" container-fluid ">
-                                <!--begin::Header Menu Wrapper-->
-                                <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
-                                    <!--begin::Header Menu-->
-                                    <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile  header-menu-layout-default ">
-                                        <!--begin::Header Nav-->
-                                        <ul class="menu-nav ">
-                                            <li class="menu-item menu-item-submenu menu-item-rel" data-menu-toggle="hover" aria-haspopup="true">
-                                                <a href="javascript:;" class="menu-link menu-toggle">
-                                                    <span class="menu-text">Tableau de bord</span>
-                                                    <span class="menu-desc">Recent Updates &amp; Reports</span>
-                                                    <i class="menu-arrow"></i>
-                                                </a>
-                                                <div class="menu-submenu menu-submenu-classic menu-submenu-left">
-                                                    <ul class="menu-subnav">
-                                                        <li class="menu-item " aria-haspopup="true"><a href="/metronic/preview/demo9/index.html" class="menu-link "><span class="menu-text">Latest Updated</span><span class="menu-desc"></span></a></li>
-                                                        <li class="menu-item " aria-haspopup="true"><a href="/metronic/preview/demo9/builder.html" class="menu-link "><span class="menu-text">Layout Builder</span><span class="menu-desc"></span></a></li>
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                            <li class="menu-item">
-                                                <a href="javascript:;" class="menu-link">
-                                                    <span class="menu-text">Commandes</span>
-                                                    <span class="menu-desc">Components &amp; Elements</span>
-                                                    <i class="menu-arrow"></i>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item">
-                                                <a href="javascript:;" class="menu-link">
-                                                    <span class="menu-text">Crud</span>
-                                                    <span class="menu-desc">Records &amp; Form Entries</span>
-                                                    <i class="menu-arrow"></i>
-                                                </a>
-                                            </li>
-                                            <li class="menu-item">
-                                                <a href="javascript:;" class="menu-link">
-                                                    <span class="menu-text">Pages</span>
-                                                    <span class="menu-desc">Custom Pages</span>
-                                                    <i class="menu-arrow"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <!--end::Header Nav-->
-                                    </div>
-                                    <!--end::Header Menu-->
-                                </div>
-                                <!--end::Header Menu Wrapper-->
-                            </div>
-                            <!--end::Container-->
-                        </div>
-                        <!--end::Bottom-->
                     </div>
                     <!--end::Header-->
 
@@ -412,13 +397,13 @@
 	    </div>
         <!--end::Main-->
         
+        @auth
         <!-- begin::User Panel-->
         <div id="kt_quick_user" class="offcanvas offcanvas-right p-10">
             <!--begin::Header-->
             <div class="offcanvas-header d-flex align-items-center justify-content-between pb-5">
                 <h3 class="font-weight-bold m-0">
-                    User Profile
-                    <small class="text-muted font-size-sm ml-2">12 messages</small>
+                    Profil
                 </h3>
                 <a href="#" class="btn btn-xs btn-icon btn-light btn-hover-primary" id="kt_quick_user_close">
                     <i class="ki ki-close icon-xs text-muted"></i>
@@ -431,22 +416,24 @@
                 <!--begin::Header-->
                 <div class="d-flex align-items-center mt-5">
                     <div class="symbol symbol-100 mr-5">
-                        <div class="symbol-label" style="background-image:url('/metronic/themes/metronic/theme/html/demo9/dist/assets/media/users/300_21.jpg')"></div>
+                        <div class="symbol-label" style="background-image:url('{{ auth()->user()->image ? asset(auth()->user()->image->url) : asset('/img/faces/avatar.jpg') }}')"></div>
                         <i class="symbol-badge bg-success"></i>
                     </div>
                     <div class="d-flex flex-column">
                         <a href="#" class="font-weight-bold font-size-h5 text-dark-75 text-hover-primary">
-                            James Jones
+                            {{ auth()->user()->name }}
                         </a>
                         <div class="text-muted mt-1">
-                            Application Developer
+                            {{ auth()->user()->isAdmin() ? __('Administrator') : ( auth()->user()->isDriver() ? __('Driver') : __('Customer') ) }}
                         </div>
                         <div class="navi mt-2">
+                            @if(auth()->user()->email)
                             <a href="#" class="navi-item">
                                 <span class="navi-link p-0 pb-2">
                                     <span class="navi-icon mr-1">
                                         <span class="svg-icon svg-icon-lg svg-icon-primary">
-                                            <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Communication/Mail-notification.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Communication/Mail-notification.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24"/>
                                                     <path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000"/>
@@ -455,11 +442,12 @@
                                             </svg><!--end::Svg Icon-->
                                         </span>
                                     </span>
-                                    <span class="navi-text text-muted text-hover-primary">jm@softplus.com</span>
+                                    <span class="navi-text text-muted text-hover-primary">{{ auth()->user()->email }}</span>
                                 </span>
                             </a>
+                            @endif
 
-                            <a href="#" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+                            <a href="{{ route('logout') }}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
                         </div>
                     </div>
                 </div>
@@ -472,7 +460,7 @@
                 <!--begin::Nav-->
                 <div class="navi navi-spacer-x-0 p-0">
                     <!--begin::Item-->
-                    <a href="/metronic/preview/demo9/custom/apps/user/profile-1/personal-information.html" class="navi-item">
+                    <a href="#" class="navi-item">
                         <div class="navi-link">
                             <div class="symbol symbol-40 bg-light mr-3">
                                 <div class="symbol-label">
@@ -488,11 +476,10 @@
                             </div>
                             <div class="navi-text">
                                 <div class="font-weight-bold">
-                                    My Profile
+                                    Mon Profil
                                 </div>
                                 <div class="text-muted">
-                                    Account settings and more
-                                    <span class="label label-light-danger label-inline font-weight-bold">update</span>
+                                    Voir les détails de mon compte
                                 </div>
                             </div>
                         </div>
@@ -500,7 +487,7 @@
                     <!--end:Item-->
 
                     <!--begin::Item-->
-                    <a href="/metronic/preview/demo9/custom/apps/user/profile-3.html"  class="navi-item">
+                    <a href="3"  class="navi-item">
                         <div class="navi-link">
                             <div class="symbol symbol-40 bg-light mr-3">
                                 <div class="symbol-label">
@@ -518,10 +505,10 @@
                             </div>
                             <div class="navi-text">
                                 <div class="font-weight-bold">
-                                    My Messages
+                                    Mes Commandes
                                 </div>
                                 <div class="text-muted">
-                                    Inbox and tasks
+                                    Voir la liste de toutes mes commandes
                                 </div>
                             </div>
                         </div>
@@ -529,7 +516,7 @@
                     <!--end:Item-->
 
                     <!--begin::Item-->
-                    <a href="/metronic/preview/demo9/custom/apps/user/profile-2.html"  class="navi-item">
+                    <a href="#"  class="navi-item">
                         <div class="navi-link">
                             <div class="symbol symbol-40 bg-light mr-3">
                                 <div class="symbol-label">
@@ -545,37 +532,10 @@
                             </div>
                             <div class="navi-text">
                                 <div class="font-weight-bold">
-                                    My Activities
+                                    Mes Activités
                                 </div>
                                 <div class="text-muted">
                                     Logs and notifications
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <!--end:Item-->
-
-                    <!--begin::Item-->
-                    <a href="/metronic/preview/demo9/custom/apps/userprofile-1/overview.html" class="navi-item">
-                        <div class="navi-link">
-                            <div class="symbol symbol-40 bg-light mr-3">
-                                <div class="symbol-label">
-                                    <span class="svg-icon svg-icon-md svg-icon-primary"><!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Communication/Mail-opened.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24"/>
-                                                <path d="M6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,12 C19,12.5522847 18.5522847,13 18,13 L6,13 C5.44771525,13 5,12.5522847 5,12 L5,3 C5,2.44771525 5.44771525,2 6,2 Z M7.5,5 C7.22385763,5 7,5.22385763 7,5.5 C7,5.77614237 7.22385763,6 7.5,6 L13.5,6 C13.7761424,6 14,5.77614237 14,5.5 C14,5.22385763 13.7761424,5 13.5,5 L7.5,5 Z M7.5,7 C7.22385763,7 7,7.22385763 7,7.5 C7,7.77614237 7.22385763,8 7.5,8 L10.5,8 C10.7761424,8 11,7.77614237 11,7.5 C11,7.22385763 10.7761424,7 10.5,7 L7.5,7 Z" fill="#000000" opacity="0.3"/>
-                                                <path d="M3.79274528,6.57253826 L12,12.5 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 Z" fill="#000000"/>
-                                            </g>
-                                        </svg><!--end::Svg Icon-->
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="navi-text">
-                                <div class="font-weight-bold">
-                                    My Tasks
-                                </div>
-                                <div class="text-muted">
-                                    latest tasks and projects
                                 </div>
                             </div>
                         </div>
@@ -587,6 +547,7 @@
             <!--end::Content-->
         </div>
         <!-- end::User Panel-->
+        @endauth
         	
         <!--begin::Scrolltop-->
         <div id="kt_scrolltop" class="scrolltop">
