@@ -40,7 +40,7 @@ class CashController extends Controller
         $request->session()->forget('cart');
 
         return response()->json([
-            'redirect' => route('shop.order'),
+            'redirect' => route('order.show', $order),
             'status' => 'success',
             'title' => 'Merci',
             'message' => 'Le paiement est bien effectué.'

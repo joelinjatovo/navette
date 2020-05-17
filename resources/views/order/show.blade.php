@@ -36,7 +36,7 @@
 
                                 <!--begin::Desc-->
                                 <div class="timeline-content font-weight-bolder text-dark-75">
-                                    {{ $item->point->name }}
+                                    {{ $model->club->name }}
                                 </div>
                                 <!--end::Desc-->
                             </div>
@@ -69,7 +69,7 @@
                                 <!--end::Badge-->
 
                                 <!--begin::Content-->
-                                <div class="timeline-content text-dark-50">{{ $model->club->name }}</div>
+                                <div class="timeline-content text-dark-50">{{ $item->point->name }}</div>
                                 <!--end::Content-->
                             </div>
                             <!--end::Item-->
@@ -118,7 +118,7 @@
                                 <!--end::Badge-->
 
                                 <!--begin::Content-->
-                                <div class="timeline-content text-dark-50">{{ $model->club->name }}</div>
+                                <div class="timeline-content text-dark-50">{{ $item->point->name }}</div>
                                 <!--end::Content-->
                             </div>
                             <!--end::Item-->
@@ -151,7 +151,7 @@
 
                                 <!--begin::Desc-->
                                 <div class="timeline-content font-weight-bolder text-dark-75">
-                                    {{ $item->point->name }}
+                                    {{ $model->club->name }}
                                 </div>
                                 <!--end::Desc-->
                             </div>
