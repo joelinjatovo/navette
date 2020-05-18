@@ -25,7 +25,11 @@ class ProfileController extends Controller
      */
     public function show(Request $request)
     {
-        return view('account.show', ['user' => $request->user()]);
+        if($request->user()->isAdmin()){
+            return view('admin.account.show', ['user' => $request->user()]);
+        }
+        
+        return view('customer.account.show', ['user' => $request->user()]);
     }
     
     /**

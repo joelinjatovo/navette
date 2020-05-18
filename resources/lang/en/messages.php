@@ -3,6 +3,7 @@
 return [
     'action' => 'Action',
     'actions' => 'Actions',
+    'account' => 'Account',
     'admin' => 'Admin',
     'amount' => 'Amount',
     'apikey' => 'API Key',
@@ -80,6 +81,8 @@ return [
     'phone' => 'Phone',
     'phones' => 'Phones',
     'products' => 'Products',
+    'profile' => 'Profile',
+    'profile.edit' => 'Edit Profile',
     'price' => 'Price',
     'prices' => 'Prices',
     'ride' => 'Ride',
