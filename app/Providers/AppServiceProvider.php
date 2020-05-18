@@ -7,6 +7,8 @@ use App\Models\Club;
 use App\Models\CarModel;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\GoogleApiService;
+use App\Services\ImageUploader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -47,7 +49,8 @@ class AppServiceProvider extends ServiceProvider
         // Google API
         $this->app->singleton(GoogleApiService::class);
         
-        //
+        $this->app->bind(ImageUploader::class);
+        
         $this->app->bind(\App\Services\ProcessorInterface::class, \App\Services\RideProcessor::class);
         
         View::composer(['admin.car.create', 'admin.car.edit'], function ($view) {

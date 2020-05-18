@@ -7,11 +7,18 @@ use App\Http\Requests\StoreUser as StoreUserRequest;
 use App\Http\Requests\UpdateUser as UpdateUserRequest;
 use App\Models\User;
 use App\Models\Image;
+use App\Services\ImageUploader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    private $uploader;
+    
+    public function __construct(ImageUploader $uploader)
+    {
+        $this->uploader = $uploader;
+    }
     
     /**
      * Show the list of all user
@@ -65,23 +72,7 @@ class UserController extends Controller
         
         if($user->save()){
             $user->roles()->attach($validated['roles']);
-            
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                if ($file->isValid()) {
-                    $name = md5(time()).'.'.$file->extension();
-                    $path = $file->storeAs('uploads',  'users/' . $user->getKey() . '/' . $name);
-
-                    $image = new Image([
-                        'url' => $path, 
-                        'type' => $file->getClientMimeType(), 
-                        'name' => $file->getClientOriginalName()
-                    ]);
-
-                    $user->image()->save($image);
-                }
-            }
-            
+            $this->uploader->upload('image', $user);
             return back()->with("success", trans('messages.controller.success.user.created'));
         }else{
             return back()->with("error",  trans('messages.controller.error'));
@@ -117,23 +108,7 @@ class UserController extends Controller
         
         if($user->save()){
             $user->roles()->sync($validated['roles']);
-            
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                if ($file->isValid()) {
-                    $name = md5(time()).'.'.$file->extension();
-                    $path = $file->storeAs('uploads',  'users/' . $user->getKey() . '/' . $name);
-
-                    $image = new Image([
-                        'url' => $path, 
-                        'type' => $file->getClientMimeType(), 
-                        'name' => $file->getClientOriginalName()
-                    ]);
-
-                    $user->image()->save($image);
-                }
-            }
-            
+            $this->uploader->upload('image', $user);
             return back()->with("success", trans('messages.controller.success.user.updated'));
         }
         
