@@ -10,6 +10,7 @@ return [
     'apikeys' => 'API Keys',
     'apikeys.list' => 'API Keys List',
     'button' => [
+        'back' => 'Back',
         'change' => 'Change',
         'save' => 'Save',
         'update' => 'Update',
@@ -28,7 +29,11 @@ return [
     'customers' => 'Customers',
     'count' => [
         'places' => '{0} No place|{1} One place|[2,*] :value places',
+        'total' => '{0} There are none|{1} There is one|[2,*] :count Total',
     ],
+    'controller.error' => 'Une erreur s\est produite. Veuillez réessayer s\'il vous plaît!',
+    'controller.success.user.created' => 'Le compte a été bien créé avec succès.',
+    'controller.success.user.updated' => 'Le compte a été bien mis à jour avec succès.',
     'dashboard' => 'Dashboard',
     'date' => 'Date',
     'dates' => 'Dates',
@@ -83,6 +88,7 @@ return [
     'rides.list' => 'Rides List',
     'role' => 'Role',
     'roles' => 'Roles',
+    'search' => 'Search',
     'settings' => 'Settings',
     'success' => [
         'club' => [
@@ -111,6 +117,7 @@ return [
     'total' => 'Total',
     'users' => 'Users',
     'user.create' => 'Add user',
+    'user.edit' => 'Edit user',
     'user.update' => 'Update user',
     'users.list' => 'Users List',
 ];

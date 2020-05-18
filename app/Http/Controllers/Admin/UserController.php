@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUser as StoreUserRequest;
 use App\Http\Requests\UpdateUser as UpdateUserRequest;
 use App\Models\User;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -54,16 +55,37 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        // Retrieve the validated input data...
         $validated = $request->validated();
         $user = new User([
-            'name' => $request->get('name'),
-            'phone' => $request->get('phone'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password'))
+            'name' => $validated['name'],
+            'phone' => $validated['phone'],
+            'email' => $validated['email'],
+            'password' => Hash::make($request->get($validated['password']))
         ]);
-        //$request->get('user_role');
-        return $user->save() ? view('admin.user.create', ['success' => 'Utilisateur ajouté!' ]) : view('admin.user.create', ['error' => 'Erreur, réessayez plus tard.' ]); 
+        
+        if($user->save()){
+            $user->roles()->attach($validated['roles']);
+            
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                if ($file->isValid()) {
+                    $name = md5(time()).'.'.$file->extension();
+                    $path = $file->storeAs('uploads',  'users/' . $user->getKey() . '/' . $name);
+
+                    $image = new Image([
+                        'url' => $path, 
+                        'type' => $file->getClientMimeType(), 
+                        'name' => $file->getClientOriginalName()
+                    ]);
+
+                    $user->image()->save($image);
+                }
+            }
+            
+            return back()->with("success", trans('messages.controller.success.user.created'));
+        }else{
+            return back()->with("error",  trans('messages.controller.error'));
+        }
     }
     
     /**
@@ -86,8 +108,36 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        // Retrieve the validated input data...
         $validated = $request->validated();
+        $user->fill([
+            'name' => $validated['name'],
+            'phone' => $validated['phone'],
+            'email' => $validated['email'],
+        ]);
+        
+        if($user->save()){
+            $user->roles()->sync($validated['roles']);
+            
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                if ($file->isValid()) {
+                    $name = md5(time()).'.'.$file->extension();
+                    $path = $file->storeAs('uploads',  'users/' . $user->getKey() . '/' . $name);
+
+                    $image = new Image([
+                        'url' => $path, 
+                        'type' => $file->getClientMimeType(), 
+                        'name' => $file->getClientOriginalName()
+                    ]);
+
+                    $user->image()->save($image);
+                }
+            }
+            
+            return back()->with("success", trans('messages.controller.success.user.updated'));
+        }
+        
+        return back()->with("error",  trans('messages.controller.error'));
     }
 
     /**

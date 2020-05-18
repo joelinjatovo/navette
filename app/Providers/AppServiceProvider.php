@@ -64,6 +64,10 @@ class AppServiceProvider extends ServiceProvider
             $view->with('clubs', Club::with('point')->get());
         });
         
+        View::composer(['admin.user.create', 'admin.user.edit'], function ($view) {
+            $view->with('roles', Role::all());
+        });
+        
         
     }
 }
