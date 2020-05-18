@@ -37,8 +37,8 @@ Route::middleware(['auth'])->group(function () {
         return redirect('login');
     });
 
-    Route::get('profile', 'Account\ProfileController@show')->name('profile');
-    Route::post('profile', 'Account\ProfileController@update');
+    Route::get('account/profile', 'Account\ProfileController@show')->name('profile');
+    Route::post('account/profile', 'Account\ProfileController@update');
 
     Route::get('notifications', 'Account\NotificationController@index')->name('notifications');
     Route::get('notifications/unread', 'Account\NotificationController@unread')->name('notifications.unread');

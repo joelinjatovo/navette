@@ -346,6 +346,7 @@
                                         </div>
                                     </div>
                                 @endif
+                                
                                 @if(Session::has('success'))
                                     <div class="alert alert-custom alert-success fade show mb-5" role="alert">
                                         <div class="alert-icon"><i class="flaticon-warning"></i></div>
