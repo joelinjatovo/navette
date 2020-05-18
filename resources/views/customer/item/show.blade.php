@@ -136,23 +136,32 @@
 @endsection
 
 @section('javascript')
-<script src="https://js.pusher.com/6.0/pusher.min.js"></script>
 <script>
 var zoom = {{env('MAP_ZOOM', 15)}};
 var uluru = {lat: {{ env('DEFAULT_LOCATION_LAT', -18.00) }}, lng: {{ env('DEFAULT_LOCATION_LNG', 47.00) }}};
 var map;
 var marker;
+var poly;
+var geodesicPoly;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {mapTypeControl: false, center: uluru, zoom: zoom});
     marker = new google.maps.Marker({draggable: true, position: uluru, map: map});
+    poly = new google.maps.Polyline({
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+        map: map,
+    });
+
+    geodesicPoly = new google.maps.Polyline({
+        strokeColor: '#CC0099',
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+        geodesic: true,
+        map: map
+    });
 }
-// Enable pusher logging - don't include this in production
-Pusher.logToConsole = true;
-var pusher = new Pusher('{{ env("PUSHER_APP_KEY") }}', {
-    cluster: '{{ env("PUSHER_APP_CLUSTER") }}', 
-    authEndpoint: '/broadcasting/auth',
-    auth: {headers: {'X-CSRF-Token': "{{ csrf_token() }}"}}
-});
+
 /**
 * Test driver location tracker from public channels
 var channel = pusher.subscribe('my-channel');
@@ -166,34 +175,60 @@ channel.bind('user.point.created', function(data) {
     marker = new google.maps.Marker({draggable: true, position: {lat:point.lat, lng:point.lng}, map: map});
 });
 */
-
-var itemChannel = pusher.subscribe('private-App.Item.{{ $model->getKey() }}');
-itemChannel.bind('item.updated', function(data) {
-    // Set driver location
-    console.log(JSON.stringify(data));
-    loadItem();
+window.Pusher.logToConsole = true;
+    
+    /*
+window.Echo.channel('my-channel')
+.listen('.user.point.created', (e) => {
+    console.log("my-channel");
+    console.log(e);
 });
+    */
 
-var rideChannel;
+window.Echo.private('App.Item.{{ $model->getKey() }}')
+    .listen('.item.updated', (e) => {
+        console.log(e);
+        loadItem();
+    });
+
+var rideChannel = false;
 var driverMarker;
 function loadItem(){
     KTApp.blockPage();
     jQuery.get(window.location.pathname)
-        .done(function( data ) {
+        .done(function( response ) {
             KTApp.unblockPage();
-            console.log(data);
-            
-            if(!rideChannel && data.ride){
+            console.log(response);
+            if(!rideChannel && response.data.ride && (response.data.item.status!=='canceled') ){
                 // Track driver location
-                rideChannel = pusher.subscribe('private-App.Ride.' + data.ride.id);
-                rideChannel.bind('user.point.created', function(res) {
-                    console.log(res);
-                    var point = res.point;
-                    if(driverMarker){
-                        driverMarker.setMap(null);
-                    }
-                    driverMarker = new google.maps.Marker({draggable: true, position: {lat:point.lat, lng:point.lng}, map: map});
-                });
+                rideChannel = true;
+                window.Echo.private('App.Ride.' + response.data.ride.id)
+                    .listen('.user.point.created', (e) => {
+                        console.log(e);
+                        var point = e.point;
+                        if(driverMarker){
+                            driverMarker.setMap(null);
+                        }
+                        driverMarker = new google.maps.Marker({draggable: true, position: {lat:point.lat, lng:point.lng}, map: map});
+                        
+                        var position = new google.maps.LatLng(point.lat, point.lng);
+                        //if(path && google.maps.geometry.poly.isLocationOnEdge(position, poly)){
+                        if(path){
+                            console.log("In path");
+                            geodesicPoly.setPath([path[0], position]);
+                        }
+                    });
+            }else if(rideChannel && response.data.ride){
+                Echo.leaveChannel('App.Ride.' + response.data.ride.id);
+                rideChannel = false;
+                if(driverMarker){
+                    driverMarker.setMap(null);
+                }
+            }
+        
+            if(poly && response.data.ride){
+                path = google.maps.geometry.encoding.decodePath(response.data.ride.direction);
+                poly.setPath(path);
             }
         })
         .fail(function() {
@@ -206,5 +241,5 @@ jQuery(document).ready(function(){
     loadItem();
 });
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=geometry&callback=initMap" async defer></script>
 @endsection

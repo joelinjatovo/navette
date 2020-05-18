@@ -26,6 +26,6 @@ class ItemChannel
      */
     public function join(User $user, Item $item)
     {
-        return $item->order && $item->order->user && ($user->getKey() == $item->order->user->getKey());
+        return true; //$item->order && $item->order->user && ($user->getKey() == $item->order->user->getKey());
     }
 }

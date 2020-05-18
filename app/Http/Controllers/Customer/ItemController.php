@@ -26,7 +26,7 @@ class ItemController extends Controller
             return new ItemItemResource($item);
         }
         
-        return view('item.show', ['model' => $item, 'order' => $order]);
+        return view('customer.item.show', ['model' => $item, 'order' => $order]);
     }
     
     /**
