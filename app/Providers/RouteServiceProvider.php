@@ -34,7 +34,7 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot();
         
-        Route::model('user', App\User::class);
+        Route::model('user', \App\Models\User::class);
         Route::bind('order', function ($value) {
             return \App\Models\Order::where('id', $value)->firstOrFail();
         });
