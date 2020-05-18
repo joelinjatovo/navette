@@ -227,3 +227,10 @@
     <!--begin::Card body-->
 </div>
 @endsection
+
+@section('javascript')
+<script type="text/javascript">
+var KTUserEdit={init:function(){new KTImageInput("kt_user_edit_avatar")}};
+jQuery(document).ready(function(){KTUserEdit.init()});
+</script>
+@endsection
