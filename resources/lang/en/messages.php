@@ -34,6 +34,7 @@ return [
     ],
     'controller.error' => 'Une erreur s\est produite. Veuillez réessayer s\'il vous plaît!',
     'controller.success.user.created' => 'Le compte a été bien créé avec succès.',
+    'controller.success.user.deleted' => 'Le compte a été bien supprimé avec succès.',
     'controller.success.user.updated' => 'Le compte a été bien mis à jour avec succès.',
     'dashboard' => 'Dashboard',
     'date' => 'Date',

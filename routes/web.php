@@ -71,10 +71,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('user/{user}', 'Admin\UserController@show')->name('user.show');
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('user.edit');
         Route::post('user/{user}/edit', 'Admin\UserController@update');
-        Route::post('user/{user}/delete', 'Admin\UserController@delete');
         Route::post('user/delete_ajax', 'Admin\UserController@delete_ajax')->name('user.ajax.delete');
         Route::post('user/edit_ajax', 'Admin\UserController@edit_ajax')->name('user.ajax.edit');
         Route::post('user/edit_modal', 'Admin\UserController@edit_modal')->name('user.modal.edit');
+        Route::delete('users', 'Admin\UserController@delete');
         
         Route::get('clubs', 'Admin\ClubController@index')->name('clubs');
         Route::get('club', 'Admin\ClubController@create')->name('club.create');

@@ -56,7 +56,6 @@
 @endsection
 
 @section('content')
-
 <div class="row">
     <div class="col-md-12">
         <!--begin::Card-->
@@ -183,7 +182,7 @@
             }).then(function(e){
                 if(e.value){
                     KTApp.blockPage();
-                    axios.delete('/admin/user/' + $this.attr('data-id'))
+                    axios.delete('{{ route("admin.users") }}', {data:{id: $this.attr('data-id')}})
                         .then(res => {
                             KTApp.unblockPage();
                             var type = "danger";

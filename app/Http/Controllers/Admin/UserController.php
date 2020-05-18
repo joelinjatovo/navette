@@ -122,13 +122,15 @@ class UserController extends Controller
      * @param  string  $id
      * @return Response
      */
-    public function delete(User $user)
+    public function delete(Request $request)
     {
+        $user = User::findOrFail($request->input('id'));
+        
         $user->delete();
 
         return response()->json([
-            'code' => 200,
             'status' => "success",
+            'message' => trans('messages.controller.success.user.deleted'),
         ]);
     }
 
