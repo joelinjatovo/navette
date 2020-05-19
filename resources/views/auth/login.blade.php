@@ -14,7 +14,7 @@
 			<!--begin::Login Header-->
 			<div class="d-flex flex-center mb-15">
 				<a href="/">
-					<img src="/img/logo-letter-9.png" class="max-h-75px" alt=""/>
+					<img src="/img/logo-white.png" class="max-h-75px" alt=""/>
 				</a>
 			</div>
 			<!--end::Login Header-->
@@ -50,6 +50,13 @@
 						<button id="kt_login_signin_submit" class="btn btn-pill btn-primary opacity-90 px-15 py-3">{{ __('Se connecter') }}</button>
 					</div>
 				</form>
+
+                <hr class="bg-white">
+                <div class="text-center">
+                    <small class="d-block">Ou se connecter avec</small>
+                    <a href="login/facebook" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2"><i class="fab fa-facebook"></i>{{ __('acebook') }}</a>
+                </div>   
+                <hr class="bg-white">
 				<div class="mt-10">
 					<span class="opacity-40 mr-4">
 						{{ __('Vous n\'êtes pas encore inscrit?') }}
@@ -103,6 +110,11 @@
 						<button id="kt_login_signup_cancel" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">{{ __('Annuler') }}</button>
 					</div>
 				</form>
+                <hr class="bg-white">
+                <div class="text-center">
+                    <small class="d-block">Ou s'inscrire avec</small>
+                    <a href="login/facebook" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2"><i class="fab fa-facebook"></i>{{ __('acebook') }}</a>
+                </div>    
 			</div>
 			<!--end::Login Sign up form-->
 

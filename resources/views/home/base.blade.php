@@ -7,27 +7,94 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+    <style>
+    li.dropdown {
+        color: #fff;
+        display: block;
+        float: left;
+        position: relative;
+        transition-duration: 0.5s;
+    }
+    li.dropdown p{
+      margin-top: 13px;
+      margin-bottom: 13px;
+      padding-bottom: 12px;
+      padding-top: 12px;
+    }
+    li.dropdown p i{
+      font-size: 22px;
+    }
+
+    ul li.dropdown ul {
+        background: #0bb783bd;
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        transition: all 0.5s ease;
+        left: 0;
+        display: none;
+        min-width: 150px;
+    }
+
+    ul li.dropdown:hover > ul,
+    ul li.dropdown:focus-within > ul,
+    ul li.dropdown ul:hover,
+    ul li.dropdown ul:focus {
+      visibility: visible;
+      opacity: 1;
+      display: block;
+      width: max-content;
+      padding: 10px;
+    }
+
+    ul li.dropdown ul li {
+      clear: both;
+      width: 100%;
+      list-style:none;
+    }
+    .btn-green{
+      color: #fff;
+      background-color: #04aa77!important;
+      border-color: #04aa77!important;
+    }
+    .btn-white{
+      color: #04aa77;
+      background-color: #fff!important;
+      border-color: #fff!important;
+    }
+    </style>
+
+    <link rel="shortcut icon" href="/favicon.png"/>
     @yield('stylesheet')
 
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg py-0 navbar-dark" style="background-color: #04040475;">
+  <nav class="navbar navbar-expand-lg py-0 navbar-dark" style="background-color: #0bb783bd;">
       <div class="container">
-        <a class="navbar-brand px-1 py-1 my-0 mx-0" href="#"><img src="{{ asset('img') }}/logo150x150.png" class="header-logo"></a>
+        <a class="navbar-brand px-1 py-1 my-0 mx-0" href="#"><img src="/img/logo-white.png" class="header-logo"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarsExample07">
           <ul class="navbar-nav ml-auto mr-0">
+            @auth
+            <li class="nav-item dropdown">
+              <p aria-haspopup="true" class="small text-white nav-link"><i class="far fa-user"></i>&nbsp;Mon compte</p>
+              <ul class="dropdown" aria-label="submenu">
+                <li><i class="fas fa-tachometer-alt"></i>&nbsp;<a class="text-white small mb-2" href="/customer">Panel</a></li>
+                <li><i class="fas fa-sign-out-alt"></i>&nbsp;<a class="text-white small mb-2" href="{{ route('logout') }}">Déconnexion</a></li>
+              </ul>
+            </li>
+            @endauth
             <li class="nav-item">
               <a class="nav-link small text-white" href="#"><i class="fas fa-envelope"></i>&nbsp;contact@navetteclub.com</a>
             </li>

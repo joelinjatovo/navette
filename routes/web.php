@@ -19,8 +19,6 @@ Route::get('/', function () {return view('home/index');});
 Route::get('/home', function () {return view('home/index');});
 Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
 Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallback');
-Route::get('register/success', function () {return view('auth/success');})->name('register.success');
-Route::get('register/error', function () {return view('auth/error');})->name('register.error');
 
 Route::get('order', 'Shop\IndexController@create')->name('shop.order');
 Route::post('order', 'Shop\IndexController@store')->name('shop.order');

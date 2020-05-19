@@ -9,6 +9,7 @@
 
         <!--begin::Fonts-->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
         <!--end::Fonts-->
         
         <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -26,7 +27,7 @@
         <!--begin::Layout Themes(used by all pages)-->
         <!--end::Layout Themes-->
 
-        <link rel="shortcut icon" href="/favicon.ico"/>
+        <link rel="shortcut icon" href="/favicon.png"/>
 
     </head>
     <!--end::Head-->
