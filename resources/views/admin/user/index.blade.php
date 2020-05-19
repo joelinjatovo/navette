@@ -138,36 +138,4 @@
 @endsection
 
 @section('javascript')
-<script>
-    $(document).ready(function() {
-        $(document).on('click', '.btn-delete', function() {
-            var $this = $(this);
-            swal.fire({
-                title:"Vous êtes sûre?",
-                text:"Vous ne pourez pas revenir en arrière après!",
-                type:"warning",
-                showCancelButton:!0,
-                confirmButtonText:"Oui, supprimez le!",
-                cancelButtonText:"Annuler"
-            }).then(function(e){
-                if(e.value){
-                    KTApp.blockPage();
-                    axios.delete('{{ route("admin.users") }}', {data:{id: $this.attr('data-id')}})
-                        .then(res => {
-                            KTApp.unblockPage();
-                            var type = "danger";
-                            if (res.data.status === "success"){
-                                $this.closest('tr').remove();
-                                type = "success";
-                            }
-                            $.notify({icon:"add_alert", message:res.data.message}, {type:type});
-                        }).catch(err => {
-                            KTApp.unblockPage();
-                            $.notify({icon:"add_alert", message:"Une erreur s'est produite."}, {type:"danger"});
-                        })
-                }
-            })
-        });
-    });
-</script>
 @endsection

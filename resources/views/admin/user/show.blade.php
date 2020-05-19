@@ -137,7 +137,7 @@
                                         </div>
                                         <div>
                                             <a href="{{ route('admin.order.show', $order) }}" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $order->club ? $order->club->name : '' }}</a>
-                                            <span class="text-muted font-weight-bold d-block"></span>
+                                            <span class="text-muted font-weight-bold d-block">{{ $order->created_at->diffForHumans() }}</span>
                                         </div>
                                     </div>
                                 </td>

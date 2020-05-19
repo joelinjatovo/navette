@@ -114,6 +114,11 @@ return [
             'deleted' => 'Car deleted with success!',
         ],
     ],
+    'swal.delete.title' => 'Vous êtes sûre?',
+    'swal.delete.content' => 'Vous ne pourez pas revenir en arrière après!',
+    'swal.delete.confirm' => 'Oui, supprimez!',
+    'swal.delete.cancel' => 'Annuler',
+    'swal.error' => 'Une erreur s\est produite. Veuillez réessayer s\'il vous plaît!',
     'title' => [
         'show' => [
             'driver' => 'Show the driver',
