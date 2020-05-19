@@ -15,6 +15,8 @@ return [
         'call' => 'Call',
         'change' => 'Change',
         'contact' => 'Contact',
+        'delete' => 'Delete',
+        'edit' => 'Edit',
         'save' => 'Save',
         'update' => 'Update',
     ],

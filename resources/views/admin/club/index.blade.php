@@ -49,6 +49,7 @@
                         <tr class="datatable-row" style="left: 0px;">
                             <th data-field="RecordID" class="datatable-cell-left datatable-cell datatable-cell-sort datatable-cell-sorted" data-sort="asc"><span style="width: 40px;">#</span></th>
                             <th data-field="{{ __('messages.clubs') }}" class="datatable-cell datatable-cell-sort"><span style="width: 250px;">{{ __('messages.clubs') }}</span></th>
+                            <th data-field="{{ __('messages.orders') }}" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.orders') }}</span></th>
                             <th data-field="{{ __('messages.date') }}" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.date') }}</span></th>
                             <th data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.actions') }}</span></th>
                         </tr>
@@ -59,7 +60,7 @@
                             <td class="datatable-cell-sorted datatable-cell-left datatable-cell" data-field="RecordID" aria-label="350">
                                 <span style="width: 40px;"><span class="font-weight-bolder">{{ $model->id }}</span></span>
                             </td>
-                            <td data-field="{{ __('messages.users') }}" aria-label="Czech Republic" class="datatable-cell">
+                            <td data-field="{{ __('messages.clubs') }}" aria-label="Czech Republic" class="datatable-cell">
                                 <span style="width: 250px;">    
                                     <div class="d-flex align-items-center">
                                         <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
@@ -76,15 +77,20 @@
                                     </div>
                                 </span>
                             </td>
-                            <td data-field="{{ __('Date') }}" aria-label="6/29/2017" class="datatable-cell">
+                            <td data-field="{{ __('messages.orders') }}" aria-label="" class="datatable-cell">
                                 <span style="width: 130px;">
-                                    <div class="font-weight-bolder text-primary mb-0">{{ $model->created_at }}</div>
+                                    <div class="text-primary mb-0">{{ trans_choice('messages.count.orders', $model->orders_count, ['value' => $model->orders_count]) }}</div>
+                                </span>
+                            </td>
+                            <td data-field="{{ __('Date') }}" aria-label="{{ $model->created_at }}" class="datatable-cell">
+                                <span style="width: 130px;">
+                                    <div class="text-primary mb-0">{{ $model->created_at->diffForHumans() }}</div>
                                     <div class="text-muted">{{ $model->status }}</div>
                                 </span>
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 130px;">	                        
-                                    <a href="{{ route('admin.club.edit', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
+                                    <a href="{{ route('admin.club.edit', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.edit') }}">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -95,7 +101,7 @@
                                             </svg>
                                         </span>
                                     </a>
-                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  data-id="{{ $model->getKey() }}" title="Delete" >
+                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  data-id="{{ $model->getKey() }}" title="{{ __('messages.button.delete') }}" >
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -131,36 +137,4 @@
 @endsection
 
 @section('javascript')
-<script>
-    $(document).ready(function() {
-        $(document).on('click', '.btn-delete', function() {
-            var $this = $(this);
-            swal.fire({
-                title:"Vous êtes sûre?",
-                text:"Vous ne pourez pas revenir en arrière après!",
-                type:"warning",
-                showCancelButton:!0,
-                confirmButtonText:"Oui, supprimez le!",
-                cancelButtonText:"Annuler"
-            }).then(function(e){
-                if(e.value){
-                    KTApp.blockPage();
-                    axios.delete('{{ route("admin.clubs") }}', {data:{id: $this.attr('data-id')}})
-                        .then(res => {
-                            KTApp.unblockPage();
-                            var type = "danger";
-                            if (res.data.status === "success"){
-                                $this.closest('tr').remove();
-                                type = "success";
-                            }
-                            $.notify({icon:"add_alert", message:res.data.message}, {type:type});
-                        }).catch(err => {
-                            KTApp.unblockPage();
-                            $.notify({icon:"add_alert", message:"Une erreur s'est produite."}, {type:"danger"});
-                        })
-                }
-            })
-        });
-    });
-</script>
 @endsection

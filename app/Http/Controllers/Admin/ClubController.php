@@ -24,9 +24,11 @@ class ClubController extends Controller
         if(!empty($s)){
             $s = '%'.$s.'%';
             $clubs = Club::orWhere('name', 'LIKE', $s)
+                        ->withCount('orders')
                         ->paginate();
         }else{
-            $clubs = Club::paginate();
+            $clubs = Club::withCount('orders')
+                        ->paginate();
         }
         
         return view('admin.club.index', ['models' => $clubs]);
