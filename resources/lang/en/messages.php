@@ -124,4 +124,5 @@ return [
     'user.edit' => 'Edit user',
     'user.update' => 'Update user',
     'users.list' => 'Users List',
+    'user.view' => 'View user',
 ];

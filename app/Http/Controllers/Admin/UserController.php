@@ -25,9 +25,18 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate();
+        $s = $request->get('s');
+        if(!empty($s)){
+            $s = '%'.$s.'%';
+            $users = User::orWhere('name', 'LIKE', $s)
+                        ->orWhere('phone', 'LIKE', $s)
+                        ->orWhere('email', 'LIKE', $s)
+                        ->paginate();
+        }else{
+            $users = User::paginate();
+        }
         
         return view('admin.user.index', ['models' => $users]);
     }
