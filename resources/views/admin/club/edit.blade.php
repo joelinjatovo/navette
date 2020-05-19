@@ -1,3 +1,3 @@
 @extends('admin.club.create')
 
-@section('content.title'){{ __('messages.form.club.edit') }}@endsection
+@section('title'){{ __('messages.club.edit') }}@endsection

@@ -63,11 +63,16 @@ return [
         'image' => [
             'select' => 'Select Image',
         ],
-        'placeholder' => [
+        'point' => [
             'alt' => 'Altitude',
             'lat' => 'Latitude',
             'lng' => 'Longitide',
         ],
+    ],
+    'placeholder' => [
+        'alt' => 'Altitude',
+        'lat' => 'Latitude',
+        'lng' => 'Longitide',
     ],
     'list' => 'Liste',
     'models' => 'Models',

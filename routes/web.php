@@ -82,7 +82,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('club/{club}', 'Admin\ClubController@show')->name('club.show');
         Route::get('club/{club}/edit', 'Admin\ClubController@edit')->name('club.edit');
         Route::post('club/{club}/edit', 'Admin\ClubController@update');
-        Route::delete('club/{club}', 'Admin\ClubController@delete')->name('club.delete');
+        Route::delete('clubs', 'Admin\ClubController@delete');
         
         Route::get('cars', 'Admin\CarController@index')->name('cars');
         Route::get('car', 'Admin\CarController@create')->name('car.create');

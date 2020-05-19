@@ -18,9 +18,16 @@ class ClubController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clubs = Club::paginate();
+        $s = $request->get('s');
+        if(!empty($s)){
+            $s = '%'.$s.'%';
+            $clubs = Club::orWhere('name', 'LIKE', $s)
+                        ->paginate();
+        }else{
+            $clubs = Club::paginate();
+        }
         
         return view('admin.club.index', ['models' => $clubs]);
     }
