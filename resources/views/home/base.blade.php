@@ -14,62 +14,6 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/home.css') }}" rel="stylesheet">
-    <style>
-    li.dropdown {
-        color: #fff;
-        display: block;
-        float: left;
-        position: relative;
-        transition-duration: 0.5s;
-    }
-    li.dropdown p{
-      margin-top: 13px;
-      margin-bottom: 13px;
-      padding-bottom: 12px;
-      padding-top: 12px;
-    }
-    li.dropdown p i{
-      font-size: 22px;
-    }
-
-    ul li.dropdown ul {
-        background: #0bb783bd;
-        visibility: hidden;
-        opacity: 0;
-        position: absolute;
-        transition: all 0.5s ease;
-        left: 0;
-        display: none;
-        min-width: 150px;
-    }
-
-    ul li.dropdown:hover > ul,
-    ul li.dropdown:focus-within > ul,
-    ul li.dropdown ul:hover,
-    ul li.dropdown ul:focus {
-      visibility: visible;
-      opacity: 1;
-      display: block;
-      width: max-content;
-      padding: 10px;
-    }
-
-    ul li.dropdown ul li {
-      clear: both;
-      width: 100%;
-      list-style:none;
-    }
-    .btn-green{
-      color: #fff;
-      background-color: #04aa77!important;
-      border-color: #04aa77!important;
-    }
-    .btn-white{
-      color: #04aa77;
-      background-color: #fff!important;
-      border-color: #fff!important;
-    }
-    </style>
 
     <link rel="shortcut icon" href="/favicon.png"/>
     @yield('stylesheet')
