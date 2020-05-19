@@ -114,7 +114,7 @@
                                             <div class="symbol-label" style="background-image: url('{{ $order->user && $order->user->image ? asset($order->user->image->url) : asset('img/avatar.png') }}')"></div>
                                         </div>
                                         <div>
-                                            <a href="{{ $order->user ? route('admin.user.show', $order->user) : '' }}" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $order->user ? $order->user->name : '' }}</a>
+                                            <a href="{{ $order->user ? route('admin.user.show', $order->user) : '#' }}" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $order->user ? $order->user->name : '' }}</a>
                                             <span class="text-muted font-weight-bold d-block">{{ $order->user ? $order->user->role() : '' }}</span>
                                         </div>
                                     </div>
@@ -175,7 +175,7 @@
 
                         <!--begin::Text-->
                         <div class="d-flex flex-column flex-grow-1">
-                            <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">{{ $car->name }}</a>
+                            <a href="{{ route('admin.car.show', $car) }}" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">{{ $car->name }}</a>
                             <span class="text-muted font-weight-bold">{{ $car->driver ? $car->driver->name : ''}}</span>
                         </div>
                         <!--end::Text-->
