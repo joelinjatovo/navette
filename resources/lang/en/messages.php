@@ -27,6 +27,7 @@ return [
     'club' => 'Club',
     'club.create' => 'Add club',
     'club.edit' => 'Edit club',
+    'club.view' => 'View club',
     'clubs' => 'Clubs',
     'clubs.list' => 'Clubs List',
     'confirm' => 'Confirm',
@@ -67,6 +68,7 @@ return [
             'image' => 'Club Image',
             'name' => 'Club Name',
             'location' => 'Club Location',
+            'view' => 'View club',
         ],
         'image' => [
             'select' => 'Select Image',
