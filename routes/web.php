@@ -88,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('car/{car}', 'Admin\CarController@show')->name('car.show');
         Route::get('car/{car}/edit', 'Admin\CarController@edit')->name('car.edit');
         Route::post('car/{car}/edit', 'Admin\CarController@update');
-        Route::delete('car/{car}', 'Admin\CarController@delete')->name('car.delete');
+        Route::delete('cars', 'Admin\CarController@delete');
         
         Route::get('orders', 'Admin\OrderController@index')->name('orders');
         Route::get('order', 'Admin\OrderController@create')->name('order.create');

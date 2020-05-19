@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCar as StoreCarRequest;
 use App\Http\Requests\UpdateCar as UpdateCarRequest;
 use App\Models\Car;
 use App\Models\Image;
+use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
@@ -16,9 +17,24 @@ class CarController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cars = Car::paginate();
+        $s = $request->get('s');
+        if(!empty($s)){
+            $s = '%'.$s.'%';
+            $cars = Car::orWhere('name', 'LIKE', $s)
+                        ->withCount('orders')
+                        ->with('model')
+                        ->with('driver')
+                        ->with('club')
+                        ->paginate();
+        }else{
+            $cars = Car::withCount('orders')
+                        ->with('model')
+                        ->with('driver')
+                        ->with('club')
+                        ->paginate();
+        }
         
         return view('admin.car.index', ['models' => $cars]);
     }
@@ -130,20 +146,18 @@ class CarController extends Controller
     }
 
     /**
-     * Delete the specified car.
+     * Delete the specified club.
      *
      * @param Request  $request
-     * @param Car $car
      * @return Response
      */
-    public function delete(Car $car)
+    public function delete(Request $request)
     {
+        $car = Car::findOrFail($request->input('id'));
         $car->delete();
-
         return response()->json([
-            'code' => 200,
             'status' => "success",
-            'message' => __('messages.success.car.deleted'),
+            'message' => trans('messages.controller.success.car.deleted'),
         ]);
     }
 }
