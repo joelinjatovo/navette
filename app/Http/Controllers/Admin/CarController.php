@@ -7,10 +7,18 @@ use App\Http\Requests\StoreCar as StoreCarRequest;
 use App\Http\Requests\UpdateCar as UpdateCarRequest;
 use App\Models\Car;
 use App\Models\Image;
+use App\Services\ImageUploader;
 use Illuminate\Http\Request;
 
 class CarController extends Controller
 {
+    
+    private $uploader;
+    
+    public function __construct(ImageUploader $uploader)
+    {
+        $this->uploader = $uploader;
+    }
     
     /**
      * Show the list of all car
@@ -69,32 +77,18 @@ class CarController extends Controller
      */
     public function store(StoreCarRequest $request)
     {
-        // Retrieve the validated input data...
         $validated = $request->validated();
-        
-        $car = new Car($validated['car']);
-        $car->car_model_id = $request->input('car.model');
-        $car->driver_id = $request->input('car.driver');
-        $car->club_id = $request->input('car.club');
+        $car = new Car($validated);
+        $car->car_model_id = $request->input('model');
+        $car->driver_id = $request->input('driver');
+        $car->club_id = $request->input('club');
         $car->save();
-        
-        if ($request->hasFile('car.image')) {
-            $file = $request->file('car.image');
-            if ($file->isValid()) {
-                $name = md5(time()).'.'.$file->extension();
-                $path = $file->storeAs('uploads',  'cars/' . $car->getKey() . '/' . $name);
-                
-                $image = new Image([
-                    'url' => $path, 
-                    'type' => $file->getClientMimeType(), 
-                    'name' => $file->getClientOriginalName()
-                ]);
-                
-                $car->image()->save($image);
-            }
+        if($car->save()){
+            $this->uploader->upload('image', $car);
+            return back()->with("success", trans('messages.controller.success.car.created'));
+        }else{
+            return back()->with("error",  trans('messages.controller.error'));
         }
-        
-        return back()->withInput()->with('success', __('messages.success.car.stored'));
     }
     
     /**
@@ -117,32 +111,17 @@ class CarController extends Controller
      */
     public function update(UpdateCarRequest $request, Car $car)
     {
-        // Retrieve the validated input data...
         $validated = $request->validated();
-        
-        $car->fill($validated['car']);
-        $car->car_model_id = $request->input('car.model');
-        $car->driver_id = $request->input('car.driver');
-        $car->club_id = $request->input('car.club');
-        $car->save();
-        
-        if ($request->hasFile('car.image')) {
-            $file = $request->file('car.image');
-            if ($file->isValid()) {
-                $name = md5(time()).'.'.$file->extension();
-                $path = $file->storeAs('uploads',  'cars/' . $car->getKey() . '/' . $name);
-                
-                $image = new Image([
-                    'url' => $path, 
-                    'type' => $file->getClientMimeType(), 
-                    'name' => $file->getClientOriginalName()
-                ]);
-                
-                $car->image()->save($image);
-            }
+        $car->fill($validated);
+        $car->car_model_id = $request->input('model');
+        $car->driver_id = $request->input('driver');
+        $car->club_id = $request->input('club');
+        if($car->save()){
+            $this->uploader->upload('image', $car);
+            return back()->with("success", trans('messages.controller.success.car.updated'));
+        }else{
+            return back()->with("error",  trans('messages.controller.error'));
         }
-        
-        return back()->withInput()->with('success', __('messages.success.car.update'));
     }
 
     /**
