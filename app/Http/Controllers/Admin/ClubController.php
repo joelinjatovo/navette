@@ -8,10 +8,18 @@ use App\Http\Requests\UpdateClub as UpdateClubRequest;
 use App\Models\Club;
 use App\Models\Image;
 use App\Models\Point;
+use App\Services\ImageUploader;
 use Illuminate\Http\Request;
 
 class ClubController extends Controller
 {
+    
+    private $uploader;
+    
+    public function __construct(ImageUploader $uploader)
+    {
+        $this->uploader = $uploader;
+    }
     
     /**
      * Show the list of all user
@@ -67,30 +75,18 @@ class ClubController extends Controller
         $validated = $request->validated();
         
         $point = new Point($validated['point']);
-        $point->name = $validated['club']['name'];
+        $point->name = $validated['name'];
         $point->save();
         
-        $model = new Club($validated['club']);
+        $model = new Club($validated);
         $model->point()->associate($point);
-        $model->save();
         
-        if ($request->hasFile('club.image')) {
-            $file = $request->file('club.image');
-            if ($file->isValid()) {
-                $name = md5(time()).'.'.$file->extension();
-                $path = $file->storeAs('uploads',  'clubs/' . $model->getKey() . '/' . $name);
-                
-                $image = new Image([
-                    'url' => $path, 
-                    'type' => $file->getClientMimeType(), 
-                    'name'=>$file->getClientOriginalName()
-                ]);
-                
-                $model->image()->save($image);
-            }
+        if($model->save()){
+            $this->uploader->upload('image', $model);
+            return back()->with("success", trans('messages.controller.success.club.created'));
+        }else{
+            return back()->with("error",  trans('messages.controller.error'));
         }
-        
-        return back()->withInput()->with('success', __('messages.success.club.stored'));
     }
     
     /**
@@ -120,52 +116,33 @@ class ClubController extends Controller
             $point = new Point();
         }
         $point->fill($validated['point']);
-        $point->name = $validated['club']['name'];
+        $point->name = $validated['name'];
         $point->save();
         
-        $club->fill($validated['club']);
+        $club->fill($validated);
         $club->point()->associate($point);
-        $club->save();
         
-        if ($request->hasFile('club.image')) {
-            $file = $request->file('club.image');
-            if ($file->isValid()) {
-                $name = md5(time()).'.'.$file->extension();
-                $path = $file->storeAs('uploads',  'clubs/' . $club->getKey() . '/' . $name);
-                
-                $data = [
-                    'url' => $path, 
-                    'type' => $file->getClientMimeType(), 
-                    'name' => $file->getClientOriginalName()
-                ];
-                $image = $club->image;
-                if(!$image){
-                    $image = new Image($data);
-                    $club->image()->save($image);
-                }else{
-                    $image->fill($data);
-                    $club->image()->save($image);
-                }
-                
-            }
+        if($club->save()){
+            $this->uploader->upload('image', $club);
+            return back()->with("success", trans('messages.controller.success.club.updated'));
+        }else{
+            return back()->with("error",  trans('messages.controller.error'));
         }
-        
-        return back()->withInput()->with('success', __('messages.success.club.updated'));
     }
 
     /**
-     * Delete the specified user.
+     * Delete the specified club.
      *
      * @param Request  $request
      * @return Response
      */
-    public function delete(Request $request, Club $club)
+    public function delete(Request $request)
     {
+        $club = Club::findOrFail($request->input('id'));
         $club->delete();
         return response()->json([
-            'code' => 200,
             'status' => "success",
-            'message' => __('messages.success.club.deleted'),
+            'message' => trans('messages.controller.success.club.deleted'),
         ]);
     }
 

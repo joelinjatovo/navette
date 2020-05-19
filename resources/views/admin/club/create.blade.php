@@ -82,8 +82,8 @@
                     <div class="form-group row">
                         <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.point.lat') }}</label>
                         <div class="col-9">
-                            <input class="form-control form-control-lg form-control-solid @error('point.lat') is-invalid @enderror" type="text" name="point[lat]" id="point_lat" placeholder="{{ __('messages.form.point.lat') }}" value="{{ old('point.name', $model->point ? $model->point->alt: '') }}">
-                            @error('point.name')
+                            <input class="form-control form-control-lg form-control-solid @error('point.lat') is-invalid @enderror" type="text" name="point[lat]" id="point_lat" placeholder="{{ __('messages.form.point.lat') }}" value="{{ old('point.lat', $model->point ? $model->point->lat: '') }}">
+                            @error('point.lat')
                                 <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
                             @enderror
                         </div>
@@ -94,8 +94,8 @@
                     <div class="form-group row">
                         <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.point.lng') }}</label>
                         <div class="col-9">
-                            <input class="form-control form-control-lg form-control-solid @error('point.lng') is-invalid @enderror" type="text" name="point[lng]" id="point_lng" placeholder="{{ __('messages.form.point.lng') }}" value="{{ old('point.name', $model->point ? $model->point->alt: '') }}">
-                            @error('point.name')
+                            <input class="form-control form-control-lg form-control-solid @error('point.lng') is-invalid @enderror" type="text" name="point[lng]" id="point_lng" placeholder="{{ __('messages.form.point.lng') }}" value="{{ old('point.lng', $model->point ? $model->point->lng: '') }}">
+                            @error('point.lng')
                                 <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
                             @enderror
                         </div>
@@ -113,7 +113,7 @@
 
 @section('javascript')
 <script type="text/javascript">
-var KTUserEdit={init:function(){new KTImageInput("kt_club_edit_image")}};
-jQuery(document).ready(function(){KTUserEdit.init()});
+var KTClubEdit={init:function(){new KTImageInput("kt_club_edit_image")}};
+jQuery(document).ready(function(){KTClubEdit.init()});
 </script>
 @endsection
