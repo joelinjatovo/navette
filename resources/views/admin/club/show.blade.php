@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+
 @section('title'){{ __('messages.club.view') }}@endsection
 
 @section('subheader')
