@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Role;
 use Socialite;
 
 class LoginController extends Controller
@@ -62,20 +63,32 @@ class LoginController extends Controller
     public function handleProviderCallback($provider)
     {
         try {
+            
             $user = Socialite::driver($provider)->user();
+
             if(isset($user->user['id'])){
-                $result = User::where(['email' => $user->user['email'], 'facebook_id' => $user->user['id']  ])->first();
-                if(is_null($result)){
-                    $u = new User([
-                        'name' => $user->user['name'],
-                        'email' => $user->user['email'],
-                        'facebook_id' => $user->user['id'],
-                        'password' => Hash::make(uniqid()),
-                    ]);
-                    return $u->save() ? redirect()->route('register.success') : redirect()->route('register.error') ;
+                
+                $u = User::where('facebook_id', $user->user['id'])->first();
+                if(!$u){
+                    $u = User::where('email', $user->user['email'])->first();
+                    if(!$u){
+                        $u = User::create([
+                            'name' => $user->user['name'],
+                            'email' => $user->user['email'],
+                            'facebook_id' => $user->user['id'],
+                            'password' => Hash::make(uniqid()),
+                        ]);
+                        $u->save();
+                        $role = Role::where('name', Role::CUSTOMER)->first();
+                        if($role){
+                            $u->roles()->save($role);
+                        }    
+                    }
                 }
 
-                return redirect('/login'); 
+                auth()->login($u);
+                return redirect('/home');
+    
             }
             
         } catch (Exception $e) {
