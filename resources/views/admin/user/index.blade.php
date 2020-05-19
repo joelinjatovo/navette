@@ -71,8 +71,8 @@
                                             @endif
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{ $model->name }}</div>
-                                            <a href="#" class="text-muted font-weight-bold text-hover-primary">{{ $model->phone }}</a>
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model) }}">{{ $model->name }}</a></div>
+                                            <a href="{{ route('admin.user.show', $model) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->phone }}</a>
                                         </div>
                                     </div>
                                 </span>
@@ -80,7 +80,7 @@
                             <td data-field="{{ __('messages.email') }}" aria-label="61957-1072" class="datatable-cell">
                                 <span style="width: 250px;">
                                     <div class="font-size-lg mb-0">{{ $model->email }}</div>
-                                    <div class="text-muted">{{ $model->isAdmin() ? __('Administrator') : ( $model->isDriver() ? __('Driver') : __('Customer') ) }}</div>
+                                    <div class="text-muted">{{ $model->isAdmin() ? __('messages.admin') : ( $model->isDriver() ? __('messages.driver') : __('messages.customer') ) }}</div>
                                 </span>
                             </td>
                             <td data-field="{{ __('Date') }}" aria-label="6/29/2017" class="datatable-cell">
@@ -91,7 +91,7 @@
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 130px;">	                        
-                                    <a href="{{ route('admin.user.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
+                                    <a href="{{ route('admin.user.edit', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="Edit details">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
