@@ -14,9 +14,23 @@ class OrderController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::paginate();
+        $s = $request->get('s');
+        if(!empty($s)){
+            $s = '%'.$s.'%';
+            $orders = Order::join('users', 'users.id', '=', 'orders.user_id')
+						->join('clubs', 'clubs.id', '=', 'orders.club_id')
+						->orWhere('clubs.name', 'LIKE', $s)
+						->orWhere('users.name', 'LIKE', $s)
+                        ->orWhere('users.phone', 'LIKE', $s)
+                        ->orWhere('users.email', 'LIKE', $s)
+						->with('user')
+						->with('club')
+                        ->paginate();
+        }else{
+	        $orders = Order::with('user')->with('club')->paginate();
+        }
         
         return view('admin.order.index', ['models' => $orders]);
     }
