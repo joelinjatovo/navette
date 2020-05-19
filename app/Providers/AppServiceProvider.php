@@ -9,11 +9,11 @@ use App\Models\Role;
 use App\Models\User;
 use App\Services\GoogleApiService;
 use App\Services\ImageUploader;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -71,6 +71,9 @@ class AppServiceProvider extends ServiceProvider
             $view->with('roles', Role::all());
         });
         
+        
+        // View components
+        //Blade::component('app-search', \App\View\Components\Search::class);
         
     }
 }
