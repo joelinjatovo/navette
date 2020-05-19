@@ -55,7 +55,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-		$orders = $car->orders()->paginate();
+        $orders = $car->orders()->with('user')->paginate();
         return view('admin.car.show', ['model' => $car, 'orders' => $orders]);
     }
     
