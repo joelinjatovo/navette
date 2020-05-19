@@ -14,9 +14,23 @@ class RideController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $rides = Ride::all();
+        $s = $request->get('s');
+        if(!empty($s)){
+            $s = '%'.$s.'%';
+            $rides = Ride::join('users', 'users.id', '=', 'rides.driver_id')
+						->join('cars', 'cars.id', '=', 'rides.car_id')
+						->orWhere('cars.name', 'LIKE', $s)
+						->orWhere('users.name', 'LIKE', $s)
+                        ->orWhere('users.phone', 'LIKE', $s)
+                        ->orWhere('users.email', 'LIKE', $s)
+						->with('driver')
+						->with('car')
+                        ->paginate();
+        }else{
+	        $rides = Ride::with('driver')->with('car')->paginate();
+        }
         
         return view('admin.ride.index', ['models' => $rides]);
     }

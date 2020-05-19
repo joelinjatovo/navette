@@ -93,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('order/{order}', 'Admin\OrderController@show')->name('order.show');
         Route::get('order/{order}/edit', 'Admin\OrderController@edit')->name('order.edit');
         Route::post('order/{order}/edit', 'Admin\OrderController@update');
-        Route::delete('order/{order}', 'Admin\OrderController@delete')->name('order.delete');
+        Route::delete('orders', 'Admin\OrderController@delete');
         
         Route::get('rides', 'Admin\RideController@index')->name('rides');
         Route::get('ride', 'Admin\RideController@create')->name('ride.create');
@@ -101,7 +101,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ride/{ride}', 'Admin\RideController@show')->name('ride.show');
         Route::get('ride/{ride}/edit', 'Admin\RideController@edit')->name('ride.edit');
         Route::post('ride/{ride}/edit', 'Admin\RideController@update');
-        Route::post('ride/{ride}/delete', 'Admin\RideController@delete')->name('ride.delete');
+        Route::delete('rides', 'Admin\RideController@delete');
         
         Route::get('apikeys', 'Admin\ApiKeyController@index')->name('apikeys');
         Route::get('apikey', 'Admin\ApiKeyController@create')->name('apikey.create');
