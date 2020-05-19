@@ -12,7 +12,9 @@ return [
     'apikeys.list' => 'API Keys List',
     'button' => [
         'back' => 'Back',
+        'call' => 'Call',
         'change' => 'Change',
+        'contact' => 'Contact',
         'save' => 'Save',
         'update' => 'Update',
     ],
@@ -31,6 +33,7 @@ return [
     'count' => [
         'places' => '{0} No place|{1} One place|[2,*] :value places',
         'total' => '{0} There are none|{1} There is one|[2,*] :count Total',
+        'orders' => '{0} There are none|{1} There is one|[2,*] :count Orders',
     ],
     'controller.error' => 'Une erreur s\est produite. Veuillez réessayer s\'il vous plaît!',
     'controller.success.user.created' => 'Le compte a été bien créé avec succès.',
@@ -123,7 +126,9 @@ return [
             'car' => 'Remove this car',
         ],
     ],
+    'status' => 'Status',
     'total' => 'Total',
+    'type' => 'Type',
     'users' => 'Users',
     'user.create' => 'Add user',
     'user.edit' => 'Edit user',

@@ -49,7 +49,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.user.show', ['model' => $user]);
+        $orders = $user->orders()->paginate();
+        return view('admin.user.show', ['model' => $user, 'orders' => $orders]);
     }
     
     /**
