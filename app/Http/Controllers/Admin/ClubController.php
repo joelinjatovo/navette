@@ -51,7 +51,8 @@ class ClubController extends Controller
     public function show(Club $club)
     {
         $orders = $club->orders()->with('user')->paginate();
-        return view('admin.club.show', ['model' => $club, 'orders' => $orders]);
+        $cars = $club->cars()->with('driver')->get();
+        return view('admin.club.show', ['model' => $club, 'orders' => $orders, 'cars' => $cars]);
     }
     
     /**

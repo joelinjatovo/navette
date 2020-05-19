@@ -80,7 +80,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-8">
         <!--begin::Row-->
         <div class="card card-custom gutter-b">
             <!--begin::Header-->
@@ -148,6 +148,47 @@
             <!--end::Footer-->
         </div>
         <!--end::Row-->
+    </div>
+    <div class="col-lg-4">
+        <!--begin::List Widget 8-->
+        <div class="card card-custom card-stretch gutter-b">
+            <!--begin::Header-->
+            <div class="card-header border-0">
+                <h3 class="card-title font-weight-bolder text-dark">{{ __('messages.cars') }}</h3>
+            </div>
+            <!--end::Header-->
+
+            <!--begin::Body-->
+            <div class="card-body pt-0">
+                @foreach($cars as $car)
+                <!--begin::Item-->
+                <div class="mb-10">
+                    <!--begin::Section-->
+                    <div class="d-flex align-items-center">
+                        <!--begin::Symbol-->
+                        <div class="symbol symbol-45 symbol-light mr-5">
+                            <span class="symbol-label">
+                                <img src="{{ $car->image ? asset($car->image->url) : asset('img/car.jpg') }}" class="h-50 align-self-center" alt="">
+                            </span>
+                        </div>
+                        <!--end::Symbol-->
+
+                        <!--begin::Text-->
+                        <div class="d-flex flex-column flex-grow-1">
+                            <a href="#" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">{{ $car->name }}</a>
+                            <span class="text-muted font-weight-bold">{{ $car->driver ? $car->driver->name : ''}}</span>
+                        </div>
+                        <!--end::Text-->
+                    </div>
+                    <!--end::Section-->
+                </div>
+                <!--end::Item-->
+                @endforeach
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end: Card-->
+        <!--end::List Widget 8-->
     </div>
 </div>
 @endsection
