@@ -19,6 +19,7 @@
             <!--begin::User Name-->
             <div class="d-flex align-items-center" id="kt_subheader_search">
                 <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">#{{ $model->getKey() }}</span>
+				<span class="label label-inline label-light-danger font-weight-bolder ml-4">{{ $model->status() }}</span>
             </div>
             <!--end::User Name-->
 
@@ -30,6 +31,24 @@
             <!--begin::Button-->
             <a href="{{ route('admin.rides') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2"><i class="la la-arrow-left"></i> {{ __('messages.button.back') }}</a>
             <!--end::Button-->
+			
+			@if($model->cancelable())
+			<!--begin::Button-->
+			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			<!--end::Button-->
+			@endif
+			
+			@if($model->activable())
+			<!--begin::Button-->
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-active" data-id="{{ $model->getKey() }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
+			<!--end::Button-->
+			@endif
+			
+			@if($model->completable())
+			<!--begin::Button-->
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-complete" data-id="{{ $model->getKey() }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
+			<!--end::Button-->
+			@endif
             
             <!--begin::Button-->
             <a href="{{ route('admin.ride.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-plus"></i> {{ __('messages.ride.create') }}</a>
@@ -133,21 +152,42 @@
     <!--begin::Content-->
     <div class="flex-row-fluid ml-lg-8">
 		
-        @foreach($items as $item)
+		<div class="col-lg-12 col-xxl-12 mb-8">
+			<!--begin:Amount -->
+			<div class="card-body d-flex flex-column p-0" style="position: relative;">
+				<div class="card-spacer bg-white card-rounded flex-grow-1">
+					<!--begin::Row-->
+					<div class="row m-0">
+						<div class="col px-8 py-6 mr-4 ml-4">
+							<div class="font-size-sm text-muted font-weight-bold">{{ __('messages.distance') }}</div>
+							<div class="font-size-h4 font-weight-bolder">{{ $model->distance }} m</div>
+						</div>
+						<div class="col px-8 py-6 mr-4 ml-4">
+							<div class="font-size-sm text-muted font-weight-bold">{{ __('messages.duration') }}</div>
+							<div class="font-size-h4 font-weight-bolder">{{ gmdate('H:i:s', $model->duration) }}</div>
+						</div>
+					</div>
+					<!--end::Row-->
+				</div>
+			</div>
+			<!--end:Amount -->
+		</div>
+		
+        @foreach($points as $point)
 			<div class="col-lg-12 col-xxl-12">
 				<!--begin::List Widget 9-->
 				<div class="card card-custom card-stretch gutter-b">
 					<!--begin::Body-->
 					<div class="card-body align-items-center border-0 mt-2 mb-2">
 						<div class="d-flex align-items-center justify-content-between flex-grow-1">
-							@if($item->order && $item->order->user)
+							@if($point->user)
 							<div class="d-flex align-items-center">
 								<div class="symbol symbol-50 symbol-light mr-4 pt-0">
-									<img src="{{ $item->order->user->image ? asset($item->order->user->image->url) : asset('img/avatar.png') }}" class="h-75 align-self-end" alt="">
+									<img src="{{ $point->user->image ? asset($point->user->image->url) : asset('img/avatar.png') }}" class="h-75 align-self-end" alt="">
 								</div>
 								<div>
-									<a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $item->order->user->name }}</a>
-									@if($item->type == 'back')
+									<a href="#" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $point->user->name }}</a>
+									@if($point->pivot->type == 'drop')
 										<span class="text-dark-50 font-weight-bolder d-block">{{ __('messages.dropoff') }}</span>
 									@else
 										<span class="text-dark-50 font-weight-bolder d-block">{{ __('messages.pickup') }}</span>
@@ -169,28 +209,84 @@
 									</span>
 									<span class="pulse-ring"></span>
 								</a>
-								@if($item->type == 'back')
+								@if($point->pivot->type == 'drop')
 									<span class="text-dark-75 font-weight-bolder font-size-h3">{{ __('messages.dropoff') }}</span>
 								@else
 									<span class="text-dark-75 font-weight-bolder font-size-h3">{{ __('messages.pickup') }}</span>
 								@endif
 							</div>
 							@endif
-							<div class="d-inline-flex align-items-right">
-								<div class="font-weight-boldest text-danger mr-4">{{ $item->duration }}</div>
-								<div class="font-weight-boldest text-warning mr-4">{{ $item->distance }}</div>
-								<span class="label label-inline label-light-danger font-weight-bolder">{{ $item->status }}</span>
+							<div class="d-inline-flex align-items-right align-items-center">
+								<div class="font-weight-boldest text-danger mr-4">{{ $point->pivot->duration }}</div>
+								<div class="font-weight-boldest text-warning mr-4">{{ $point->pivot->distance }}</div>
+								<span class="label label-inline label-light-danger font-weight-bolder mr-4">{{ $point->pivot->status() }}</span>
+								<div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="{{ __('messages.options') }}">
+									<a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										<i class="ki ki-bold-more-ver"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-md dropdown-menu-right" x-placement="bottom-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-217px, -340px, 0px);">
+										<!--begin::Navigation-->
+										<ul class="navi navi-hover py-5">
+											@if($point->user)
+												@if($point->user->email)
+												<li class="navi-item">
+													<a href="mailto:{{ $point->user->email }}" class="navi-link">
+														<span class="navi-icon"><i class="flaticon2-envelope"></i></span>
+														<span class="navi-text">{{ __('messages.button.contact') }}</span>
+													</a>
+												</li>
+												@endif
+												@if($point->user->email)
+													<li class="navi-item">
+														<a href="tel:{{ $point->user->phone }}" class="navi-link">
+															<span class="navi-icon"><i class="flaticon2-phone"></i></span>
+															<span class="navi-text">{{ __('messages.button.call') }}</span>
+														</a>
+													</li>
+												@endif
+											@endif
+											@if($point->pivot->cancelable() || $point->pivot->arrivable() || $point->pivot->finishable()):
+												<li class="navi-separator my-3"></li>
+											@endif
+											@if($point->pivot->arrivable())
+											<li class="navi-item">
+												<a href="#" class="navi-link btn-arrive" data-id="{{ $point->pivot->id }}">
+													<span class="navi-icon"><i class="flaticon-cancel"></i></span>
+													<span class="navi-text">{{ __('messages.button.arrive') }}</span>
+												</a>
+											</li>
+											@endif
+											@if($point->pivot->cancelable())
+											<li class="navi-item">
+												<a href="#" class="navi-link btn-cancel" data-id="{{ $point->pivot->id }}">
+													<span class="navi-icon"><i class="flaticon-cancel"></i></span>
+													<span class="navi-text">{{ __('messages.button.cancel') }}</span>
+												</a>
+											</li>
+											@endif
+											@if($point->pivot->finishable())
+											<li class="navi-item">
+												<a href="#" class="navi-link btn-complete" data-id="{{ $point->pivot->id }}">
+													<span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
+													<span class="navi-text">{{ __('messages.button.complete') }}</span>
+												</a>
+											</li>
+											@endif
+										</ul>
+										<!--end::Navigation-->
+									</div>
+								</div>
 							</div>
 						</div>
 						
-						@if($item->point)
+						@if($point)
 						<div class="timeline timeline-2 mt-3">
 							<div class="timeline-bar"></div>
 							<!--begin::Item-->
 							<div class="timeline-item">
 								<div class="timeline-badge bg-danger"></div>
 								<div class="timeline-content text-dark-50">
-									{{ $item->point->name }}
+									{{ $point->name }}
 								</div>
 							</div>
 							<!--end::Item-->

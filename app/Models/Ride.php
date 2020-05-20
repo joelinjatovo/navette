@@ -60,6 +60,22 @@ class Ride extends Model
     }
     
     /**
+     * Get status string
+     */
+    public function status()
+    {
+		switch($this->status){
+			case self::STATUS_PING: return trans('messages.status.ping');
+			case self::STATUS_ACTIVE: return trans('messages.status.active');
+			case self::STATUS_COMPLETABLE: return trans('messages.status.completable');
+			case self::STATUS_COMPLETED: return trans('messages.status.completed');
+			case self::STATUS_CANCELABLE: return trans('messages.status.cancelable');
+			case self::STATUS_CANCELED: return trans('messages.status.canceled');
+		}
+        return trans('messages.status.unknown');
+    }
+    
+    /**
      * Get the card associated with the race.
      */
     public function car()
@@ -220,7 +236,7 @@ class Ride extends Model
      */
     public function cancelable()
     {
-        return self::STATUS_COMPLETED != $this->status;
+        return !in_array($this->status, [self::STATUS_COMPLETED, self::STATUS_CANCELED]);
     }
     
     /**

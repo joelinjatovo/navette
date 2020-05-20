@@ -193,7 +193,7 @@
 							<div class="d-inline-flex align-items-right">
 								<div class="font-weight-boldest text-danger mr-4">{{ $item->duration }}</div>
 								<div class="font-weight-boldest text-warning mr-4">{{ $item->distance }}</div>
-								<span class="label label-inline label-light-danger font-weight-bolder">{{ $item->status }}</span>
+								<span class="label label-inline label-light-danger font-weight-bolder">{{ $item->status() }}</span>
 							</div>
 						</div>
 						<div class="timeline timeline-2 mt-3">
