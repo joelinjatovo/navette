@@ -64,7 +64,7 @@
                                             @endif
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.club.show', $model) }}">{{ $model->club->name }}</a></div>
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.club.show', $model->club) }}">{{ $model->club->name }}</a></div>
                                         </div>
                                     </div>
 									@endif
@@ -82,7 +82,7 @@
                                             @endif
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model) }}">{{ $model->user->name }}</a></div>
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model->user) }}">{{ $model->user->name }}</a></div>
                                             <a href="{{ route('admin.user.show', $model->user) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->user->phone }}</a>
                                         </div>
                                     </div>
@@ -97,7 +97,10 @@
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 130px;">	                        
-                                    <a href="{{ route('admin.order.edit', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.edit') }}">
+                                    <a href="{{ route('admin.order.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
+                                        <i class="la la-eye"></i>
+                                    </a>
+									<a href="{{ route('admin.order.edit', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.edit') }}">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

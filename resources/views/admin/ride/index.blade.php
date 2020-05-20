@@ -64,7 +64,7 @@
                                             @endif
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.car.show', $model) }}">{{ $model->car->name }}</a></div>
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.car.show', $model->car) }}">{{ $model->car->name }}</a></div>
 											@if($model->car->model)
                                             <a href="{{ route('admin.car.show', $model->car) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->car->model->name }}</a>
 											@endif
@@ -85,7 +85,7 @@
                                             @endif
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model) }}">{{ $model->driver->name }}</a></div>
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model->driver) }}">{{ $model->driver->name }}</a></div>
                                             <a href="{{ route('admin.user.show', $model->driver) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->driver->phone }}</a>
                                         </div>
                                     </div>

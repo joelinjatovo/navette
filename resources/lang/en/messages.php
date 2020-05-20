@@ -54,6 +54,7 @@ return [
     'dates' => 'Dates',
     'driver' => 'Driver',
     'drivers' => 'Drivers',
+    'dropoff' => 'Drop Off',
     'email' => 'Email',
     'form' => [
         'car' => [
@@ -87,6 +88,11 @@ return [
             'lat' => 'Latitude',
             'lng' => 'Longitide',
         ],
+        'order' => [
+            'create' => 'Add Order',
+            'edit' => 'Edit Order',
+            'view' => 'View Order',
+        ],
     ],
     'placeholder' => [
         'alt' => 'Altitude',
@@ -98,9 +104,11 @@ return [
     'name' => 'Name',
     'order' => 'Order',
     'order.create' => 'Add order',
+    'order.edit' => 'Edit order',
     'orders' => 'Orders',
     'orders.list' => 'Orders List',
     'password' => 'Password',
+    'pickup' => 'Pick Up',
     'place' => 'Place',
     'places' => 'Places',
     'phone' => 'Phone',
@@ -118,6 +126,7 @@ return [
     'roles' => 'Roles',
     'search' => 'Search',
     'settings' => 'Settings',
+    'subtotal' => 'Subtotal',
     'success' => [
         'club' => [
             'stored' => 'Club stored successfully!',
