@@ -93,6 +93,11 @@ return [
             'edit' => 'Edit Order',
             'view' => 'View Order',
         ],
+        'ride' => [
+            'create' => 'Add Ride',
+            'edit' => 'Edit Ride',
+            'view' => 'View Ride',
+        ],
     ],
     'placeholder' => [
         'alt' => 'Altitude',
@@ -120,6 +125,7 @@ return [
     'prices' => 'Prices',
     'ride' => 'Ride',
     'ride.create' => 'Add ride',
+    'ride.edit' => 'Edit ride',
     'rides' => 'Rides',
     'rides.list' => 'Rides List',
     'role' => 'Role',

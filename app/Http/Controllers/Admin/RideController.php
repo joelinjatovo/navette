@@ -43,7 +43,8 @@ class RideController extends Controller
      */
     public function show(Ride $ride)
     {
-        return view('admin.ride.show', ['model' => $ride]);
+		$items = $ride->items()->with('order')->with('order.user')->get();
+        return view('admin.ride.show', ['model' => $ride, 'items' => $items]);
     }
     
     /**

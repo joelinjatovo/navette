@@ -1,1 +1,1 @@
-@extends('layouts.admin.user.create')
+@extends('layouts.admin.ride.create')
