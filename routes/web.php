@@ -103,6 +103,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('ride/{ride}/edit', 'Admin\RideController@update');
         Route::delete('rides', 'Admin\RideController@delete');
         
+        Route::get('items', 'Admin\ItemController@index')->name('items');
+        Route::get('item', 'Admin\ItemController@create')->name('item.create');
+        Route::post('item', 'Admin\ItemController@store');
+        Route::get('item/{item}', 'Admin\ItemController@show')->name('item.show');
+        Route::get('item/{item}/edit', 'Admin\ItemController@edit')->name('item.edit');
+        Route::post('item/{item}/edit', 'Admin\ItemController@update');
+        Route::delete('items', 'Admin\itemController@delete');
+        
         Route::get('apikeys', 'Admin\ApiKeyController@index')->name('apikeys');
         Route::get('apikey', 'Admin\ApiKeyController@create')->name('apikey.create');
         Route::post('apikey', 'Admin\ApiKeyController@store');

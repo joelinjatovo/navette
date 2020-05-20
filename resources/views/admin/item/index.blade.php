@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title'){{ __('messages.orders.list') }}@endsection
+@section('title'){{ __('messages.items.list') }}@endsection
 
 @section('subheader')
 <div class="subheader py-2 py-lg-4  subheader-solid " id="kt_subheader">
@@ -9,7 +9,7 @@
         <div class="d-flex align-items-center flex-wrap mr-2">
 			
             <!--begin::Title-->
-            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.orders.list') }}</h5>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.items.list') }}</h5>
             <!--end::Title-->
 
             <!--begin::Separator-->
@@ -40,7 +40,7 @@
                     <thead class="datatable-head">
                         <tr class="datatable-row" style="left: 0px;">
                             <th data-field="RecordID" class="datatable-cell-left datatable-cell datatable-cell-sort datatable-cell-sorted" data-sort="asc"><span style="width: 40px;">#</span></th>
-                            <th data-field="{{ __('messages.clubs') }}" class="datatable-cell datatable-cell-sort"><span style="width: 250px;">{{ __('messages.clubs') }}</span></th>
+                            <th data-field="{{ __('messages.points') }}" class="datatable-cell datatable-cell-sort"><span style="width: 250px;">{{ __('messages.points') }}</span></th>
                             <th data-field="{{ __('messages.users') }}" class="datatable-cell datatable-cell-sort"><span style="width: 250px;">{{ __('messages.users') }}</span></th>
                             <th data-field="{{ __('messages.date') }}" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.date') }}</span></th>
                             <th data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.actions') }}</span></th>
@@ -52,19 +52,13 @@
                             <td class="datatable-cell-sorted datatable-cell-left datatable-cell" data-field="RecordID" aria-label="350">
                                 <span style="width: 40px;"><span class="font-weight-bolder">{{ $model->id }}</span></span>
                             </td>
-                            <td data-field="{{ __('messages.clubs') }}" aria-label="" class="datatable-cell">
+                            <td data-field="{{ __('messages.points') }}" aria-label="" class="datatable-cell">
                                 <span style="width: 250px;">
-									@if($model->club)
+									@if($model->point)
                                     <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-                                            @if($model->club->image)
-                                                <img class="" src="{{ asset($model->club->image->url) }}" alt="photo">
-                                            @else
-                                                <span class="symbol-label font-size-h4 font-weight-bold">U</span>
-                                            @endif
-                                        </div>
                                         <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.club.show', $model->club) }}">{{ $model->club->name }}</a></div>
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{ $model->point->name }}</div>
+                                    		<div class="text-muted">{{ $model->type }}</div>
                                         </div>
                                     </div>
 									@endif
@@ -72,18 +66,27 @@
                             </td>
                             <td data-field="{{ __('messages.users') }}" aria-label="" class="datatable-cell">
                                 <span style="width: 250px;">  
-									@if($model->user)
+									@if($model->order and $model->order->user)
                                     <div class="d-flex align-items-center">
                                         <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-                                            @if($model->user->image)
-                                                <img class="" src="{{ asset($model->user->image->url) }}" alt="photo">
+                                            @if($model->order->user->image)
+                                                <img class="" src="{{ asset($model->order->user->image->url) }}" alt="photo">
                                             @else
                                                 <span class="symbol-label font-size-h4 font-weight-bold">U</span>
                                             @endif
                                         </div>
                                         <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model->user) }}">{{ $model->user->name }}</a></div>
-                                            <a href="{{ route('admin.user.show', $model->user) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->user->phone }}</a>
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model->order->user) }}">{{ $model->order->user->name }}</a></div>
+                                            <a href="{{ route('admin.user.show', $model->order->user) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->order->user->phone }}</a>
+                                        </div>
+                                    </div>
+									@else
+                                    <div class="d-flex align-items-center">
+                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
+											<span class="symbol-label font-size-h4 font-weight-bold">I</span>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">Inconnu</div>
                                         </div>
                                     </div>
 									@endif
@@ -97,10 +100,10 @@
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 130px;">	                        
-                                    <a href="{{ route('admin.order.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
+                                    <a href="{{ route('admin.item.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
                                         <i class="la la-eye"></i>
                                     </a>
-									<a href="{{ route('admin.order.edit', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.edit') }}">
+									<a href="{{ route('admin.item.edit', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.edit') }}">
                                         <span class="svg-icon svg-icon-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
