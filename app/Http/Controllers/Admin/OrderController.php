@@ -97,16 +97,16 @@ class OrderController extends Controller
      * Delete the specified order.
      *
      * @param Request  $request
-     * @param Order $order
+     * 
      * @return Response
      */
-    public function delete(Order $order)
+    public function delete(Request $request)
     {
-        $club->delete();
-
+        $order = Order::findOrFail($request->input('id'));
+        $order->delete();
         return response()->json([
-            'code' => 200,
             'status' => "success",
+            'message' => trans('messages.controller.success.order.deleted'),
         ]);
     }
 }

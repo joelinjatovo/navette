@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\ItemItem as ItemItemResource;
 use App\Models\Item;
+use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
@@ -48,8 +49,11 @@ class ItemController extends Controller
      * @param Item $item
      * @return Response
      */
-    public function show(Item $item)
+    public function show(Request $request, Item $item)
     {
+        if($request->ajax()){
+            return new ItemItemResource($item);
+        }
         return view('admin.item.show', ['model' => $item]);
     }
     
