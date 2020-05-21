@@ -57,7 +57,15 @@ Route::middleware(['auth'])->group(function () {
     });
     
     Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {
-        //
+        Route::get('/', 'Driver\IndexController@index')->name('dashboard');
+		
+        Route::get('rides', 'Driver\RideController@index')->name('rides');
+        Route::get('ride', 'Driver\RideController@create')->name('ride.create');
+        Route::post('ride', 'Driver\RideController@store');
+        Route::get('ride/{ride}', 'Driver\RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/edit', 'Driver\RideController@edit')->name('ride.edit');
+        Route::post('ride/{ride}/edit', 'Driver\RideController@update');
+        Route::delete('rides', 'Driver\RideController@delete');
     });
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
