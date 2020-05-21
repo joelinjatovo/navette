@@ -318,6 +318,11 @@
                                     </div>
                                     <!--end::User-->
                                     @endauth
+                                    <div class="topbar-item">
+										<a href="{{ route('login') }}" class="btn btn-success btn-sm- font-weight-bold btn-pill mr-3"><i class="la la-sign-in-alt"></i> {{ __('messages.login') }}</a>
+										<a href="{{ route('register') }}" class="btn btn-info font-weight-bold btn-pill mr-3"><i class="la la-user-plus"></i> {{ __('messages.register') }}</a>
+										<a href="{{ route('login.provider', ['provider' => 'facebook'])}}" class="btn btn-icon btn-circle btn-facebook mr-2"><i class="socicon-facebook"></i></a>
+									</div>
                                 </div>
                                 <!--end::Topbar-->
                             </div>

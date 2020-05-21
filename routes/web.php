@@ -17,7 +17,7 @@ Auth::routes();
 
 Route::get('/', function () {return view('home/index');});
 Route::get('/home', function () {return view('home/index');});
-Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->name('login.provider');
 Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallback');
 
 Route::get('order', 'Shop\IndexController@create')->name('shop.order');
