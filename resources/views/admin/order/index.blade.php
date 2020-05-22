@@ -69,7 +69,7 @@
                                 </span>
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
-                                <span style="overflow: visible; position: relative; width: 130px;">	                        
+                                <span style="overflow: visible; position: relative; width: 130px;">
                                     <a href="{{ route('admin.order.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
                                         <i class="la la-eye"></i>
                                     </a>

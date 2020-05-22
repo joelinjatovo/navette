@@ -47,6 +47,19 @@ class RideController extends Controller
 		$items = $ride->items()->with('order')->with('order.user')->get();
         return view('admin.ride.show', ['model' => $ride, 'items' => $items, 'points' => $points]);
     }
+
+    /**
+     * Live the ride info.
+     *
+     * @param Ride $ride
+     * @return Response
+     */
+    public function live(Ride $ride)
+    {
+		$points = $ride->points()->with('items')->with('items.order')->get();
+		$items = $ride->items()->with('order')->with('order.user')->get();
+        return view('admin.ride.live', ['model' => $ride, 'items' => $items, 'points' => $points]);
+    }
     
     /**
      * Show the form to create a new ride.

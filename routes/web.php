@@ -107,6 +107,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ride', 'Admin\RideController@create')->name('ride.create');
         Route::post('ride', 'Admin\RideController@store');
         Route::get('ride/{ride}', 'Admin\RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/live', 'Admin\RideController@live')->name('ride.live');
         Route::get('ride/{ride}/edit', 'Admin\RideController@edit')->name('ride.edit');
         Route::post('ride/{ride}/edit', 'Admin\RideController@update');
         Route::delete('rides', 'Admin\RideController@delete');

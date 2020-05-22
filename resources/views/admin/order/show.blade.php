@@ -181,7 +181,7 @@
         @foreach($model->items as $item)
 			<div class="col-lg-12 col-xxl-12">
 				<!--begin::List Widget 9-->
-				<div class="card card-custom card-stretch gutter-b">
+				<div class="card card-custom gutter-b">
 					<!--begin::Body-->
 					<div class="card-body align-items-center border-0 mt-2 mb-2">
 						<div class="d-flex align-items-center justify-content-between flex-grow-1">

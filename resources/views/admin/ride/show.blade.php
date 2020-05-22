@@ -17,11 +17,18 @@
             <!--end::Separator-->
 
             <!--begin::User Name-->
-            <div class="d-flex align-items-center" id="kt_subheader_search">
-                <span class="text-dark-50 font-weight-bold mr-2" id="kt_subheader_total">#{{ $model->getKey() }}</span>
-				<x-status theme="light" :status="$model->status" />
+            <div class="d-flex align-items-center mr-5" id="kt_subheader_search">
+                <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">#{{ $model->getKey() }}</span>
             </div>
             <!--end::User Name-->
+
+            <!--begin::Separator-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+            <!--end::Separator-->
+				
+			<span class="mr-2">{{ __('messages.distance') }}: <span class="text-dark-75 font-weight-bold" id="kt_subheader_distance">{{ $model->distance }} m</span></span>
+			<span class="mr-2">{{ __('messages.duration') }}: <span class="text-dark-75 font-weight-bold" id="kt_subheader_duration">{{ gmdate('H:i:s', $model->duration) }}</span></span>
+			<x-status theme="light" :status="$model->status" />
 
         </div>
         <!--end::Details-->
@@ -124,22 +131,7 @@
 			<!--begin::Body-->
 			<div class="card-body py-2">
 				<!--begin::Item-->
-				<div class="d-flex align-items-center mb-2 mt-2">
-					<!--begin::Symbol-->
-					<div class="symbol symbol-60 symbol-xxl-75 mr-5 align-self-start align-self-xxl-center">
-						<div class="symbol-label" style="background-image:url('{{ $model->car->image ? asset($model->car->image->url) : asset('img/car.jpg') }}')"></div>
-					</div>
-					<!--end::Symbol-->
-
-					<!--begin::Text-->
-					<div class="d-flex flex-column flex-grow-1 font-weight-bold">
-						<a href="{{ route('admin.car.show', $model->car) }}" class="text-dark text-hover-primary mb-1 font-size-lg">{{ $model->car->name }}</a>
-						@if($model->car->model)
-						<span class="text-muted">{{ $model->car->model->name }}</span>
-						@endif
-					</div>
-					<!--end::Text-->
-				</div>
+				<x-car :model="$model->car" />
 				<!--end::Item-->
 			</div>
 			<!--end::Body-->
@@ -151,28 +143,6 @@
     
     <!--begin::Content-->
     <div class="flex-row-fluid ml-lg-8">
-		
-		<div class="col-lg-12 col-xxl-12 mb-8">
-			<!--begin:Amount -->
-			<div class="card-body d-flex flex-column p-0" style="position: relative;">
-				<div class="card-spacer bg-white card-rounded flex-grow-1">
-					<!--begin::Row-->
-					<div class="row m-0">
-						<div class="col px-8 py-6 mr-4 ml-4">
-							<div class="font-size-sm text-muted font-weight-bold">{{ __('messages.distance') }}</div>
-							<div class="font-size-h4 font-weight-bolder">{{ $model->distance }} m</div>
-						</div>
-						<div class="col px-8 py-6 mr-4 ml-4">
-							<div class="font-size-sm text-muted font-weight-bold">{{ __('messages.duration') }}</div>
-							<div class="font-size-h4 font-weight-bolder">{{ gmdate('H:i:s', $model->duration) }}</div>
-						</div>
-					</div>
-					<!--end::Row-->
-				</div>
-			</div>
-			<!--end:Amount -->
-		</div>
-		
         @foreach($points as $point)
 			<div class="col-lg-12 col-xxl-12">
 				<!--begin::List Widget 9-->

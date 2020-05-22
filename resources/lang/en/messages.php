@@ -112,6 +112,7 @@ return [
             'create' => 'Add Ride',
             'edit' => 'Edit Ride',
             'view' => 'View Ride',
+            'live' => 'Live Ride',
         ],
     ],
     'item' => 'Item',
