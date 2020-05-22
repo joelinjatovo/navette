@@ -65,37 +65,18 @@
                                 </span>
                             </td>
                             <td data-field="{{ __('messages.users') }}" aria-label="" class="datatable-cell">
-                                <span style="width: 250px;">  
-									@if($model->order and $model->order->user)
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-                                            @if($model->order->user->image)
-                                                <img class="" src="{{ asset($model->order->user->image->url) }}" alt="photo">
-                                            @else
-                                                <span class="symbol-label font-size-h4 font-weight-bold">U</span>
-                                            @endif
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model->order->user) }}">{{ $model->order->user->name }}</a></div>
-                                            <a href="{{ route('admin.user.show', $model->order->user) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->order->user->phone }}</a>
-                                        </div>
-                                    </div>
+                                <span style="width: 250px;">
+									@if($model->order)
+										<x-user :model="$model->order->user" />
 									@else
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-											<span class="symbol-label font-size-h4 font-weight-bold">I</span>
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">Inconnu</div>
-                                        </div>
-                                    </div>
+										<x-user />
 									@endif
                                 </span>
                             </td>
                             <td data-field="{{ __('Date') }}" aria-label="{{ $model->created_at }}" class="datatable-cell">
                                 <span style="width: 130px;">
                                     <div class="text-primary mb-0">{{ $model->created_at->diffForHumans() }}</div>
-                                    <div class="text-muted">{{ $model->status() }}</div>
+									<x-status theme="light" :status="$model->status" />
                                 </span>
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">

@@ -218,21 +218,4 @@ class RidePoint extends Pivot
     {
         return $this->belongsTo(Ride::class, 'ride_id');
     }
-    
-    /**
-     * Get status string
-     */
-    public function status()
-    {
-		switch($this->status){
-			case self::STATUS_PING: return trans('messages.status.ping');
-			case self::STATUS_ACTIVE: return trans('messages.status.active');
-			case self::STATUS_NEXT: return trans('messages.status.next');
-			case self::STATUS_ARRIVED: return trans('messages.status.arrived');
-			case self::STATUS_ONLINE: return trans('messages.status.online');
-			case self::STATUS_COMPLETED: return trans('messages.status.completed');
-			case self::STATUS_CANCELED: return trans('messages.status.canceled');
-		}
-        return trans('messages.status.unknown');
-    }
 }

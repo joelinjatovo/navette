@@ -18,7 +18,8 @@
 
             <!--begin::User Name-->
             <div class="d-flex align-items-center" id="kt_subheader_search">
-                <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">#{{ $model->getKey() }}</span>
+                <span class="text-dark-50 font-weight-bold mr-2" id="kt_subheader_total">#{{ $model->getKey() }}</span>
+				<x-status theme="light" :status="$model->status" />
             </div>
             <!--end::User Name-->
 
@@ -207,7 +208,7 @@
 							<div class="d-inline-flex align-items-right">
 								<div class="font-weight-boldest text-danger mr-4">{{ $item->duration }}</div>
 								<div class="font-weight-boldest text-warning mr-4">{{ $item->distance }}</div>
-								<span class="label label-inline label-light-danger font-weight-bolder">{{ $item->status() }}</span>
+								<x-status theme="light" :status="$item->status" />
 							</div>
 						</div>
 						<div class="timeline timeline-2 mt-3">

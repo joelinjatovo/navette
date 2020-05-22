@@ -61,20 +61,8 @@
                                 <span style="width: 40px;"><span class="font-weight-bolder">{{ $model->id }}</span></span>
                             </td>
                             <td data-field="{{ __('messages.users') }}" aria-label="Czech Republic" class="datatable-cell">
-                                <span style="width: 250px;">    
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-                                            @if($model->image)
-                                                <img class="" src="{{ asset($model->image->url) }}" alt="photo">
-                                            @else
-                                                <span class="symbol-label font-size-h4 font-weight-bold">U</span>
-                                            @endif
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model) }}">{{ $model->name }}</a></div>
-                                            <a href="{{ route('admin.user.show', $model) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->phone }}</a>
-                                        </div>
-                                    </div>
+                                <span style="width: 250px;">
+									<x-user :model="$model" />
                                 </span>
                             </td>
                             <td data-field="{{ __('messages.email') }}" aria-label="61957-1072" class="datatable-cell">

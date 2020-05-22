@@ -202,6 +202,7 @@ return [
     'status' => 'Status',
     'total' => 'Total',
     'type' => 'Type',
+    'unkown' => 'Unkown',
     'users' => 'Users',
     'user.create' => 'Add user',
     'user.edit' => 'Edit user',

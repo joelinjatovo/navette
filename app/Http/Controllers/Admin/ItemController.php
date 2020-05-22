@@ -108,16 +108,16 @@ class ItemController extends Controller
      * Delete the specified item.
      *
      * @param Request  $request
-     * @param Item $item
+     * 
      * @return Response
      */
-    public function delete(Item $item)
+    public function delete(Request $request)
     {
+        $item = Item::findOrFail($request->input('id'));
         $item->delete();
-
         return response()->json([
-            'code' => 200,
             'status' => "success",
+            'message' => trans('messages.controller.success.item.deleted'),
         ]);
     }
 }

@@ -70,8 +70,7 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['admin.user.create', 'admin.user.edit'], function ($view) {
             $view->with('roles', Role::all());
         });
-        
-        
+		
         // View components
         //Blade::component('app-search', \App\View\Components\Search::class);
         

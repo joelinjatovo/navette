@@ -1,4 +1,4 @@
-<form class="ml-5">
+<form class="ml-5 mb-0">
     <div class="input-group input-group-sm input-group-solid" style="max-width: 175px">
         <input type="text" class="form-control" id="kt_subheader_search_form" placeholder="{{ __('messages.search') }}..." name="s" value="{{request()->get('s')}}">
         <div class="input-group-append">

@@ -40,7 +40,7 @@
                 <span class="text-dark-50 font-weight-bold mr-4" id="kt_subheader_total">#{{ $model->getKey() }}</span>
 				<span class="font-weight-boldest text-danger mr-4">{{ $model->duration }}</span>
 				<div class="font-weight-boldest text-warning mr-4">{{ $model->distance }}</div>
-				<span class="label label-inline label-light-danger font-weight-bolder">{{ $model->status() }}</span>
+				<x-status theme="light" :status="$model->status" />
             </div>
             <!--end::User Name-->
 

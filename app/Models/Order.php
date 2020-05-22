@@ -125,23 +125,6 @@ class Order extends Model
     }
     
     /**
-     * Get status string
-     */
-    public function status()
-    {
-		switch($this->status){
-			case self::STATUS_PING: return trans('messages.status.ping');
-			case self::STATUS_ON_HOLD: return trans('messages.status.on-hold');
-			case self::STATUS_PROCESSING: return trans('messages.status.processing');
-			case self::STATUS_OK: return trans('messages.status.ok');
-			case self::STATUS_ACTIVE: return trans('messages.status.active');
-			case self::STATUS_COMPLETED: return trans('messages.status.completed');
-			case self::STATUS_CANCELED: return trans('messages.status.canceled');
-		}
-        return trans('messages.status.unknown');
-    }
-    
-    /**
      * Get zone that owns the order
      */
     public function zone()

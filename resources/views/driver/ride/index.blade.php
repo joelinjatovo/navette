@@ -95,7 +95,7 @@
                             <td data-field="{{ __('Date') }}" aria-label="{{ $model->created_at }}" class="datatable-cell">
                                 <span style="width: 130px;">
                                     <div class="text-primary mb-0">{{ $model->created_at->diffForHumans() }}</div>
-                                    <div class="text-muted">{{ $model->status }}</div>
+									<x-status theme="light" :status="$model->status" />
                                 </span>
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">

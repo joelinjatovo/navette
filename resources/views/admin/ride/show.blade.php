@@ -18,8 +18,8 @@
 
             <!--begin::User Name-->
             <div class="d-flex align-items-center" id="kt_subheader_search">
-                <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">#{{ $model->getKey() }}</span>
-				<span class="label label-inline label-light-danger font-weight-bolder ml-4">{{ $model->status() }}</span>
+                <span class="text-dark-50 font-weight-bold mr-2" id="kt_subheader_total">#{{ $model->getKey() }}</span>
+				<x-status theme="light" :status="$model->status" />
             </div>
             <!--end::User Name-->
 
@@ -219,8 +219,8 @@
 							<div class="d-inline-flex align-items-right align-items-center">
 								<div class="font-weight-boldest text-danger mr-4">{{ $point->pivot->duration }}</div>
 								<div class="font-weight-boldest text-warning mr-4">{{ $point->pivot->distance }}</div>
-								<span class="label label-inline label-light-danger font-weight-bolder mr-4">{{ $point->pivot->status() }}</span>
-								<div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="{{ __('messages.options') }}">
+								<x-status theme="light" :status="$point->pivot->status" />
+								<div class="dropdown dropdown-inline ml-4" data-toggle="tooltip" title="" data-placement="left" data-original-title="{{ __('messages.options') }}">
 									<a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 										<i class="ki ki-bold-more-ver"></i>
 									</a>

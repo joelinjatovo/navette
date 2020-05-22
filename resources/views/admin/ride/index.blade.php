@@ -54,48 +54,18 @@
                             </td>
                             <td data-field="{{ __('messages.cars') }}" aria-label="" class="datatable-cell">
                                 <span style="width: 250px;">
-									@if($model->car)
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-                                            @if($model->car->image)
-                                                <img class="" src="{{ asset($model->car->image->url) }}" alt="photo">
-                                            @else
-                                                <span class="symbol-label font-size-h4 font-weight-bold">U</span>
-                                            @endif
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.car.show', $model->car) }}">{{ $model->car->name }}</a></div>
-											@if($model->car->model)
-                                            <a href="{{ route('admin.car.show', $model->car) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->car->model->name }}</a>
-											@endif
-                                        </div>
-                                    </div>
-									@endif
+									<x-car :model="$model->car" />
                                 </span>
                             </td>
                             <td data-field="{{ __('messages.drivers') }}" aria-label="" class="datatable-cell">
-                                <span style="width: 250px;">  
-									@if($model->driver)
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-                                            @if($model->driver->image)
-                                                <img class="" src="{{ asset($model->driver->image->url) }}" alt="photo">
-                                            @else
-                                                <span class="symbol-label font-size-h4 font-weight-bold">U</span>
-                                            @endif
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model->driver) }}">{{ $model->driver->name }}</a></div>
-                                            <a href="{{ route('admin.user.show', $model->driver) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->driver->phone }}</a>
-                                        </div>
-                                    </div>
-									@endif
+                                <span style="width: 250px;">
+									<x-user :model="$model->driver" />
                                 </span>
                             </td>
                             <td data-field="{{ __('Date') }}" aria-label="{{ $model->created_at }}" class="datatable-cell">
                                 <span style="width: 130px;">
                                     <div class="text-primary mb-0">{{ $model->created_at->diffForHumans() }}</div>
-                                    <div class="text-muted">{{ $model->status }}</div>
+									<x-status theme="light" :status="$model->status" />
                                 </span>
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">

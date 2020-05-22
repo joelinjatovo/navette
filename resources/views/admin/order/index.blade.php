@@ -54,45 +54,18 @@
                             </td>
                             <td data-field="{{ __('messages.clubs') }}" aria-label="" class="datatable-cell">
                                 <span style="width: 250px;">
-									@if($model->club)
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-                                            @if($model->club->image)
-                                                <img class="" src="{{ asset($model->club->image->url) }}" alt="photo">
-                                            @else
-                                                <span class="symbol-label font-size-h4 font-weight-bold">U</span>
-                                            @endif
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.club.show', $model->club) }}">{{ $model->club->name }}</a></div>
-                                        </div>
-                                    </div>
-									@endif
+									<x-club :model="$model->club" />
                                 </span>
                             </td>
                             <td data-field="{{ __('messages.users') }}" aria-label="" class="datatable-cell">
-                                <span style="width: 250px;">  
-									@if($model->user)
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-40 symbol-light-success flex-shrink-0">
-                                            @if($model->user->image)
-                                                <img class="" src="{{ asset($model->user->image->url) }}" alt="photo">
-                                            @else
-                                                <span class="symbol-label font-size-h4 font-weight-bold">U</span>
-                                            @endif
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ route('admin.user.show', $model->user) }}">{{ $model->user->name }}</a></div>
-                                            <a href="{{ route('admin.user.show', $model->user) }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->user->phone }}</a>
-                                        </div>
-                                    </div>
-									@endif
+                                <span style="width: 250px;">
+									<x-user :model="$model->user" />
                                 </span>
                             </td>
                             <td data-field="{{ __('Date') }}" aria-label="{{ $model->created_at }}" class="datatable-cell">
                                 <span style="width: 130px;">
                                     <div class="text-primary mb-0">{{ $model->created_at->diffForHumans() }}</div>
-                                    <div class="text-muted">{{ $model->status() }}</div>
+									<x-status theme="light" :status="$model->status" />
                                 </span>
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">

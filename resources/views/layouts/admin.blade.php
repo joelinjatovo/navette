@@ -82,8 +82,7 @@
         </div>
         <!--end::Header Mobile-->
         
-        
-        <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-column flex-root" id="app">
             <!--begin::Page-->
             <div class="d-flex flex-row flex-column-fluid page">
                 
