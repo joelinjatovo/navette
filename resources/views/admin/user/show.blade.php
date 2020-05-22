@@ -131,15 +131,7 @@
                             @foreach($orders as $order)
                             <tr>
                                 <td class="pl-0 py-8">
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-50 flex-shrink-0 mr-4">
-                                            <div class="symbol-label" style="background-image: url('{{ $order->club && $order->club->image ? asset($order->club->image->url) : asset('img/image_placeholder.jpg') }}')"></div>
-                                        </div>
-                                        <div>
-                                            <a href="{{ route('admin.order.show', $order) }}" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $order->club ? $order->club->name : '' }}</a>
-                                            <span class="text-muted font-weight-bold d-block">{{ $order->created_at->diffForHumans() }}</span>
-                                        </div>
-                                    </div>
+									<x-club :model="$order->club" />
                                 </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
@@ -150,7 +142,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="label label-lg label-light-primary label-inline">{{ $order->status }}</span>
+									<x-status type="light" :status="$order->status" />
                                 </td>
                             </tr>
                             @endforeach

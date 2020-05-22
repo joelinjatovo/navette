@@ -110,15 +110,7 @@
                             @foreach($orders as $order)
                             <tr>
                                 <td class="pl-0 py-8">
-                                    <div class="d-flex align-items-center">
-                                        <div class="symbol symbol-50 flex-shrink-0 mr-4">
-                                            <div class="symbol-label" style="background-image: url('{{ $order->user && $order->user->image ? asset($order->user->image->url) : asset('img/avatar.png') }}')"></div>
-                                        </div>
-                                        <div>
-                                            <a href="{{ $order->user ? route('admin.user.show', $order->user) : '#' }}" class="text-dark-75 font-weight-bolder text-hover-primary mb-1 font-size-lg">{{ $order->user ? $order->user->name : '' }}</a>
-                                            <span class="text-muted font-weight-bold d-block">{{ $order->user ? $order->user->role() : '' }}</span>
-                                        </div>
-                                    </div>
+									<x-user :model="$order->user" />
                                 </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
@@ -129,7 +121,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="label label-lg label-light-primary label-inline">{{ $order->status }}</span>
+									<x-status type="light" :status="$order->status" />
                                 </td>
                                 <td>
                                     <span class="label label-lg label-light-primary label-inline">{{ $order->created_at->diffForHumans() }}</span>
@@ -164,24 +156,7 @@
                 @foreach($cars as $car)
                 <!--begin::Item-->
                 <div class="mb-10">
-                    <!--begin::Section-->
-                    <div class="d-flex align-items-center">
-                        <!--begin::Symbol-->
-                        <div class="symbol symbol-45 symbol-light mr-5">
-                            <span class="symbol-label">
-                                <img src="{{ $car->image ? asset($car->image->url) : asset('img/car.jpg') }}" class="h-50 align-self-center" alt="">
-                            </span>
-                        </div>
-                        <!--end::Symbol-->
-
-                        <!--begin::Text-->
-                        <div class="d-flex flex-column flex-grow-1">
-                            <a href="{{ route('admin.car.show', $car) }}" class="font-weight-bold text-dark-75 text-hover-primary font-size-lg mb-1">{{ $car->name }}</a>
-                            <span class="text-muted font-weight-bold">{{ $car->driver ? $car->driver->name : ''}}</span>
-                        </div>
-                        <!--end::Text-->
-                    </div>
-                    <!--end::Section-->
+					<x-car :model="$car" />
                 </div>
                 <!--end::Item-->
                 @endforeach
