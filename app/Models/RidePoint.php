@@ -194,7 +194,7 @@ class RidePoint extends Pivot
     /**
      * Get the user related to this point.
      */
-    public function user()
+    public function user() : ?User
     {
 		$item = $this->item();
 		if($item && ($order = $item->order)){

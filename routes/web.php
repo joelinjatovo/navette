@@ -116,6 +116,16 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('rides', 'Admin\RideController@delete');
         Route::put('rides', 'Admin\RideController@action');
         
+        Route::get('ridepoints', 'Admin\RidePointController@index')->name('ridepoints');
+        Route::get('ridepoint', 'Admin\RidePointController@create')->name('ridepoint.create');
+        Route::post('ridepoint', 'Admin\RidePointController@store');
+        Route::get('ridepoint/{ridepoint}', 'Admin\RidePointController@show')->name('ridepoint.show');
+        Route::get('ridepoint/{ridepoint}/live', 'Admin\RidePointController@live')->name('ridepoint.live');
+        Route::get('ridepoint/{ridepoint}/edit', 'Admin\RidePointController@edit')->name('ridepoint.edit');
+        Route::post('ridepoint/{ridepoint}/edit', 'Admin\RidePointController@update');
+        Route::delete('ridepoints', 'Admin\RidePointController@delete');
+        Route::put('ridepoints', 'Admin\RidePointController@action');
+        
         Route::get('items', 'Admin\ItemController@index')->name('items');
         Route::get('item', 'Admin\ItemController@create')->name('item.create');
         Route::post('item', 'Admin\ItemController@store');

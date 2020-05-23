@@ -280,7 +280,7 @@
                                     <h4 class="menu-text">{{ __('Course') }}</h4><i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
                                 
-                                <li class="menu-item menu-item-submenu {{ Route::is('admin.ride*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                                <li class="menu-item menu-item-submenu {{ Route::is('admin.rides') || Route::is('admin.ride.*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                                     <a href="javascript:;" class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <!--begin::Svg Icon-->
@@ -301,6 +301,31 @@
                                             <li class="menu-item  menu-item-parent" aria-haspopup="true"><span class="menu-link"><span class="menu-text">{{ __('messages.rides') }}</span></span></li>
                                             <li class="menu-item {{ Route::is('admin.rides') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.rides') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.list') }}</span></a></li>
                                             <li class="menu-item {{ Route::is('admin.ride.create') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.ride.create') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.ride.create') }}</span></a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                
+                                <li class="menu-item menu-item-submenu {{ Route::is('admin.ridepoints') || Route::is('admin.ridepoint.*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <span class="svg-icon menu-icon">
+                                            <!--begin::Svg Icon-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24"/>
+                                                    <path d="M9.82829464,16.6565893 C7.02541569,15.7427556 5,13.1079084 5,10 C5,6.13400675 8.13400675,3 12,3 C15.8659932,3 19,6.13400675 19,10 C19,13.1079084 16.9745843,15.7427556 14.1717054,16.6565893 L12,21 L9.82829464,16.6565893 Z M12,12 C13.1045695,12 14,11.1045695 14,10 C14,8.8954305 13.1045695,8 12,8 C10.8954305,8 10,8.8954305 10,10 C10,11.1045695 10.8954305,12 12,12 Z" fill="#000000"/>
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                        <span class="menu-text">{{ __('messages.ridepoints') }}</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu" kt-hidden-height="80" style="">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item  menu-item-parent" aria-haspopup="true"><span class="menu-link"><span class="menu-text">{{ __('messages.rides') }}</span></span></li>
+                                            <li class="menu-item {{ Route::is('admin.ridepoints') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.ridepoints') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.list') }}</span></a></li>
+                                            <li class="menu-item {{ Route::is('admin.ridepoint.create') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.ridepoint.create') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.ridepoint.create') }}</span></a></li>
                                         </ul>
                                     </div>
                                 </li>
