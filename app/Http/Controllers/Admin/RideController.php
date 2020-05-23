@@ -60,6 +60,19 @@ class RideController extends Controller
 		$items = $ride->items()->with('order')->with('order.user')->get();
         return view('admin.ride.live', ['model' => $ride, 'items' => $items, 'points' => $points]);
     }
+
+    /**
+     * Vuejs
+     *
+     * @param Ride $ride
+     * @return Response
+     */
+    public function vuejs(Ride $ride)
+    {
+		$points = $ride->points()->with('items')->with('items.order')->get();
+		$items = $ride->items()->with('order')->with('order.user')->get();
+        return view('admin.ride.vuejs', ['model' => $ride, 'items' => $items, 'points' => $points]);
+    }
     
     /**
      * Show the form to create a new ride.
@@ -109,19 +122,71 @@ class RideController extends Controller
     }
 
     /**
+     * Handle specified action
+     *
+     * @param Request  $request
+	 *
+     * @return Response
+     */
+    public function action(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('id'));
+		switch($request->input('action')){
+			case 'active':
+				if(!$ride->activable()){
+					return response()->json([
+						'status' => "error",
+						'message' => trans('messages.controller.success.ride.not.activable'),
+					]);
+				}
+        		$ride->active();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.actived'),
+				]);
+			break;
+			case 'cancel':
+				if(!$ride->cancelable()){
+					return response()->json([
+						'status' => "error",
+						'message' => trans('messages.controller.success.ride.not.cancelable'),
+					]);
+				}
+        		$ride->cancel();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.canceled'),
+				]);
+			break;
+			case 'complete':
+        		$ride->complete();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.completed'),
+				]);
+			break;
+		}
+		
+        return response()->json([
+            'status' => "success",
+            'message' => trans('messages.controller.success.ride.unknown'),
+        ]);
+    }
+
+    /**
      * Delete the specified ride.
      *
      * @param Request  $request
-     * @param Ride $ride
+     * 
      * @return Response
      */
-    public function delete(Ride $ride)
+    public function delete(Request $request)
     {
-        $club->delete();
-
+        $ride = Ride::findOrFail($request->input('id'));
+		$ride->delete();
         return response()->json([
-            'code' => 200,
             'status' => "success",
+            'message' => trans('messages.controller.success.ride.deleted'),
         ]);
     }
 }

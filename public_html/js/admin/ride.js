@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -43471,6 +43471,50 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/js/admin/ride.js":
+/*!************************************!*\
+  !*** ./resources/js/admin/ride.js ***!
+  \************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _notification_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../notification/index */ "./resources/js/notification/index.js");
+/**
+ * First we will load all of this project's JavaScript dependencies which
+ * includes Vue and other libraries. It is a great starting point when
+ * building robust, powerful web applications using Vue and Laravel.
+ */
+__webpack_require__(/*! ../base */ "./resources/js/base.js");
+
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/**
+ * The following block of code may be used to automatically register your
+ * Vue components. It will recursively scan this directory for the Vue
+ * components and automatically register them with their "basename".
+ */
+
+Vue.component('app-notification', __webpack_require__(/*! ../components/AppNotification.vue */ "./resources/js/components/AppNotification.vue")["default"]);
+Vue.component('app-notifications', __webpack_require__(/*! ../components/AppNotifications.vue */ "./resources/js/components/AppNotifications.vue")["default"]);
+/**
+* Import our store app
+*/
+
+
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+
+var app = new Vue({
+  el: '#app',
+  store: _notification_index__WEBPACK_IMPORTED_MODULE_0__["default"]
+});
+
+/***/ }),
+
 /***/ "./resources/js/base.js":
 /*!******************************!*\
   !*** ./resources/js/base.js ***!
@@ -43677,50 +43721,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/customer.js":
-/*!**********************************!*\
-  !*** ./resources/js/customer.js ***!
-  \**********************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _notification_index__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./notification/index */ "./resources/js/notification/index.js");
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-__webpack_require__(/*! ./base */ "./resources/js/base.js");
-
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- */
-
-Vue.component('app-notification', __webpack_require__(/*! ./components/AppNotification.vue */ "./resources/js/components/AppNotification.vue")["default"]);
-Vue.component('app-notifications', __webpack_require__(/*! ./components/AppNotifications.vue */ "./resources/js/components/AppNotifications.vue")["default"]);
-/**
-* Import our store app
-*/
-
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
-var app = new Vue({
-  el: '#app',
-  store: _notification_index__WEBPACK_IMPORTED_MODULE_0__["default"]
-});
-
-/***/ }),
-
 /***/ "./resources/js/notification/actions.js":
 /*!**********************************************!*\
   !*** ./resources/js/notification/actions.js ***!
@@ -43853,14 +43853,14 @@ var state = {
 
 /***/ }),
 
-/***/ 3:
-/*!****************************************!*\
-  !*** multi ./resources/js/customer.js ***!
-  \****************************************/
+/***/ 2:
+/*!******************************************!*\
+  !*** multi ./resources/js/admin/ride.js ***!
+  \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\wamp64\www\navette.com\resources\js\customer.js */"./resources/js/customer.js");
+module.exports = __webpack_require__(/*! C:\wamp64\www\navette.com\resources\js\admin\ride.js */"./resources/js/admin/ride.js");
 
 
 /***/ })
