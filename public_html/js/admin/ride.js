@@ -2046,6 +2046,15 @@ __webpack_require__.r(__webpack_exports__);
   name: "AppRidePoint",
   props: ['point'],
   computed: {
+    iconClassObject: {
+      'fa': true,
+      'fa-genderless': true,
+      'text-danger': undefined && undefined.point && undefined.point.pivot.status == 'active',
+      'text-warning': undefined && undefined.point && undefined.point.pivot.status == 'next',
+      'text-info': undefined && undefined.point && undefined.point.pivot.status == 'arrived',
+      'text-default': false,
+      'icon-xxl': true
+    },
     isDropOff: function isDropOff() {
       return this.point.pivot.type == 'drop';
     },
@@ -30345,7 +30354,9 @@ var render = function() {
       [_vm._v(_vm._s(_vm.point.pivot.duration))]
     ),
     _vm._v(" "),
-    _vm._m(0),
+    _c("div", { staticClass: "timeline-badge" }, [
+      _c("i", { class: _vm.iconClassObject })
+    ]),
     _vm._v(" "),
     _c("div", { staticClass: "timeline-content" }, [
       _c("div", { staticClass: "d-flex" }, [
@@ -30377,7 +30388,7 @@ var render = function() {
             : _vm._e()
         ]),
         _vm._v(" "),
-        _vm._m(1)
+        _vm._m(0)
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "d-flex" }, [
@@ -30401,14 +30412,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "timeline-badge" }, [
-      _c("i", { staticClass: "fa fa-genderless text-default icon-xxl" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

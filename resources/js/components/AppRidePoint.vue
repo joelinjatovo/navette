@@ -7,7 +7,7 @@
 
 		<!--begin::Badge-->
 		<div class="timeline-badge">
-			<i class="fa fa-genderless text-default icon-xxl"></i>
+			<i v-bind:class="iconClassObject"></i>
 		</div>
 		<!--end::Badge-->
 
@@ -52,15 +52,24 @@
     name: "AppRidePoint",
     props: ['point'],
     computed: {
-      isDropOff() {
-        return this.point.pivot.type == 'drop'
-      },
-      created_at() {
-        return moment(this.point.created_at).format('MMMM Do YYYY')
-      },
-      avatar() {
-        return `/img/avatar.png`
-      }
+		iconClassObject: {
+			'fa': true,
+			'fa-genderless': true,
+			'text-danger': this && this.point && this.point.pivot.status == 'active', 
+			'text-warning': this && this.point && this.point.pivot.status == 'next', 
+			'text-info': this && this.point && this.point.pivot.status == 'arrived', 
+			'text-default': false, 
+			'icon-xxl': true,
+		},
+		isDropOff() {
+			return this.point.pivot.type == 'drop'
+		},
+		created_at() {
+			return moment(this.point.created_at).format('MMMM Do YYYY')
+		},
+		avatar() {
+			return `/img/avatar.png`
+		}
     }
   }
 </script>
