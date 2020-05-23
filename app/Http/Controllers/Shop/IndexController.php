@@ -101,4 +101,24 @@ class IndexController extends Controller
         return redirect()->route('shop.cart')
             ->with('success', "Order created successfully");
     }
+
+
+    /**
+     * Delete the specified user.
+     *
+     * @param  Request  $request
+     * @param  string  $id
+     * @return Response
+     */
+    public function cars_ajax(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+            if(isset($data['_id'])){
+                $cars = Car::where('club_id', $data['_id'])->get();
+                return view('shop.cars', ['models' => $cars]);
+            }
+        }
+    }
+
 }

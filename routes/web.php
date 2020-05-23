@@ -22,6 +22,7 @@ Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallb
 
 Route::get('order', 'Shop\IndexController@create')->name('shop.order');
 Route::post('order', 'Shop\IndexController@store')->name('shop.order');
+Route::post('order/cars', 'Shop\IndexController@cars_ajax')->name('shop.order.cars');
 Route::get('cart', 'Shop\CartController@index')->name('shop.cart');
 Route::post('cart/clear', 'Shop\CartController@clear')->name('shop.cart.clear');
 

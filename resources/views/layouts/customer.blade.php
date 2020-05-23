@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
         <!--begin::Fonts-->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
         <!--end::Fonts-->
         
         <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -21,6 +21,81 @@
         <link href="/css/main/plugins.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="/css/main/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="/css/main/style.bundle.css" rel="stylesheet" type="text/css"/>
+        <style>
+                            #map {
+                            height: 45vh;
+                          }
+                          /* Optional: Makes the sample page fill the window. */
+                          
+                          #description {
+                            font-family: Roboto;
+                            font-size: 15px;
+                            font-weight: 300;
+                          }
+
+                          span.title {
+                            font-weight: bold;
+                          }
+
+                          #infowindow-content, #infowindow-content-1, #infowindow-content-2  {
+                            display: none;
+                          }
+
+                          #map #infowindow-content, #map #infowindow-content-1, #map #infowindow-content-2  {
+                            display: inline;
+                          }
+
+                          .pac-card {
+                            margin: 10px 10px 0 0;
+                            border-radius: 2px 0 0 2px;
+                            box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            outline: none;
+                            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+                            background-color: #fff;
+                            font-family: Roboto;
+                            opacity:0;
+                          }
+
+                          #pac-container {
+                            padding-bottom: 12px;
+                            margin-right: 12px;
+                          }
+
+                          .pac-controls {
+                            display: inline-block;
+                            padding: 5px 11px;
+                          }
+
+                          .pac-controls label {
+                            font-family: Roboto;
+                            font-size: 13px;
+                            font-weight: 300;
+                          }
+
+                          #pac-input,#pac-input-2,#pac-input-3 {
+                            background-color: #fff;
+                            font-family: Roboto;
+                            font-size: 15px;
+                            font-weight: 300;
+                            margin-left: 12px;
+                            padding: 0 11px 0 13px;
+                            text-overflow: ellipsis;
+                            width: 400px;
+                          }
+
+                          #pac-input:focus,#pac-input-2:focus,#pac-input-3:focus {
+                            border-color: #4d90fe;
+                          }
+
+                          #title {
+                            color: #fff;
+                            background-color: #4d90fe;
+                            font-size: 25px;
+                            font-weight: 500;
+                            padding: 6px 12px;
+                          }
+                    </style>
         <!--end::Global Theme Styles-->
 
         <!--begin::Layout Themes(used by all pages)-->
@@ -84,49 +159,6 @@
                                         <img alt="Logo" src="/img/logo-white.png" class="max-h-35px"/>
                                     </a>
                                     <!--end::Logo-->
-
-                                    <!--begin::Desktop Search-->
-                                    <div class="quick-search quick-search-inline ml-4 w-300px" id="kt_quick_search_inline">
-                                        <!--begin::Form-->
-                                        <form method="get" class="quick-search-form">
-                                            <div class="input-group rounded bg-light">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <span class="svg-icon svg-icon-lg">
-                                                            <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/General/Search.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                                    <rect x="0" y="0" width="24" height="24"/>
-                                                                    <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-                                                                    <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero"/>
-                                                                </g>
-                                                            </svg><!--end::Svg Icon-->
-                                                        </span>
-                                                    </span>
-                                                </div>
-
-                                                <input type="text" class="form-control h-45px" placeholder="{{ __('Recherche...') }}"/>
-
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">
-                                                        <i class="quick-search-close ki ki-close icon-sm"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <!--end::Form-->
-
-                                        <!--begin::Search Toggle-->
-                                        <div id="kt_quick_search_toggle" data-toggle="dropdown" data-offset="0px,1px"></div>
-                                        <!--end::Search Toggle-->
-
-                                        <!--begin::Dropdown-->
-                                        <div class="dropdown-menu dropdown-menu-left dropdown-menu-lg dropdown-menu-anim-up">
-                                            <div class="quick-search-wrapper scroll" data-scroll="true" data-height="350" data-mobile-height="200">
-                                            </div>
-                                        </div>
-                                        <!--end::Dropdown-->
-                                    </div>
-                                    <!--end::Desktop Search-->
                                 </div>
                                 <!--end::Left-->
 
@@ -585,6 +617,21 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        $(document).on('change', '.order-type', function(){
+            var type = $(this).val();
+            if(type == 'go'){
+                $('#display-back').hide();
+                $('#display-origine').show();
+            }
+            if(type == 'back'){
+                $('#display-back').show();
+                $('#display-origine').hide();
+            }
+            if(type == 'go-back'){
+                $('#display-back').show();
+                $('#display-origine').show();   
+            }
+        })
         </script>
         @yield('javascript')
         <!--end::Page Scripts-->
