@@ -121,6 +121,12 @@ return [
             'view' => 'View Ride',
             'live' => 'Live Ride',
         ],
+        'ridepoint' => [
+            'create' => 'Add Ride Point',
+            'edit' => 'Edit Ride Point',
+            'view' => 'View Ride Point',
+            'live' => 'Live Ride Point',
+        ],
     ],
     'item' => 'Item',
     'item.create' => 'Add Item',

@@ -77,11 +77,8 @@
                             </td>
                             <td data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 130px;">
-                                    <a href="{{ route('admin.ridepoint.live', $model) }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
+                                    <a href="{{ route('admin.ridepoint.show', $model) }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
                                         <i class="la la-eye"></i>
-                                    </a>
-                                    <a href="{{ route('admin.ridepoint.live', $model) }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.edit') }}">
-                                        <i class="la la-map"></i>
                                     </a>
                                     <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  data-id="{{ $model->getKey() }}" title="{{ __('messages.button.delete') }}" >
                                         <i class="la la-trash"></i>

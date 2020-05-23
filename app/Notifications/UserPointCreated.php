@@ -36,7 +36,7 @@ class UserPointCreated extends Notification
      */
     public function via($notifiable)
     {
-        return [];
+        return ['broadcast'];
     }
 
     /**
