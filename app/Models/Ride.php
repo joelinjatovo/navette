@@ -40,7 +40,7 @@ class Ride extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at', 'deleted_at',
+        'created_at', 'updated_at', 'started_at', 'canceled_at', 'completed_at', 'deleted_at',
     ];
 
     /**
@@ -220,7 +220,7 @@ class Ride extends Model
      */
     public function cancelable()
     {
-        return self::STATUS_COMPLETED != $this->status;
+        return !in_array($this->status, [self::STATUS_COMPLETED, self::STATUS_CANCELED]);
     }
     
     /**

@@ -60,64 +60,6 @@ class RidePoint extends Pivot
     }
     
     /**
-     * Get the item related to this point.
-     */
-    public function item()
-    {
-        if($this->point){
-            return $this->point->items()->first();
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Get the order related to this point.
-     */
-    public function order()
-    {
-        if($this->point){
-            $item = $this->point->items()->first();
-            if($item){
-                return $item->order;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Get the user related to this point.
-     */
-    public function user()
-    {
-        if($this->point){
-            $item = $this->point->items()->first();
-            if($item && ($order = $item->order)){
-                return $order->user;
-            }
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Get the point related to this ride point.
-     */
-    public function point()
-    {
-        return $this->belongsTo(Point::class, 'point_id');
-    }
-    
-    /**
-     * Get the ride related to this ride point.
-     */
-    public function ride()
-    {
-        return $this->belongsTo(Ride::class, 'ride_id');
-    }
-    
-    /**
      * Check if ride is arrivable
      */
     public function arrivable()
@@ -141,6 +83,39 @@ class RidePoint extends Pivot
         {
             $oldStatus = $item->status;
             $newStatus = Item::STATUS_ARRIVED;
+            $item->status = $newStatus;
+            $item->save();
+                
+            // Notify *customer
+            event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+        }
+        
+    }
+    
+    /**
+     * Check if ride is cancelable
+     */
+    public function cancelable()
+    {
+        return (self::STATUS_COMPLETED != $this->status) && (self::STATUS_CANCELED != $this->status) ;
+    }
+    
+    /**
+     * Cancel ride point
+     */
+    public function cancel()
+    {
+        $oldStatus = $this->status;
+        $newStatus = self::STATUS_CANCELED;
+        
+        $this->status = $newStatus;
+        $this->save();
+        
+        $item = $this->item();
+        if($item)
+        {
+            $oldStatus = $item->status;
+            $newStatus = Item::STATUS_CANCELED;
             $item->status = $newStatus;
             $item->save();
                 
@@ -193,35 +168,54 @@ class RidePoint extends Pivot
     }
     
     /**
-     * Check if ride is cancelable
+     * Get the item related to this point.
      */
-    public function cancelable()
+    public function item()
     {
-        return (self::STATUS_COMPLETED != $this->status) && (self::STATUS_CANCELED != $this->status) ;
+        if($this->point){
+            return $this->point->items()->first();
+        }
+        
+        return null;
     }
     
     /**
-     * Cancel ride point
+     * Get the order related to this point.
      */
-    public function cancel()
+    public function order()
     {
-        $oldStatus = $this->status;
-        $newStatus = self::STATUS_CANCELED;
-        
-        $this->status = $newStatus;
-        $this->save();
-        
-        $item = $this->item();
-        if($item)
-        {
-            $oldStatus = $item->status;
-            $newStatus = Item::STATUS_CANCELED;
-            $item->status = $newStatus;
-            $item->save();
-                
-            // Notify *customer
-            event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-        }
-        
+		$item = $this->item();
+		if($item){
+			return $item->order;
+		}
+        return null;
+    }
+    
+    /**
+     * Get the user related to this point.
+     */
+    public function user()
+    {
+		$item = $this->item();
+		if($item && ($order = $item->order)){
+			return $order->user;
+		}
+        return null;
+    }
+    
+    /**
+     * Get the point related to this ride point.
+     */
+    public function point()
+    {
+        return $this->belongsTo(Point::class, 'point_id');
+    }
+    
+    /**
+     * Get the ride related to this ride point.
+     */
+    public function ride()
+    {
+        return $this->belongsTo(Ride::class, 'ride_id');
     }
 }

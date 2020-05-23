@@ -17,7 +17,7 @@ Auth::routes();
 
 Route::get('/', function () {return view('home/index');});
 Route::get('/home', function () {return view('home/index');});
-Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->name('login.provider');
 Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallback');
 
 Route::get('order', 'Shop\IndexController@create')->name('shop.order');
@@ -58,7 +58,15 @@ Route::middleware(['auth'])->group(function () {
     });
     
     Route::middleware(['role:driver'])->prefix('driver')->name('driver.')->group(function () {
-        //
+        Route::get('/', 'Driver\IndexController@index')->name('dashboard');
+		
+        Route::get('rides', 'Driver\RideController@index')->name('rides');
+        Route::get('ride', 'Driver\RideController@create')->name('ride.create');
+        Route::post('ride', 'Driver\RideController@store');
+        Route::get('ride/{ride}', 'Driver\RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/edit', 'Driver\RideController@edit')->name('ride.edit');
+        Route::post('ride/{ride}/edit', 'Driver\RideController@update');
+        Route::delete('rides', 'Driver\RideController@delete');
     });
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -70,9 +78,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('user/{user}', 'Admin\UserController@show')->name('user.show');
         Route::get('user/{user}/edit', 'Admin\UserController@edit')->name('user.edit');
         Route::post('user/{user}/edit', 'Admin\UserController@update');
-        Route::post('user/delete_ajax', 'Admin\UserController@delete_ajax')->name('user.ajax.delete');
-        Route::post('user/edit_ajax', 'Admin\UserController@edit_ajax')->name('user.ajax.edit');
-        Route::post('user/edit_modal', 'Admin\UserController@edit_modal')->name('user.modal.edit');
         Route::delete('users', 'Admin\UserController@delete');
         
         Route::get('clubs', 'Admin\ClubController@index')->name('clubs');
@@ -81,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('club/{club}', 'Admin\ClubController@show')->name('club.show');
         Route::get('club/{club}/edit', 'Admin\ClubController@edit')->name('club.edit');
         Route::post('club/{club}/edit', 'Admin\ClubController@update');
-        Route::delete('club/{club}', 'Admin\ClubController@delete')->name('club.delete');
+        Route::delete('clubs', 'Admin\ClubController@delete');
         
         Route::get('cars', 'Admin\CarController@index')->name('cars');
         Route::get('car', 'Admin\CarController@create')->name('car.create');
@@ -89,7 +94,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('car/{car}', 'Admin\CarController@show')->name('car.show');
         Route::get('car/{car}/edit', 'Admin\CarController@edit')->name('car.edit');
         Route::post('car/{car}/edit', 'Admin\CarController@update');
-        Route::delete('car/{car}', 'Admin\CarController@delete')->name('car.delete');
+        Route::delete('cars', 'Admin\CarController@delete');
         
         Route::get('orders', 'Admin\OrderController@index')->name('orders');
         Route::get('order', 'Admin\OrderController@create')->name('order.create');
@@ -97,15 +102,28 @@ Route::middleware(['auth'])->group(function () {
         Route::get('order/{order}', 'Admin\OrderController@show')->name('order.show');
         Route::get('order/{order}/edit', 'Admin\OrderController@edit')->name('order.edit');
         Route::post('order/{order}/edit', 'Admin\OrderController@update');
-        Route::delete('order/{order}', 'Admin\OrderController@delete')->name('order.delete');
+        Route::delete('orders', 'Admin\OrderController@delete');
+        Route::put('orders', 'Admin\OrderController@action');
         
         Route::get('rides', 'Admin\RideController@index')->name('rides');
         Route::get('ride', 'Admin\RideController@create')->name('ride.create');
         Route::post('ride', 'Admin\RideController@store');
         Route::get('ride/{ride}', 'Admin\RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/live', 'Admin\RideController@live')->name('ride.live');
+        Route::get('ride/{ride}/vuejs', 'Admin\RideController@vuejs')->name('ride.vuejs');
         Route::get('ride/{ride}/edit', 'Admin\RideController@edit')->name('ride.edit');
         Route::post('ride/{ride}/edit', 'Admin\RideController@update');
-        Route::post('ride/{ride}/delete', 'Admin\RideController@delete')->name('ride.delete');
+        Route::delete('rides', 'Admin\RideController@delete');
+        Route::put('rides', 'Admin\RideController@action');
+        
+        Route::get('items', 'Admin\ItemController@index')->name('items');
+        Route::get('item', 'Admin\ItemController@create')->name('item.create');
+        Route::post('item', 'Admin\ItemController@store');
+        Route::get('item/{item}', 'Admin\ItemController@show')->name('item.show');
+        Route::get('item/{item}/edit', 'Admin\ItemController@edit')->name('item.edit');
+        Route::post('item/{item}/edit', 'Admin\ItemController@update');
+        Route::delete('items', 'Admin\ItemController@delete');
+        Route::put('items', 'Admin\ItemController@action');
         
         Route::get('apikeys', 'Admin\ApiKeyController@index')->name('apikeys');
         Route::get('apikey', 'Admin\ApiKeyController@create')->name('apikey.create');

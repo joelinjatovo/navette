@@ -49,7 +49,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('admin.user.show', ['model' => $user]);
+        $orders = $user->orders()->paginate();
+        return view('admin.user.show', ['model' => $user, 'orders' => $orders]);
     }
     
     /**
@@ -141,73 +142,6 @@ class UserController extends Controller
             'status' => "success",
             'message' => trans('messages.controller.success.user.deleted'),
         ]);
-    }
-
-    /**
-     * Delete the specified user.
-     *
-     * @param  Request  $request
-     * @param  string  $id
-     * @return Response
-     */
-    public function delete_ajax(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = $request->all();
-            if(isset($data['_id'])){
-                $user = User::findOrFail($data['_id']);
-                return $user->delete() ? 1 : 0;
-            }
-        }
-    }
-
-    /**
-     * Edit the specified user.
-     *
-     * @param  Request  $request
-     * @param  string  $id
-     * @return Response
-     */
-    public function edit_ajax(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = $request->all();
-            if(isset($data['_id']) && isset($data['name']) && isset($data['phone']) && isset($data['email']) ){
-                $validated_data = $request->validate([
-                    'name' => 'required|max:255',
-                    'phone' => 'required|numeric',
-                    'email' => 'required|email',
-                ]);
-                var_dump($validated_data);
-                if( isset($validated_data->errors) ){
-                    return json_encode(array("error" => $validated_data->errors ));
-                }else{
-                    $user = User::findOrFail($data['_id']);
-                    $user->name = $validated_data['name'];
-                    $user->phone = $validated_data['phone'];
-                    $user->email = $validated_data['email'];
-                    return $user->save() ? 1 : 0;
-                }
-            }
-        }
-    }
-
-    /**
-     * Display user profile form.
-     *
-     * @param  Request  $request
-     * @param  string  $id
-     * @return Response
-     */
-    public function edit_modal(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = $request->all();
-            if(isset($data['_id'])){
-                $user = User::findOrFail($data['_id']);
-                return view('admin.user.edit-modal', ['model' => $user]);
-            }
-        }
     }
 
 }

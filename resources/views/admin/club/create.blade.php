@@ -1,89 +1,119 @@
 @extends('layouts.admin')
 
-@section('content')
-<div class="row">
-    <div class="col-md-12">
-      <div class="card ">
-        <div class="card-header card-header-rose card-header-text">
-          <div class="card-text">
-            <h4 class="card-title">@section('content.title'){{ __('messages.form.club.create') }}@show</h4>
-          </div>
+@section('title'){{ __('messages.form.club.create') }}@endsection
+
+@section('subheader')
+<div class="subheader py-2 py-lg-4  subheader-solid " id="kt_subheader">
+    <div class=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Details-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+			
+            <!--begin::Title-->
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.form.club.create') }}</h5>
+            <!--end::Title-->
+
         </div>
-        <div class="card-body ">
-          <form id="main-form" method="post" class="form-horizontal" enctype="multipart/form-data">
-            @csrf
-            <div class="row">
-              <label class="col-sm-2 col-form-label">{{ __('messages.form.club.image') }}</label>
-              <div class="col-md-4 col-sm-4">
-                  <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-                    <div class="fileinput-new thumbnail">
-                      <img src="{{ $model->image ? asset($model->image->url) : '/img/image_placeholder.jpg'}}" alt="...">
-                    </div>
-                    <div class="fileinput-preview fileinput-exists thumbnail"></div>
-                    <div>
-                      <span class="btn btn-rose btn-round btn-file">
-                        <span class="fileinput-new">{{ __('messages.form.image.select') }}</span>
-                        <span class="fileinput-exists">{{ __('messages.button.change') }}</span>
-                        <input type="file" name="club[image]">
-                      </span>
-                      <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
-                    </div>
-                  </div>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">{{ __('messages.form.club.name') }}</label>
-              <div class="col-sm-10">
-                <div class="form-group has-success bmd-form-group">
-                  <input type="text" name="club[name]" class="form-control" value="{{ old('club.name', $model->name) }}">
-                  <!--<span class="form-control-feedback">
-                    <i class="material-icons">done</i>
-                  </span>-->
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">{{ __('messages.form.club.location') }}</label>
-              <div class="col-sm-10">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group bmd-form-group">
-                        <input type="text" class="form-control" placeholder="{{ __('messages.form.placeholder.lat') }}" id="point-lat" name="point[lat]" value="{{ old('point.lat', $model->point ? $model->point->lat : '') }}"/>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group bmd-form-group">
-                        <input type="text" class="form-control" placeholder="{{ __('messages.form.placeholder.lng') }}" id="point-lng" name="point[lng]" value="{{ old('point.lng', $model->point ? $model->point->lng : '') }}"/>
-                    </div>
-                  </div>
-                  <div class="col-md-5">
-                    <div class="form-group bmd-form-group">
-                        <input type="text" class="form-control" placeholder="{{ __('messages.form.placeholder.alt') }}" id="point-alt" name="point[alt]" value="{{ old('point.alt', $model->point ? $model->point->alt : '') }}"/>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                  <div id="regularMap" class="map" style="position: relative; overflow: hidden;"></div>
-                </div>
-            </div>
-          </form>
+        <!--end::Details-->
+
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+            <!--begin::Button-->
+            <a href="{{ route('admin.clubs') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2"><i class="la la-arrow-left"></i> {{ __('messages.button.back') }}</a>
+            <!--end::Button-->
+            
+            <!--begin::Button-->
+            <button type="submit" form="kt_form" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base"><i class="la la-check"></i>{{ __('messages.button.save') }}</button>
+            <!--end::Button-->
+                            
         </div>
-        <div class="card-footer ">
-            <button type="submit" form="main-form" class="btn btn-fill btn-rose">@if($model->id>0){{ __('messages.button.update') }}@else{{ __('messages.button.save') }}@endif<div class="ripple-container"></div></button>
-        </div>
-      </div>
+        <!--end::Toolbar-->
     </div>
 </div>
 @endsection
 
+@section('content')
+<form class="form" id="kt_form" method="post" enctype="multipart/form-data">
+    @csrf
+    <div class="card card-custom">
+        <!--begin::Card body-->
+        <div class="card-body px-0">
+            <!--begin::Row-->
+            <div class="row">
+                <div class="col-xl-2"></div>
+                <div class="col-xl-7 my-2">
+                    <!--begin::Group-->
+                    <div class="form-group row">
+                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.club.image') }}</label>
+                        <div class="col-9">
+                            <div class="image-input image-input-empty image-input-outline" id="kt_club_edit_image" style="background-image: url({{ $model->image ? asset($model->image->url) : asset('img/image_placeholder.jpg') }})">
+                                <div class="image-input-wrapper"></div>
+
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="{{ __('messages.button.edit') }}">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input type="file" name="image" accept=".png, .jpg, .jpeg">
+                                    <input type="hidden" name="profile_avatar_remove">
+                                </label>
+
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="" data-original-title="{{ __('messages.button.cancel') }}">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="remove" data-toggle="tooltip" title="" data-original-title="{{ __('messages.button.delete') }}">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Group-->
+                    
+                    <!--begin::Group-->
+                    <div class="form-group row">
+                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.club.name') }}</label>
+                        <div class="col-9">
+                            <input class="form-control form-control-lg form-control-solid @error('name') is-invalid @enderror" type="text" name="name" placeholder="{{ __('messages.form.club.name') }}" value="{{ old('name', $model->name) }}">
+                            @error('name')
+                                <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+                            @enderror
+                        </div>
+                    </div>
+                    <!--end::Group-->
+                    
+                    <!--begin::Group-->
+                    <div class="form-group row">
+                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.point.lat') }}</label>
+                        <div class="col-9">
+                            <input class="form-control form-control-lg form-control-solid @error('point.lat') is-invalid @enderror" type="text" name="point[lat]" id="point_lat" placeholder="{{ __('messages.form.point.lat') }}" value="{{ old('point.lat', $model->point ? $model->point->lat: '') }}">
+                            @error('point.lat')
+                                <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+                            @enderror
+                        </div>
+                    </div>
+                    <!--end::Group-->
+                    
+                    <!--begin::Group-->
+                    <div class="form-group row">
+                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.point.lng') }}</label>
+                        <div class="col-9">
+                            <input class="form-control form-control-lg form-control-solid @error('point.lng') is-invalid @enderror" type="text" name="point[lng]" id="point_lng" placeholder="{{ __('messages.form.point.lng') }}" value="{{ old('point.lng', $model->point ? $model->point->lng: '') }}">
+                            @error('point.lng')
+                                <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+                            @enderror
+                        </div>
+                    </div>
+                    <!--end::Group-->
+                </div>
+            </div>
+            <!--end::Row-->
+        </div>
+        <!--begin::Card body-->
+    </div>
+</form>
+@endsection
+
+
 @section('javascript')
-  @parent
-  <script>
-    $(document).ready(function() {
-      demo.initSmallGoogleMaps();
-    });
-  </script>
+<script type="text/javascript">
+var KTClubEdit={init:function(){new KTImageInput("kt_club_edit_image")}};
+jQuery(document).ready(function(){KTClubEdit.init()});
+</script>
 @endsection

@@ -152,8 +152,7 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="row" style="display:none;"  id="display-back">
+            <div class="row"  style="display:none;"  id="display-back">
                 <div class="col-xl-6">
                     <div class="form-group">
                         <label>Point de retours</label>

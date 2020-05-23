@@ -12,7 +12,7 @@
 	<div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url(/img/bg-auth.jpg);">
 		<div class="login-form text-center text-white p-7 position-relative overflow-hidden">
 			<!--begin::Login Header-->
-			<div class="d-flex flex-center mb-15">
+			<div class="d-flex flex-center mb-5">
 				<a href="/">
 					<img src="/img/logo-white.png" class="max-h-75px" alt=""/>
 				</a>
@@ -21,9 +21,11 @@
 
 			<!--begin::Login Sign in form-->
 			<div class="login-signin">
-				<div class="mb-10">
-					<h3 class="opacity-40 font-weight-normal">Bienvenue!</h3>
-					<p class="opacity-40">Entrer les détails pour se connecter sur votre compte:</p>
+				<div class="mb-5">
+					<h3 class="font-weight-normal mb-5"><span class="opacity-40">Bienvenue sur </span>NavetteClub!</h3>
+					<p class="opacity-40">Pour se connecter, utilisez</p>
+					<a href="{{ route('login.provider', ['provider' => 'facebook'])}}" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3"><i class="fab fa-facebook"></i>{{ __('acebook') }}</a>
+					<p class="opacity-40 mt-10">ou entrez les détails de votre compte.</p>
 				</div>
 				<form class="form" id="kt_login_signin_form" method="post">
                     @csrf
@@ -50,27 +52,22 @@
 						<button id="kt_login_signin_submit" class="btn btn-pill btn-primary opacity-90 px-15 py-3">{{ __('Se connecter') }}</button>
 					</div>
 				</form>
-
-                <hr class="bg-white">
-                <div class="text-center">
-                    <small class="d-block">Ou se connecter avec</small>
-                    <a href="login/facebook" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2"><i class="fab fa-facebook"></i>{{ __('acebook') }}</a>
-                </div>   
-                <hr class="bg-white">
 				<div class="mt-10">
 					<span class="opacity-40 mr-4">
 						{{ __('Vous n\'êtes pas encore inscrit?') }}
 					</span>
-					<a href="javascript:;" id="kt_login_signup" class="text-white opacity-30 font-weight-normal">{{ __('S\'inscrire') }}</a>
+					<a href="javascript:;" id="kt_login_signup" class="text-white font-weight-normal">{{ __('S\'inscrire') }}</a>
 				</div>
 			</div>
 			<!--end::Login Sign in form-->
 
 			<!--begin::Login Sign up form-->
 			<div class="login-signup">
-				<div class="mb-20">
-					<h3 class="opacity-40 font-weight-normal">{{ __('Inscription') }}</h3>
-					<p class="opacity-40">{{ __('Entrez les détails de votre compte pour s\'inscrire') }}</p>
+				<div class="mb-5">
+					<h3 class="font-weight-normal mb-5"><span class="opacity-40">Inscription sur </span>NavetteClub!</h3>
+					<p class="opacity-40">Pour s'inscrire, utilisez</p>
+					<a href="{{ route('login.provider', ['provider' => 'facebook'])}}" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3"><i class="fab fa-facebook"></i>{{ __('acebook') }}</a>
+					<p class="opacity-40 mt-5">ou renseignez les détails de votre compte.</p>
 				</div>
 				<form class="form text-center" id="kt_login_signup_form" method="post">
                     @csrf
@@ -110,11 +107,6 @@
 						<button id="kt_login_signup_cancel" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">{{ __('Annuler') }}</button>
 					</div>
 				</form>
-                <hr class="bg-white">
-                <div class="text-center">
-                    <small class="d-block">Ou s'inscrire avec</small>
-                    <a href="login/facebook" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2"><i class="fab fa-facebook"></i>{{ __('acebook') }}</a>
-                </div>    
 			</div>
 			<!--end::Login Sign up form-->
 

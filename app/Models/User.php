@@ -140,6 +140,21 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the order items for the user.
+     */
+    public function orderItems()
+    {
+        return $this->hasManyThrough(
+            Item::class, 
+            Order::class,
+            'user_id', // Foreign key on orders table...
+            'order_id', // Foreign key on items table...
+            'id', // Local key on users table...
+            'id' // Local key on orders table...
+        );
+    }
+    
+    /**
      * Get the items order for the user.
      */
     public function items()
@@ -177,6 +192,22 @@ class User extends Authenticatable implements MustVerifyPhone
     public function positions()
     {
         return $this->belongsToMany(Point::class, 'user_point')->using(UserPoint::class);
+    }
+    
+    /**
+     * Get the main role of the user
+     */
+    public function role()
+    {
+        if($this->isAdmin())
+        {
+            return trans('messages.admin');
+        }
+        if($this->isDriver())
+        {
+            return trans('messages.driver');
+        }
+        return trans('messages.customer');
     }
     
     /**

@@ -1,0 +1,1 @@
+<span class="label label-inline label-{{ $theme }}-{{ $type }} font-weight-bolder">{{ $text }}</span>

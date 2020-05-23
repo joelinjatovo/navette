@@ -82,8 +82,7 @@
         </div>
         <!--end::Header Mobile-->
         
-        
-        <div class="d-flex flex-column flex-root">
+        <div class="d-flex flex-column flex-root" id="app">
             <!--begin::Page-->
             <div class="d-flex flex-row flex-column-fluid page">
                 
@@ -249,6 +248,36 @@
                                             <li class="menu-item {{ Route::is('admin.order.create') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.order.create') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.order.create') }}</span></a></li>
                                         </ul>
                                     </div>
+                                </li>
+                                
+                                <li class="menu-item menu-item-submenu {{ Route::is('admin.item*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+										<span class="svg-icon menu-icon">
+											<!--begin::Svg Icon -->
+											<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<rect x="0" y="0" width="24" height="24"/>
+													<path d="M10,4 L21,4 C21.5522847,4 22,4.44771525 22,5 L22,7 C22,7.55228475 21.5522847,8 21,8 L10,8 C9.44771525,8 9,7.55228475 9,7 L9,5 C9,4.44771525 9.44771525,4 10,4 Z M10,10 L21,10 C21.5522847,10 22,10.4477153 22,11 L22,13 C22,13.5522847 21.5522847,14 21,14 L10,14 C9.44771525,14 9,13.5522847 9,13 L9,11 C9,10.4477153 9.44771525,10 10,10 Z M10,16 L21,16 C21.5522847,16 22,16.4477153 22,17 L22,19 C22,19.5522847 21.5522847,20 21,20 L10,20 C9.44771525,20 9,19.5522847 9,19 L9,17 C9,16.4477153 9.44771525,16 10,16 Z" fill="#000000"/>
+													<rect fill="#000000" opacity="0.3" x="2" y="4" width="5" height="16" rx="1"/>
+												</g>
+											</svg>
+											<!--end::Svg Icon-->
+										</span>
+                                        <span class="menu-text">{{ __('messages.items') }}</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu" kt-hidden-height="80" style="">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            <li class="menu-item  menu-item-parent" aria-haspopup="true"><span class="menu-link"><span class="menu-text">{{ __('messages.items') }}</span></span></li>
+                                            <li class="menu-item {{ Route::is('admin.items') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.items') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.list') }}</span></a></li>
+                                            <li class="menu-item {{ Route::is('admin.item.create') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.item.create') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.ride.create') }}</span></a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                                
+                                <li class="menu-section ">
+                                    <h4 class="menu-text">{{ __('Course') }}</h4><i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
                                 
                                 <li class="menu-item menu-item-submenu {{ Route::is('admin.ride*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
@@ -613,6 +642,7 @@
                     </a>
                     <!--end:Item-->
 
+					@if(auth()->user()->isCustomer())
                     <!--begin::Item-->
                     <a href="{{ route('customer.orders') }}"  class="navi-item">
                         <div class="navi-link">
@@ -641,6 +671,38 @@
                         </div>
                     </a>
                     <!--end:Item-->
+					@endif
+
+					@if(auth()->user()->isDriver())
+                    <!--begin::Item-->
+                    <a href="{{ route('driver.rides') }}"  class="navi-item">
+                        <div class="navi-link">
+                            <div class="symbol symbol-40 bg-light mr-3">
+                                <div class="symbol-label">
+                                   <span class="svg-icon svg-icon-md svg-icon-warning"><!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Shopping/Chart-bar1.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"/>
+                                                <rect fill="#000000" opacity="0.3" x="12" y="4" width="3" height="13" rx="1.5"/>
+                                                <rect fill="#000000" opacity="0.3" x="7" y="9" width="3" height="8" rx="1.5"/>
+                                                <path d="M5,19 L20,19 C20.5522847,19 21,19.4477153 21,20 C21,20.5522847 20.5522847,21 20,21 L4,21 C3.44771525,21 3,20.5522847 3,20 L3,4 C3,3.44771525 3.44771525,3 4,3 C4.55228475,3 5,3.44771525 5,4 L5,19 Z" fill="#000000" fill-rule="nonzero"/>
+                                                <rect fill="#000000" opacity="0.3" x="17" y="11" width="3" height="6" rx="1.5"/>
+                                            </g>
+                                        </svg><!--end::Svg Icon-->
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="navi-text">
+                                <div class="font-weight-bold">
+                                    Mes Courses
+                                </div>
+                                <div class="text-muted">
+                                    Voir la liste de toutes mes courses
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <!--end:Item-->
+					@endif
 
                     <!--begin::Item-->
                     <a href="#"  class="navi-item">
@@ -711,6 +773,36 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+        $(document).ready(function() {
+            $(document).on('click', '.btn-delete', function() {
+                var $this = $(this);
+                swal.fire({
+                    title:"{{ __('messages.swal.delete.title') }}",
+                    text:"{{ __('messages.swal.delete.content') }}",
+                    type:"warning",
+                    showCancelButton:!0,
+                    confirmButtonText:"{{ __('messages.swal.delete.confirm') }}",
+                    cancelButtonText:"{{ __('messages.swal.delete.cancel') }}"
+                }).then(function(e){
+                    if(e.value){
+                        KTApp.blockPage();
+                        axios.delete(window.location.pathname, {data:{id: $this.attr('data-id')}})
+                            .then(res => {
+                                KTApp.unblockPage();
+                                var type = "danger";
+                                if (res.data.status === "success"){
+                                    $this.closest('tr').remove();
+                                    type = "success";
+                                }
+                                $.notify({icon:"add_alert", message:res.data.message}, {type:type});
+                            }).catch(err => {
+                                KTApp.unblockPage();
+                                $.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+                            })
+                    }
+                })
+            });
         });
         </script>
         @yield('javascript')
