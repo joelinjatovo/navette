@@ -1,4 +1,7 @@
 <template>
+	<div class="timeline timeline-5 mt-3">
+		<AppRidePoint v-for="point in points" :key="point.pivot.id"  :point="point"></AppRidePoint>
+	</div>
 </template>
 
 <script>
@@ -8,11 +11,7 @@
   export default {
     name: "AppRidePoints",
     components: {AppRidePoint},
-    props: ['user_id'],
-    mounted() {
-    },
-    computed: {
-    }
+    props: ['points']
   }
 </script>
 

@@ -74,6 +74,65 @@
 @section('content')
 <div class="row">
 	<div class="col-md-4">
+        <div class="card card-custom card-stretch gutter-b">
+			<!--begin::Header-->
+			<div class="card-header align-items-center border-0 mt-4">
+				<h3 class="card-title align-items-start flex-column">
+					<span class="font-weight-bolder text-dark">Tous les points du course  <a href="#" class="text-primary">#{{ $model->getKey() }}</a></span>
+					<span class="text-black mt-3 font-weight-bold font-size-sm">{{ $model->created_at->format('Y-m-d') }}</span>
+				</h3>
+				<div class="card-toolbar">
+					<div class="dropdown dropdown-inline">
+						<a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="ki ki-bold-more-ver"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+							<!--begin::Navigation-->
+							<ul class="navi navi-hover">
+								<li class="navi-header font-weight-bold py-4">
+									<span class="font-size-lg">{{ __('messages.options') }}:</span>
+								</li>
+								<li class="navi-separator mb-3 opacity-70"></li>
+									@if($model->activable())
+										<li class="navi-item">
+											<a href="#" class="navi-link btn-ride-action" data-action="active" data-id="{{ $model->getKey() }}">
+												<span class="navi-icon"><i class="la la-play"></i></span>
+												<span class="navi-text">{{ __('messages.button.active') }}</span>
+											</a>
+										</li>
+									@endif
+								
+									@if($model->cancelable())
+										<li class="navi-item">
+											<a href="#" class="navi-link btn-ride-action" data-action="cancel" data-id="{{ $model->getKey() }}">
+												<span class="navi-icon"><i class="la la-close"></i></span>
+												<span class="navi-text">{{ __('messages.button.cancel') }}</span>
+											</a>
+										</li>
+									@endif
+
+									@if($model->completable())
+										<li class="navi-item">
+											<a href="#" class="navi-link btn-ride-action" data-action="complete" data-id="{{ $model->getKey() }}">
+												<span class="navi-icon"><i class="la la-check"></i></span>
+												<span class="navi-text">{{ __('messages.button.active') }}</span>
+											</a>
+										</li>
+									@endif
+							</ul>
+							<!--end::Navigation-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--end::Header-->
+
+			<!--begin::Body-->
+			<div class="card-body pt-4">
+				<app-ride-points v-bind:points="{{ $points }}"></app-ride-points>
+			</div>
+			<!--end:Body-->
+		</div>
 	</div>
 	<div class="col-md-8">
 	</div>
