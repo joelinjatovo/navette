@@ -11,7 +11,7 @@ let actions = {
   },
 
   GET_NOTIFICATIONS({commit}) {
-    axios.get('/notifications')
+    axios.get('/notifications/unread')
       .then(res => {
         {
           commit('GET_NOTIFICATIONS', res.data)

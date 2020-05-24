@@ -72,7 +72,7 @@ class RidePointController extends Controller
 				if(!$ridepoint->arrivable()){
 					return response()->json([
 						'status' => "error",
-						'message' => trans('messages.controller.success.ridepoint.not.arrived'),
+						'message' => trans('messages.controller.success.ridepoint.not.arrivable'),
 					]);
 				}
 
@@ -92,7 +92,7 @@ class RidePointController extends Controller
 				if(!$ridepoint->dropable() && !$ridepoint->pickable()){
 					return response()->json([
 						'status' => "error",
-						'message' => trans('messages.controller.success.ridepoint.not.completed'),
+						'message' => trans('messages.controller.success.ridepoint.not.completable'),
 					]);
 				}
 

@@ -27,12 +27,35 @@ class NotificationController extends Controller
     public function show($id)
     {
         $user = \Auth::user();
-        
-        foreach ($user->unreadNotifications as $notification) {
-            $notification->markAsRead();
-        }
 		
-		return redirect()->route('admin.dashboard');
+		$notification = $user->notifications()->where('id', $id)->first();
+		$route = route('admin.dashboard');
+		if($notification){
+			$notification->markAsRead();
+			switch($notification->type){
+				case 'App\\Notifications\\OrderStatus':
+					if($user->isAdmin()){
+						return redirect()->route('admin.order.show', $notification->data['order_id']);
+					}
+					return redirect()->route('customer.order.show', $notification->data['order_id']);
+				break;
+				case 'App\\Notifications\\ItemStatus':
+					if($user->isAdmin()){
+						return redirect()->route('admin.item.show', $notification->data['item_id']);
+					}
+					return redirect()->route('customer.item.show', $notification->data['item_id']);
+				break;
+				case 'App\\Notifications\\RideStatus':
+					if($user->isAdmin()){
+						return redirect()->route('admin.ride.show', $notification->data['ride_id']);
+					}
+					if($user->isDriver()){
+						return redirect()->route('driver.ride.show', $notification->data['ride_id']);
+					}
+					return redirect()->route('customer.ride.show', $notification->data['ride_id']);
+				break;
+			}
+		}
     }
     
     /**

@@ -2108,7 +2108,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -51994,16 +51993,7 @@ var staticRenderFns = [
       },
       [
         _c("h4", { staticClass: "d-flex flex-center rounded-top" }, [
-          _c("span", [_vm._v("User Notifications")]),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              staticClass:
-                "btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2"
-            },
-            [_vm._v("23 new")]
-          )
+          _c("span", [_vm._v("Notifications")])
         ])
       ]
     )
@@ -65550,7 +65540,7 @@ var actions = {
   },
   GET_NOTIFICATIONS: function GET_NOTIFICATIONS(_ref2) {
     var commit = _ref2.commit;
-    axios.get('/notifications').then(function (res) {
+    axios.get('/notifications/unread').then(function (res) {
       {
         commit('GET_NOTIFICATIONS', res.data);
       }

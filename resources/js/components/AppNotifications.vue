@@ -17,8 +17,7 @@
 		<form>
 			<div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top">
 				<h4 class="d-flex flex-center rounded-top">
-					<span>User Notifications</span>
-					<span class="btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2">23 new</span>
+					<span>Notifications</span>
 				</h4> 
 			</div>
 			<div>
