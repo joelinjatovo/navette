@@ -270,7 +270,7 @@
 												@endif
 												@if($point->pivot->finishable())
 												<li class="navi-item">
-													<a href="#" class="navi-link btn-ride-point-action" data-ation="complete" data-id="{{ $point->pivot->id }}">
+													<a href="#" class="navi-link btn-ridepoint-action" data-ation="complete" data-id="{{ $point->pivot->id }}">
 														<span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
 														<span class="navi-text">{{ __('messages.button.complete') }}</span>
 													</a>
@@ -396,7 +396,7 @@ $(document).ready(function() {
 			}
 		})
 	});
-	$(document).on('click', '.btn-ride-point-action', function() {
+	$(document).on('click', '.btn-ridepoint-action', function() {
 		var $this = $(this);
 		swal.fire({
 			title:"{{ __('messages.swal.delete.title') }}",
