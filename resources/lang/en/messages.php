@@ -55,6 +55,7 @@ return [
     'controller.success.club.updated' => 'Le club a été bien mis à jour avec succès.',
     'controller.success.item.not.cancelable' => 'Cet élément ne peut pas être annulé.',
     'controller.success.item.canceled' => 'Cet élément a été bien annulé avec succès.',
+    'controller.success.item.deleted' => 'Cet élément a été bien supprimé avec succès.',
     'controller.success.item.unknown' => 'Une erreur s\est produite. Action non définie.',
     'controller.success.order.canceled' => 'La commande a été bien annulée avec succès.',
     'controller.success.order.not.cancelable' => 'La commande ne peut pas être annulée.',

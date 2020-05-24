@@ -126,7 +126,7 @@ class ItemController extends Controller
 				$item->cancel();
 
 				// Select next item
-				$ride = $ridepoint->ride;
+				$ride = $item->ride;
 				if($ride){$ride->next();}
 				return response()->json([
 					'status' => "success",

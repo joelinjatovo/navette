@@ -56,6 +56,11 @@ class NotificationController extends Controller
 				break;
 			}
 		}
+		
+		if($user->isAdmin()){
+			return redirect()->route('admin.dashboard');
+		}
+		return redirect()->route('account.profile');
     }
     
     /**
@@ -67,7 +72,7 @@ class NotificationController extends Controller
     {
         $user = \Auth::user();
         
-        return $user->unreadNotifications;
+        return $user->unreadNotifications()->orderBy('created_at', 'desc')->get(); 
     }
     
     /**
