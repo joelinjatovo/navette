@@ -386,8 +386,38 @@ function loadItem(){
 }
 
 jQuery(document).ready(function(){
+	
     loadItem();
+	
+	$(document).on('click', '.btn-item-action', function() {
+		var $this = $(this);
+		swal.fire({
+			title:"{{ __('messages.swal.action.title') }}",
+			text:"{{ __('messages.swal.action.content') }}",
+			type:"warning",
+			showCancelButton:!0,
+			confirmButtonText:"{{ __('messages.swal.action.confirm') }}",
+			cancelButtonText:"{{ __('messages.swal.action.cancel') }}"
+		}).then(function(e){
+			if(e.value){
+				KTApp.blockPage();
+				axios.put("{{ route('admin.items') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
+					.then(res => {
+						KTApp.unblockPage();
+						var type = "danger";
+						if (res.data.status === "success"){
+							type = "success";
+						}
+						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
+					}).catch(err => {
+						KTApp.unblockPage();
+						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+					})
+			}
+		})
+	});
 });
+	
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=geometry&callback=initMap" async defer></script>
 @endsection

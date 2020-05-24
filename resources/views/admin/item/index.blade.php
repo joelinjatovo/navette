@@ -84,6 +84,11 @@
                                     <a href="{{ route('admin.item.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
                                         <i class="la la-eye"></i>
                                     </a>
+									@if($model->cancelable())
+									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 btn-item-action" data-action="cancel" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.cancel') }}">
+										<i class="la la-close"></i>
+									</a>
+									@endif
                                     <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  data-id="{{ $model->getKey() }}" title="{{ __('messages.button.delete') }}" >
                                         <i class="la la-trash"></i>
                                     </a>	                    
@@ -109,4 +114,38 @@
         <!--end::Card-->
     </div>
 </div>
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+$(document).ready(function() {
+	$(document).on('click', '.btn-item-action', function() {
+		var $this = $(this);
+		swal.fire({
+			title:"{{ __('messages.swal.action.title') }}",
+			text:"{{ __('messages.swal.action.content') }}",
+			type:"warning",
+			showCancelButton:!0,
+			confirmButtonText:"{{ __('messages.swal.action.confirm') }}",
+			cancelButtonText:"{{ __('messages.swal.action.cancel') }}"
+		}).then(function(e){
+			if(e.value){
+				KTApp.blockPage();
+				axios.put("{{ route('admin.items') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
+					.then(res => {
+						KTApp.unblockPage();
+						var type = "danger";
+						if (res.data.status === "success"){
+							type = "success";
+						}
+						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
+					}).catch(err => {
+						KTApp.unblockPage();
+						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+					})
+			}
+		})
+	});
+});
+</script>
 @endsection

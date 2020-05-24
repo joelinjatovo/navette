@@ -74,7 +74,7 @@
                                         <i class="la la-eye"></i>
                                     </a>
 									@if($model->cancelable())
-									<a href="#" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-order-action" data-action="cancel" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.cancel') }}">
+									<a href="#" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2 btn-order-action" data-action="cancel" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.cancel') }}">
 										<i class="la la-close"></i>
 									</a>
 									@endif
