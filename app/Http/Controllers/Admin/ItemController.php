@@ -105,6 +105,43 @@ class ItemController extends Controller
     }
 
     /**
+     * Handle specified action
+     *
+     * @param Request  $request
+	 *
+     * @return Response
+     */
+    public function action(Request $request)
+    {
+        $item = Item::findOrFail($request->input('id'));
+		switch($request->input('action')){
+			case 'cancel':
+				if(!$item->cancelable()){
+					return response()->json([
+						'status' => "error",
+						'message' => trans('messages.controller.success.item.not.cancelable'),
+					]);
+				}
+
+				$item->cancel();
+
+				// Select next item
+				$ride = $ridepoint->ride;
+				if($ride){$ride->next();}
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.item.canceled'),
+				]);
+			break;
+		}
+		
+        return response()->json([
+            'status' => "error",
+            'message' => trans('messages.controller.success.item.unknown'),
+        ]);
+    }
+
+    /**
      * Delete the specified item.
      *
      * @param Request  $request
