@@ -38,6 +38,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('account/profile', 'Account\ProfileController@show')->name('account.profile');
     Route::post('account/profile', 'Account\ProfileController@update');
+    Route::get('account/verify', 'Account\VerificationController@show')->name('account.verify');
+    Route::post('account/verify', 'Account\VerificationController@verify');
 
     Route::get('notifications', 'Account\NotificationController@index')->name('notifications');
     Route::get('notifications/unread', 'Account\NotificationController@unread')->name('notifications.unread');
