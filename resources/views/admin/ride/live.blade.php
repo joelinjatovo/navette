@@ -26,8 +26,8 @@
             <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
             <!--end::Separator-->
 				
-			<span class="mr-2">{{ __('messages.distance') }}: <span class="text-dark-75 font-weight-bold" id="kt_subheader_distance">{{ $model->distance }} m</span></span>
-			<span class="mr-2">{{ __('messages.duration') }}: <span class="text-dark-75 font-weight-bold" id="kt_subheader_duration">{{ gmdate('H:i:s', $model->duration) }}</span></span>
+			<span class="font-weight-boldest text-danger mr-2">{{ $model->duration }} m</span>
+			<div class="font-weight-boldest text-warning mr-2">{{ gmdate('H:i:s', $model->duration) }}</div>
 			<x-status theme="light" :status="$model->status" />
 
         </div>
@@ -79,7 +79,12 @@
 			<div class="card-header align-items-center border-0 mt-4">
 				<h3 class="card-title align-items-start flex-column">
 					<span class="font-weight-bolder text-dark">Tous les points du course  <a href="#" class="text-primary">#{{ $model->getKey() }}</a></span>
-					<span class="text-black mt-3 font-weight-bold font-size-sm">{{ $model->created_at->format('Y-m-d') }}</span>
+					
+        			<div class="d-flex align-items-center flex-wrap mt-3">
+						<span class=" font-weight-bolder text-black font-size-sm mr-2">{{ $model->created_at->format('Y-m-d') }}</span>
+						<span class="font-weight-bolder text-danger font-size-sm mr-2">{{ $model->duration }} m</span>
+						<span class="font-weight-bolder text-warning font-size-sm mr-2">{{ gmdate('H:i:s', $model->duration) }}</span>
+					</div>
 				</h3>
 				<div class="card-toolbar">
 					<div class="dropdown dropdown-inline">
@@ -93,32 +98,32 @@
 									<span class="font-size-lg">{{ __('messages.options') }}:</span>
 								</li>
 								<li class="navi-separator mb-3 opacity-70"></li>
-									@if($model->activable())
-										<li class="navi-item">
-											<a href="#" class="navi-link btn-ride-action" data-action="active" data-id="{{ $model->getKey() }}">
-												<span class="navi-icon"><i class="la la-play"></i></span>
-												<span class="navi-text">{{ __('messages.button.active') }}</span>
-											</a>
-										</li>
-									@endif
-								
-									@if($model->cancelable())
-										<li class="navi-item">
-											<a href="#" class="navi-link btn-ride-action" data-action="cancel" data-id="{{ $model->getKey() }}">
-												<span class="navi-icon"><i class="la la-close"></i></span>
-												<span class="navi-text">{{ __('messages.button.cancel') }}</span>
-											</a>
-										</li>
-									@endif
+								@if($model->activable())
+									<li class="navi-item">
+										<a href="#" class="navi-link btn-ride-action" data-action="active" data-id="{{ $model->getKey() }}">
+											<span class="navi-icon"><i class="la la-play"></i></span>
+											<span class="navi-text">{{ __('messages.button.active') }}</span>
+										</a>
+									</li>
+								@endif
 
-									@if($model->completable())
-										<li class="navi-item">
-											<a href="#" class="navi-link btn-ride-action" data-action="complete" data-id="{{ $model->getKey() }}">
-												<span class="navi-icon"><i class="la la-check"></i></span>
-												<span class="navi-text">{{ __('messages.button.active') }}</span>
-											</a>
-										</li>
-									@endif
+								@if($model->cancelable())
+									<li class="navi-item">
+										<a href="#" class="navi-link btn-ride-action" data-action="cancel" data-id="{{ $model->getKey() }}">
+											<span class="navi-icon"><i class="la la-close"></i></span>
+											<span class="navi-text">{{ __('messages.button.cancel') }}</span>
+										</a>
+									</li>
+								@endif
+
+								@if($model->completable())
+									<li class="navi-item">
+										<a href="#" class="navi-link btn-ride-action" data-action="complete" data-id="{{ $model->getKey() }}">
+											<span class="navi-icon"><i class="la la-check"></i></span>
+											<span class="navi-text">{{ __('messages.button.active') }}</span>
+										</a>
+									</li>
+								@endif
 							</ul>
 							<!--end::Navigation-->
 						</div>
@@ -249,12 +254,18 @@
 														</li>
 													@endif
 												@endif
-												@if($point->pivot->cancelable() || $point->pivot->arrivable() || $point->pivot->finishable()):
-													<li class="navi-separator"></li>
+												<li class="navi-item">
+													<a href="{{ route('admin.ridepoint.show', $point->pivot) }}" class="navi-link" data-action="cancel" data-id="">
+														<span class="navi-icon"><i class="flaticon-eye"></i></span>
+														<span class="navi-text">{{ __('messages.button.view') }}</span>
+													</a>
+												</li>
+												@if($point->pivot->cancelable() || $point->pivot->arrivable() || $point->pivot->dropable() || $point->pivot->pickable()):
+													<li class="navi-separator my-3"></li>
 												@endif
 												@if($point->pivot->arrivable())
 												<li class="navi-item">
-													<a href="#" class="navi-link btn-action" data-ation="arrive" data-id="{{ $point->pivot->id }}">
+													<a href="#" class="navi-link btn-ridepoint-action" data-action="arrive" data-id="{{ $point->pivot->id }}">
 														<span class="navi-icon"><i class="flaticon-cancel"></i></span>
 														<span class="navi-text">{{ __('messages.button.arrive') }}</span>
 													</a>
@@ -262,15 +273,15 @@
 												@endif
 												@if($point->pivot->cancelable())
 												<li class="navi-item">
-													<a href="#" class="navi-link btn-action" data-ation="cancel" data-id="{{ $point->pivot->id }}">
+													<a href="#" class="navi-link btn-ridepoint-action" data-action="cancel" data-id="{{ $point->pivot->id }}">
 														<span class="navi-icon"><i class="flaticon-cancel"></i></span>
 														<span class="navi-text">{{ __('messages.button.cancel') }}</span>
 													</a>
 												</li>
 												@endif
-												@if($point->pivot->finishable())
+												@if($point->pivot->dropable() || $point->pivot->pickable())
 												<li class="navi-item">
-													<a href="#" class="navi-link btn-ridepoint-action" data-ation="complete" data-id="{{ $point->pivot->id }}">
+													<a href="#" class="navi-link btn-ridepoint-action" data-action="pick-or-drop" data-id="{{ $point->pivot->id }}">
 														<span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
 														<span class="navi-text">{{ __('messages.button.complete') }}</span>
 													</a>

@@ -25,6 +25,7 @@ return [
         'save' => 'Save',
         'update' => 'Update',
         'wave' => 'Wave',
+        'view' => 'View',
     ],
     'car' => 'Car',
     'car.create' => 'Add car',

@@ -25,9 +25,8 @@
             <!--begin::Separator-->
             <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
             <!--end::Separator-->
-				
-			<span class="mr-2">{{ __('messages.distance') }}: <span class="text-dark-75 font-weight-bold" id="kt_subheader_distance">{{ $model->distance }} m</span></span>
-			<span class="mr-2">{{ __('messages.duration') }}: <span class="text-dark-75 font-weight-bold" id="kt_subheader_duration">{{ gmdate('H:i:s', $model->duration) }}</span></span>
+			<span class="font-weight-boldest text-danger mr-2">{{ $model->duration }} m</span>
+			<div class="font-weight-boldest text-warning mr-2">{{ gmdate('H:i:s', $model->duration) }}</div>
 			<x-status theme="light" :status="$model->status" />
 
         </div>
@@ -41,21 +40,25 @@
 			
 			@if($model->cancelable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" data-action="cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->activable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-active" data-id="{{ $model->getKey() }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" data-action="active" data-id="{{ $model->getKey() }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->completable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-complete" data-id="{{ $model->getKey() }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" data-action="complete" data-id="{{ $model->getKey() }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
 			<!--end::Button-->
 			@endif
+            
+            <!--begin::Button-->
+            <a href="{{ route('admin.ride.live', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-map"></i> {{ __('messages.button.live') }}</a>
+            <!--end::Button-->
             
             <!--begin::Button-->
             <a href="{{ route('admin.ride.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-plus"></i> {{ __('messages.ride.create') }}</a>
@@ -215,12 +218,18 @@
 													</li>
 												@endif
 											@endif
-											@if($point->pivot->cancelable() || $point->pivot->arrivable() || $point->pivot->finishable()):
+											<li class="navi-item">
+												<a href="{{ route('admin.ridepoint.show', $point->pivot) }}" class="navi-link" data-action="cancel" data-id="">
+													<span class="navi-icon"><i class="flaticon-eye"></i></span>
+													<span class="navi-text">{{ __('messages.button.view') }}</span>
+												</a>
+											</li>
+											@if($point->pivot->cancelable() || $point->pivot->arrivable() || $point->pivot->dropable() || $point->pivot->pickable()):
 												<li class="navi-separator my-3"></li>
 											@endif
 											@if($point->pivot->arrivable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-arrive" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-ridepoint-action" data-action="arrive" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon-cancel"></i></span>
 													<span class="navi-text">{{ __('messages.button.arrive') }}</span>
 												</a>
@@ -228,15 +237,15 @@
 											@endif
 											@if($point->pivot->cancelable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-cancel" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-ridepoint-action" data-action="cancel" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon-cancel"></i></span>
 													<span class="navi-text">{{ __('messages.button.cancel') }}</span>
 												</a>
 											</li>
 											@endif
-											@if($point->pivot->finishable())
+											@if($point->pivot->dropable() || $point->pivot->pickable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-complete" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-ridepoint-action" data-action="pick-or-drop" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
 													<span class="navi-text">{{ __('messages.button.complete') }}</span>
 												</a>
@@ -272,4 +281,67 @@
 	</div>
     <!--end::Content-->
 </div>
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+$(document).ready(function() {
+	$(document).on('click', '.btn-ride-action', function() {
+		var $this = $(this);
+		swal.fire({
+			title:"{{ __('messages.swal.action.title') }}",
+			text:"{{ __('messages.swal.action.content') }}",
+			type:"warning",
+			showCancelButton:!0,
+			confirmButtonText:"{{ __('messages.swal.action.confirm') }}",
+			cancelButtonText:"{{ __('messages.swal.action.cancel') }}"
+		}).then(function(e){
+			if(e.value){
+				KTApp.blockPage();
+				axios.put("{{ route('admin.rides') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
+					.then(res => {
+						KTApp.unblockPage();
+						var type = "danger";
+						if (res.data.status === "success"){
+							type = "success";
+						}
+						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
+					}).catch(err => {
+						KTApp.unblockPage();
+						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+					})
+			}
+		})
+	});
+});
+$(document).ready(function() {
+	$(document).on('click', '.btn-ridepoint-action', function() {
+		var $this = $(this);
+		swal.fire({
+			title:"{{ __('messages.swal.action.title') }}",
+			text:"{{ __('messages.swal.action.content') }}",
+			type:"warning",
+			showCancelButton:!0,
+			confirmButtonText:"{{ __('messages.swal.action.confirm') }}",
+			cancelButtonText:"{{ __('messages.swal.action.cancel') }}"
+		}).then(function(e){
+			if(e.value){
+				KTApp.blockPage();
+				axios.put("{{ route('admin.ridepoints') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
+					.then(res => {
+						KTApp.unblockPage();
+						var type = "danger";
+						if (res.data.status === "success"){
+							type = "success";
+						}
+						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
+					}).catch(err => {
+						KTApp.unblockPage();
+						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+					})
+			}
+		})
+	});
+});
+</script>
 @endsection
