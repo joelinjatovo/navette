@@ -52,9 +52,9 @@ class RideController extends Controller
     }
     
     /**
-     * Get items.
+     * Get items of the ride
      *
-     * @param  Request  $request
+     * @param  Request $request
      * @param  Ride  $ride
      *
      * @return Response
@@ -65,7 +65,7 @@ class RideController extends Controller
     }
     
     /**
-     * Get points of rides
+     * Get points of the ride
      *
      * @param  Request  $request
      * @param  Ride  $ride
@@ -78,16 +78,16 @@ class RideController extends Controller
     }
     
     /**
-     * Start a ride.
+     * Active a ride.
      *
      * @param  Request  $request
      * @param  Ride  $ride
      *
      * @return Response
      */
-    public function start(Request $request)
+    public function active(Request $request)
     {
-        $ride = Ride::findOrFail($request->input('ride_id'));
+        $ride = Ride::findOrFail($request->input('id'));
         
         if(!$ride->activable()){
             return $this->error(400, 112, "Ride not activable");
@@ -99,32 +99,6 @@ class RideController extends Controller
     }
     
     /**
-     * Verify a ride direction.
-     *
-     * @param  Request  $request
-     * @param  Ride  $ride
-     *
-     * @return Response
-     */
-    public function direction(Request $request)
-    {
-        $ride = Ride::findOrFail($request->input('ride_id'));
-        
-        $points = $ride->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->get();
-        if(empty($points)){
-            return $this->error(400, 114, "Empty ride locations");
-        }
-        
-        if(!$ride->verifyDirection($this->google)){
-            return $this->error(400, 115, "Ride direction not verified");
-        }
-        
-        $ride->next();
-        
-        return new RideItemResource($ride);
-    }
-    
-    /**
      * Cancel a ride.
      *
      * @param  Request  $request
@@ -133,7 +107,7 @@ class RideController extends Controller
      */
     public function cancel(Request $request)
     {
-        $ride = Ride::findOrFail($request->input('ride_id'));
+        $ride = Ride::findOrFail($request->input('id'));
         
         if(!$ride->cancelable()){
             return $this->error(400, 113, "Ride not cancelable");
@@ -154,9 +128,35 @@ class RideController extends Controller
      */
     public function complete(Request $request)
     {
-        $ride = Ride::findOrFail($request->input('ride_id'));
+        $ride = Ride::findOrFail($request->input('id'));
         
         $ride->complete();
+        
+        return new RideItemResource($ride);
+    }
+    
+    /**
+     * Verify a ride direction.
+     *
+     * @param  Request  $request
+     * @param  Ride  $ride
+     *
+     * @return Response
+     */
+    public function direction(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('id'));
+        
+        $points = $ride->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->get();
+        if(empty($points)){
+            return $this->error(400, 114, "Empty ride locations");
+        }
+        
+        if(!$ride->verifyDirection($this->google)){
+            return $this->error(400, 115, "Ride direction not verified");
+        }
+        
+        $ride->next();
         
         return new RideItemResource($ride);
     }

@@ -18,12 +18,12 @@ class Item extends Model
     public const STATUS_PING = 'ping';
     
     public const STATUS_ACTIVE = 'active';
+    
+    public const STATUS_NEXT = 'next';
   
     public const STATUS_ARRIVED = 'arrived';
     
     public const STATUS_ONLINE = 'online';
-    
-    public const STATUS_NEXT = 'next';
     
     public const STATUS_CANCELED = 'canceled';
     
@@ -100,44 +100,6 @@ class Item extends Model
     }
     
     /**
-     * Check if ride is finishable
-     */
-    public function finishable()
-    {
-        return self::STATUS_NEXT == $this->status;
-    }
-    
-    /**
-     * Finish ride point
-     */
-    public function finish()
-    {
-        $oldStatus = $this->status;
-        if($this->type == self::TYPE_GO){
-            $newStatus = self::STATUS_ONLINE;
-        }else{
-            $newStatus = self::STATUS_COMPLETED;
-        }
-        
-        $this->status = $newStatus;
-        $this->save();
-                
-        // Notify *customer
-        event(new ItemStatusChanged($this, 'updated', $oldStatus, $newStatus));
-        
-        $point = $this->point;
-        $ride = $this->ride;
-        if($point && $ride){
-            if($this->type == self::TYPE_GO){
-                $newStatus = RidePoint::STATUS_ONLINE;
-            }else{
-                $newStatus = RidePoint::STATUS_COMPLETED;
-            }
-            $ride->points()->updateExistingPivot($point->getKey(), ['status' => $newStatus]);
-        }
-    }
-    
-    /**
      * Check if ride is cancelable
      */
     public function cancelable()
@@ -159,13 +121,13 @@ class Item extends Model
         // Notify *customer
         event(new ItemStatusChanged($this, 'updated', $oldStatus, $newStatus));
         
+		// Cancel ride point
         $point = $this->point;
         $ride = $this->ride;
         if($point && $ride){
             $newStatus = RidePoint::STATUS_CANCELED;
             $ride->points()->updateExistingPivot($point->getKey(), ['status' => $newStatus]);
         }
-        
         
         // Cancel order if all items is canceled
         $order = $this->order;

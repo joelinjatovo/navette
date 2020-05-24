@@ -69,6 +69,34 @@ class Order extends Model
     }
     
     /**
+     * Check if order is cancelable
+     */
+    public function cancelable()
+    {
+        switch($this->status){
+            case self::STATUS_COMPLETED:
+            case self::STATUS_CANCELED:
+                return false;
+            default:
+                return true;
+        }
+    
+        return true;
+    }
+    
+    /**
+     * Cancel order
+     */
+    public function cancel(User $user)
+    {
+        $this->status = self::STATUS_CANCELED;
+        $this->canceled_at = now();
+        $this->canceler_role = $user->isAdmin() ? Role::ADMIN : ( $user->isDriver() ? Role::DRIVER : Role::CUSTOMER );
+        $this->canceler_id = $user->getKey();
+        $this->save();
+    }
+    
+    /**
      * Get the user that canceled the order.
      */
     public function canceler()
@@ -159,33 +187,5 @@ class Order extends Model
         $this->total = $this->subtotal + $this->subtotal * $this->vat;
         
         return $this;
-    }
-    
-    /**
-     * Check if order is cancelable
-     */
-    public function cancelable()
-    {
-        switch($this->status){
-            case self::STATUS_COMPLETED:
-            case self::STATUS_CANCELED:
-                return false;
-            default:
-                return true;
-        }
-    
-        return true;
-    }
-    
-    /**
-     * Cancel order
-     */
-    public function cancel(User $user)
-    {
-        $this->status = self::STATUS_CANCELED;
-        $this->canceled_at = now();
-        $this->canceler_role = $user->isAdmin() ? Role::ADMIN : ( $user->isDriver() ? Role::DRIVER : Role::CUSTOMER );
-        $this->canceler_id = $user->getKey();
-        $this->save();
     }
 }

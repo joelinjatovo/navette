@@ -25,43 +25,15 @@ class ItemController extends Controller
     }
     
     /**
-     * Active a ride point.
-     *
-     * @param  Request  $request
-     * @param  Ride  $ride
-     *
-     * @return Response
-     */
-    public function finish(Request $request)
-    {
-        $item = Item::findOrFail($request->input('item_id'));
-        
-        if(!$item->finishable()){
-            return $this->error(400, 118, "Item not finishable");
-        }
-        
-        $item->finish();
-        
-        $ride = $item->ride;
-        if($ride){
-            // Select next item
-            $ride->next();
-        }
-        
-        return new ItemItemResource($item);
-    }
-    
-    /**
      * Cancel item
      *
      * @param  Request  $request
-     * @param  Ride  $ride
      *
      * @return Response
      */
     public function cancel(Request $request)
     {
-        $item = Item::findOrFail($request->input('item_id'));
+        $item = Item::findOrFail($request->input('id'));
         
         if(!$item->cancelable()){
             return $this->error(400, 119, "Item not cancelable");
