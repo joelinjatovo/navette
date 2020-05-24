@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('notifications', 'Account\NotificationController@index')->name('notifications');
     Route::get('notifications/unread', 'Account\NotificationController@unread')->name('notifications.unread');
     Route::post('notifications', 'Account\NotificationController@markAsRead');
+    Route::get('notification/{id}', 'Account\NotificationController@show');
     
     Route::middleware(['role:customer'])->prefix('customer')->name('customer.')->group(function () {
         Route::get('/', 'Customer\IndexController@index')->name('dashboard');

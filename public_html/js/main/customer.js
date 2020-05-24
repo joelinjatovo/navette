@@ -1929,106 +1929,119 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "AppNotification",
   props: ['notification'],
+  data: function data() {
+    return {
+      datenow: ''
+    };
+  },
+  mounted: function mounted() {
+    this.updateDate();
+  },
+  methods: {
+    updateDate: function updateDate() {
+      var self = this;
+      this.datenow = moment(this.notification.created_at).fromNow();
+      setInterval(self.updateDate, 1000);
+    }
+  },
   computed: {
-    created_at: function created_at() {
-      return moment(this.notification.created_at).format('MMMM Do YYYY');
+    link: function link() {
+      return "/notification/" + this.notification.id;
     },
     text: function text() {
-      console.log(this.notification.type);
+      var newStatus = this.notification.newStatus != undefined ? this.notification.newStatus : this.notification.data.newStatus;
 
       switch (this.notification.type) {
         case 'App\\Notifications\\OrderStatus':
-          console.log(this.notification.data.newStatus);
-
-          switch (this.notification.data.newStatus) {
+          switch (newStatus) {
             case "ping":
-              return "Votre commande a été créée " + this.notification.id;
+              return "Votre commande a été créée ";
               break;
 
             case "on-hold":
-              return "Votre commande est en cours de paiement " + this.notification.id;
+              return "Votre commande est en cours de paiement ";
               break;
 
             case "processing":
-              return "Votre commande est en cours de traitement " + this.notification.id;
+              return "Votre commande est en cours de traitement ";
               break;
 
             case "ok":
-              return "Votre commande est bien reçue " + this.notification.id;
+              return "Votre commande est bien reçue ";
               break;
 
             case "active":
-              return "Votre commande est active " + this.notification.id;
+              return "Votre commande est active ";
               break;
 
             case "canceled":
-              return "Votre commande a été annulée  " + this.notification.id;
+              return "Votre commande a été annulée  ";
               break;
 
             case "completed":
-              return "Votre commande a été términée " + this.notification.id;
+              return "Votre commande a été términée ";
               break;
           }
 
           break;
 
-        case 'App\Notifications\ItemStatus':
-          switch (this.notification.data.newStatus) {
+        case 'App\\Notifications\\ItemStatus':
+          switch (newStatus) {
             case "ping":
-              return "Un élément de votre commande créé " + this.notification.id;
+              return "Un élément de votre commande créé ";
               break;
 
             case "active":
-              return "Un élément de votre commande activé " + this.notification.id;
+              return "Un élément de votre commande activé ";
               break;
 
             case "next":
-              return "Vous etes le suivant " + this.notification.id;
+              return "Vous etes le suivant ";
               break;
 
             case "arrived":
-              return "Chauffeur arrivé " + this.notification.id;
+              return "Chauffeur arrivé ";
               break;
 
             case "online":
-              return "Un élément de votre commande en route  " + this.notification.id;
+              return "Un élément de votre commande en route  ";
               break;
 
             case "canceled":
-              return "Un élément de votre commande annulé " + this.notification.id;
+              return "Un élément de votre commande annulé ";
               break;
 
             case "completed":
-              return "Un élément de votre commande términé " + this.notification.id;
+              return "Un élément de votre commande términé ";
               break;
           }
 
           break;
 
-        case 'App\Notifications\RideStatus':
-          switch (this.notification.data.newStatus) {
+        case 'App\\Notifications\\RideStatus':
+          switch (newStatus) {
             case "ping":
-              return "Une course a été créée " + this.notification.id;
+              return "Une course a été créée ";
               break;
 
             case "active":
-              return "Une course a été activé " + this.notification.id;
+              return "Une course a été activé ";
               break;
 
             case "cancelable":
-              return "Une course peut etre annulée " + this.notification.id;
+              return "Une course peut etre annulée ";
               break;
 
             case "canceled":
-              return "Une course a été annulée " + this.notification.id;
+              return "Une course a été annulée ";
               break;
 
             case "completable":
-              return "Une course peut etre términée " + this.notification.id;
+              return "Une course peut etre términée ";
               break;
 
             case "completed":
-              return "Une course a été términée " + this.notification.id;
+              return "Une course a été términée ";
               break;
           }
 
@@ -2111,18 +2124,119 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     console.log("User Id  = " + this.user_id);
     window.Echo["private"]('App.User.' + this.user_id).notification(function (res) {
       console.log(res);
-      console.log(res.data);
       $.notify({
         icon: "add_alert",
-        message: res.type
+        message: _this.formatMessage(res)
       }, {
         type: "danger"
       });
 
-      _this.$store.commit('ADD_NOTIFICATION', res.data);
+      _this.$store.commit('ADD_NOTIFICATION', res);
     });
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['notifications']))
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['notifications'])),
+  methods: {
+    formatMessage: function formatMessage(res) {
+      switch (res.type) {
+        case 'App\\Notifications\\OrderStatus':
+          switch (res.newStatus) {
+            case "ping":
+              return "Votre commande a été créée ";
+              break;
+
+            case "on-hold":
+              return "Votre commande est en cours de paiement ";
+              break;
+
+            case "processing":
+              return "Votre commande est en cours de traitement ";
+              break;
+
+            case "ok":
+              return "Votre commande est bien reçue ";
+              break;
+
+            case "active":
+              return "Votre commande est active ";
+              break;
+
+            case "canceled":
+              return "Votre commande a été annulée  ";
+              break;
+
+            case "completed":
+              return "Votre commande a été términée ";
+              break;
+          }
+
+          break;
+
+        case 'App\\Notifications\\ItemStatus':
+          switch (res.newStatus) {
+            case "ping":
+              return "Un élément de votre commande créé ";
+              break;
+
+            case "active":
+              return "Un élément de votre commande activé ";
+              break;
+
+            case "next":
+              return "Vous etes le suivant ";
+              break;
+
+            case "arrived":
+              return "Chauffeur arrivé ";
+              break;
+
+            case "online":
+              return "Un élément de votre commande en route  ";
+              break;
+
+            case "canceled":
+              return "Un élément de votre commande annulé ";
+              break;
+
+            case "completed":
+              return "Un élément de votre commande términé ";
+              break;
+          }
+
+          break;
+
+        case 'App\\Notifications\\RideStatus':
+          switch (res.newStatus) {
+            case "ping":
+              return "Une course a été créée ";
+              break;
+
+            case "active":
+              return "Une course a été activé ";
+              break;
+
+            case "cancelable":
+              return "Une course peut etre annulée ";
+              break;
+
+            case "canceled":
+              return "Une course a été annulée ";
+              break;
+
+            case "completable":
+              return "Une course peut etre términée ";
+              break;
+
+            case "completed":
+              return "Une course a été términée ";
+              break;
+          }
+
+          break;
+      }
+
+      return 'Inconnu';
+    }
+  }
 });
 
 /***/ }),
@@ -29632,7 +29746,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("a", { staticClass: "navi-item", attrs: { href: "#" } }, [
+  return _c("a", { staticClass: "navi-item", attrs: { href: _vm.link } }, [
     _c("div", { staticClass: "navi-link" }, [
       _vm._m(0),
       _vm._v(" "),
@@ -29642,7 +29756,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "text-muted" }, [
-          _vm._v("\r\n\t\t\t\t" + _vm._s(_vm.created_at) + "\r\n\t\t\t")
+          _vm._v("\r\n\t\t\t\t" + _vm._s(_vm.datenow) + "\r\n\t\t\t")
         ])
       ])
     ])
@@ -43336,8 +43450,6 @@ var actions = {
     var commit = _ref2.commit;
     axios.get('/notifications').then(function (res) {
       {
-        console.log('/notifications');
-        console.log(res);
         commit('GET_NOTIFICATIONS', res.data);
       }
     })["catch"](function (err) {
@@ -43408,20 +43520,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 var mutations = {
   GET_NOTIFICATIONS: function GET_NOTIFICATIONS(state, notifications) {
     state.notifications = notifications;
   },
   ADD_NOTIFICATION: function ADD_NOTIFICATION(state, notification) {
-    state.notifications = [].concat(_toConsumableArray(state.notifications), [notification]);
+    state.notifications.unshift(notification); //state.notifications = [...state.notifications, notification]
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = (mutations);

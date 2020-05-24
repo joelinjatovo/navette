@@ -49,15 +49,93 @@
       window.Echo.private('App.User.' + this.user_id)
             .notification((res) => {
                 console.log(res);
-                console.log(res.data);
-				$.notify({icon:"add_alert", message:res.type}, {type:"danger"});
-                this.$store.commit('ADD_NOTIFICATION', res.data)
+				$.notify({icon:"add_alert", message:this.formatMessage(res)}, {type:"danger"});
+                this.$store.commit('ADD_NOTIFICATION', res)
             });
     },
     computed: {
       ...mapGetters([
         'notifications'
       ])
+    },
+    methods: {
+      formatMessage(res) {
+	  	switch(res.type){
+			case 'App\\Notifications\\OrderStatus':
+				switch(res.newStatus){
+					case "ping":
+						return "Votre commande a été créée ";
+					break;
+					case "on-hold":
+						return "Votre commande est en cours de paiement ";
+					break;
+					case "processing":
+						return "Votre commande est en cours de traitement ";
+					break;
+					case "ok":
+						return "Votre commande est bien reçue ";
+					break;
+					case "active":
+						return "Votre commande est active ";
+					break;
+					case "canceled":
+						return "Votre commande a été annulée  ";
+					break;
+					case "completed":
+						return "Votre commande a été términée ";
+					break;
+				}
+			break;
+			case 'App\\Notifications\\ItemStatus':
+				switch(res.newStatus){
+					case "ping":
+						return "Un élément de votre commande créé ";
+					break;
+					case "active":
+						return "Un élément de votre commande activé ";
+					break;
+					case "next":
+						return "Vous etes le suivant ";
+					break;
+					case "arrived":
+						return "Chauffeur arrivé ";
+					break;
+					case "online":
+						return "Un élément de votre commande en route  ";
+					break;
+					case "canceled":
+						return "Un élément de votre commande annulé ";
+					break;
+					case "completed":
+						return "Un élément de votre commande términé ";
+					break;
+				}
+			break;
+			case 'App\\Notifications\\RideStatus':
+				switch(res.newStatus){
+					case "ping":
+						return "Une course a été créée ";
+					break;
+					case "active":
+						return "Une course a été activé ";
+					break;
+					case "cancelable":
+						return "Une course peut etre annulée ";
+					break;
+					case "canceled":
+						return "Une course a été annulée ";
+					break;
+					case "completable":
+						return "Une course peut etre términée ";
+					break;
+					case "completed":
+						return "Une course a été términée ";
+					break;
+				}
+			break;
+		}
+		return 'Inconnu';
+      }
     }
   }
 </script>
