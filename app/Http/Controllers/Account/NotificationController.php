@@ -16,7 +16,23 @@ class NotificationController extends Controller
     {
         $user = \Auth::user();
         
-        return $user->notifications; //response()->json($user->notifications);
+        return $user->notifications()->orderBy('created_at', 'desc')->get(); //response()->json($user->notifications);
+    }
+	
+    /**
+     * Show notification
+     *
+     * @return Response
+     */
+    public function show($id)
+    {
+        $user = \Auth::user();
+        
+        foreach ($user->unreadNotifications as $notification) {
+            $notification->markAsRead();
+        }
+		
+		return redirect()->route('admin.dashboard');
     }
     
     /**

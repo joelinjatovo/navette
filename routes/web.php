@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('notifications', 'Account\NotificationController@index')->name('notifications');
     Route::get('notifications/unread', 'Account\NotificationController@unread')->name('notifications.unread');
     Route::post('notifications', 'Account\NotificationController@markAsRead');
+    Route::get('notification/{id}', 'Account\NotificationController@show');
     
     Route::middleware(['role:customer'])->prefix('customer')->name('customer.')->group(function () {
         Route::get('/', 'Customer\IndexController@index')->name('dashboard');
@@ -105,6 +106,15 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('orders', 'Admin\OrderController@delete');
         Route::put('orders', 'Admin\OrderController@action');
         
+        Route::get('items', 'Admin\ItemController@index')->name('items');
+        Route::get('item', 'Admin\ItemController@create')->name('item.create');
+        Route::post('item', 'Admin\ItemController@store');
+        Route::get('item/{item}', 'Admin\ItemController@show')->name('item.show');
+        Route::get('item/{item}/edit', 'Admin\ItemController@edit')->name('item.edit');
+        Route::post('item/{item}/edit', 'Admin\ItemController@update');
+        Route::delete('items', 'Admin\ItemController@delete');
+        Route::put('items', 'Admin\ItemController@action');
+        
         Route::get('rides', 'Admin\RideController@index')->name('rides');
         Route::get('ride', 'Admin\RideController@create')->name('ride.create');
         Route::post('ride', 'Admin\RideController@store');
@@ -116,14 +126,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('rides', 'Admin\RideController@delete');
         Route::put('rides', 'Admin\RideController@action');
         
-        Route::get('items', 'Admin\ItemController@index')->name('items');
-        Route::get('item', 'Admin\ItemController@create')->name('item.create');
-        Route::post('item', 'Admin\ItemController@store');
-        Route::get('item/{item}', 'Admin\ItemController@show')->name('item.show');
-        Route::get('item/{item}/edit', 'Admin\ItemController@edit')->name('item.edit');
-        Route::post('item/{item}/edit', 'Admin\ItemController@update');
-        Route::delete('items', 'Admin\ItemController@delete');
-        Route::put('items', 'Admin\ItemController@action');
+        Route::get('ridepoints', 'Admin\RidePointController@index')->name('ridepoints');
+        Route::get('ridepoint', 'Admin\RidePointController@create')->name('ridepoint.create');
+        Route::post('ridepoint', 'Admin\RidePointController@store');
+        Route::get('ridepoint/{ridepoint}', 'Admin\RidePointController@show')->name('ridepoint.show');
+        Route::get('ridepoint/{ridepoint}/edit', 'Admin\RidePointController@edit')->name('ridepoint.edit');
+        Route::post('ridepoint/{ridepoint}/edit', 'Admin\RidePointController@update');
+        Route::delete('ridepoints', 'Admin\RidePointController@delete');
+        Route::put('ridepoints', 'Admin\RidePointController@action');
         
         Route::get('apikeys', 'Admin\ApiKeyController@index')->name('apikeys');
         Route::get('apikey', 'Admin\ApiKeyController@create')->name('apikey.create');

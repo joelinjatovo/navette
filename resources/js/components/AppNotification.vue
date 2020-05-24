@@ -1,71 +1,122 @@
 <template>
-  <a class="dropdown-item" href="#">{{notification.data}} <span class="date">{{created_at}}</span></a>
+<a :href="link" class="navi-item">
+	<div class="navi-link">
+		<div class="navi-icon mr-2">
+			<i class="flaticon2-line-chart text-success"></i>
+		</div>
+		<div class="navi-text">
+			<div class="font-weight-bold">
+				{{ text }}
+			</div>
+			<div class="text-muted">
+				{{ datenow }}
+			</div>
+		</div>
+	</div>
+</a>
 </template>
 
 <script>
   export default {
     name: "AppNotification",
     props: ['notification'],
+	data:function () {
+		return {
+		  datenow: ''
+		}
+  	},
+	mounted: function() {
+		this.updateDate()
+	},
+	methods: {
+		updateDate: function () {
+		  var self = this
+		  this.datenow = moment(this.notification.created_at).fromNow()
+		  setInterval(self.updateDate, 1000)
+		}
+	},
     computed: {
-      created_at() {
-        return moment(this.notification.created_at).format('MMMM Do YYYY')
+      link() {
+        return "/notification/" + this.notification.id;
       },
-      avatar() {
-        return `https://api.adorable.io/avatars/48/${this.comment.author}@adorable.io.png`
+      text() {
+	  	var newStatus = this.notification.newStatus != undefined ? this.notification.newStatus : this.notification.data.newStatus;
+	  	switch(this.notification.type){
+			case 'App\\Notifications\\OrderStatus':
+				switch(newStatus){
+					case "ping":
+						return "Votre commande a été créée ";
+					break;
+					case "on-hold":
+						return "Votre commande est en cours de paiement ";
+					break;
+					case "processing":
+						return "Votre commande est en cours de traitement ";
+					break;
+					case "ok":
+						return "Votre commande est bien reçue ";
+					break;
+					case "active":
+						return "Votre commande est active ";
+					break;
+					case "canceled":
+						return "Votre commande a été annulée  ";
+					break;
+					case "completed":
+						return "Votre commande a été términée ";
+					break;
+				}
+			break;
+			case 'App\\Notifications\\ItemStatus':
+				switch(newStatus){
+					case "ping":
+						return "Un élément de votre commande créé ";
+					break;
+					case "active":
+						return "Un élément de votre commande activé ";
+					break;
+					case "next":
+						return "Vous etes le suivant ";
+					break;
+					case "arrived":
+						return "Chauffeur arrivé ";
+					break;
+					case "online":
+						return "Un élément de votre commande en route  ";
+					break;
+					case "canceled":
+						return "Un élément de votre commande annulé ";
+					break;
+					case "completed":
+						return "Un élément de votre commande términé ";
+					break;
+				}
+			break;
+			case 'App\\Notifications\\RideStatus':
+				switch(newStatus){
+					case "ping":
+						return "Une course a été créée ";
+					break;
+					case "active":
+						return "Une course a été activé ";
+					break;
+					case "cancelable":
+						return "Une course peut etre annulée ";
+					break;
+					case "canceled":
+						return "Une course a été annulée ";
+					break;
+					case "completable":
+						return "Une course peut etre términée ";
+					break;
+					case "completed":
+						return "Une course a été términée ";
+					break;
+				}
+			break;
+		}
+		return 'Inconnu';
       }
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .notification-wrapper {
-    list-style: none;
-    text-align: left;
-    overflow: hidden;
-    margin-bottom: 2em;
-    padding: .4em;
-
-    .profile {
-      width: 80px;
-      float: left;
-    }
-
-    .msg-body {
-      padding: .8em;
-      color: #666;
-      line-height: 1.5;
-    }
-
-    .msg {
-      width: 86%;
-      float: left;
-      background-color: #fff;
-      border-radius: 0 5px 5px 5px;
-      position: relative;
-      &::after {
-        content: " ";
-        position: absolute;
-        left: -13px;
-        top: 0;
-        border: 14px solid transparent;
-        border-top-color: #fff;
-      }
-    }
-
-    .date {
-      float: right;
-    }
-    .name {
-      margin: 0;
-      color: #999;
-      font-weight: 700;
-      font-size: .8em;
-    }
-
-    p:last-child {
-      margin-top: .6em;
-      margin-bottom: 0;
-    }
-
-  }
-</style>
