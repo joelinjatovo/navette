@@ -52,7 +52,7 @@
                 
 				<form class="form" method="post">
                     @csrf
-					<input type="hidden" name="token" value="{{ $token }}" />
+					<input type="hidden" name="code" value="{{ $code }}" />
 					<input type="hidden" name="phone" value="{{ $phone }}" />
 					<div class="form-group">
 						<input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8 @error('password') is-invalid @enderror" type="password" placeholder="{{ __('Mot de passe') }}" name="password"/>

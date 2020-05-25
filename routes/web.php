@@ -20,7 +20,7 @@ Route::post('login', 'Auth\LoginController@login');
 Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->name('login.provider');
 Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallback');
 Route::middleware(['auth'])->group(function () {
-	Route::post('logout', 'LoginController@logout');
+	Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 });
 Route::get('password/confirm', 'Auth\ConfirmPasswordController@showConfirmForm')->name('password.confirm');
 Route::post('password/confirm', 'Auth\ConfirmPasswordController@confirm');

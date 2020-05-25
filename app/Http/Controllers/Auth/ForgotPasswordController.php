@@ -42,7 +42,7 @@ class ForgotPasswordController extends Controller
 			
 			PasswordToken::create([
 				'phone' => $request->input('phone'),
-            	'code' => Hash::make($code),
+            	'code' => md5($code),
 			]);
 			
 			$user->notify(new \App\Notifications\ResetPassword($code));

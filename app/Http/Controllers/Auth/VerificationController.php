@@ -50,8 +50,8 @@ class VerificationController extends Controller
 		]);
 		
 		$token = PasswordToken::where('phone', $request->input('phone'))
-					->where('code', Hash::make($request->input('code')))
-					//->where('updated_at', '<', Carbon::now()->subMinutes(Config::get('auth.verification.expire', 10)))
+					->where('code', md5($request->input('code')))
+					//->where('updated_at', '<', Carbon::now()->subSeconds(Config::get('auth.password_timeout', 3600)))
 					->first();
 		if(!$token){
         	return back()->with('error', trans('Code de verification invalide'));
