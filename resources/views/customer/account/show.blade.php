@@ -1,6 +1,35 @@
 @extends('layouts.customer')
 
-@section('title'){{ __('Profil') }} - {{ __('Compte') }}@endsection
+@section('title'){{ __('messages.profile') }} - {{ __('messages.account') }}@endsection
+
+@section('subheader')
+<div class="subheader py-2 py-lg-4  subheader-solid " id="kt_subheader">
+    <div class=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Details-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+			
+            <!--begin::Title-->
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.profile.edit') }}</h5>
+            <!--end::Title-->
+
+        </div>
+        <!--end::Details-->
+
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+            <!--begin::Button-->
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2"><i class="la la-arrow-left"></i> {{ __('messages.button.back') }}</a>
+            <!--end::Button-->
+            
+            <!--begin::Button-->
+            <button type="submit" form="kt_form" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base"><i class="la la-check"></i> {{ __('messages.button.update') }}</button>
+            <!--end::Button-->
+                            
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+@endsection
 
 @section('content')
 <div class="card card-custom">
@@ -11,7 +40,7 @@
             <ul class="nav nav-tabs nav-bold nav-tabs-line nav-tabs-line-3x">
                 <!--begin::Item-->
                 <li class="nav-item mr-3">
-                    <a class="nav-link active" data-toggle="tab" href="#kt_user_edit_tab_profile">
+                    <a class="nav-link {{ $errors->has('old_password') || $errors->has('new_password') ? '' : 'active' }}" data-toggle="tab" href="#kt_user_edit_tab_profile">
                         <span class="nav-icon">
                             <span class="svg-icon">
                                 <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Design/Layers.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -31,7 +60,7 @@
 
                 <!--begin::Item-->
                 <li class="nav-item mr-3">
-                    <a class="nav-link" data-toggle="tab" href="#kt_user_edit_tab_password">
+                    <a class="nav-link {{ $errors->has('old_password') || $errors->has('new_password') ? 'active' : '' }}" data-toggle="tab" href="#kt_user_edit_tab_password">
                         <span class="nav-icon">
                             <span class="svg-icon">
                                 <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Communication/Shield-user.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -61,7 +90,7 @@
             @csrf
             <div class="tab-content">
                 <!--begin::Tab-->
-                <div class="tab-pane show px-7 active" id="kt_user_edit_tab_profile" role="tabpanel">
+                <div class="tab-pane show px-7 {{ $errors->has('old_password') || $errors->has('new_password') ? '' : 'active' }}" id="kt_user_edit_tab_profile" role="tabpanel">
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-xl-2"></div>
@@ -154,7 +183,7 @@
                 <!--end::Tab-->
 
                 <!--begin::Tab-->
-                <div class="tab-pane px-7" id="kt_user_edit_tab_password" role="tabpanel">
+                <div class="tab-pane px-7 {{ $errors->has('old_password') || $errors->has('new_password') ? 'active' : '' }}" id="kt_user_edit_tab_password" role="tabpanel">
                     <!--begin::Body-->
                     <div class="card-body">
                         <!--begin::Row-->
@@ -175,8 +204,11 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-3 text-lg-right text-left">{{ __('Ancien mot de passe') }}</label>
                                     <div class="col-9">
-                                        <input class="form-control form-control-lg form-control-solid mb-1" type="password" name="old_password" placeholder="{{ __('Ancien mot de passe') }}">
-                                        <a href="#" class="font-weight-bold font-size-sm">{{ __('Mot de passe oublié?') }}</a>
+                                        <input class="form-control form-control-lg form-control-solid mb-1 @error('old_password') is-invalid @enderror" type="password" name="old_password" placeholder="{{ __('Ancien mot de passe') }}">
+                                        <a href="{{ route('account.forgot') }}" class="font-weight-bold font-size-sm">{{ __('Mot de passe oublié?') }}</a>
+										@error('old_password')
+											<div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+										@enderror
                                     </div>
                                 </div>
                                 <!--end::Group-->
@@ -185,7 +217,10 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-3 text-lg-right text-left">{{ __('Nouveau mot de passe') }}</label>
                                     <div class="col-9">
-                                        <input class="form-control form-control-lg form-control-solid" type="password" name="new_password" placeholder="{{ __('Nouveau mot de passe') }}">
+                                        <input class="form-control form-control-lg form-control-solid @error('new_password') is-invalid @enderror" type="password" name="new_password" placeholder="{{ __('Nouveau mot de passe') }}">
+										@error('new_password')
+											<div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+										@enderror
                                     </div>
                                 </div>
                                 <!--end::Group-->
@@ -194,7 +229,10 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-3 text-lg-right text-left">{{ __('Confimation mot de passe') }}</label>
                                     <div class="col-9">
-                                        <input class="form-control form-control-lg form-control-solid" type="password" name="new_password_confirmation" placeholder="{{ __('Confirmation mot de passe') }}" value="">
+                                        <input class="form-control form-control-lg form-control-solid @error('new_password') is-invalid @enderror" type="password" name="new_password_confirmation" placeholder="{{ __('Confirmation mot de passe') }}" value="">
+										@error('new_password')
+											<div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+										@enderror
                                     </div>
                                 </div>
                                 <!--end::Group-->
