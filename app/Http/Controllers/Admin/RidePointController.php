@@ -88,15 +88,15 @@ class RidePointController extends Controller
 					'message' => trans('messages.controller.success.ridepoint.arrived'),
 				]);
 			break;
-			case 'complete':
-				if(!$ridepoint->finishable()){
+			case 'pick-or-drop':
+				if(!$ridepoint->dropable() && !$ridepoint->pickable()){
 					return response()->json([
 						'status' => "error",
 						'message' => trans('messages.controller.success.ridepoint.not.completed'),
 					]);
 				}
 
-				$ridepoint->finish();
+				$ridepoint->pickOrDrop();
 
 				$ride = $ridepoint->ride;
 				if($ride){

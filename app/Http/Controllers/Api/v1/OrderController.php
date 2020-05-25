@@ -158,13 +158,15 @@ class OrderController extends Controller
      */
     public function cancel(Request $request)
     {
-        $order = Order::findOrFail($request->input('order_id'));
+        $order = Order::findOrFail($request->input('id'));
 
         if(!$order->cancelable()){
             return $this->error(400, 111, "Order not cancelable");
         }
         
         $order->cancel($request->user());
+		
+		// @TODO Cancel order items
         
         return new OrderItemResource($order);
     }

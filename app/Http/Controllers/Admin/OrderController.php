@@ -94,6 +94,42 @@ class OrderController extends Controller
     }
 
     /**
+     * Handle specified action
+     *
+     * @param Request  $request
+	 *
+     * @return Response
+     */
+    public function action(Request $request)
+    {
+        $order = Order::findOrFail($request->input('id'));
+		switch($request->input('action')){
+			case 'cancel':
+				if(!$order->cancelable()){
+					return response()->json([
+						'status' => "error",
+						'message' => trans('messages.controller.success.order.not.cancelable'),
+					]);
+				}
+
+				$order->cancel($request->user());
+
+				// @TODO Cancel order items
+				
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.order.canceled'),
+				]);
+			break;
+		}
+		
+        return response()->json([
+            'status' => "error",
+            'message' => trans('messages.controller.success.order.unknown'),
+        ]);
+    }
+
+    /**
      * Delete the specified order.
      *
      * @param Request  $request

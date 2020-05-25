@@ -126,18 +126,25 @@ class RidePoint extends Pivot
     }
     
     /**
-     * Check if ride is finishable
+     * Check if ride is dropable
      */
-    public function finishable()
+    public function dropable()
     {
-        return ((self::STATUS_ARRIVED == $this->status) && (self::TYPE_PICKUP == $this->type))
-            || ((self::STATUS_NEXT == $this->status) && (self::TYPE_DROP == $this->type));
+        return (self::STATUS_NEXT == $this->status) && (self::TYPE_DROP == $this->type);
     }
     
     /**
-     * Finish ride point
+     * Check if ride is pickable
      */
-    public function finish()
+    public function pickable()
+    {
+        return (self::STATUS_ARRIVED == $this->status) && (self::TYPE_PICKUP == $this->type);
+    }
+    
+    /**
+     * Pick or Drop ride point
+     */
+    public function pickOrDrop()
     {
         $oldStatus = $this->status;
         if($this->type == self::TYPE_PICKUP){
