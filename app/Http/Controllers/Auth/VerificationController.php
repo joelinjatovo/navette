@@ -12,6 +12,7 @@ use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Config;
 
 class VerificationController extends Controller
 {
@@ -51,7 +52,7 @@ class VerificationController extends Controller
 		
 		$token = PasswordToken::where('phone', $request->input('phone'))
 					->where('code', md5($request->input('code')))
-					//->where('updated_at', '<', Carbon::now()->subSeconds(Config::get('auth.password_timeout', 3600)))
+					->where('updated_at', '>', Carbon::now()->subSeconds(Config::get('auth.password_timeout', 3600)))
 					->first();
 		if(!$token){
         	return back()->with('error', trans('Code de verification invalide'));
@@ -62,8 +63,8 @@ class VerificationController extends Controller
         	return back()->with('error', trans('Compte utilisateur introuvable'));
 		}
 			
-		$request->session()->put('token', Hash::make($request->input('code')));
+		$request->session()->put('code', $request->input('code'));
 		
-		return redirect()->route('password.reset');
+		return redirect()->route('password.reset')->with('verified', true);
     }
 }

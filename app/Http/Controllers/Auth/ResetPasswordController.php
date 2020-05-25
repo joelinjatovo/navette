@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordToken;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -61,7 +65,7 @@ class ResetPasswordController extends Controller
 
 		$token = PasswordToken::where('phone', $request->input('phone'))
 					->where('code', md5($request->input('code')))
-					//->where('updated_at', '<', Carbon::now()->subSeconds(Config::get('auth.password_timeout', 3600)))
+					->where('updated_at', '>', Carbon::now()->subSeconds(Config::get('auth.password_timeout', 3600)))
 					->first();
 		if(!$token){
         	return redirect()->route('password.reset')
@@ -77,7 +81,7 @@ class ResetPasswordController extends Controller
 		
 		$token->delete();
 
-        return $this->sendResetResponse($request, $response);
+        return $this->sendResetResponse($request, 'Mot de passe reinitialise');
     }
 
     /**
@@ -158,8 +162,9 @@ class ResetPasswordController extends Controller
      */
     protected function sendResetResponse(Request $request, $response)
     {
-        return redirect($this->redirectPath())
-                            ->with('status', trans($response));
+        return redirect()
+			->route('customer.dashboard')
+			->with('status', trans($response));
     }
 
     /**
