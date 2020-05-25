@@ -175,7 +175,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-3 text-lg-right text-left">{{ __('Ancien mot de passe') }}</label>
                                     <div class="col-9">
-                                        <input class="form-control form-control-lg form-control-solid mb-1" type="password" placeholder="{{ __('Ancien mot de passe') }}">
+                                        <input class="form-control form-control-lg form-control-solid mb-1" type="password" name="old_password" placeholder="{{ __('Ancien mot de passe') }}">
                                         <a href="#" class="font-weight-bold font-size-sm">{{ __('Mot de passe oublié?') }}</a>
                                     </div>
                                 </div>
@@ -185,7 +185,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-3 text-lg-right text-left">{{ __('Nouveau mot de passe') }}</label>
                                     <div class="col-9">
-                                        <input class="form-control form-control-lg form-control-solid" type="password" placeholder="{{ __('Nouveau mot de passe') }}">
+                                        <input class="form-control form-control-lg form-control-solid" type="password" name="new_password" placeholder="{{ __('Nouveau mot de passe') }}">
                                     </div>
                                 </div>
                                 <!--end::Group-->
@@ -194,7 +194,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label col-3 text-lg-right text-left">{{ __('Confimation mot de passe') }}</label>
                                     <div class="col-9">
-                                        <input class="form-control form-control-lg form-control-solid" type="password" placeholder="{{ __('Confirmation mot de passe') }}" value="">
+                                        <input class="form-control form-control-lg form-control-solid" type="password" name="new_password_confirmation" placeholder="{{ __('Confirmation mot de passe') }}" value="">
                                     </div>
                                 </div>
                                 <!--end::Group-->
