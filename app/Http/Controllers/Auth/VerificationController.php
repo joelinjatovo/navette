@@ -3,37 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordToken;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\AuthorizationException;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class VerificationController extends Controller
 {
-
-    use RedirectsUsers;
-
-    /**
-     * Where to redirect users after verification.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('signed')->only('verify');
-        $this->middleware('throttle:6,1')->only('verify', 'resend');
-    }
-    
 
     /**
      * Show the email verification notice.
@@ -43,13 +24,19 @@ class VerificationController extends Controller
      */
     public function show(Request $request)
     {
-        return $request->user()->hasVerifiedEmail()
-                        ? redirect($this->redirectPath())
-                        : view('auth.verify');
+		$request->session()->forget('token');
+		
+		$phone = $request->session()->get('phone', null);
+		
+		if(empty($phone)){
+			return redirect()->route('password.phone');
+		}
+        
+		return view('auth.passwords.verify', ['phone' => $phone]);
     }
 
     /**
-     * Mark the authenticated user's email address as verified.
+     * Mark the authenticated user's phone as verified.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -57,35 +44,26 @@ class VerificationController extends Controller
      */
     public function verify(Request $request)
     {
-        if ($request->route('id') != $request->user()->getKey()) {
-            throw new AuthorizationException;
-        }
-
-        if ($request->user()->hasVerifiedPhone()) {
-            return redirect($this->redirectPath());
-        }
-
-        if ($request->user()->markPhoneAsVerified()) {
-            event(new Verified($request->user()));
-        }
-
-        return redirect($this->redirectPath())->with('verified', true);
-    }
-
-    /**
-     * Resend the email verification notification.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function resend(Request $request)
-    {
-        if ($request->user()->hasVerifiedPhone()) {
-            return redirect($this->redirectPath());
-        }
-
-        $request->user()->sendPhoneVerificationNotification();
-
-        return back()->with('resent', true);
+        $request->validate([
+			'phone' => 'required|numeric|exists:users,phone|exists:password_tokens,phone',
+			'code' => 'required|numeric|between:999,10000'
+		]);
+		
+		$token = PasswordToken::where('phone', $request->input('phone'))
+					->where('code', Hash::make($request->input('code')))
+					//->where('updated_at', '<', Carbon::now()->subMinutes(Config::get('auth.verification.expire', 10)))
+					->first();
+		if(!$token){
+        	return back()->with('error', trans('Code de verification invalide'));
+		}
+		
+		$user = User::where('phone', $request->input('phone'))->first();
+		if(!$user){
+        	return back()->with('error', trans('Compte utilisateur introuvable'));
+		}
+			
+		$request->session()->put('token', Hash::make($request->input('code')));
+		
+		return redirect()->route('password.reset');
     }
 }

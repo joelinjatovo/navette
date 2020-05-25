@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\PasswordToken;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
-
+use Illuminate\Support\Facades\Hash;
 
 class ForgotPasswordController extends Controller
 {
-   
     /**
-     * Display the form to request a password reset link.
+     * Display the form to request a password reset code.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function showLinkRequestForm()
+    public function showCodeRequestForm(Request $request)
     {
+		$request->session()->forget('phone');
+		
         return view('auth.passwords.phone');
     }
 
@@ -26,78 +29,33 @@ class ForgotPasswordController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function sendResetLinkEmail(Request $request)
+    public function sendResetCodePhone(Request $request)
     {
-        $this->validateEmail($request);
-
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $response = $this->broker()->sendResetLink(
-            $this->credentials($request)
-        );
-
-        return $response == Password::RESET_LINK_SENT
-                    ? $this->sendResetLinkResponse($request, $response)
-                    : $this->sendResetLinkFailedResponse($request, $response);
+		$request->session()->forget('phone');
+		
+        $request->validate(['phone' => 'required|numeric|exists:users,phone']);
+		
+		$user = User::where('phone', $request->input('phone'))->first();
+		
+		if($user){
+			$code = "1258";
+			
+			PasswordToken::create([
+				'phone' => $request->input('phone'),
+            	'code' => Hash::make($code),
+			]);
+			
+			$user->notify(new \App\Notifications\ResetPassword($code));
+			
+			$request->session()->put('phone', $request->input('phone'));
+			
+			return redirect()->route('verification')
+					->with('success', trans('Code sent'));
+			
+		}else{
+			return back()
+					->withInput($request->only('phone'))
+					->withErrors(['phone' => trans('Code not sent')]);
+		}
     }
-
-    /**
-     * Validate the email for the given request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     */
-    protected function validateEmail(Request $request)
-    {
-        $request->validate(['phone' => 'required|numeric']);
-    }
-
-    /**
-     * Get the needed authentication credentials from the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    protected function credentials(Request $request)
-    {
-        return $request->only('phone');
-    }
-
-    /**
-     * Get the response for a successful password reset link.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendResetLinkResponse(Request $request, $response)
-    {
-        return back()->with('status', trans($response));
-    }
-
-    /**
-     * Get the response for a failed password reset link.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
-     */
-    protected function sendResetLinkFailedResponse(Request $request, $response)
-    {
-        return back()
-                ->withInput($request->only('phone'))
-                ->withErrors(['phone' => trans($response)]);
-    }
-
-    /**
-     * Get the broker to be used during password reset.
-     *
-     * @return \Illuminate\Contracts\Auth\PasswordBroker
-     */
-    public function broker()
-    {
-        return Password::broker();
-    }
-
 }

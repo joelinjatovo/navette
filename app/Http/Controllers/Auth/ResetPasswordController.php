@@ -30,13 +30,22 @@ class ResetPasswordController extends Controller
      * If no token is present, display the link request form.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string|null  $token
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showResetForm(Request $request, $token = null)
+    public function showResetForm(Request $request)
     {
+		$phone = $request->session()->get('phone', null);
+		if(empty($phone)){
+			return redirect()->route('password.phone');
+		}
+		
+		$token = $request->session()->get('token', null);
+		if(empty($phone)){
+			return redirect()->route('verification');
+		}
+		
         return view('auth.passwords.reset')->with(
-            ['token' => $token, 'phone' => $request->phone]
+            ['token' => $token, 'phone' => $phone]
         );
     }
 
@@ -76,7 +85,7 @@ class ResetPasswordController extends Controller
     {
         return [
             'token' => 'required',
-            'email' => 'required|numeric',
+            'phone' => 'required|numeric|exists:users,phone',
             'password' => 'required|confirmed|min:8',
         ];
     }
