@@ -38,7 +38,7 @@
 			   data-action="cancel" 
 			   data-id="{{ $model->getKey() }}"
 			   data-toggle="tooltip" 
-			   data-placement="bottom" 
+			   data-placement="left" 
 			   data-original-title="{{ __('messages.cancel.order') }}"
 			   title="{{ __('messages.cancel.order') }}">
 				<i class="la la-close"></i> {{ __('messages.button.cancel') }}

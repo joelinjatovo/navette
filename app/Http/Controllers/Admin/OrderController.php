@@ -45,53 +45,6 @@ class OrderController extends Controller
     {
         return view('admin.order.show', ['model' => $order]);
     }
-    
-    /**
-     * Show the form to create a new order.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        $model = new Order();
-        return view('admin.order.create', ['model' => $model]);
-    }
-
-    /**
-     * Store a new order.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-    }
-    
-    /**
-     * Show the form to edit specified order.
-     *
-     * @param Order $order
-     * @return Response
-     */
-    public function edit(Order $order)
-    {
-        return view('admin.order.edit', ['model' => $order]);
-    }
-
-    /**
-     * Update the specified order.
-     *
-     * @param Request  $request
-     * @param Order $order
-     * @return Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-    }
 
     /**
      * Handle specified action

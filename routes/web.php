@@ -114,20 +114,12 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('cars', 'Admin\CarController@delete');
         
         Route::get('orders', 'Admin\OrderController@index')->name('orders');
-        Route::get('order', 'Admin\OrderController@create')->name('order.create');
-        Route::post('order', 'Admin\OrderController@store');
         Route::get('order/{order}', 'Admin\OrderController@show')->name('order.show');
-        Route::get('order/{order}/edit', 'Admin\OrderController@edit')->name('order.edit');
-        Route::post('order/{order}/edit', 'Admin\OrderController@update');
         Route::delete('orders', 'Admin\OrderController@delete');
         Route::put('orders', 'Admin\OrderController@action');
         
         Route::get('items', 'Admin\ItemController@index')->name('items');
-        Route::get('item', 'Admin\ItemController@create')->name('item.create');
-        Route::post('item', 'Admin\ItemController@store');
         Route::get('item/{item}', 'Admin\ItemController@show')->name('item.show');
-        Route::get('item/{item}/edit', 'Admin\ItemController@edit')->name('item.edit');
-        Route::post('item/{item}/edit', 'Admin\ItemController@update');
         Route::delete('items', 'Admin\ItemController@delete');
         Route::put('items', 'Admin\ItemController@action');
         

@@ -1,1 +1,0 @@
-@extends('layouts.admin.user.create')

@@ -55,7 +55,13 @@
 			
 			@if($model->cancelable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-item-action" data-action="cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-item-action" 
+			   data-action="cancel" 
+			   data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.cancel.item') }}"
+			   title="{{ __('messages.cancel.item') }}" ><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
 			<!--end::Button-->
 			@endif
             

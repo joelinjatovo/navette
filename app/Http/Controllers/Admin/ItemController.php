@@ -56,53 +56,6 @@ class ItemController extends Controller
         }
         return view('admin.item.show', ['model' => $item]);
     }
-    
-    /**
-     * Show the form to create a new item.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        $model = new Item();
-        return view('admin.item.create', ['model' => $model]);
-    }
-
-    /**
-     * Store a new ride.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-    }
-    
-    /**
-     * Show the form to edit specified item.
-     *
-     * @param Item $item
-     * @return Response
-     */
-    public function edit(Item $item)
-    {
-        return view('admin.item.edit', ['model' => $item]);
-    }
-
-    /**
-     * Update the specified item.
-     *
-     * @param Request  $request
-     * @param Item $item
-     * @return Response
-     */
-    public function update(Request $request, Item $item)
-    {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
-    }
 
     /**
      * Handle specified action
