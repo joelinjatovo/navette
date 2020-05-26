@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\v1\Gateway;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderItem as OrderItemResource;
-use App\Jobs\ProcessOrder;
+use App\Jobs\ProcessItem;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -39,8 +39,13 @@ class PayPalController extends Controller
             'status' => 'success',
             'details' => 'ok'
         ];
-        
-        //ProcessOrder::dispatchAfterResponse($order);
+		
+        /*
+		foreach($order->items as $item){
+        	ProcessItem::dispatch($item)
+				->delay(now()->addMinutes(10));
+		}
+		*/
 
         return response()->json($output);
     }

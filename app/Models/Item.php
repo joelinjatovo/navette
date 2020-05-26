@@ -52,6 +52,12 @@ class Item extends Model
     public static function boot()
     {
         parent::boot();
+        
+        static::creating(function ($model) {
+            if( empty( $model->user_id ) && auth()->check() ) {
+                $model->user_id = auth()->user()->id;
+            }
+        });
     }
     
     public function setRideAtAttribute($value)
@@ -92,11 +98,27 @@ class Item extends Model
     }
     
     /**
+     * Get the ride points.
+     */
+    public function ridePoints()
+    {
+        return $this->hasMany(RidePoint::class, 'item_id', 'id');
+    }
+    
+    /**
      * Get the point that owns the item.
      */
     public function point()
     {
         return $this->belongsTo(Point::class, 'point_id');
+    }
+    
+    /**
+     * Get the user that owns the order item.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
     
     /**

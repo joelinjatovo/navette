@@ -243,6 +243,14 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the ride points by the user.
+     */
+    public function ridePoints()
+    {
+        return $this->hasMany(RidePoint::class, 'user_id', 'id');
+    }
+    
+    /**
      * Get the tokens for the user.
      */
     public function tokens()

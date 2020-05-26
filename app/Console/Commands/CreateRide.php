@@ -48,11 +48,9 @@ class CreateRide extends Command
      */
     public function handle()
     {
-            
         $headers = ['status', 'distance', 'delay'];
         $items = Item::all(['status', 'distance', 'delay'])->toArray();
         $this->table($headers, $items);
-        
         
         $items = Item::where('status', 'ping')->get();
         $bar = $this->output->createProgressBar(count($items));

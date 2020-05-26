@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Gateway;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderItem as OrderItemResource;
-use App\Jobs\ProcessOrder;
+use App\Jobs\ProcessItem;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -35,7 +35,10 @@ class CashController extends Controller
         $order->payed_at = now();
         $order->save();
         
-        ProcessOrder::dispatchAfterResponse($order);
+		foreach($order->items as $item){
+        	ProcessItem::dispatch($item)
+				->delay(now()->addMinutes(1));
+		}
         
         $request->session()->forget('cart');
 

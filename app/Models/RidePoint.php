@@ -179,35 +179,23 @@ class RidePoint extends Pivot
      */
     public function item()
     {
-        if($this->point){
-            return $this->point->items()->first();
-        }
-        
-        return null;
+        return $this->belongsTo(Item::class, 'item_id');
     }
     
     /**
-     * Get the order related to this point.
+     * Get the order related to the item in this point.
      */
     public function order()
     {
-		$item = $this->item();
-		if($item){
-			return $item->order;
-		}
-        return null;
+        return $this->item()->order();
     }
     
     /**
-     * Get the user related to this point.
+     * Get the user who has the ride point.
      */
-    public function user() : ?User
+    public function user()
     {
-		$item = $this->item();
-		if($item && ($order = $item->order)){
-			return $order->user;
-		}
-        return null;
+        return $this->belongsTo(User::class);
     }
     
     /**

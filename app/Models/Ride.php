@@ -99,7 +99,13 @@ class Ride extends Model
                         'distance_value', 
                         'duration',
                         'duration_value',
-                        'direction'
+                        'direction',
+						'arrive_at', 
+						'arrived_at', 
+						'started_at', 
+						'canceled_at', 
+						'completed_at',
+						
                     ])->orderBy('order', 'asc');
     }
     
