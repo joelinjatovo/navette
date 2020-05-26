@@ -70,28 +70,59 @@
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 200px;">
-                                    <a href="{{ route('admin.ride.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
+                                    <a href="{{ route('admin.ride.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" 
+									   data-toggle="tooltip" 
+									   data-placement="top" 
+									   data-original-title="{{ __('messages.view.ride') }}"
+									   title="{{ __('messages.view.ride') }}" >
                                         <i class="la la-eye"></i>
                                     </a>
-                                    <a href="{{ route('admin.ride.live', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.edit') }}">
+                                    <a href="{{ route('admin.ride.live', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2"
+									   data-toggle="tooltip" 
+									   data-placement="top" 
+									   data-original-title="{{ __('messages.view.map.ride') }}"
+									   title="{{ __('messages.view.map.ride') }}" >
                                         <i class="la la-map"></i>
                                     </a>
 									@if($model->cancelable())
-									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action" data-action="cancel" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.cancel') }}">
+									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action"
+									   data-action="cancel"
+									   data-id="{{ $model->getKey() }}" 
+									   data-toggle="tooltip" 
+									   data-placement="top" 
+									   data-original-title="{{ __('messages.cancel.ride') }}"
+									   title="{{ __('messages.cancel.ride') }}" >
 										<i class="la la-close"></i>
 									</a>
 									@endif
 									@if($model->activable())
-									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action" data-action="active" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.active') }}">
+									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action" 
+									   data-action="active" 
+									   data-id="{{ $model->getKey() }}" 
+									   data-toggle="tooltip" 
+									   data-placement="top" 
+									   data-original-title="{{ __('messages.active.ride') }}"
+									   title="{{ __('messages.active.ride') }}" >
 										<i class="la la-play-circle-o"></i>
 									</a>
 									@endif
 									@if($model->completable())
-									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action" data-action="complete" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.complete') }}">
+									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action"
+									   data-action="complete" 
+									   data-id="{{ $model->getKey() }}" 
+									   data-toggle="tooltip" 
+									   data-placement="top" 
+									   data-original-title="{{ __('messages.complete.ride') }}"
+									   title="{{ __('messages.complete.ride') }}" >
 										<i class="la la-check"></i>
 									</a>
 									@endif
-                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  data-id="{{ $model->getKey() }}" title="{{ __('messages.button.delete') }}" >
+                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete" 
+									   data-id="{{ $model->getKey() }}"
+									   data-toggle="tooltip" 
+									   data-placement="top" 
+									   data-original-title="{{ __('messages.delete.ride') }}"
+									   title="{{ __('messages.delete.ride') }}" >
                                         <i class="la la-trash"></i>
                                     </a>	                    
                                 </span>

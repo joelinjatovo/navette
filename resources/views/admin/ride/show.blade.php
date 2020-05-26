@@ -40,32 +40,59 @@
 			
 			@if($model->cancelable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" data-action="cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" 
+			   data-action="cancel" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.cancel.ride') }}"
+			   title="{{ __('messages.cancel.ride') }}" ><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->activable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" data-action="active" data-id="{{ $model->getKey() }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action"
+			   data-action="active" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.active.ride') }}"
+			   title="{{ __('messages.active.ride') }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->completable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" data-action="complete" data-id="{{ $model->getKey() }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" 
+			   data-action="complete" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.complete.ride') }}"
+			   title="{{ __('messages.complete.ride') }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
 			<!--end::Button-->
 			@endif
             
             <!--begin::Button-->
-            <a href="{{ route('admin.ride.live', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-map"></i> {{ __('messages.button.live') }}</a>
+            <a href="{{ route('admin.ride.live', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.view.map.ride') }}"
+			   title="{{ __('messages.view.map.ride') }}"><i class="la la-map"></i> {{ __('messages.button.live') }}</a>
             <!--end::Button-->
             
             <!--begin::Button-->
-            <a href="{{ route('admin.ride.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-plus"></i> {{ __('messages.ride.create') }}</a>
+            <a href="{{ route('admin.ride.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.ride.create') }}"
+			   title="{{ __('messages.ride.create') }}"><i class="la la-plus"></i> {{ __('messages.ride.create') }}</a>
             <!--end::Button-->
             
             <!--begin::Button-->
-            <a href="{{ route('admin.ride.edit', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-edit"></i> {{ __('messages.ride.edit') }}</a>
+            <a href="{{ route('admin.ride.edit', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.ride.edit') }}"
+			   title="{{ __('messages.ride.edit') }}"><i class="la la-edit"></i> {{ __('messages.ride.edit') }}</a>
             <!--end::Button-->
                             
         </div>

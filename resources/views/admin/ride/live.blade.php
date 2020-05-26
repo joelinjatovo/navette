@@ -41,19 +41,34 @@
 			
 			@if($model->cancelable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" data-action="cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" 
+			   data-action="cancel" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.cancel.ride') }}"
+			   title="{{ __('messages.cancel.ride') }}" ><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->activable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-active" data-action="active" data-id="{{ $model->getKey() }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action"
+			   data-action="active" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.active.ride') }}"
+			   title="{{ __('messages.active.ride') }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->completable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-complete" data-action="complete" data-id="{{ $model->getKey() }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" 
+			   data-action="complete" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.complete.ride') }}"
+			   title="{{ __('messages.complete.ride') }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
 			<!--end::Button-->
 			@endif
                             
