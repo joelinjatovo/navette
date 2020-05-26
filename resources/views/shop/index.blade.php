@@ -194,7 +194,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <div class="form-group">
-                        <label>Select club</label>
+                        <label>Club (destination)</label>
                         <input type="hidden" name="order[car]" id="order_car" value="1">
                         <select class="form-control select2" id="kt_select2" name="order[club]">
                             @foreach($clubs as $club)
@@ -231,6 +231,34 @@
                         <!--end::Nav Content-->
                     </div>
                     <!--end::Forms Widget 1-->
+                </div>
+            </div>
+            <div class="row" id="display-placenumber" style="display: none;">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Nombre de place <small>(max : <span id="max-place">0</span>)</small></label>             
+                        <input type="number" id="order_place_number" class="form-control" name="order[place]" min="1" max="1">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="display-privatecar" style="display: none;">
+                <div class="col-md-4">
+                    <label class="option option option-plain">
+                            <span class="option-control">
+                                <span class="checkbox mb-4">
+                                    <input type="checkbox" id="order-private-car" name="order[privatized]">
+                                    <span></span>
+                                </span>
+                            </span>
+                            <span class="option-label">
+                                <span class="option-head">
+                                    <span class="option-title font-weight-normal">
+                                        Voulez-vous privatiser le véhicule ?
+                                    </span>
+                                </span>
+                            </span>
+                        </label>
                 </div>
             </div>
         </div>
@@ -277,6 +305,8 @@ jQuery(document).ready(function($){
             $('#display-back').show();
             $('#display-origine').show();   
         }
+        document.getElementById('type-parcours').value = $(this).val();
+        document.getElementById('type-parcours').dispatchEvent(new Event('change'));
     });
 
     //select club and cars
@@ -301,12 +331,26 @@ jQuery(document).ready(function($){
               }
           });
     });
-    $(document).on('change', '.order-type', function(){
+    $(document).on('click' , '#custom-list-cars li:not(.invalid)', function(){
+        
+        document.getElementById('order_car').value = $(this).attr('data-id');
 
-        document.getElementById('type-parcours').value = $(this).val();
-        document.getElementById('type-parcours').dispatchEvent(new Event('change'));
+        $('#display-placenumber').show();
+        $('#display-privatecar').show();
 
+        $('#order_place_number').val(1);
+        $('#order_place_number').attr("max", $(this).attr('data-place'));
+        $('#max-place').text($(this).attr('data-place'));
     });
+
+    $(document).on('change' , '#order-private-car', function(){
+        if($(this).is(':checked')){
+            $('#display-placenumber').hide();
+        }else{
+            $('#display-placenumber').show();
+        }
+    });
+
     window.addEventListener('load', function () {
       $('#kt_select2').trigger('change');
     });
@@ -636,8 +680,29 @@ jQuery(document).ready(function($){
         directionsService.route(request, function(result, status) {
           if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(result);
-            if(type == 0) document.getElementById("input-info-go").value = JSON.stringify(result.routes[0]["legs"][0]);
-            if(type == 1) document.getElementById("input-info-back").value = JSON.stringify(result.routes[0]["legs"][0]);
+            if(type == 0){
+                 
+                document.getElementById("order_items_0_point_name").value = result.routes[0]["legs"][0].start_address;
+                document.getElementById("order_items_0_point_lat").value = result.routes[0]["legs"][0].start_location.lat();
+                document.getElementById("order_items_0_point_lng").value = result.routes[0]["legs"][0].start_location.lng();
+                document.getElementById("order_items_0_point_alt").value = 0;
+                document.getElementById("order_items_0_item_distance").value = result.routes[0]["legs"][0].distance.text;
+                document.getElementById("order_items_0_item_distance_value").value = result.routes[0]["legs"][0].distance.value;
+                document.getElementById("order_items_0_item_duration").value = result.routes[0]["legs"][0].duration.text;
+                document.getElementById("order_items_0_item_duration_value").value = result.routes[0]["legs"][0].duration.value;
+                document.getElementById("order_items_0_item_direction").value = result.routes[0].overview_polyline;
+            }
+            if(type == 1){
+                document.getElementById("order_items_1_point_name").value = result.routes[0]["legs"][0].start_address;
+                document.getElementById("order_items_1_point_lat").value = result.routes[0]["legs"][0].start_location.lat();
+                document.getElementById("order_items_1_point_lng").value = result.routes[0]["legs"][0].start_location.lng();
+                document.getElementById("order_items_1_point_alt").value = 0;
+                document.getElementById("order_items_1_item_distance").value = result.routes[0]["legs"][0].distance.text;
+                document.getElementById("order_items_1_item_distance_value").value = result.routes[0]["legs"][0].distance.value;
+                document.getElementById("order_items_1_item_duration").value = result.routes[0]["legs"][0].duration.text;
+                document.getElementById("order_items_1_item_duration_value").value = result.routes[0]["legs"][0].duration.value;
+                document.getElementById("order_items_1_item_direction").value = result.routes[0].overview_polyline;
+            }
           } else {
             alert("couldn't get directions:" + status);
           }
