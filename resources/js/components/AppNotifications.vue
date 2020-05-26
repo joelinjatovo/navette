@@ -10,25 +10,30 @@
 					</g>
 				</svg>
 			</span>
-			<span class="pulse-ring"></span>
+			<span class="pulse-ring" v-if="seen"></span>
 		</div>
 	</div>
 	<div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
 		<form>
 			<div class="d-flex flex-column pt-12 bgi-size-cover bgi-no-repeat rounded-top">
 				<h4 class="d-flex flex-center rounded-top">
-					<span>User Notifications</span>
-					<span class="btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2">23 new</span>
+					<span>Notifications</span>
 				</h4> 
 			</div>
 			<div>
 				<!--begin::Nav-->
-				<div class="navi navi-hover scroll my-4" data-scroll="true" data-height="300" data-mobile-height="200">
+				<div class="navi navi-hover scroll my-4" v-if="seen">
 					<!--begin::Item-->
 					<AppNotification :key="notification.id" v-for="notification in notifications" :notification="notification"></AppNotification>
 					<!--end::Item-->
 				</div>
+				<!--begin::Nav-->
 				
+				<div class="d-flex flex-center text-center text-muted min-h-200px" v-if="empty">
+					Tout est OK!
+					<br>
+					Pas de nouvelle notification.
+				</div>
 			</div>
 		</form>
 	</div>
@@ -54,6 +59,12 @@
             });
     },
     computed: {
+      empty() {
+        return this.notifications.length == 0;
+      },
+      seen() {
+        return this.notifications.length > 0;
+      },
       ...mapGetters([
         'notifications'
       ])

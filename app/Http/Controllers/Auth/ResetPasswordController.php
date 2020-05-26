@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordToken;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -30,13 +34,22 @@ class ResetPasswordController extends Controller
      * If no token is present, display the link request form.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string|null  $token
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function showResetForm(Request $request, $token = null)
+    public function showResetForm(Request $request)
     {
+		$phone = $request->session()->get('phone', null);
+		if(empty($phone)){
+			return redirect()->route('password.phone');
+		}
+		
+		$code = $request->session()->get('code', null);
+		if(empty($code)){
+			return redirect()->route('verification');
+		}
+		
         return view('auth.passwords.reset')->with(
-            ['token' => $token, 'phone' => $request->phone]
+            ['code' => $code, 'phone' => $phone]
         );
     }
 
@@ -50,21 +63,25 @@ class ResetPasswordController extends Controller
     {
         $request->validate($this->rules(), $this->validationErrorMessages());
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $response = $this->broker()->reset(
-            $this->credentials($request), function ($user, $password) {
-                $this->resetPassword($user, $password);
-            }
-        );
+		$token = PasswordToken::where('phone', $request->input('phone'))
+					->where('code', md5($request->input('code')))
+					->where('updated_at', '>', Carbon::now()->subSeconds(Config::get('auth.password_timeout', 3600)))
+					->first();
+		if(!$token){
+        	return redirect()->route('password.reset')
+				->with('error', trans('Code de verification invalide'));
+		}
+		
+		$user = User::where('phone', $request->input('phone'))->first();
+		if(!$user){
+			$this->sendResetFailedResponse($request, 'Compte utilisateur introuvable');
+		}
+		
+		$this->resetPassword($user, $request->input('password'));
+		
+		$token->delete();
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
-        return $response == Password::PASSWORD_RESET
-                    ? $this->sendResetResponse($request, $response)
-                    : $this->sendResetFailedResponse($request, $response);
+        return $this->sendResetResponse($request, 'Mot de passe reinitialise');
     }
 
     /**
@@ -75,8 +92,8 @@ class ResetPasswordController extends Controller
     protected function rules()
     {
         return [
-            'token' => 'required',
-            'email' => 'required|numeric',
+            'code' => 'required',
+            'phone' => 'required|numeric|exists:users,phone',
             'password' => 'required|confirmed|min:8',
         ];
     }
@@ -145,8 +162,9 @@ class ResetPasswordController extends Controller
      */
     protected function sendResetResponse(Request $request, $response)
     {
-        return redirect($this->redirectPath())
-                            ->with('status', trans($response));
+        return redirect()
+			->route('customer.dashboard')
+			->with('status', trans($response));
     }
 
     /**
@@ -160,17 +178,8 @@ class ResetPasswordController extends Controller
     {
         return redirect()->back()
                     ->withInput($request->only('phone'))
-                    ->withErrors(['phone' => trans($response)]);
-    }
-
-    /**
-     * Get the broker to be used during password reset.
-     *
-     * @return \Illuminate\Contracts\Auth\PasswordBroker
-     */
-    public function broker()
-    {
-        return Password::broker();
+                    ->withErrors(['phone' => trans($response)])
+                    ->with('error', trans($response));
     }
 
     /**

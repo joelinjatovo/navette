@@ -13,31 +13,47 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+//Auth::routes();
+
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->name('login.provider');
+Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallback');
+Route::middleware(['auth'])->group(function () {
+	Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+});
+Route::get('password/confirm', 'Auth\ConfirmPasswordController@showConfirmForm')->name('password.confirm');
+Route::post('password/confirm', 'Auth\ConfirmPasswordController@confirm');
+Route::get('password/phone', 'Auth\ForgotPasswordController@showCodeRequestForm')->name('password.phone');
+Route::post('password/phone', 'Auth\ForgotPasswordController@sendResetCodePhone');
+Route::get('password/reset', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterController@register');
+Route::get('verify', 'Auth\VerificationController@show')->name('verification');
+Route::post('verify', 'Auth\VerificationController@verify');
+
 
 Route::get('/', function () {return view('home/index');});
 Route::get('/home', function () {return view('home/index');});
-Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider')->name('login.provider');
-Route::get('login/{provider}/callback','Auth\LoginController@handleProviderCallback');
 
 Route::get('order', 'Shop\IndexController@create')->name('shop.order');
 Route::post('order', 'Shop\IndexController@store')->name('shop.order');
 Route::post('order/cars', 'Shop\IndexController@cars_ajax')->name('shop.order.cars');
 Route::get('cart', 'Shop\CartController@index')->name('shop.cart');
 Route::post('cart/clear', 'Shop\CartController@clear')->name('shop.cart.clear');
-
 Route::middleware(['auth'])->group(function () {
-    Route::get('checkout', 'Shop\CheckoutController@index')->name('shop.checkout');
-    Route::post('gateway/cash/pay', 'Gateway\CashController@pay')->name('gateway.cash.pay');
-    Route::post('gateway/stripe/pay', 'Gateway\StripeController@pay')->name('gateway.stripe.pay');
-    
-    Route::get('/logout', function () {
-        \Auth::logout();
-        return redirect('login');
-    });
+	Route::middleware('verified')->group(function () {
+		Route::get('checkout', 'Shop\CheckoutController@index')->name('shop.checkout');
+		Route::post('gateway/cash/pay', 'Gateway\CashController@pay')->name('gateway.cash.pay');
+		Route::post('gateway/stripe/pay', 'Gateway\StripeController@pay')->name('gateway.stripe.pay');
+	});
 
     Route::get('account/profile', 'Account\ProfileController@show')->name('account.profile');
     Route::post('account/profile', 'Account\ProfileController@update');
+    Route::get('account/forgot', 'Account\ProfileController@forgot')->name('account.forgot');
+    Route::get('account/verify', 'Account\VerificationController@show')->name('account.verify');
+    Route::post('account/verify', 'Account\VerificationController@verify');
 
     Route::get('notifications', 'Account\NotificationController@index')->name('notifications');
     Route::get('notifications/unread', 'Account\NotificationController@unread')->name('notifications.unread');

@@ -183,7 +183,7 @@ var KTLoginGeneral=function(){
                     }
                 })
             }),
-            $("#kt_login_forgot").on("click",function(t){t.preventDefault(),history.replaceState({}, null, '/password/reset'),i("forgot")}),
+            $("#kt_login_forgot").on("click",function(t){t.preventDefault(),history.replaceState({}, null, '/password/phone'),i("forgot")}),
             $("#kt_login_signup").on("click",function(t){t.preventDefault(),history.replaceState({}, null, '/register'),i("signup")}),
             function(t){
                 var o,

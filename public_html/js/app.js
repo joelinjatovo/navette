@@ -2109,6 +2109,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2134,7 +2139,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       _this.$store.commit('ADD_NOTIFICATION', res);
     });
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['notifications'])),
+  computed: _objectSpread({
+    empty: function empty() {
+      return this.notifications.length == 0;
+    },
+    seen: function seen() {
+      return this.notifications.length > 0;
+    }
+  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(['notifications'])),
   methods: {
     formatMessage: function formatMessage(res) {
       switch (res.type) {
@@ -51940,7 +51952,7 @@ var render = function() {
               ]
             ),
             _vm._v(" "),
-            _c("span", { staticClass: "pulse-ring" })
+            _vm.seen ? _c("span", { staticClass: "pulse-ring" }) : _vm._e()
           ]
         )
       ]
@@ -51957,24 +51969,36 @@ var render = function() {
           _vm._m(0),
           _vm._v(" "),
           _c("div", [
-            _c(
-              "div",
-              {
-                staticClass: "navi navi-hover scroll my-4",
-                attrs: {
-                  "data-scroll": "true",
-                  "data-height": "300",
-                  "data-mobile-height": "200"
-                }
-              },
-              _vm._l(_vm.notifications, function(notification) {
-                return _c("AppNotification", {
-                  key: notification.id,
-                  attrs: { notification: notification }
-                })
-              }),
-              1
-            )
+            _vm.seen
+              ? _c(
+                  "div",
+                  { staticClass: "navi navi-hover scroll my-4" },
+                  _vm._l(_vm.notifications, function(notification) {
+                    return _c("AppNotification", {
+                      key: notification.id,
+                      attrs: { notification: notification }
+                    })
+                  }),
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.empty
+              ? _c(
+                  "div",
+                  {
+                    staticClass:
+                      "d-flex flex-center text-center text-muted min-h-200px"
+                  },
+                  [
+                    _vm._v("\r\n\t\t\t\t\tTout est OK!\r\n\t\t\t\t\t"),
+                    _c("br"),
+                    _vm._v(
+                      "\r\n\t\t\t\t\tPas de nouvelle notification.\r\n\t\t\t\t"
+                    )
+                  ]
+                )
+              : _vm._e()
           ])
         ])
       ]
@@ -51994,16 +52018,7 @@ var staticRenderFns = [
       },
       [
         _c("h4", { staticClass: "d-flex flex-center rounded-top" }, [
-          _c("span", [_vm._v("User Notifications")]),
-          _vm._v(" "),
-          _c(
-            "span",
-            {
-              staticClass:
-                "btn btn-text btn-success btn-sm font-weight-bold btn-font-md ml-2"
-            },
-            [_vm._v("23 new")]
-          )
+          _c("span", [_vm._v("Notifications")])
         ])
       ]
     )
@@ -65550,7 +65565,7 @@ var actions = {
   },
   GET_NOTIFICATIONS: function GET_NOTIFICATIONS(_ref2) {
     var commit = _ref2.commit;
-    axios.get('/notifications').then(function (res) {
+    axios.get('/notifications/unread').then(function (res) {
       {
         commit('GET_NOTIFICATIONS', res.data);
       }

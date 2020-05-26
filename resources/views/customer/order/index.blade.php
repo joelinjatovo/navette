@@ -46,7 +46,7 @@
                             </td>
                             <td data-field="{{ __('Point') }}" aria-label="Czech Republic" class="datatable-cell">
                                 <span style="width: 250px;">
-                                    <div class="font-weight-bolder font-size-lg mb-0">{{ $model->items ? $model->items[0]->point->name : '' }}</div>
+                                    <div class="font-weight-bolder font-size-lg mb-0">{{ $model->items && isset($model->items[0]) ? $model->items[0]->point->name : '' }}</div>
                                     <div class="font-weight-bold text-muted">{{ trans_choice('messages.count.places', $model->place, ['value' => $model->place]) }}</div>
                                 </span>
                             </td>

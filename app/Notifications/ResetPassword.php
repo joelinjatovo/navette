@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
 
-class VerifyPhone extends Notification
+class ResetPassword extends Notification
 {
     /**
-     * Phone verification code
+     * Paaword reset code
      *
      * @var String
      */
-    public $phoneVerificationCode;
+    public $passwordResetCode;
     
     /**
      * The callback that should be used to build the nexmo message.
@@ -33,7 +33,7 @@ class VerifyPhone extends Notification
      */
     public function __construct($code)
     {
-        $this->phoneVerificationCode = $code;
+        $this->passwordResetCode = $code;
     }
 
     /**
@@ -56,11 +56,11 @@ class VerifyPhone extends Notification
     public function toNexmo($notifiable)
     {
         if (static::$toPhoneCallback) {
-            return call_user_func(static::$toPhoneCallback, $notifiable, $this->phoneVerificationCode);
+            return call_user_func(static::$toPhoneCallback, $notifiable, $this->passwordResetCode);
         }
         
         return (new NexmoMessage)
-                    ->content( Lang::get('Navette code: ') . $this->phoneVerificationCode);
+                    ->content( Lang::get('Navette code: ') . $this->passwordResetCode);
     }
 
     /**

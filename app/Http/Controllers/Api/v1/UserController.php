@@ -46,7 +46,8 @@ class UserController extends Controller
         
         $user = User::create([
             'name' => $data['name'],
-            'phone' => $data['phone'],
+            'phone' => $data['phone']??null,
+            'email' => $data['email']??null,
             'password' => Hash::make($data['password']),
         ]);
       
@@ -83,7 +84,8 @@ class UserController extends Controller
         
         $user->update([
             'name' => $data['name'],
-            'phone' => $data['phone'],
+            'phone' => $data['phone']??null,
+            'email' => $data['email']??null,
         ]);
         
         $token = app('api_token');

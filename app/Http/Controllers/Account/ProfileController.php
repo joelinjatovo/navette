@@ -7,6 +7,8 @@ use App\Http\Requests\ProfileRequest;
 use App\Models\Image;
 use App\Services\ImageUploader;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\PasswordReset;
 
 class ProfileController extends Controller
 {
@@ -42,9 +44,29 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         
-        $request->user()->fill($request->input('profile'));
+        $user->fill($request->input('profile'));
+		if($request->input('new_password')){
+			$user->password = Hash::make($request->input('new_password'));
+        	$request->user()->save();
+			
+			event(new PasswordReset($user));
+		}
         $request->user()->save();
         $this->uploader->upload('image', $request->user());
-        return back()->with("success", "Votre profil a été bien mis à jour.");
+		
+        return back()->with("success", trans("Votre profil a été bien mis à jour."));
+    }
+    
+    /**
+     * Forgot password
+     *
+     * @param  Request  $request
+     * @return Response
+     */
+    public function forgot(Request $request)
+    {
+		\Auth::logout();
+        return redirect()->route('password.phone')
+			->with("success", trans("Vous pouvez demander un nouveau mot de passe maintenant."));
     }
 }

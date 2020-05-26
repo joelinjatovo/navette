@@ -21,11 +21,16 @@ class FacebookController extends Controller
      */
     public function connect(Request $request, TokenRepository $repository)
     {
-        $user = User::where('phone', $request->input('phone'))->first();
-        if (!$user) {
+		$user = false;
+		if(!empty($request->input('phone'))){
+        	$user = User::where('phone', $request->input('phone'))->first();
+		}
+		
+        if (!$user && !empty($request->input('email'))) {
             $user = User::where('email', $request->input('email'))->first();
         }
-        if (!$user) {
+		
+        if (!$user && !empty($request->input('facebook_id'))) {
             $user = User::where('facebook_id', $request->input('facebook_id'))->first();
         }
         

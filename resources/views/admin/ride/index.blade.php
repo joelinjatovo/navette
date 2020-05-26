@@ -40,10 +40,10 @@
                     <thead class="datatable-head">
                         <tr class="datatable-row" style="left: 0px;">
                             <th data-field="RecordID" class="datatable-cell-left datatable-cell datatable-cell-sort datatable-cell-sorted" data-sort="asc"><span style="width: 40px;">#</span></th>
-                            <th data-field="{{ __('messages.cars') }}" class="datatable-cell datatable-cell-sort"><span style="width: 250px;">{{ __('messages.cars') }}</span></th>
+                            <th data-field="{{ __('messages.cars') }}" class="datatable-cell datatable-cell-sort"><span style="width: 200px;">{{ __('messages.cars') }}</span></th>
                             <th data-field="{{ __('messages.drivers') }}" class="datatable-cell datatable-cell-sort"><span style="width: 250px;">{{ __('messages.drivers') }}</span></th>
                             <th data-field="{{ __('messages.date') }}" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.date') }}</span></th>
-                            <th data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.actions') }}</span></th>
+                            <th data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" class="datatable-cell datatable-cell-sort"><span style="width: 200px;">{{ __('messages.actions') }}</span></th>
                         </tr>
                     </thead>
                     <tbody class="datatable-body" style="">
@@ -53,7 +53,7 @@
                                 <span style="width: 40px;"><span class="font-weight-bolder">{{ $model->id }}</span></span>
                             </td>
                             <td data-field="{{ __('messages.cars') }}" aria-label="" class="datatable-cell">
-                                <span style="width: 250px;">
+                                <span style="width: 200px;">
 									<x-car :model="$model->car" />
                                 </span>
                             </td>
@@ -69,13 +69,28 @@
                                 </span>
                             </td>
                             <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
-                                <span style="overflow: visible; position: relative; width: 130px;">
+                                <span style="overflow: visible; position: relative; width: 200px;">
                                     <a href="{{ route('admin.ride.show', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
                                         <i class="la la-eye"></i>
                                     </a>
                                     <a href="{{ route('admin.ride.live', $model)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.edit') }}">
                                         <i class="la la-map"></i>
                                     </a>
+									@if($model->cancelable())
+									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action" data-action="cancel" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.cancel') }}">
+										<i class="la la-close"></i>
+									</a>
+									@endif
+									@if($model->activable())
+									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action" data-action="active" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.active') }}">
+										<i class="la la-play-circle-o"></i>
+									</a>
+									@endif
+									@if($model->completable())
+									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action" data-action="complete" data-id="{{ $model->getKey() }}" title="{{ __('messages.button.complete') }}">
+										<i class="la la-check"></i>
+									</a>
+									@endif
                                     <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  data-id="{{ $model->getKey() }}" title="{{ __('messages.button.delete') }}" >
                                         <i class="la la-trash"></i>
                                     </a>	                    
@@ -101,4 +116,38 @@
         <!--end::Card-->
     </div>
 </div>
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+$(document).ready(function() {
+	$(document).on('click', '.btn-ride-action', function() {
+		var $this = $(this);
+		swal.fire({
+			title:"{{ __('messages.swal.action.title') }}",
+			text:"{{ __('messages.swal.action.content') }}",
+			type:"warning",
+			showCancelButton:!0,
+			confirmButtonText:"{{ __('messages.swal.action.confirm') }}",
+			cancelButtonText:"{{ __('messages.swal.action.cancel') }}"
+		}).then(function(e){
+			if(e.value){
+				KTApp.blockPage();
+				axios.put("{{ route('admin.rides') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
+					.then(res => {
+						KTApp.unblockPage();
+						var type = "danger";
+						if (res.data.status === "success"){
+							type = "success";
+						}
+						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
+					}).catch(err => {
+						KTApp.unblockPage();
+						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+					})
+			}
+		})
+	});
+});
+</script>
 @endsection

@@ -1,6 +1,6 @@
 @extends('layouts.auth')
 
-@section('title'){{ __('Nouveau mot de passe') }}@endsection
+@section('title'){{ __('Verify') }}@endsection
 
 @section('style')
 <link href="{{ asset('css/main/login.css') }}" rel="stylesheet">
@@ -22,8 +22,8 @@
 			<!--begin::Login forgot password form-->
 			<div class="login-forgot">
 				<div class="mb-20">
-					<h3 class="opacity-40 font-weight-normal">{{ __('Nouveau mot de passe') }}</h3>
-					<p class="opacity-40">{{ __('Creer votre nouveau mot de passe ...') }}</p>
+					<h3 class="opacity-40 font-weight-normal">{{ __('Verification de votre numero?') }}</h3>
+					<p class="opacity-40">{{ __('Entrez le code que vous aurez du recevoir par SMS au ...') }}</p>
 				</div>
                 
                 @if (session('status'))
@@ -50,25 +50,34 @@
                     </div>
                 @endif
                 
+                @error('phone')
+                    <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                    </div>
+				@enderror
+                
 				<form class="form" method="post">
                     @csrf
-					<input type="hidden" name="code" value="{{ $code }}" />
 					<input type="hidden" name="phone" value="{{ $phone }}" />
-					<div class="form-group">
-						<input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8 @error('password') is-invalid @enderror" type="password" placeholder="{{ __('Mot de passe') }}" name="password"/>
-                        @error('password')
+					<div class="form-group mb-10">
+						<input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8 @error('code') is-invalid @enderror" type="text" placeholder="{{ __('Code de vérification') }}" name="code" autocomplete="off" value="{{ old('code') }}"/>
+                        @error('code')
                             <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
                         @enderror
 					</div>
 					<div class="form-group">
-						<input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8 @error('password') is-invalid @enderror" type="password" placeholder="{{ __('Confirmation du mot de passe') }}" name="password_confirmation"/>
-                        @error('password')
-                            <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
-                        @enderror
-					</div>
-					<div class="form-group">
-						<button type="submit" name="action" value="verify" class="btn btn-pill btn-primary opacity-90 px-15 py-3 m-2">{{ __('Créer') }}</button>
+						<button type="submit" name="action" value="verify" class="btn btn-pill btn-primary opacity-90 px-15 py-3 m-2">{{ __('Verifier') }}</button>
 						<a href="{{ route('login') }}" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">{{ __('Annuler') }}</a>
+					</div>
+				</form>
+				<form class="form" method="post" action="{{ route('password.phone') }}">
+                    @csrf
+					<input type="hidden" name="phone" value="{{ $phone }}" />
+					<div class="mt-10">
+						<span class="opacity-40 mr-4">
+							{{ __('Vous n\'avez pas reçu le code?') }}
+						</span>
+						<button type="submit" name="action" value="resend" class="btn btn-link text-white font-weight-normal">{{ __('Renvoyer le code') }}</button>
 					</div>
 				</form>
 			</div>
