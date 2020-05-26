@@ -3,6 +3,7 @@
 return [
     'action' => 'Action',
     'actions' => 'Actions',
+    'activities' => 'Activities',
     'account' => 'Account',
     'admin' => 'Admin',
     'amount' => 'Amount',
@@ -175,6 +176,8 @@ return [
     'login' => 'Login',
     'models' => 'Models',
     'name' => 'Name',
+    'notification' => 'Notification',
+    'notifications' => 'Notifications',
     'options' => 'Options',
     'order' => 'Order',
     'order.create' => 'Add order',

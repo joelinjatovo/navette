@@ -12,10 +12,18 @@ class NotificationController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = \Auth::user();
         
+        if(!$request->ajax() && $user->isAdmin()){
+			if($user->isAdmin()){
+				return view('admin.notifications', [
+					'models' => $user->notifications()->orderBy('created_at', 'desc')->paginate()
+				]);
+			}
+        }
+		
         return $user->notifications()->orderBy('created_at', 'desc')->get(); //response()->json($user->notifications);
     }
 	
@@ -68,9 +76,17 @@ class NotificationController extends Controller
      *
      * @return Response
      */
-    public function unread()
+    public function unread(Request $request)
     {
         $user = \Auth::user();
+        
+        if(!$request->ajax()){
+			if($user->isAdmin()){
+				return view('admin.notifications', [
+					'models' => $user->unreadNotifications()->orderBy('created_at', 'desc')->paginate()
+				]);
+			}
+        }
         
         return $user->unreadNotifications()->orderBy('created_at', 'desc')->get(); 
     }
