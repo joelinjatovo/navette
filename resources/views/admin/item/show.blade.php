@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.map')
 
 @section('title'){{ __('messages.form.item.view') }}@endsection
 

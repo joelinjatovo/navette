@@ -1,4 +1,4 @@
-@extends('layouts.live')
+@extends('layouts.map')
 
 @section('title'){{ __('messages.form.ride.live') }}@endsection
 
@@ -56,14 +56,6 @@
 			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-complete" data-action="complete" data-id="{{ $model->getKey() }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
 			<!--end::Button-->
 			@endif
-            
-            <!--begin::Button-->
-            <a href="{{ route('admin.ride.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-plus"></i> {{ __('messages.ride.create') }}</a>
-            <!--end::Button-->
-            
-            <!--begin::Button-->
-            <a href="{{ route('admin.ride.edit', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-edit"></i> {{ __('messages.ride.edit') }}</a>
-            <!--end::Button-->
                             
         </div>
         <!--end::Toolbar-->
@@ -372,12 +364,7 @@ var geodesicPoly;
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {mapTypeControl: false, center: uluru, zoom: zoom});
     marker = new google.maps.Marker({draggable: true, position: uluru, map: map});
-    poly = new google.maps.Polyline({
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-        map: map,
-    });
+    poly = new google.maps.Polyline({strokeColor: '#FF0000',strokeOpacity: 1.0,strokeWeight: 3,map: map});
 }
 $(document).ready(function() {
 	$(document).on('click', '.btn-ride-action', function() {

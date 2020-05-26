@@ -34,17 +34,17 @@
 			
 			@if($model->cancelable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-order-action" data-action="cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-order-action"
+			   data-action="cancel" 
+			   data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="bottom" 
+			   data-original-title="{{ __('messages.cancel.order') }}"
+			   title="{{ __('messages.cancel.order') }}">
+				<i class="la la-close"></i> {{ __('messages.button.cancel') }}
+			</a>
 			<!--end::Button-->
 			@endif
-            
-            <!--begin::Button-->
-            <a href="{{ route('admin.order.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-plus"></i> {{ __('messages.order.create') }}</a>
-            <!--end::Button-->
-            
-            <!--begin::Button-->
-            <a href="{{ route('admin.order.edit', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-edit"></i> {{ __('messages.order.edit') }}</a>
-            <!--end::Button-->
                             
         </div>
         <!--end::Toolbar-->
