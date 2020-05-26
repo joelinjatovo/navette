@@ -95,6 +95,24 @@
                             font-weight: 500;
                             padding: 6px 12px;
                           }
+                          .custom-dashboard-tabs a:not(.unavailable):hover,
+.custom-dashboard-tabs a:not(.unavailable):hover{
+    background: #1bc5bd!important;
+}
+.custom-dashboard-tabs li:hover span,
+.custom-dashboard-tabs li:focus span,
+.custom-dashboard-tabs li:hover i,
+.custom-dashboard-tabs li:focus i{
+    color: #fff!important;
+}
+.custom-dashboard-tabs .nav-link.active {
+    background: #1bc5bd!important;
+    webkit-box-shadow: 0 1rem 2rem 1rem rgba(0,0,0,.1)!important;
+    box-shadow: 0 1rem 2rem 1rem rgba(0,0,0,.1)!important;
+}
+.custom-dashboard-tabs .nav-link.active i{
+    color: #fff!important;
+}
                     </style>
         <!--end::Global Theme Styles-->
 
@@ -588,21 +606,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        $(document).on('change', '.order-type', function(){
-            var type = $(this).val();
-            if(type == 'go'){
-                $('#display-back').hide();
-                $('#display-origine').show();
-            }
-            if(type == 'back'){
-                $('#display-back').show();
-                $('#display-origine').hide();
-            }
-            if(type == 'go-back'){
-                $('#display-back').show();
-                $('#display-origine').show();   
-            }
-        })
         </script>
         @yield('javascript')
         <!--end::Page Scripts-->
