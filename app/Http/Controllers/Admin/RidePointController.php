@@ -47,17 +47,6 @@ class RidePointController extends Controller
     }
 
     /**
-     * Live the ride point info.
-     *
-     * @param RidePoint $ridepoint
-     * @return Response
-     */
-    public function live(RidePoint $ridepoint)
-    {
-        return view('admin.ridepoint.live', ['model' => $ridepoint]);
-    }
-
-    /**
      * Handle specified action
      *
      * @param Request  $request
