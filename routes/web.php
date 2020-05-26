@@ -135,11 +135,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('rides', 'Admin\RideController@action');
         
         Route::get('ridepoints', 'Admin\RidePointController@index')->name('ridepoints');
-        Route::get('ridepoint', 'Admin\RidePointController@create')->name('ridepoint.create');
-        Route::post('ridepoint', 'Admin\RidePointController@store');
         Route::get('ridepoint/{ridepoint}', 'Admin\RidePointController@show')->name('ridepoint.show');
-        Route::get('ridepoint/{ridepoint}/edit', 'Admin\RidePointController@edit')->name('ridepoint.edit');
-        Route::post('ridepoint/{ridepoint}/edit', 'Admin\RidePointController@update');
         Route::delete('ridepoints', 'Admin\RidePointController@delete');
         Route::put('ridepoints', 'Admin\RidePointController@action');
         

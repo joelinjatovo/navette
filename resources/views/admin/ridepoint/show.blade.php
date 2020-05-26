@@ -35,29 +35,36 @@
 			
 			@if($model->cancelable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" data-action="cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" 
+			   data-action="cancel" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.cancel.ridepoint') }}"
+			   title="{{ __('messages.cancel.ridepoint') }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->arrivable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" data-action="arrive" data-id="{{ $model->getKey() }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.arrive') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" 
+			   data-action="arrive" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.arrive.ridepoint') }}"
+			   title="{{ __('messages.arrive.ridepoint') }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.arrive') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->pickable() || $model->dropable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" data-action="pick-or-drop" data-id="{{ $model->getKey() }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" 
+			   data-action="pick-or-drop" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.pick-or-drop.ridepoint') }}"
+			   title="{{ __('messages.pick-or-drop.ridepoint') }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
 			<!--end::Button-->
 			@endif
-            
-            <!--begin::Button-->
-            <a href="{{ route('admin.ridepoint.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-plus"></i> {{ __('messages.ridepoint.create') }}</a>
-            <!--end::Button-->
-            
-            <!--begin::Button-->
-            <a href="{{ route('admin.ridepoint.edit', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-edit"></i> {{ __('messages.ridepoint.edit') }}</a>
-            <!--end::Button-->
                             
         </div>
         <!--end::Toolbar-->

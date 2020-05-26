@@ -77,10 +77,19 @@
                             </td>
                             <td data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 130px;">
-                                    <a href="{{ route('admin.ridepoint.show', $model) }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" title="{{ __('messages.button.view') }}">
+                                    <a href="{{ route('admin.ridepoint.show', $model) }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" 
+									   data-toggle="tooltip" 
+									   data-placement="top" 
+									   data-original-title="{{ __('messages.view.ridepoint') }}"
+									   title="{{ __('messages.view.ridepoint') }}" >
                                         <i class="la la-eye"></i>
                                     </a>
-                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  data-id="{{ $model->getKey() }}" title="{{ __('messages.button.delete') }}" >
+                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  
+									   data-id="{{ $model->getKey() }}" 
+									   data-toggle="tooltip" 
+									   data-placement="top" 
+									   data-original-title="{{ __('messages.delete.ridepoint') }}"
+									   title="{{ __('messages.delete.ridepoint') }}" >
                                         <i class="la la-trash"></i>
                                     </a>	                    
                                 </span>
