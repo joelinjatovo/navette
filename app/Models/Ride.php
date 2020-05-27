@@ -118,6 +118,86 @@ class Ride extends Model
     }
     
     /**
+     * Attach item to the ride
+     */
+    public function attach(Item $item)
+    {
+		if($item->order && $item->order->car){
+			$order = $item->order;
+			$car = $item->order->car;
+			$driver = $item->order->car->driver;
+			$user = $item->user;
+			
+			$this->points()->attach($item->point->getKey(), [
+				'status' => RidePoint::STATUS_PING,
+				'type' => ($item->type == Item::TYPE_BACK ? RidePoint::TYPE_DROP : RidePoint::TYPE_PICKUP),
+				'order' => 0,
+				'item_id' => $item->getKey(),
+				'user_id' => $user ? $user->getKey() : null,
+			]);
+
+			// Set item status ACTIVE
+			$oldStatus = $item->status;
+			$newStatus = Item::STATUS_ACTIVE;
+			$item->status = $newStatus;
+			$item->ride()->associate($this);
+			$item->driver()->associate($driver);
+			$item->save();
+			$event_item = new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus);
+
+			// Set order status ACTIVE
+			$oldStatus = $order->status;
+			$newStatus = Order::STATUS_ACTIVE;
+			$order->status = $newStatus;
+			$order->save();
+			$event_order = new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus);
+
+			$this->verifyDirection($this->google);
+
+			// Triger events
+			event($event_item);
+			event($event_order);
+		}
+	}
+    
+    /**
+     * Detach item to the ride
+     */
+    public function detach(Item $item)
+    {
+		if($item->order && $item->order->car){
+			$order = $item->order;
+			$car = $item->order->car;
+			$driver = $item->order->car->driver;
+			$user = $item->user;
+			
+			$this->points()->detach($item->point->getKey());
+
+			// Set item status PING
+			$oldStatus = $item->status;
+			$newStatus = Item::STATUS_PING;
+			$item->status = $newStatus;
+			$item->ride()->associate($this);
+			$item->driver()->associate($driver);
+			$item->save();
+			$event_item = new ItemStatusChanged($item, 'detached', $oldStatus, $newStatus);
+
+			// Set order status OK
+			$oldStatus = $order->status;
+			$newStatus = Order::STATUS_OK;
+			$order->status = $newStatus;
+			$order->save();
+			$event_order = new OrderStatusChanged($order, 'detached', $oldStatus, $newStatus);
+
+			$this->verifyDirection($this->google);
+
+			// Triger events
+			event($event_item);
+			event($event_order);
+		}
+	}
+    
+    /**
      * Mark first item as next
      */
     public function next()

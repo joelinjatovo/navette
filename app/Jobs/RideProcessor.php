@@ -141,37 +141,10 @@ class RideProcessor implements ShouldQueue
 			}
 			
 			// Attach the item's order point to the ride
-			$ride->points()->attach($item->point->getKey(), [
-				'status' => RidePoint::STATUS_PING,
-				'type' => ($item->type == Item::TYPE_BACK ? RidePoint::TYPE_DROP : RidePoint::TYPE_PICKUP),
-				'order' => 0,
-				'item_id' => $item->getKey(),
-				'user_id' => $user ? $user->getKey() : null,
-			]);
-
-
-			// Set item status ACTIVE
-			$oldStatus = $item->status;
-			$newStatus = Item::STATUS_ACTIVE;
-			$item->status = $newStatus;
-			$item->ride()->associate($ride);
-			$item->driver()->associate($driver);
-			$item->save();
-			$event_item = new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus);
-			
-			// Set order status ACTIVE
-			$oldStatus = $order->status;
-			$newStatus = Order::STATUS_ACTIVE;
-			$order->status = $newStatus;
-			$order->save();
-			$event_order = new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus);
-
-			$ride->verifyDirection($this->google);
+			$ride->attach($item);
 			
 			// Triger events
 			event($event_ride);
-			event($event_item);
-			event($event_order);
 		}
     }
 
