@@ -72,7 +72,7 @@ class Ride extends Model
      */
     public function driver()
     {
-        return $this->belongsTo(User::class, 'driver_id', 'id');
+        return $this->belongsTo(User::class, 'driver_id', 'id')->with('roles');
     }
     
     /**
