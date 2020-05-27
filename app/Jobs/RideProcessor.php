@@ -39,19 +39,20 @@ class RideProcessor implements ShouldQueue
      */
     public function handle()
     {
-        \Log::info('RideProcessor->handle()');
+		info('RideProcessor...');
+
+		// Handle job...
 		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
 			->where('orders.status', Order::STATUS_OK)
 			->where('items.status', Item::STATUS_PING)
-            ->where(function($query) {
-                $query->whereNull('items.ride_at')
-                      ->orWhere('items.ride_at', '<=', now()->addMinutes(30));
-            })
+			->where(function($query) {
+				$query->whereNull('items.ride_at')
+					  ->orWhere('items.ride_at', '<=', now()->addMinutes(30));
+			})
 			->get();
-		if($items){
-			foreach($items as $item){
-				$this->performTask($item);
-			}
+
+		foreach($items as $item){
+			$this->performTask($item);
 		}
     }
 	
@@ -72,9 +73,10 @@ class RideProcessor implements ShouldQueue
      * @param  Exception  $exception
      * @return void
      */
-    public function failed(Exception $exception)
+    public function failed(\Exception $exception)
     {
         // Send user notification of failure, etc...
+		info('Send user notification of failure...' . $exception->getMessage());
     }
 	
 	
