@@ -190,7 +190,7 @@ class Order extends Model
 				$this->subtotal = $this->amount * $this->place;
 			}
 		}else{
-			swith($this->type){
+			switch($this->type){
 				case self::TYPE_GO:
 				case self::TYPE_BACK:
 					//Aller ou Retours : Diviser le montant par 2 (si place >= 2)
