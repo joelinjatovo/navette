@@ -14,11 +14,6 @@ class User extends JsonResource
      */
     public function toArray($request)
     {
-        $roles = [];
-        foreach($this->roles->get() as $role){
-            $roles[] = $role->name;
-        }
-        
         return [
             'id' => $this->getKey(),
             'facebook_id' => $this->facebook_id,
@@ -28,7 +23,7 @@ class User extends JsonResource
             'locale' => $this->locale,
             'verified' => $this->hasVerifiedPhone(),
             'image_url' => $this->image ? $this->image->url : null,
-            'roles' => $roles
+            'roles' => RoleItem::collection($this->whenLoaded('roles'))
         ];
     }
 }
