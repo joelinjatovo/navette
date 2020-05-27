@@ -51,8 +51,6 @@ class AppServiceProvider extends ServiceProvider
         
         $this->app->bind(ImageUploader::class);
         
-        $this->app->bind(\App\Services\ProcessorInterface::class, \App\Services\RideProcessor::class);
-        
         View::composer(['admin.car.create', 'admin.car.edit'], function ($view) {
             $view->with('drivers', User::all() /*Role::where('name', Role::DRIVER)->users*/);
             $view->with('models', CarModel::all());
@@ -71,8 +69,5 @@ class AppServiceProvider extends ServiceProvider
             $view->with('roles', Role::all());
         });
 		
-        // View components
-        //Blade::component('app-search', \App\View\Components\Search::class);
-        
     }
 }

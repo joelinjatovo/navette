@@ -18,7 +18,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessRide implements ShouldQueue
+class RideDateProcessor implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -42,6 +42,8 @@ class ProcessRide implements ShouldQueue
      */
     public function handle()
     {
+        \Log::info('RideDateProcessor->handle()');
+		
         $ride = $this->ride;
       
         $points = $ride->points()->wherePivotIn('status', [RidePoint::STATUS_ACTIVE, RidePoint::STATUS_NEXT])->get();

@@ -51,5 +51,53 @@ class UserSeeder extends Seeder
         }
         
         DB::table('role_user')->insert(['approved' => 1, 'user_id' => 1, 'role_id' => 1]);
+        
+        DB::table('users')->insert([
+            'id' => 2,
+            'name' => 'Driver2 JOELINJATOVO',
+            'phone' => '+261331377769',
+            'password' => Hash::make('driver2!'),
+            'phone_verified_at' => now(),
+            'created_at' => now(),
+            'active' => 1,
+            'locale' => 'fr',
+        ]);
+        DB::table('role_user')->insert(['approved' => 1, 'user_id' => 2, 'role_id' => 2]);
+        
+        DB::table('users')->insert([
+            'id' => 3,
+            'name' => 'Driver3 JOELINJATOVO',
+            'phone' => '+261331377770',
+            'password' => Hash::make('driver3!'),
+            'phone_verified_at' => now(),
+            'created_at' => now(),
+            'active' => 1,
+            'locale' => 'fr',
+        ]);
+        DB::table('role_user')->insert(['approved' => 1, 'user_id' => 3, 'role_id' => 2]);
+        
+        DB::table('users')->insert([
+            'id' => 4,
+            'name' => 'Driver4 JOELINJATOVO',
+            'phone' => '+261331377771',
+            'password' => Hash::make('driver4!'),
+            'phone_verified_at' => now(),
+            'created_at' => now(),
+            'active' => 1,
+            'locale' => 'fr',
+        ]);
+        DB::table('role_user')->insert(['approved' => 1, 'user_id' => 4, 'role_id' => 2]);
+        
+        DB::table('users')->insert([
+            'id' => 5,
+            'name' => 'Driver5 JOELINJATOVO',
+            'phone' => '+261331377772',
+            'password' => Hash::make('driver5!'),
+            'phone_verified_at' => now(),
+            'created_at' => now(),
+            'active' => 1,
+            'locale' => 'fr',
+        ]);
+        DB::table('role_user')->insert(['approved' => 1, 'user_id' => 5, 'role_id' => 2]);
     }
 }

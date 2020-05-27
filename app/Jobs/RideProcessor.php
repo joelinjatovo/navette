@@ -18,21 +18,18 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class ProcessItem implements ShouldQueue
+class RideProcessor implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-	protected $item;
-	
     /**
      * Create a new job instance.
      *
      * @param  Ride $ride
      * @return void
      */
-    public function __construct(Item $item)
+    public function __construct()
     {
-		$this->item = $item;
     }
 
     /**
@@ -42,8 +39,7 @@ class ProcessItem implements ShouldQueue
      */
     public function handle()
     {
-		$item = $this->item;
-		
+        \Log::info('RideProcessor->handle()');
     }
 
     /**

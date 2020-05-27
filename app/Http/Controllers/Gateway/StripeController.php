@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Gateway;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\ProcessOrder;
 use App\Models\Order;
 use App\Models\PaymentToken;
 use Illuminate\Http\Request;
