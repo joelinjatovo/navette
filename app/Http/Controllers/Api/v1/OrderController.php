@@ -69,12 +69,14 @@ class OrderController extends Controller
         $order->status = Order::STATUS_PING;
         $order->setVat(0);
         
+		$item_count = 0;
         $distance = 0;
         $values = $request->input('items');
         foreach($values as $value){
             if(isset($value['item']) && $value['item']){
                 $item = new Item($value['item']);
                 $distance += (int) $item->distance_value;
+				$item_count++;
             }
         }
         
@@ -82,7 +84,7 @@ class OrderController extends Controller
             return $this->error(400, 106, "Invalid Distance Between User Position And Club");
         }
         
-        $distance = (int) ( $distance / 2 );
+        $distance = ($item_count > 0 ? (int) ( $distance / $item_count ) : $distance );
         $zone = Zone::findByDistance($distance);
         if(null == $zone){
             return $this->error(400, 107, "No Zone Found");

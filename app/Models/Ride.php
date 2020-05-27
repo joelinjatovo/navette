@@ -347,7 +347,7 @@ class Ride extends Model
             return false;
         }
         
-        $points = $ride->points()->wherePivotIn('status', [RidePoint::STATUS_ACTIVE, RidePoint::STATUS_NEXT])->get();
+        $points = $ride->points()->wherePivotIn('status', [RidePoint::STATUS_PING, RidePoint::STATUS_ACTIVE, RidePoint::STATUS_NEXT])->get();
         if(empty($points)){
             return false;
         }
@@ -413,15 +413,17 @@ class Ride extends Model
                             }
                             
                             // Polyline
-                            $polyline = '';
+							$positions = [];
                             if(isset($leg['steps'])){
                                 $steps = $leg['steps'];
                                 foreach($steps as $step){
                                     if(isset($step['polyline']) && isset($step['polyline']['points'])){
-                                        $polyline .= $step['polyline']['points'];
+										$decoded = \App\Services\Polyline::decode($step['polyline']['points']);
+                                        $positions = array_merge($positions, $decoded);
                                     }
                                 }
                             }
+                            $polyline = \App\Services\Polyline::encode($positions);
                             
                             // Update polyline
                             if(is_array($orders)&&isset($orders[$key])){

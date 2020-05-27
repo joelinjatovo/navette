@@ -49,10 +49,16 @@ class RideProcessor implements ShouldQueue
 		// Handle job...
 		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
 			->where('orders.status', Order::STATUS_OK)
-			->where('items.status', Item::STATUS_PING)
 			->where(function($query) {
-				$query->whereNull('items.ride_at')
-					  ->orWhere('items.ride_at', '<=', now()->addMinutes(30));
+				$query->where('items.status', Item::STATUS_PING);
+				$query->where(function($query) {
+					$query->where('orders.type', Order::TYPE_GO);
+					$query->orWhere('orders.type', Order::TYPE_BACK);
+				});
+			})
+			->where(function($query) {
+				$query->whereNull('items.ride_at');
+				$query->orWhere('items.ride_at', '<=', now()->addMinutes(30));
 			})
 			->get();
 
@@ -70,6 +76,11 @@ class RideProcessor implements ShouldQueue
     protected function performTask(Item $item)
     {
 		if($item->order && $item->order->car){
+			$order = $item->order;
+			$car = $item->order->car;
+			$driver = $item->order->car->driver;
+			$user = $item->user;
+			
 			// Attach this item to the ride
 			$ride = $this->getPingedRide($item);
 			if($ride){
@@ -80,15 +91,23 @@ class RideProcessor implements ShouldQueue
 				$duration = $ride->duration + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
 				$max_duration = 60 * 60; // Durée max 1 heure
 				
-				if($duration >= $max_duration){
-					// Durée du trajet depassé
+				$place = 0;
+				foreach($ride->items as $_item){
+					if($_item->order){
+						$place += $_item->order->place;
+					}
+				}
+				$max_place = $car->place;
+				
+				if(($duration > $max_duration) || ($place + $order->place > $max_place)){
+					// Durée du trajet depassé ou nombre de place atteint
 					$start_date = $ride->start_at->addSeconds($duration); // Course après cette course en attente
 					
 					$ride = new Ride();
 					$ride->status = Ride::STATUS_PING;
 					$ride->start_at = $start_date->addMinutes(5);
-					$ride->car()->associate($item->order->car);
-					$ride->driver()->associate($item->order->car->driver);
+					$ride->car()->associate($car);
+					$ride->driver()->associate($driver);
 					$ride->save();
 
 					$event_ride = new RideStatusChanged($ride, 'created', null, $ride->status);
@@ -114,8 +133,8 @@ class RideProcessor implements ShouldQueue
 				$ride = new Ride();
 				$ride->status = Ride::STATUS_PING;
 				$ride->start_at = $start_date->addMinutes(5);
-				$ride->car()->associate($item->order->car);
-				$ride->driver()->associate($item->order->car->driver);
+				$ride->car()->associate($car);
+				$ride->driver()->associate($driver);
 				$ride->save();
 				
 				$event_ride = new RideStatusChanged($ride, 'created', null, $ride->status);
@@ -127,7 +146,7 @@ class RideProcessor implements ShouldQueue
 				'type' => ($item->type == Item::TYPE_BACK ? RidePoint::TYPE_DROP : RidePoint::TYPE_PICKUP),
 				'order' => 0,
 				'item_id' => $item->getKey(),
-				'user_id' => $item->user ? $item->user->getKey() : null,
+				'user_id' => $user ? $user->getKey() : null,
 			]);
 
 

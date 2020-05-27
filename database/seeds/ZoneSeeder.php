@@ -38,6 +38,17 @@ class ZoneSeeder extends Seeder
             'distance' => 30000,
             'unit' => 'm',
             'privatizedPrice' => 120,
+            'price' => 15,
+            'currency' => 'EUR',
+            'user_id' => 1,
+            'created_at' => now(),
+        ]);
+        
+        DB::table('zones')->insert([
+            'name' => 'Zone 4',
+            'distance' => 40000,
+            'unit' => 'm',
+            'privatizedPrice' => 160,
             'price' => 20,
             'currency' => 'EUR',
             'user_id' => 1,

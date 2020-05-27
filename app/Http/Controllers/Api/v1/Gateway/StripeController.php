@@ -19,7 +19,7 @@ class StripeController extends Controller
      */
     public function pay(Request $request)
     {
-        $order = Order::findOrFail($request->input('order_id'));
+        $order = Order::findOrFail($request->input('id'));
 
         // Set your secret key. Remember to switch to your live secret key in production!
         // See your keys here: https://dashboard.stripe.com/account/apikeys
