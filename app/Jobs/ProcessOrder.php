@@ -136,7 +136,7 @@ class ProcessOrder implements ShouldQueue
             ->where('status', Ride::STATUS_PING)
             ->whereNull('started_at')
             ->whereNull('canceled_at')
-            //->where('will_start_at', '>', $from)->where('will_start_at', '<', $to)
+            //->where('start_at', '>', $from)->where('will_start_at', '<', $to)
             ->first();
     }
         
