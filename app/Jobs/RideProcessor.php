@@ -40,6 +40,30 @@ class RideProcessor implements ShouldQueue
     public function handle()
     {
         \Log::info('RideProcessor->handle()');
+		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
+			->where('orders.status', Order::STATUS_OK)
+			->where('items.status', Item::STATUS_PING)
+            ->where(function($query) {
+                $query->whereNull('items.ride_at')
+                      ->orWhere('items.ride_at', '<=', now()->addMinutes(30));
+            })
+			->get();
+		if($items){
+			foreach($items as $item){
+				$this->performTask($item);
+			}
+		}
+    }
+	
+    /**
+     * Process this item
+     *
+     * @param  Exception  $exception
+     * @return void
+     */
+    protected function performTask(Item $item)
+    {
+        // Attach this item to the ride
     }
 
     /**
@@ -52,4 +76,6 @@ class RideProcessor implements ShouldQueue
     {
         // Send user notification of failure, etc...
     }
+	
+	
 }
