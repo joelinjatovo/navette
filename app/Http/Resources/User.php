@@ -15,7 +15,7 @@ class User extends JsonResource
     public function toArray($request)
     {
         $roles = [];
-        foreach($this->roles as $role){
+        foreach($this->roles->get() as $role){
             $roles[] = $role->name;
         }
         
