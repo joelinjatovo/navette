@@ -34,7 +34,7 @@ class CreateRidePointTable extends Migration
                 $table->uuid('point_id')->nullable();
                 $table->foreign('point_id')->references('id')->on('points');
                 $table->unsignedBigInteger('item_id')->nullable();
-                $table->foreign('item_id')->references('id')->on('points');
+                $table->foreign('item_id')->references('id')->on('items');
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('points');
                 $table->timestamps();
