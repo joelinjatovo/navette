@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Services\GoogleApiService;
 use App\Services\ImageUploader;
+use App\Jobs\RideProcessor;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
@@ -50,6 +51,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(GoogleApiService::class);
         
         $this->app->bind(ImageUploader::class);
+		
+		$this->app->bindMethod(RideProcessor::class.'@handle', function ($job, $app) {
+			return $job->handle($app->make(GoogleApiService::class));
+		});
         
         View::composer(['admin.car.create', 'admin.car.edit'], function ($view) {
             $view->with('drivers', User::all() /*Role::where('name', Role::DRIVER)->users*/);
