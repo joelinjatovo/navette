@@ -78,6 +78,23 @@ class RideController extends Controller
     }
     
     /**
+     * Add item to the current ride
+     *
+     * @param  Request  $request
+     * @param  Ride  $ride
+     *
+     * @return Response
+     */
+    public function attach(Request $request, Ride $ride)
+    {
+        $item = Item::findOrFail($request->input('id'));
+		
+		$ride->attach($item);
+        
+        return new RideItemResource($ride);
+    }
+    
+    /**
      * Active a ride.
      *
      * @param  Request  $request

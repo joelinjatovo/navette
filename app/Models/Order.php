@@ -177,13 +177,33 @@ class Order extends Model
     public function setZone(Zone $zone)
     {
         $this->zone_id = $zone->getKey();
+		$this->currency = $zone->currency;
+		$this->amount = $zone->price;
         if($this->privatized){
             $this->amount = $zone->privatizedPrice;
-        }else{
-            $this->amount = $zone->price;
-        }
-        $this->currency = $zone->currency;
-        $this->subtotal = $this->place * $this->amount;
+            $this->subtotal = $zone->privatizedPrice;
+        }elseif($this->preordered){
+			// Reserver plus tard: amount * nombre de place du car
+			if($this->car){
+				$this->subtotal = $this->amount * $this->car->place;
+			}else{
+				$this->subtotal = $this->amount * $this->place;
+			}
+		}else{
+			switch($this->type){
+				case self::TYPE_GO:
+				case self::TYPE_BACK:
+					//Aller ou Retours : Diviser le montant par 2 (si place >= 2)
+					$this->subtotal = $this->amount * ($this->place >= 2 ? $this->place / 2 : 1.5);
+				break;
+				default:
+					//Aller et Retours : Montant * Nombre de place reserve
+					$this->subtotal = $this->amount * $this->place;
+				break;
+			}
+		}
+		
+		// Ajouter le TVA
         $this->total = $this->subtotal + $this->subtotal * $this->vat;
         
         return $this;

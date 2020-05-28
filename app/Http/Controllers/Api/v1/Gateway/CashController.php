@@ -18,7 +18,7 @@ class CashController extends Controller
      */
     public function pay(Request $request)
     {
-        $order = Order::findOrFail($request->input('order_id'));
+        $order = Order::findOrFail($request->input('id'));
         
         $order->status = Order::STATUS_OK;
         $order->payment_type = Order::PAYMENT_TYPE_CASH;
