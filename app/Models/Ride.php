@@ -105,7 +105,7 @@ class Ride extends Model
 						'started_at', 
 						'canceled_at', 
 						'completed_at',
-						
+						'user_id',
                     ])->orderBy('order', 'asc');
     }
     
@@ -151,8 +151,6 @@ class Ride extends Model
 			$order->status = $newStatus;
 			$order->save();
 			$event_order = new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus);
-
-			$this->verifyDirection($this->google);
 
 			// Triger events
 			event($event_item);
