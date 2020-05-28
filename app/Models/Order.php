@@ -180,30 +180,33 @@ class Order extends Model
 		$this->currency = $zone->currency;
 		$this->amount = $zone->price;
         if($this->privatized){
+            $this->coefficient = 1.00;
             $this->amount = $zone->privatizedPrice;
-            $this->subtotal = $zone->privatizedPrice;
         }elseif($this->preordered){
 			// Reserver plus tard: amount * nombre de place du car
 			if($this->car){
-				$this->subtotal = $this->amount * $this->car->place;
+            	$this->coefficient = $this->car->place;
 			}else{
-				$this->subtotal = $this->amount * $this->place;
+            	$this->coefficient = $this->place;
 			}
 		}else{
 			switch($this->type){
 				case self::TYPE_GO:
 				case self::TYPE_BACK:
 					//Aller ou Retours : Diviser le montant par 2 (si place >= 2)
-					$this->subtotal = $this->amount * ($this->place >= 2 ? $this->place / 2 : 1.5);
+            		$this->coefficient = $this->place >= 2 ? $this->place / 2 : 1.5;
 				break;
 				default:
 					//Aller et Retours : Montant * Nombre de place reserve
-					$this->subtotal = $this->amount * $this->place;
+            		$this->coefficient = $this->place;
 				break;
 			}
 		}
 		
+		
 		// Ajouter le TVA
+		$this->coefficient = round($this->coefficient, 2);
+		$this->subtotal = $this->amount * $this->coefficient;
         $this->total = $this->subtotal + $this->subtotal * $this->vat;
         
         return $this;

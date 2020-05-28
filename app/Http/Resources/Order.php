@@ -21,6 +21,7 @@ class Order extends JsonResource
                 'status' => $this->status,
                 'distance' => $this->distance,
                 'place' => $this->place,
+                'coefficient' => $this->coefficient,
                 'amount' => $this->amount,
                 'subtotal' => $this->subtotal,
                 'total' => $this->total,

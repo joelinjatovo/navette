@@ -78,7 +78,7 @@ class RidePoint extends Pivot
         $this->status = $newStatus;
         $this->save();
         
-        $item = $this->item();
+        $item = $this->item;
         if($item)
         {
             $oldStatus = $item->status;
@@ -111,7 +111,7 @@ class RidePoint extends Pivot
         $this->status = $newStatus;
         $this->save();
         
-        $item = $this->item();
+        $item = $this->item;
         if($item)
         {
             $oldStatus = $item->status;
@@ -156,7 +156,7 @@ class RidePoint extends Pivot
         $this->status = $newStatus;
         $this->save();
         
-        $item = $this->item();
+        $item = $this->item;
         if($item)
         {
             $oldStatus = $item->status;

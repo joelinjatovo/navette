@@ -213,7 +213,7 @@ class Ride extends Model
         {
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_NEXT]);
 
-            $item = $point->pivot->item();
+            $item = $point->pivot->item;
             if($item){
                 $oldStatus = $item->status;
                 $newStatus = Item::STATUS_NEXT;
@@ -285,7 +285,7 @@ class Ride extends Model
         foreach($points as $point){
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_ACTIVE]);
             
-            $item = $point->pivot->item();
+            $item = $point->pivot->item;
             if($item){
                 $oldStatus = $item->status;
                 $newStatus = Item::STATUS_ACTIVE;
@@ -326,7 +326,7 @@ class Ride extends Model
         foreach($points as $point){
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_CANCELED]);
             
-            $item = $point->pivot->item();
+            $item = $point->pivot->item;
             if($item){
                 $oldStatus = $item->status;
                 $newStatus = Item::STATUS_CANCELED;
@@ -367,7 +367,7 @@ class Ride extends Model
         foreach($points as $point){
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_COMPLETED]);
             
-            $item = $point->pivot->item();
+            $item = $point->pivot->item;
             if($item){
                 $oldStatus = $item->status;
                 $newStatus = Item::STATUS_COMPLETED;
