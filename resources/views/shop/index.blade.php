@@ -314,6 +314,8 @@ jQuery(document).ready(function($){
 
         document.getElementById('list-club').value = $(this).val();
         document.getElementById('list-club').dispatchEvent(new Event('change'));
+        $('#display-placenumber').hide();
+        $('#display-privatecar').hide();
 
         $('#display-cars').html('<img src="/img/loader.gif" style="width: 200px;margin: auto;">');
          $.ajax({
