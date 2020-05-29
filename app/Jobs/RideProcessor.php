@@ -101,7 +101,7 @@ class RideProcessor implements ShouldQueue
 				
 				if(($duration > $max_duration) || ($place + $order->place > $max_place)){
 					// Durée du trajet depassé ou nombre de place atteint
-					$start_date = $ride->start_at->addSeconds($duration); // Course après cette course en attente
+					$start_date = $ride->start_at ? $ride->start_at->addSeconds($duration) : now()->addSeconds($duration); // Course après cette course en attente
 					
 					$ride = new Ride();
 					$ride->status = Ride::STATUS_PING;
@@ -142,6 +142,8 @@ class RideProcessor implements ShouldQueue
 			
 			// Attach the item's order point to the ride
 			$ride->attach($item);
+			
+			$ride->verifyDirection($this->google);
 			
 			// Triger events
 			event($event_ride);
@@ -192,7 +194,7 @@ class RideProcessor implements ShouldQueue
      * @param  Exception  $exception
      * @return void
      */
-    public function failed(Exception $exception)
+    public function failed($exception)
     {
         // Send user notification of failure, etc...
 		info('Send user notification of failure...' . $exception->getMessage());

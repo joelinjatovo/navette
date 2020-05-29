@@ -38,7 +38,7 @@ class CreateItemsTable extends Migration
                 $table->unsignedBigInteger('order_id')->nullable();
                 $table->foreign('order_id')->references('id')->on('orders');
                 $table->unsignedBigInteger('user_id')->nullable();
-                $table->foreign('user_id')->references('id')->on('points');
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
                 $table->softDeletes();
             });
