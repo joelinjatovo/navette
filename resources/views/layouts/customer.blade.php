@@ -18,12 +18,12 @@
         <!--end::Page Custom Styles-->
         
         <!--begin::Global Theme Styles(used by all pages)-->
+
         <link href="/css/main/plugins.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="/css/main/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="/css/main/style.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet" type="text/css"/>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
-
         <style>
                             #map {
                             height: 45vh;

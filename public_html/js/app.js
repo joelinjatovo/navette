@@ -1952,6 +1952,10 @@ __webpack_require__.r(__webpack_exports__);
       var newStatus = this.notification.newStatus != undefined ? this.notification.newStatus : this.notification.data.newStatus;
 
       switch (this.notification.type) {
+        case 'App\\Notifications\\DriverArrived':
+          return this.notification.message != undefined ? this.notification.message : this.notification.data.message;
+          break;
+
         case 'App\\Notifications\\OrderStatus':
           switch (newStatus) {
             case "ping":
@@ -2150,6 +2154,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     formatMessage: function formatMessage(res) {
       switch (res.type) {
+        case 'App\\Notifications\\DriverArrived':
+          return res.message;
+          break;
+
         case 'App\\Notifications\\OrderStatus':
           switch (res.newStatus) {
             case "ping":

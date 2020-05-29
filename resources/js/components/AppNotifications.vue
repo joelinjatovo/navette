@@ -72,6 +72,9 @@
     methods: {
       formatMessage(res) {
 	  	switch(res.type){
+			case 'App\\Notifications\\DriverArrived':
+				return res.message;
+			break;
 			case 'App\\Notifications\\OrderStatus':
 				switch(res.newStatus){
 					case "ping":

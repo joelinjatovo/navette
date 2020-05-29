@@ -18,18 +18,18 @@
         <!--end::Page Custom Styles-->
         
         <!--begin::Global Theme Styles(used by all pages)-->
-        <link href="/css/admin/plugins.bundle.css" rel="stylesheet" type="text/css"/>
-        <link href="/css/admin/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
-        <link href="/css/admin/style.bundle.css" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/admin/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/admin/prismjs.bundle.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/admin/style.bundle.css') }}" rel="stylesheet" type="text/css"/>
         <!--end::Global Theme Styles-->
 
         <!--begin::Layout Themes(used by all pages)-->
         
         <!--begin::Layout Themes(used by all pages)-->
-        <link href="/css/admin/header/base/light.css" rel="stylesheet" type="text/css"/>
-        <link href="/css/admin/header/menu/light.css" rel="stylesheet" type="text/css"/>
-        <link href="/css/admin/brand/dark.css" rel="stylesheet" type="text/css"/>
-        <link href="/css/admin/aside/dark.css" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/admin/header/base/light.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/admin/header/menu/light.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/admin/brand/dark.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/admin/aside/dark.css') }}" rel="stylesheet" type="text/css"/>
         <!--end::Layout Themes-->
 
         <link rel="shortcut icon" href="/favicon.png"/>
@@ -450,10 +450,10 @@
         <!--end::Global Config-->
 
         <!--begin::Global Theme Bundle(used by all pages)-->
-        <script src="/js/admin/admin.js"></script>
-        <script src="/js/admin/plugins.bundle.js"></script>
-        <script src="/js/admin/prismjs.bundle.js"></script>
-        <script src="/js/admin/scripts.bundle.js"></script>
+        <script src="{{ mix('/js/admin/admin.js') }}"></script>
+        <script src="{{ asset('/js/admin/plugins.bundle.js') }}"></script>
+        <script src="{{ asset('/js/admin/prismjs.bundle.js') }}"></script>
+        <script src="{{ asset('/js/admin/scripts.bundle.js') }}"></script>
         <!--end::Global Theme Bundle(used by all pages)-->
 		
         <!--end::Global Theme Bundle-->

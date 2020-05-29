@@ -47,6 +47,7 @@ class NotificationController extends Controller
 					}
 					return redirect()->route('customer.order.show', $notification->data['order_id']);
 				break;
+				case 'App\\Notifications\\DriverArrived':
 				case 'App\\Notifications\\ItemStatus':
 					if($user->isAdmin()){
 						return redirect()->route('admin.item.show', $notification->data['item_id']);
@@ -68,7 +69,7 @@ class NotificationController extends Controller
 		if($user->isAdmin()){
 			return redirect()->route('admin.dashboard');
 		}
-		return redirect()->route('account.profile');
+		return redirect()->route('customer.dashboard');
     }
     
     /**

@@ -1,8 +1,8 @@
 {
-    "/js/admin/admin.js": "/js/admin/admin.js",
-    "/js/admin/ride.js": "/js/admin/ride.js",
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/css/home.css": "/css/home.css",
-    "/js/main/customer.js": "/js/main/customer.js"
+    "/js/admin/admin.js": "/js/admin/admin.js?id=4f907ded731a4988d55c",
+    "/js/admin/ride.js": "/js/admin/ride.js?id=353ff9685f9a78bf3bbe",
+    "/js/app.js": "/js/app.js?id=cd4c503182fc4f1c325c",
+    "/css/app.css": "/css/app.css?id=5a4b29f468ff5569dd92",
+    "/css/home.css": "/css/home.css?id=434b44184b93724e1a88",
+    "/js/main/customer.js": "/js/main/customer.js?id=461602a22ebe7da76ee1"
 }
