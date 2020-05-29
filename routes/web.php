@@ -84,6 +84,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ride/{ride}/edit', 'Driver\RideController@edit')->name('ride.edit');
         Route::post('ride/{ride}/edit', 'Driver\RideController@update');
         Route::delete('rides', 'Driver\RideController@delete');
+        Route::put('rides', 'Driver\RideController@action');
+        
+        Route::get('ridepoints', 'Driver\RidePointController@index')->name('ridepoints');
+        Route::get('ridepoint/{ridepoint}', 'Driver\RidePointController@show')->name('ridepoint.show');
+        Route::delete('ridepoints', 'Driver\RidePointController@delete');
+        Route::put('ridepoints', 'Driver\RidePointController@action');
     });
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {

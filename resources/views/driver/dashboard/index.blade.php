@@ -117,12 +117,6 @@
                 <!--end: Datatable-->
             </div>
             <!--end::Body-->
-            
-            <!--begin::Footer-->
-            <div class="card-footer">
-                {{ $rides->links() }}
-            </div>
-            <!--end::Footer-->
         </div>
         <!--end::Card-->
     </div>

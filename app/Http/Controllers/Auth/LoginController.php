@@ -53,6 +53,11 @@ class LoginController extends Controller
 			return redirect()->route('admin.dashboard');
 		}
 		
+		if(auth()->user()->isDriver())
+		{
+			return redirect()->route('driver.dashboard');
+		}
+		
 		return redirect()->route('customer.dashboard');
 	}
 

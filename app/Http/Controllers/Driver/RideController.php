@@ -47,6 +47,19 @@ class RideController extends Controller
 		$items = $ride->items()->with('order')->with('order.user')->get();
         return view('driver.ride.show', ['model' => $ride, 'items' => $items, 'points' => $points]);
     }
+
+    /**
+     * Live the ride info.
+     *
+     * @param Ride $ride
+     * @return Response
+     */
+    public function live(Ride $ride)
+    {
+		$points = $ride->points()->with('items')->with('items.order')->get();
+		$items = $ride->items()->with('order')->with('order.user')->get();
+        return view('driver.ride.live', ['model' => $ride, 'items' => $items, 'points' => $points]);
+    }
     
     /**
      * Show the form to create a new ride.
@@ -93,6 +106,58 @@ class RideController extends Controller
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
+    }
+
+    /**
+     * Handle specified action
+     *
+     * @param Request  $request
+	 *
+     * @return Response
+     */
+    public function action(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('id'));
+		switch($request->input('action')){
+			case 'active':
+				if(!$ride->activable()){
+					return response()->json([
+						'status' => "error",
+						'message' => trans('messages.controller.success.ride.not.activable'),
+					]);
+				}
+        		$ride->active();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.actived'),
+				]);
+			break;
+			case 'cancel':
+				if(!$ride->cancelable()){
+					return response()->json([
+						'status' => "error",
+						'message' => trans('messages.controller.success.ride.not.cancelable'),
+					]);
+				}
+        		$ride->cancel();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.canceled'),
+				]);
+			break;
+			case 'complete':
+        		$ride->complete();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.completed'),
+				]);
+			break;
+		}
+		
+        return response()->json([
+            'status' => "success",
+            'message' => trans('messages.controller.success.ride.unknown'),
+        ]);
     }
 
     /**

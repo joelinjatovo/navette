@@ -12,7 +12,7 @@ class IndexController extends Controller
      *
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('driver.dashboard.index', [
 			'count' => [
