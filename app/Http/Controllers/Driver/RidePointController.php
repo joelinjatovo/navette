@@ -20,14 +20,20 @@ class RidePointController extends Controller
         if(!empty($s)){
             $s = '%'.$s.'%';
             $points = RidePoint::join('items', 'items.id', '=', 'ride_point.item_id')
+						->join('rides', 'rides.id', '=', 'ride_point.ride_id')
 						->join('orders', 'orders.id', '=', 'items.order_id')
 						->join('users', 'users.id', '=', 'orders.user_id')
-						->orWhere('users.name', 'LIKE', $s)
-                        ->orWhere('users.phone', 'LIKE', $s)
-                        ->orWhere('users.email', 'LIKE', $s)
+						->where('rides.driver_id', $request->user()->getKey())
+						->where(function($query) use ($s){
+							$query->where('users.name', 'LIKE', $s);
+							$query->orWhere('users.phone', 'LIKE', $s);
+							$query->orWhere('users.email', 'LIKE', $s);
+						})
                         ->paginate();
         }else{
 	        $points = RidePoint::with('point')
+				->join('rides', 'rides.id', '=', 'ride_point.ride_id')
+				->where('rides.driver_id', $request->user()->getKey())
 				->with('point.user')
 				->paginate();
         }

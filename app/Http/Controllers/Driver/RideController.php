@@ -21,15 +21,17 @@ class RideController extends Controller
             $s = '%'.$s.'%';
             $rides = Ride::join('users', 'users.id', '=', 'rides.driver_id')
 						->join('cars', 'cars.id', '=', 'rides.car_id')
-						->orWhere('cars.name', 'LIKE', $s)
-						->orWhere('users.name', 'LIKE', $s)
-                        ->orWhere('users.phone', 'LIKE', $s)
-                        ->orWhere('users.email', 'LIKE', $s)
+						->where('rides.driver_id', $request->user()->getKey())
+						->where(function($query) use ($s){
+							$query->orWhere('cars.name', 'LIKE', $s);
+						})
 						->with('driver')
 						->with('car')
                         ->paginate();
         }else{
-	        $rides = Ride::with('driver')->with('car')->paginate();
+	        $rides = Ride::with('driver')
+				->where('rides.driver_id', $request->user()->getKey())
+				->with('car')->paginate();
         }
         
         return view('driver.ride.index', ['models' => $rides]);
