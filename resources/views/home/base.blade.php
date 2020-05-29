@@ -54,30 +54,30 @@
       </div>
     </nav>
 
-<div class="main" style="background-image: url('{{ asset('img') }}/video_bg.jpg')">
+	<div class="main" style="background-image: url('{{ asset('img') }}/video_bg.jpg')">
         <video id="video_background" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0"> 
             <source src="{{ asset('img') }}/video-bg.webm" type="video/webm"> 
             <source src="{{ asset('img') }}/video-bg.mp4" type="video/mp4"> 
             Video not supported 
         </video>
     
-    <div class="cover black" data-color="black"></div>
+    	<div class="cover black" data-color="black"></div>
 
-    @yield('content')
+    	@yield('content')
 
-    <div class="footer" style="text-align:center;">
-      <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <small>Suivez-nous sur notre <a href="#">page&nbsp;<i class="fab fa-facebook-f"></i>acebook</a></small>
-        </div>
-        <div class="col-md-6">
-          <small>Création de L&M - tous droits réservés &copy; {{ date('Y') }}</small>
-        </div>
-      </div>
-             
-      </div>
-    </div>
- </div>
+		<div class="footer" style="text-align:center;">
+		  <div class="container">
+		  <div class="row">
+			<div class="col-md-6">
+			  <small>Suivez-nous sur notre <a href="#">page&nbsp;<i class="fab fa-facebook-f"></i>acebook</a></small>
+			</div>
+			<div class="col-md-6">
+			  <small>Création de L&M - tous droits réservés &copy; {{ date('Y') }}</small>
+			</div>
+		  </div>
+
+		  </div>
+		</div>
+	 </div>
 </body>
 </html>

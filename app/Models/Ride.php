@@ -106,6 +106,7 @@ class Ride extends Model
 						'canceled_at', 
 						'completed_at',
 						'user_id',
+						'item_id',
                     ])->orderBy('order', 'asc');
     }
     
@@ -284,18 +285,18 @@ class Ride extends Model
         $points = $this->points()->wherePivot('status', RidePoint::STATUS_PING)->get();
         foreach($points as $point){
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_ACTIVE]);
-            
-            $item = $point->pivot->item;
-            if($item){
-                $oldStatus = $item->status;
-                $newStatus = Item::STATUS_ACTIVE;
-                
-                $item->status = $newStatus;
-                $item->save();
-                
-                // Notify *customer
-                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-            }
+		}
+		
+        $items = $this->items()->where('items.status', Item::STATUS_PING)->get();
+        foreach($items as $item){
+			$oldStatus = $item->status;
+			$newStatus = Item::STATUS_ACTIVE;
+
+			$item->status = $newStatus;
+			$item->save();
+
+			// Notify *customer
+			event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
         }
     }
     
@@ -325,18 +326,19 @@ class Ride extends Model
         $points = $this->points()->wherePivotNotIn('status', [RidePoint::STATUS_COMPLETED])->get();
         foreach($points as $point){
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_CANCELED]);
-            
-            $item = $point->pivot->item;
-            if($item){
-                $oldStatus = $item->status;
-                $newStatus = Item::STATUS_CANCELED;
-                
-                $item->status = $newStatus;
-                $item->save();
-                
-                // Notify *customer
-                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-            }
+		}
+		
+		// Mark Item NOT COMPLETED as CANCELED
+        $items = $this->items()->whereNotIn('items.status', [Item::STATUS_COMPLETED])->get();
+        foreach($items as $item){
+			$oldStatus = $item->status;
+			$newStatus = Item::STATUS_CANCELED;
+
+			$item->status = $newStatus;
+			$item->save();
+
+			// Notify *customer
+			event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
         }
     }
     
@@ -360,44 +362,48 @@ class Ride extends Model
         $this->completed_at = now();
         $this->save();
         
-        event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
+		$events = [];
+        $events[] = new RideStatusChanged($this, 'updated', $oldStatus, $newStatus);
         
         // Mark RidePoint ONLINE as COMPLETED
         $points = $this->points()->wherePivot('status', RidePoint::STATUS_ONLINE)->get();
         foreach($points as $point){
             $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_COMPLETED]);
-            
-            $item = $point->pivot->item;
-            if($item){
-                $oldStatus = $item->status;
-                $newStatus = Item::STATUS_COMPLETED;
-                
-                $item->status = $newStatus;
-                $item->save();
-                
-                // Notify *customer
-                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-                
-                $order = $item->order;
-                if($order){
-                    $ping_item = $order->items()->where('items.status', Item::STATUS_PING)->exists();
-                    if($ping_item){
-                        $oldStatus = $order->status;
-                        $newStatus = Order::STATUS_OK;
-                    }else{
-                        $oldStatus = $order->status;
-                        $newStatus = Order::STATUS_COMPLETED;
-                    }
+		}
+		
+		$items = $this->items()->where('items.status', Item::STATUS_ONLINE)->get();
+		foreach($items as $item){
+			$oldStatus = $item->status;
+			$newStatus = Item::STATUS_COMPLETED;
 
-                    $order->status = $newStatus;
-                    $order->save();
+			$item->status = $newStatus;
+			$item->save();
 
-                    // Notify *customer
-                    event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
-                    
-                }
-            }
+			// Notify *customer
+			$events[] = new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus);
+
+			$order = $item->order;
+			if($order){
+				$ping_item = $order->items()->where('items.status', Item::STATUS_PING)->exists();
+				if($ping_item){
+					$oldStatus = $order->status;
+					$newStatus = Order::STATUS_OK;
+				}else{
+					$oldStatus = $order->status;
+					$newStatus = Order::STATUS_COMPLETED;
+				}
+
+				$order->status = $newStatus;
+				$order->save();
+
+				// Notify *customer
+				$events[] = new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus);
+			}
         }
+		
+		foreach($events as $event){
+			event($event);
+		}
     }
 
     /**
