@@ -80,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ride', 'Driver\RideController@create')->name('ride.create');
         Route::post('ride', 'Driver\RideController@store');
         Route::get('ride/{ride}', 'Driver\RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/live', 'Driver\RideController@live')->name('ride.live');
         Route::get('ride/{ride}/edit', 'Driver\RideController@edit')->name('ride.edit');
         Route::post('ride/{ride}/edit', 'Driver\RideController@update');
         Route::delete('rides', 'Driver\RideController@delete');

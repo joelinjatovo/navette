@@ -14,6 +14,11 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return view('driver.dashboard.index');
+        return view('driver.dashboard.index', [
+			'count' => [
+				'rides' => $request->user()->ridesDrived()->count()
+			],
+			'rides' => $request->user()->ridesDrived()->orderBy('created_at', 'desc')->take(10)->get()
+		]);
     }
 }
