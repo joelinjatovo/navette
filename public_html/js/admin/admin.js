@@ -2132,14 +2132,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.$store.dispatch('GET_NOTIFICATIONS');
     console.log("User Id  = " + this.user_id);
     window.Echo["private"]('App.User.' + this.user_id).notification(function (res) {
-      $.notify({
-        icon: "add_alert",
-        message: _this.formatMessage(res)
-      }, {
-        type: "danger",
-        delay: 5000,
-        allow_dismiss: true
-      });
+      toastr.success(_this.formatMessage(res)); //$.notify({icon:"add_alert", message:this.formatMessage(res)}, {type:"danger", delay:5000, allow_dismiss: true});
 
       _this.$store.commit('ADD_NOTIFICATION', res);
     });
@@ -43308,11 +43301,6 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   key: "005a1b44bf7e4f2cef2d",
   cluster: "eu",
   encrypted: true
-});
-$.notifyDefaults({
-  type: 'success',
-  allow_dismiss: false,
-  delay: 5000
 });
 
 /***/ }),

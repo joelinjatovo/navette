@@ -227,10 +227,10 @@ class Ride extends Model
 				
 				if($item->user && ($item->type == Item::TYPE_GO)){
 					$delay = 7 * 60; // Notifier 7 minutes avants arriver
-					if($item->duration_value < $delay){
-						$item->user->notify((new \App\Notifications\DriverArrived($item, $item->duration)));
+					if($point->pivot->duration_value < $delay){
+						$item->user->notify((new \App\Notifications\DriverArrived($item, $point->pivot->duration)));
 					}else{
-						$when = now()->addSeconds($item->duration_value - 7 * 60);
+						$when = now()->addSeconds($point->pivot->duration_value - 7 * 60);
 						$item->user->notify((new \App\Notifications\DriverArrived($item, '7 min'))->delay($when));
 					}
 				}

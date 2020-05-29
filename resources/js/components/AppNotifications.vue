@@ -53,7 +53,8 @@
       console.log("User Id  = " + this.user_id);
       window.Echo.private('App.User.' + this.user_id)
             .notification((res) => {
-				$.notify({icon:"add_alert", message:this.formatMessage(res)}, {type:"danger", delay:5000, allow_dismiss: true});
+				toastr.success(this.formatMessage(res))
+				//$.notify({icon:"add_alert", message:this.formatMessage(res)}, {type:"danger", delay:5000, allow_dismiss: true});
                 this.$store.commit('ADD_NOTIFICATION', res)
             });
     },

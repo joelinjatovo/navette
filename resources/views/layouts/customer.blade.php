@@ -615,6 +615,7 @@
             }
         });
         $(document).ready(function() {
+			$.notifyDefaults({type: 'success',allow_dismiss: false,delay:5000});
             $(document).on('click', '.btn-delete', function() {
                 var $this = $(this);
                 swal.fire({
