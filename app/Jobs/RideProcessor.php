@@ -49,17 +49,12 @@ class RideProcessor implements ShouldQueue
 		// Handle job...
 		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
 			->where('orders.status', Order::STATUS_OK)
-			->where(function($query) {
-				$query->where('items.status', Item::STATUS_PING);
-				$query->where(function($query) {
-					$query->where('orders.type', Order::TYPE_GO);
-					$query->orWhere('orders.type', Order::TYPE_BACK);
-				});
-			})
+			->where('items.status', Item::STATUS_PING)
 			->where(function($query) {
 				$query->whereNull('items.ride_at');
 				$query->orWhere('items.ride_at', '<=', now()->addMinutes(30));
 			})
+			->distinct('items.order_id')
 			->get();
 
 		foreach($items as $item){

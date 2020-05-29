@@ -2132,7 +2132,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.$store.dispatch('GET_NOTIFICATIONS');
     console.log("User Id  = " + this.user_id);
     window.Echo["private"]('App.User.' + this.user_id).notification(function (res) {
-      toastr.success(_this.formatMessage(res)); //$.notify({icon:"add_alert", message:this.formatMessage(res)}, {type:"danger", delay:5000, allow_dismiss: true});
+      var message = _this.formatMessage(res);
+
+      if (message != null) {
+        toastr.success(message);
+      }
 
       _this.$store.commit('ADD_NOTIFICATION', res);
     });
@@ -2248,7 +2252,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           break;
       }
 
-      return 'Inconnu';
+      return null;
     }
   }
 });
