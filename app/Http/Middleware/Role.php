@@ -29,14 +29,22 @@ class Role
             return $next($request);
         }
         
-        foreach($roles as $role) 
-        {
-            // Check if user has the role
-            if($user->hasRole($role))
-            {
-                return $next($request);
-            }
-        }
+		if(is_array($roles)){
+			foreach($roles as $role) 
+			{
+				// Check if user has the role
+				if($user->hasRole($role))
+				{
+					return $next($request);
+				}
+			}	
+		}else{
+			// Check if user has the role
+			if($user->hasRole($roles))
+			{
+				return $next($request);
+			}
+		}
 
         return redirect('login');
     }
