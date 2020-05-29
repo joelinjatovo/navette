@@ -21,6 +21,9 @@
         <link href="/css/main/plugins.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="/css/main/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="/css/main/style.bundle.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet" type="text/css"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+
         <style>
                             #map {
                             height: 45vh;
@@ -600,15 +603,11 @@
         <script src="/js/main/plugins.bundle.js"></script>
         <script src="/js/main/prismjs.bundle.js"></script>
         <script src="/js/main/scripts.bundle.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment-with-locales.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js"></script>
         <!--end::Global Theme Bundle-->
 
         <!--begin::Page Scripts(used by this page)-->
-        <script type="text/javascript">
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
         <script type="text/javascript">
         $.ajaxSetup({
             headers: {

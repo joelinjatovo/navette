@@ -140,15 +140,8 @@ Résérvation
                 </div>
                 <div class="col-xl-3">
                     <div class="form-group">
-                        <label>Date</label>
-                        <input type="text" class="form-control" id="kt_datepicker_1" readonly="" placeholder="Select date">
-                        <span class="form-text text-muted">We'll never share your email with anyone else.</span>
-                    </div>
-                </div>
-                <div class="col-xl-3">
-                    <div class="form-group">
-                        <label>Time</label>
-                        <input class="form-control" id="kt_timepicker_1" readonly="" placeholder="Select time" type="text">
+                        <label>Date et heure</label>
+                        <input type="text" class="form-control" name="order[items][0][item][ride_at]" id="kt_datepicker_1" readonly="" placeholder="Select date">
                         <span class="form-text text-muted">We'll never share your email with anyone else.</span>
                     </div>
                 </div>
@@ -179,15 +172,8 @@ Résérvation
                 </div>
                 <div class="col-xl-3">
                     <div class="form-group">
-                        <label>Date</label>
-                        <input type="text" class="form-control" id="kt_datepicker_2" readonly="" placeholder="Select date">
-                        <span class="form-text text-muted">We'll never share your email with anyone else.</span>
-                    </div>
-                </div>
-                <div class="col-xl-3">
-                    <div class="form-group">
-                        <label>Time</label>
-                        <input class="form-control" id="kt_timepicker_2" readonly="" placeholder="Select time" type="text">
+                        <label>Date et heure</label>
+                        <input type="text" class="form-control"  name="order[items][1][item][ride_at]" id="kt_datepicker_2" readonly="" placeholder="Select date">
                         <span class="form-text text-muted">We'll never share your email with anyone else.</span>
                     </div>
                 </div>
@@ -283,14 +269,13 @@ var back = null;
 jQuery(document).ready(function($){
     $("#kt_select2").select2({placeholder:"Select a state"});
     var t;t=KTUtil.isRTL()?{leftArrow:'<i class="la la-angle-right"></i>',rightArrow:'<i class="la la-angle-left"></i>'}:{leftArrow:'<i class="la la-angle-left"></i>',rightArrow:'<i class="la la-angle-right"></i>'};
-    $("#kt_datepicker_1").datepicker({rtl:KTUtil.isRTL(),todayHighlight:!0,orientation:"bottom left",templates:t});
-    $("#kt_datepicker_2").datepicker({rtl:KTUtil.isRTL(),todayHighlight:!0,orientation:"bottom left",templates:t});
-    $("#kt_timepicker_1").timepicker({minuteStep:1,showSeconds:!0,showMeridian:!0});
-    $("#kt_timepicker_2").timepicker({minuteStep:1,showSeconds:!0,showMeridian:!0});
 
 });
 </script>
 <script>
+    $('#kt_datepicker_1').bootstrapMaterialDatePicker({ format: 'DD-MM-YYYY  HH:mm', shortTime : true, lang : 'fr', cancelText : 'ANNULER' });
+    $('#kt_datepicker_2').bootstrapMaterialDatePicker({ format: 'DD-MM-YYYY  HH:mm', shortTime : true, lang : 'fr', cancelText : 'ANNULER' });
+    
     //choose parcours
     $(document).on('change', '.order-type', function(){
         var type = $(this).val();

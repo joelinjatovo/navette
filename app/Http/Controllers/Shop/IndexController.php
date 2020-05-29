@@ -18,6 +18,8 @@ use App\Services\GoogleApiService;
 use App\Repositories\OrderRepository;
 use App\Repositories\ZoneRepository;
 use Illuminate\Http\Request;
+use DateTime;
+use Carbon\Carbon;;
 
 class IndexController extends Controller
 {
@@ -46,8 +48,14 @@ class IndexController extends Controller
         if(!$club || null === $club->point ) {
             return back()->with('error', "Club Without Position");
         }
-        
-        $order = new Order($request->input('order'));
+        $input_order = $request->input('order');
+        //$ride_at = $input_order['items'][0]['item']['ride_at'];
+        //$t=Carbon::parse($ride_at['date'].' '.$ride_at['time']);
+        //$input_order['items'][0]['item']['ride_at'] = $t->format('d-m-Y H:i:s');
+        //$input_order['items'][0]['item']['ride_at'] = $ride_at['date'].' '.$ride_at['time'];
+
+
+        $order = new Order($input_order);
         $order->status = Order::STATUS_PING;
         $order->setVat(0);
         $order->club()->associate($club);
