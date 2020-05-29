@@ -606,6 +606,42 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+        <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $(document).ready(function() {
+            $(document).on('click', '.btn-delete', function() {
+                var $this = $(this);
+                swal.fire({
+                    title:"{{ __('messages.swal.delete.title') }}",
+                    text:"{{ __('messages.swal.delete.content') }}",
+                    type:"warning",
+                    showCancelButton:!0,
+                    confirmButtonText:"{{ __('messages.swal.delete.confirm') }}",
+                    cancelButtonText:"{{ __('messages.swal.delete.cancel') }}"
+                }).then(function(e){
+                    if(e.value){
+                        KTApp.blockPage();
+                        axios.delete(window.location.pathname, {data:{id: $this.attr('data-id')}})
+                            .then(res => {
+                                KTApp.unblockPage();
+                                var type = "danger";
+                                if (res.data.status === "success"){
+                                    $this.closest('tr').remove();
+                                    type = "success";
+                                }
+                                $.notify({icon:"add_alert", message:res.data.message}, {type:type});
+                            }).catch(err => {
+                                KTApp.unblockPage();
+                                $.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+                            })
+                    }
+                })
+            });
+        });
         </script>
         @yield('javascript')
         <!--end::Page Scripts-->

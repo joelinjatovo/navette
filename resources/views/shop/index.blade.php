@@ -1,6 +1,7 @@
 @extends('layouts.customer')
 
-@section('style')
+@section('title')
+Résérvation
 @endsection
 
 @section('content')

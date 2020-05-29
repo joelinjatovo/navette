@@ -1,6 +1,8 @@
 @extends('home.base')
 
-@section('title')Accueil@endsection
+@section('title')
+Accueil 
+@endsection
 
 @section('stylesheet')
     <link href="{{ asset('css/custom-home.min.css') }}" rel="stylesheet">

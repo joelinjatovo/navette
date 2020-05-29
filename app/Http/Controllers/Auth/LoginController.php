@@ -41,6 +41,21 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+	
+	/**
+	 * Check user's role and redirect user based on their role
+	 * @return 
+	 */
+	public function authenticated()
+	{
+		if(auth()->user()->isAdmin())
+		{
+			return redirect()->route('admin.dashboard');
+		}
+		
+		return redirect()->route('customer.dashboard');
+	}
+
 
     /**
      * Get the login username to be used by the controller.
@@ -63,9 +78,7 @@ class LoginController extends Controller
     public function handleProviderCallback($provider)
     {
         try {
-            
             $user = Socialite::driver($provider)->user();
-
             if(isset($user->user['id'])){
                 
                 $u = User::where('facebook_id', $user->user['id'])->first();
@@ -87,14 +100,13 @@ class LoginController extends Controller
                 }
 
                 auth()->login($u);
-                return redirect('/home');
+				
+                return redirect('/');
     
             }
-            
         } catch (Exception $e) {
             return redirect('/login');
         }
-
     }
 
 }

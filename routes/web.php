@@ -35,7 +35,6 @@ Route::post('verify', 'Auth\VerificationController@verify');
 
 
 Route::get('/', function () {return view('home/index');});
-Route::get('/home', function () {return view('home/index');});
 
 Route::get('order', 'Shop\IndexController@create')->name('shop.order');
 Route::post('order', 'Shop\IndexController@store')->name('shop.order');
@@ -69,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/order/{order}', 'Customer\OrderController@show')->name('order.show');
         Route::get('/order/{order}/edit', 'Customer\OrderController@edit')->name('order.edit');
         Route::post('/order/{order}/edit', 'Customer\OrderController@update');
-        Route::delete('order/{order}', 'Customer\OrderController@delete')->name('order.delete');
+        Route::delete('orders', 'Customer\OrderController@delete');
     
         Route::get('order/{order}/item/{item}', 'Customer\ItemController@show')->name('item.show');
     });
