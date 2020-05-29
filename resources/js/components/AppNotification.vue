@@ -42,6 +42,9 @@
       text() {
 	  	var newStatus = this.notification.newStatus != undefined ? this.notification.newStatus : this.notification.data.newStatus;
 	  	switch(this.notification.type){
+			case 'App\\Notifications\\DriverArrived':
+				return this.notification.message != undefined ? this.notification.message : this.notification.data.message;
+			break;
 			case 'App\\Notifications\\OrderStatus':
 				switch(newStatus){
 					case "ping":

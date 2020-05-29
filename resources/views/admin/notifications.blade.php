@@ -50,6 +50,14 @@
 						<div class="timeline-item">
 							<div class="timeline-label font-weight-bolder text-dark-75 font-size-lg text-right pr-3">{{ $model->created_at->format('H:i') }}</div>
 							@switch($model->type)
+								@case('App\\Notifications\\DriverArrived')
+									<div class="timeline-badge">
+										<i class="flaticon-bag text-primary "></i>
+									</div>
+									<div class="timeline-content {{ $model->read_at ? 'text-muted font-weight-normal' : 'font-weight-bolder text-dark-75' }}">
+										{{ $model->data['message'] }}
+									</div>
+								@break
 								@case('App\\Notifications\\OrderStatus')
 									@switch($model->data['newStatus'])
 										@case("ping")
