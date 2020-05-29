@@ -119,8 +119,8 @@ class RideProcessor implements ShouldQueue
 				$active_ride = $this->getActivedRide($item);
 				if($active_ride){
 					// Duree du trajet + Arret sur tous les point de ramassage + Arret sur le point de depart
-					$count_back = $ride->items()->where('items.type', Item::TYPE_BACK)->count();
-					$count_go = $ride->items()->where('items.type', Item::TYPE_GO)->count();
+					$count_back = $active_ride->items()->where('items.type', Item::TYPE_BACK)->count();
+					$count_go = $active_ride->items()->where('items.type', Item::TYPE_GO)->count();
 				
 					$duration = $active_ride->duration  + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
 					$start_date = $active_ride->started_at->addSeconds($duration);

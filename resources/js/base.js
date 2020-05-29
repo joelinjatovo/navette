@@ -38,3 +38,5 @@ window.Echo = new Echo({
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     encrypted: true
 });
+
+$.notifyDefaults({type: 'success',allow_dismiss: false,delay:5000});
