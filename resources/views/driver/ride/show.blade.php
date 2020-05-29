@@ -3,7 +3,7 @@
 @section('title'){{ __('messages.form.ride.view') }}@endsection
 
 @section('subheader')
-<div class="subheader py-2 py-lg-4  subheader-solid " id="kt_subheader">
+<div class="subheader py-2 py-lg-4  subheader-transparent" id="kt_subheader">
     <div class=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <!--begin::Details-->
         <div class="d-flex align-items-center flex-wrap mr-2">
@@ -17,11 +17,17 @@
             <!--end::Separator-->
 
             <!--begin::User Name-->
-            <div class="d-flex align-items-center" id="kt_subheader_search">
-                <span class="text-dark-50 font-weight-bold mr-4" id="kt_subheader_total">#{{ $model->getKey() }}</span>
-				<x-status theme="light" :status="$point->pivot->status" />
+            <div class="d-flex align-items-center mr-5" id="kt_subheader_search">
+                <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">#{{ $model->getKey() }}</span>
             </div>
             <!--end::User Name-->
+
+            <!--begin::Separator-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+            <!--end::Separator-->
+			<span class="font-weight-boldest text-danger mr-2">{{ $model->duration }} m</span>
+			<div class="font-weight-boldest text-warning mr-2">{{ gmdate('H:i:s', $model->duration) }}</div>
+			<x-status theme="light" :status="$model->status" />
 
         </div>
         <!--end::Details-->
@@ -34,28 +40,59 @@
 			
 			@if($model->cancelable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-cancel" data-id="{{ $model->getKey() }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" 
+			   data-action="cancel" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.cancel.ride') }}"
+			   title="{{ __('messages.cancel.ride') }}" ><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->activable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-active" data-id="{{ $model->getKey() }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action"
+			   data-action="active" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.active.ride') }}"
+			   title="{{ __('messages.active.ride') }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.active') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->completable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-complete" data-id="{{ $model->getKey() }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ride-action" 
+			   data-action="complete" data-id="{{ $model->getKey() }}"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.complete.ride') }}"
+			   title="{{ __('messages.complete.ride') }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
 			<!--end::Button-->
 			@endif
             
             <!--begin::Button-->
-            <a href="{{ route('driver.ride.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-plus"></i> {{ __('messages.ride.create') }}</a>
+            <a href="{{ route('driver.ride.live', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.view.map.ride') }}"
+			   title="{{ __('messages.view.map.ride') }}"><i class="la la-map"></i> {{ __('messages.button.live') }}</a>
             <!--end::Button-->
             
             <!--begin::Button-->
-            <a href="{{ route('driver.ride.edit', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-edit"></i> {{ __('messages.ride.edit') }}</a>
+            <a href="{{ route('driver.ride.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.ride.create') }}"
+			   title="{{ __('messages.ride.create') }}"><i class="la la-plus"></i> {{ __('messages.ride.create') }}</a>
+            <!--end::Button-->
+            
+            <!--begin::Button-->
+            <a href="{{ route('driver.ride.edit', $model) }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"
+			   data-toggle="tooltip" 
+			   data-placement="left" 
+			   data-original-title="{{ __('messages.ride.edit') }}"
+			   title="{{ __('messages.ride.edit') }}"><i class="la la-edit"></i> {{ __('messages.ride.edit') }}</a>
             <!--end::Button-->
                             
         </div>
@@ -124,22 +161,7 @@
 			<!--begin::Body-->
 			<div class="card-body py-2">
 				<!--begin::Item-->
-				<div class="d-flex align-items-center mb-2 mt-2">
-					<!--begin::Symbol-->
-					<div class="symbol symbol-60 symbol-xxl-75 mr-5 align-self-start align-self-xxl-center">
-						<div class="symbol-label" style="background-image:url('{{ $model->car->image ? asset($model->car->image->url) : asset('img/car.jpg') }}')"></div>
-					</div>
-					<!--end::Symbol-->
-
-					<!--begin::Text-->
-					<div class="d-flex flex-column flex-grow-1 font-weight-bold">
-						<a href="{{ route('admin.car.show', $model->car) }}" class="text-dark text-hover-primary mb-1 font-size-lg">{{ $model->car->name }}</a>
-						@if($model->car->model)
-						<span class="text-muted">{{ $model->car->model->name }}</span>
-						@endif
-					</div>
-					<!--end::Text-->
-				</div>
+				<x-car :model="$model->car" />
 				<!--end::Item-->
 			</div>
 			<!--end::Body-->
@@ -151,28 +173,6 @@
     
     <!--begin::Content-->
     <div class="flex-row-fluid ml-lg-8">
-		
-		<div class="col-lg-12 col-xxl-12 mb-8">
-			<!--begin:Amount -->
-			<div class="card-body d-flex flex-column p-0" style="position: relative;">
-				<div class="card-spacer bg-white card-rounded flex-grow-1">
-					<!--begin::Row-->
-					<div class="row m-0">
-						<div class="col px-8 py-6 mr-4 ml-4">
-							<div class="font-size-sm text-muted font-weight-bold">{{ __('messages.distance') }}</div>
-							<div class="font-size-h4 font-weight-bolder">{{ $model->distance }} m</div>
-						</div>
-						<div class="col px-8 py-6 mr-4 ml-4">
-							<div class="font-size-sm text-muted font-weight-bold">{{ __('messages.duration') }}</div>
-							<div class="font-size-h4 font-weight-bolder">{{ gmdate('H:i:s', $model->duration) }}</div>
-						</div>
-					</div>
-					<!--end::Row-->
-				</div>
-			</div>
-			<!--end:Amount -->
-		</div>
-		
         @foreach($points as $point)
 			<div class="col-lg-12 col-xxl-12">
 				<!--begin::List Widget 9-->
@@ -245,12 +245,18 @@
 													</li>
 												@endif
 											@endif
-											@if($point->pivot->cancelable() || $point->pivot->arrivable() || $point->pivot->finishable()):
+											<li class="navi-item">
+												<a href="{{ route('driver.ridepoint.show', $point->pivot) }}" class="navi-link" data-action="cancel" data-id="">
+													<span class="navi-icon"><i class="flaticon-eye"></i></span>
+													<span class="navi-text">{{ __('messages.button.view') }}</span>
+												</a>
+											</li>
+											@if($point->pivot->cancelable() || $point->pivot->arrivable() || $point->pivot->dropable() || $point->pivot->pickable()):
 												<li class="navi-separator my-3"></li>
 											@endif
 											@if($point->pivot->arrivable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-arrive" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-ridepoint-action" data-action="arrive" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon-cancel"></i></span>
 													<span class="navi-text">{{ __('messages.button.arrive') }}</span>
 												</a>
@@ -258,15 +264,15 @@
 											@endif
 											@if($point->pivot->cancelable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-cancel" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-ridepoint-action" data-action="cancel" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon-cancel"></i></span>
 													<span class="navi-text">{{ __('messages.button.cancel') }}</span>
 												</a>
 											</li>
 											@endif
-											@if($point->pivot->finishable())
+											@if($point->pivot->dropable() || $point->pivot->pickable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-complete" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-ridepoint-action" data-action="pick-or-drop" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
 													<span class="navi-text">{{ __('messages.button.complete') }}</span>
 												</a>
@@ -302,4 +308,67 @@
 	</div>
     <!--end::Content-->
 </div>
+@endsection
+
+@section('javascript')
+<script type="text/javascript">
+$(document).ready(function() {
+	$(document).on('click', '.btn-ride-action', function() {
+		var $this = $(this);
+		swal.fire({
+			title:"{{ __('messages.swal.action.title') }}",
+			text:"{{ __('messages.swal.action.content') }}",
+			type:"warning",
+			showCancelButton:!0,
+			confirmButtonText:"{{ __('messages.swal.action.confirm') }}",
+			cancelButtonText:"{{ __('messages.swal.action.cancel') }}"
+		}).then(function(e){
+			if(e.value){
+				KTApp.blockPage();
+				axios.put("{{ route('driver.rides') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
+					.then(res => {
+						KTApp.unblockPage();
+						var type = "danger";
+						if (res.data.status === "success"){
+							type = "success";
+						}
+						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
+					}).catch(err => {
+						KTApp.unblockPage();
+						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+					})
+			}
+		})
+	});
+});
+$(document).ready(function() {
+	$(document).on('click', '.btn-ridepoint-action', function() {
+		var $this = $(this);
+		swal.fire({
+			title:"{{ __('messages.swal.action.title') }}",
+			text:"{{ __('messages.swal.action.content') }}",
+			type:"warning",
+			showCancelButton:!0,
+			confirmButtonText:"{{ __('messages.swal.action.confirm') }}",
+			cancelButtonText:"{{ __('messages.swal.action.cancel') }}"
+		}).then(function(e){
+			if(e.value){
+				KTApp.blockPage();
+				axios.put("{{ route('driver.ridepoints') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
+					.then(res => {
+						KTApp.unblockPage();
+						var type = "danger";
+						if (res.data.status === "success"){
+							type = "success";
+						}
+						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
+					}).catch(err => {
+						KTApp.unblockPage();
+						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+					})
+			}
+		})
+	});
+});
+</script>
 @endsection

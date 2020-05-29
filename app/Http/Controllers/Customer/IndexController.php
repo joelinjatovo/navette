@@ -12,8 +12,13 @@ class IndexController extends Controller
      *
      * @return View
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('customer.dashboard.index');
+        return view('customer.dashboard.index', [
+			'count' => [
+				'orders' => $request->user()->orders()->count()
+			],
+			'orders' => $request->user()->orders()->orderBy('created_at', 'desc')->take(10)->get()
+		]);
     }
 }

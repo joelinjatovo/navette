@@ -35,7 +35,6 @@ Route::post('verify', 'Auth\VerificationController@verify');
 
 
 Route::get('/', function () {return view('home/index');});
-Route::get('/home', function () {return view('home/index');});
 
 Route::get('order', 'Shop\IndexController@create')->name('shop.order');
 Route::post('order', 'Shop\IndexController@store')->name('shop.order');
@@ -69,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/order/{order}', 'Customer\OrderController@show')->name('order.show');
         Route::get('/order/{order}/edit', 'Customer\OrderController@edit')->name('order.edit');
         Route::post('/order/{order}/edit', 'Customer\OrderController@update');
-        Route::delete('order/{order}', 'Customer\OrderController@delete')->name('order.delete');
+        Route::delete('orders', 'Customer\OrderController@delete');
     
         Route::get('order/{order}/item/{item}', 'Customer\ItemController@show')->name('item.show');
     });
@@ -81,9 +80,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ride', 'Driver\RideController@create')->name('ride.create');
         Route::post('ride', 'Driver\RideController@store');
         Route::get('ride/{ride}', 'Driver\RideController@show')->name('ride.show');
+        Route::get('ride/{ride}/live', 'Driver\RideController@live')->name('ride.live');
         Route::get('ride/{ride}/edit', 'Driver\RideController@edit')->name('ride.edit');
         Route::post('ride/{ride}/edit', 'Driver\RideController@update');
         Route::delete('rides', 'Driver\RideController@delete');
+        Route::put('rides', 'Driver\RideController@action');
+        
+        Route::get('ridepoints', 'Driver\RidePointController@index')->name('ridepoints');
+        Route::get('ridepoint/{ridepoint}', 'Driver\RidePointController@show')->name('ridepoint.show');
+        Route::delete('ridepoints', 'Driver\RidePointController@delete');
+        Route::put('ridepoints', 'Driver\RidePointController@action');
     });
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {

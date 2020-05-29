@@ -75,7 +75,7 @@ class RidePointController extends Controller
     {
         $ridePoint = RidePoint::findOrFail($request->input('id'));
         
-        if(!$ridePoint->pickable() && !$ridePoint->dropbale()){
+        if(!$ridePoint->pickable() && !$ridePoint->dropable()){
             return $this->error(400, 116, "Ride Point not finishable");
         }
         

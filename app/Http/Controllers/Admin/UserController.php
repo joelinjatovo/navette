@@ -77,7 +77,7 @@ class UserController extends Controller
             'name' => $validated['name'],
             'phone' => $validated['phone'],
             'email' => $validated['email'],
-            'password' => Hash::make($request->get($validated['password']))
+            'password' => Hash::make($validated['password'])
         ]);
         
         if($user->save()){

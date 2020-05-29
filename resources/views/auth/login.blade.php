@@ -24,7 +24,7 @@
 				<div class="mb-5">
 					<h3 class="font-weight-normal mb-5"><span class="opacity-40">Bienvenue sur </span>NavetteClub!</h3>
 					<p class="opacity-40">Pour se connecter, utilisez</p>
-					<a href="{{ route('login.provider', ['provider' => 'facebook'])}}" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3"><i class="fab fa-facebook"></i>{{ __('acebook') }}</a>
+					<a href="{{ route('login.provider', ['provider' => 'facebook'])}}" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3"><i class="fab fa-facebook"></i> {{ __('Facebook') }}</a>
 					<p class="opacity-40 mt-10">ou entrez les détails de votre compte.</p>
 				</div>
 				<form class="form" id="kt_login_signin_form" method="post">
@@ -66,7 +66,7 @@
 				<div class="mb-5">
 					<h3 class="font-weight-normal mb-5"><span class="opacity-40">Inscription sur </span>NavetteClub!</h3>
 					<p class="opacity-40">Pour s'inscrire, utilisez</p>
-					<a href="{{ route('login.provider', ['provider' => 'facebook'])}}" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3"><i class="fab fa-facebook"></i>{{ __('acebook') }}</a>
+					<a href="{{ route('login.provider', ['provider' => 'facebook'])}}" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3"><i class="fab fa-facebook"></i> {{ __('Facebook') }}</a>
 					<p class="opacity-40 mt-5">ou renseignez les détails de votre compte.</p>
 				</div>
 				<form class="form text-center" id="kt_login_signup_form" method="post">
@@ -104,7 +104,7 @@
 					</div>
 					<div class="form-group">
 						<button id="kt_login_signup_submit" class="btn btn-pill btn-primary opacity-90 px-15 py-3 m-2">{{ __('S\'inscrire') }}</button>
-						<button id="kt_login_signup_cancel" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">{{ __('Annuler') }}</button>
+						<button id="kt_login_signup_cancel" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">{{ __('Se connecter') }}</button>
 					</div>
 				</form>
 			</div>
@@ -133,7 +133,7 @@
 					</div>
 					<div class="form-group">
 						<button id="kt_login_forgot_submit" class="btn btn-pill btn-primary opacity-90 px-15 py-3 m-2">{{ __('Demander') }}</button>
-						<button id="kt_login_forgot_cancel" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">{{ __('Annuler') }}</button>
+						<button id="kt_login_forgot_cancel" class="btn btn-pill btn-outline-white opacity-70 px-15 py-3 m-2">{{ __('Se connecter') }}</button>
 					</div>
 				</form>
 			</div>

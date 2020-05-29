@@ -20,10 +20,11 @@ class CreateOrdersTable extends Migration
                 $table->string('status', 50)->default('ping')->nullable();
                 $table->boolean('preordered')->default(false);
                 $table->boolean('privatized')->default(false);
-                $table->float('vat', 2, 2)->default(0);
+                $table->float('vat', 4, 2)->default(0);
                 $table->float('amount', 20, 4)->nullable(); // HT
                 $table->integer('place')->default(0);
                 $table->bigInteger('distance')->default(0);
+                $table->float('coefficient', 10, 2)->default('1.00'); // coefficient
                 $table->float('subtotal', 20, 4)->nullable(); // amount * place
                 $table->float('total', 20, 4)->nullable(); // subtotal + subtotal * TVA
                 $table->string('currency', 3)->nullable();

@@ -8,8 +8,8 @@
 			@endif
 		</div>
 		<div class="ml-4">
-			<div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ Route::is('admin.*') ? route('admin.user.show', $model) : '#' }}">{{ $model->name }}</a></div>
-			<a href="{{ Route::is('admin.*') ? route('admin.user.show', $model) : '#' }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->phone }}</a>
+			<div class="text-dark-75 font-weight-bolder font-size-lg mb-0"><a href="{{ auth()->check() && auth()->user()->isAdmin() ? route('admin.user.show', $model) : '#' }}">{{ $model->name }}</a></div>
+			<a href="{{ auth()->check() && auth()->user()->isAdmin() ? route('admin.user.show', $model) : '#' }}" class="text-muted font-weight-bold text-hover-primary">{{ $model->phone }}</a>
 		</div>
 	</div>
 @else

@@ -21,15 +21,17 @@ class RideController extends Controller
             $s = '%'.$s.'%';
             $rides = Ride::join('users', 'users.id', '=', 'rides.driver_id')
 						->join('cars', 'cars.id', '=', 'rides.car_id')
-						->orWhere('cars.name', 'LIKE', $s)
-						->orWhere('users.name', 'LIKE', $s)
-                        ->orWhere('users.phone', 'LIKE', $s)
-                        ->orWhere('users.email', 'LIKE', $s)
+						->where('rides.driver_id', $request->user()->getKey())
+						->where(function($query) use ($s){
+							$query->orWhere('cars.name', 'LIKE', $s);
+						})
 						->with('driver')
 						->with('car')
                         ->paginate();
         }else{
-	        $rides = Ride::with('driver')->with('car')->paginate();
+	        $rides = Ride::with('driver')
+				->where('rides.driver_id', $request->user()->getKey())
+				->with('car')->paginate();
         }
         
         return view('driver.ride.index', ['models' => $rides]);
@@ -46,6 +48,19 @@ class RideController extends Controller
 		$points = $ride->points()->with('items')->with('items.order')->get();
 		$items = $ride->items()->with('order')->with('order.user')->get();
         return view('driver.ride.show', ['model' => $ride, 'items' => $items, 'points' => $points]);
+    }
+
+    /**
+     * Live the ride info.
+     *
+     * @param Ride $ride
+     * @return Response
+     */
+    public function live(Ride $ride)
+    {
+		$points = $ride->points()->with('items')->with('items.order')->get();
+		$items = $ride->items()->with('order')->with('order.user')->get();
+        return view('driver.ride.live', ['model' => $ride, 'items' => $items, 'points' => $points]);
     }
     
     /**
@@ -93,6 +108,58 @@ class RideController extends Controller
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
+    }
+
+    /**
+     * Handle specified action
+     *
+     * @param Request  $request
+	 *
+     * @return Response
+     */
+    public function action(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('id'));
+		switch($request->input('action')){
+			case 'active':
+				if(!$ride->activable()){
+					return response()->json([
+						'status' => "error",
+						'message' => trans('messages.controller.success.ride.not.activable'),
+					]);
+				}
+        		$ride->active();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.actived'),
+				]);
+			break;
+			case 'cancel':
+				if(!$ride->cancelable()){
+					return response()->json([
+						'status' => "error",
+						'message' => trans('messages.controller.success.ride.not.cancelable'),
+					]);
+				}
+        		$ride->cancel();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.canceled'),
+				]);
+			break;
+			case 'complete':
+        		$ride->complete();
+				return response()->json([
+					'status' => "success",
+					'message' => trans('messages.controller.success.ride.completed'),
+				]);
+			break;
+		}
+		
+        return response()->json([
+            'status' => "success",
+            'message' => trans('messages.controller.success.ride.unknown'),
+        ]);
     }
 
     /**

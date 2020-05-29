@@ -123,36 +123,3 @@
     </div>
 </div>
 @endsection
-
-@section('javascript')
-<script>
-    $(document).ready(function() {
-        $(document).on('click', '.btn-delete', function() {
-            var $this = $(this);
-            swal.fire({
-                title:"Vous êtes sûre?",
-                text:"Vous ne pourez pas revenir en arrière après!",
-                type:"warning",
-                showCancelButton:!0,
-                confirmButtonText:"Oui, supprimez la!",
-                cancelButtonText:"Annuler"
-            }).then(function(e){
-                if(e.value){
-                    KTApp.blockPage();
-                    axios.delete('/customer/order/' + $this.attr('data-id'))
-                        .then(res => {
-                            KTApp.unblockPage();
-                            if (res.data.status === "success"){
-                                $this.closest('tr').remove();
-                            }
-                            $.notify({icon:"add_alert", message:res.data.message}, {type:res.data.status});
-                        }).catch(err => {
-                            KTApp.unblockPage();
-                            $.notify({icon:"add_alert", message:"Une erreur s'est produite."}, {type:"danger"});
-                        })
-                }
-            })
-        });
-    });
-</script>
-@endsection

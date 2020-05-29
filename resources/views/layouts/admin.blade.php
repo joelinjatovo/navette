@@ -501,7 +501,7 @@
                             </a>
                             @endif
 
-                            <a href="{{ route('logout') }}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+                            <a href="{{ route('logout') }}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">{{ __('messages.logout') }}</a>
                         </div>
                     </div>
                 </div>

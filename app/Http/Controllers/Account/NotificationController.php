@@ -16,15 +16,15 @@ class NotificationController extends Controller
     {
         $user = \Auth::user();
         
-        if(!$request->ajax() && $user->isAdmin()){
+        if(!$request->ajax()){
+			$models = $user->notifications()->orderBy('created_at', 'desc')->paginate();
 			if($user->isAdmin()){
-				return view('admin.notifications', [
-					'models' => $user->notifications()->orderBy('created_at', 'desc')->paginate()
-				]);
+				return view('admin.notifications', ['models' => $models]);
 			}
+			return view('customer.notifications', ['models' => $models]);
         }
 		
-        return $user->notifications()->orderBy('created_at', 'desc')->get(); //response()->json($user->notifications);
+        return $user->notifications()->orderBy('created_at', 'desc')->take(5)->get();
     }
 	
     /**
@@ -81,14 +81,14 @@ class NotificationController extends Controller
         $user = \Auth::user();
         
         if(!$request->ajax()){
+			$models = $user->unreadNotifications()->orderBy('created_at', 'desc')->paginate();
 			if($user->isAdmin()){
-				return view('admin.notifications', [
-					'models' => $user->unreadNotifications()->orderBy('created_at', 'desc')->paginate()
-				]);
+				return view('admin.notifications', ['models' => $models]);
 			}
+			return view('customer.notifications', ['models' => $models]);
         }
         
-        return $user->unreadNotifications()->orderBy('created_at', 'desc')->get(); 
+        return $user->unreadNotifications()->orderBy('created_at', 'desc')->take(5)->get(); 
     }
     
     /**

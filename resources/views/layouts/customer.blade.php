@@ -317,6 +317,11 @@
 
                     <!--begin::Content-->
                     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+						
+                        <!--begin::Subheader-->
+                        @yield('subheader')
+                        <!--end::Subheader-->
+						
                         <!--begin::Entry-->
                         <div class="d-flex flex-column-fluid">
                             <!--begin::Container-->
@@ -405,7 +410,7 @@
                 <!--begin::Header-->
                 <div class="d-flex align-items-center mt-5">
                     <div class="symbol symbol-100 mr-5">
-                        <div class="symbol-label" style="background-image:url('{{ auth()->user()->image ? asset(auth()->user()->image->url) : asset('/img/faces/avatar.jpg') }}')"></div>
+                        <div class="symbol-label" style="background-image:url('{{ auth()->user()->image ? asset(auth()->user()->image->url) : asset('/img/avatar.png') }}')"></div>
                         <i class="symbol-badge bg-success"></i>
                     </div>
                     <div class="d-flex flex-column">
@@ -421,7 +426,7 @@
                                 <span class="navi-link p-0 pb-2">
                                     <span class="navi-icon mr-1">
                                         <span class="svg-icon svg-icon-lg svg-icon-primary">
-                                            <!--begin::Svg Icon | path:/metronic/themes/metronic/theme/html/demo9/dist/assets/media/svg/icons/Communication/Mail-notification.svg-->
+                                            <!--begin::Svg Icon -->
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                 <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                     <rect x="0" y="0" width="24" height="24"/>
@@ -436,7 +441,7 @@
                             </a>
                             @endif
 
-                            <a href="{{ route('logout') }}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+                            <a href="{{ route('logout') }}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">{{ __('messages.logout') }}</a>
                         </div>
                     </div>
                 </div>
@@ -475,7 +480,6 @@
                     </a>
                     <!--end:Item-->
 
-					@if(auth()->user()->isCustomer())
                     <!--begin::Item-->
                     <a href="{{ route('customer.orders') }}"  class="navi-item">
                         <div class="navi-link">
@@ -504,7 +508,6 @@
                         </div>
                     </a>
                     <!--end:Item-->
-					@endif
 
 					@if(auth()->user()->isDriver())
                     <!--begin::Item-->
@@ -605,6 +608,42 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+        <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $(document).ready(function() {
+            $(document).on('click', '.btn-delete', function() {
+                var $this = $(this);
+                swal.fire({
+                    title:"{{ __('messages.swal.delete.title') }}",
+                    text:"{{ __('messages.swal.delete.content') }}",
+                    type:"warning",
+                    showCancelButton:!0,
+                    confirmButtonText:"{{ __('messages.swal.delete.confirm') }}",
+                    cancelButtonText:"{{ __('messages.swal.delete.cancel') }}"
+                }).then(function(e){
+                    if(e.value){
+                        KTApp.blockPage();
+                        axios.delete(window.location.pathname, {data:{id: $this.attr('data-id')}})
+                            .then(res => {
+                                KTApp.unblockPage();
+                                var type = "danger";
+                                if (res.data.status === "success"){
+                                    $this.closest('tr').remove();
+                                    type = "success";
+                                }
+                                $.notify({icon:"add_alert", message:res.data.message}, {type:type});
+                            }).catch(err => {
+                                KTApp.unblockPage();
+                                $.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+                            })
+                    }
+                })
+            });
         });
         </script>
         @yield('javascript')
