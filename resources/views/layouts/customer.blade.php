@@ -18,9 +18,9 @@
         <!--end::Page Custom Styles-->
         
         <!--begin::Global Theme Styles(used by all pages)-->
-        <link href="/css/main/plugins.bundle.css" rel="stylesheet" type="text/css"/>
-        <link href="/css/main/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
-        <link href="/css/main/style.bundle.css" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/main/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/main/prismjs.bundle.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('/css/main/style.bundle.css') }}" rel="stylesheet" type="text/css"/>
         <style>
                             #map {
                             height: 45vh;
@@ -596,10 +596,10 @@
         <!--end::Global Config-->
 
         <!--begin::Global Theme Bundle(used by all pages)-->
-        <script src="/js/main/customer.js"></script>
-        <script src="/js/main/plugins.bundle.js"></script>
-        <script src="/js/main/prismjs.bundle.js"></script>
-        <script src="/js/main/scripts.bundle.js"></script>
+        <script src="{{ mix('/js/main/customer.js') }}"></script>
+        <script src="{{ asset('/js/main/plugins.bundle.js') }}"></script>
+        <script src="{{ asset('/js/main/prismjs.bundle.js') }}"></script>
+        <script src="{{ asset('/js/main/scripts.bundle.js') }}"></script>
         <!--end::Global Theme Bundle-->
 
         <!--begin::Page Scripts(used by this page)-->
