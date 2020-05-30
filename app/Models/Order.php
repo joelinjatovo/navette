@@ -17,6 +17,14 @@ class Order extends Model
     public const PAYMENT_TYPE_PAYPAL = 'paypal';
     
     public const PAYMENT_TYPE_APPLE_PAY = 'apple_pay';
+	
+    public const PAYMENT_STATUS_SUCCEEDED = 'succeeded';
+    
+	public const PAYMENT_STATUS_FAILED = 'failed';
+	
+	public const PAYMENT_STATUS_CANCELED = 'canceled';
+	
+	public const PAYMENT_STATUS_REFUNDED = 'refunded';
     
     public const STATUS_PING = 'ping'; 
     
