@@ -27,12 +27,14 @@ class CreateOrdersTable extends Migration
                 $table->float('coefficient', 10, 2)->default('1.00'); // coefficient
                 $table->float('subtotal', 20, 4)->nullable(); // amount * place
                 $table->float('total', 20, 4)->nullable(); // subtotal + subtotal * TVA
+                $table->float('refund', 20, 4)->nullable(); // 
                 $table->string('currency', 3)->nullable();
                 $table->ipAddress('ip_address')->nullable();
                 $table->macAddress('mac_address')->nullable();
                 $table->string('payment_status', 100)->nullable();
                 $table->string('payment_type', 100)->nullable();
-                $table->dateTime('payed_at')->nullable();
+                $table->dateTime('paid_at')->nullable();
+                $table->dateTime('refunded_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
                 $table->string('canceler_role')->nullable();

@@ -2,6 +2,14 @@
 
 namespace App\Models;
 
+use App\Events\Order\OrderActived;
+use App\Events\Order\OrderCanceled;
+use App\Events\Order\OrderCreated;
+use App\Events\Order\OrderCompleted;
+use App\Events\Order\OrderDeleted;
+use App\Events\Order\OrderPaid;
+use App\Events\Order\OrderPlaceChanged;
+use App\Events\Order\OrderRefunded;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -59,6 +67,21 @@ class Order extends Model
         'privatized',
         'preordered',
     ];
+
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'actived' => OrderActived::class,
+        'canceled' => OrderCanceled::class,
+        'completed' => OrderCompleted::class,
+        'created' => OrderCreated::class,
+        'deleted' => OrderDeleted::class,
+        'paid' => OrderPaid::class,
+        'place-changed' => OrderPlaceChanged::class,
+    ];
     
     /**
      * Bootstrap the model and its traits.
@@ -77,7 +100,18 @@ class Order extends Model
     }
     
     /**
-     * Check if order is cancelable
+     * Active order
+     */
+    public function active()
+    {
+        $this->status = self::STATUS_ACTIVE;
+        $this->save();
+		
+        $this->fireModelEvent('actived');
+	}
+    
+    /**
+     * Check if order is can be set as canceled
      */
     public function cancelable()
     {
@@ -93,7 +127,7 @@ class Order extends Model
     }
     
     /**
-     * Cancel order
+     * Cancel order and set canceler user
      */
     public function cancel(User $user)
     {
@@ -102,6 +136,8 @@ class Order extends Model
         $this->canceler_role = $user->isAdmin() ? Role::ADMIN : ( $user->isDriver() ? Role::DRIVER : Role::CUSTOMER );
         $this->canceler_id = $user->getKey();
         $this->save();
+		
+        $this->fireModelEvent('canceled');
     }
     
     /**
@@ -129,6 +165,18 @@ class Order extends Model
     }
     
     /**
+     * Complete order
+     */
+    public function complete()
+    {
+        $this->status = self::STATUS_COMPLETED;
+        $this->completed_at = now();
+        $this->save();
+		
+        $this->fireModelEvent('completed');
+    }
+    
+    /**
      * Get the order items
      */
     public function items()
@@ -153,11 +201,57 @@ class Order extends Model
     }
     
     /**
+     * Set order as paid per the payment type (stripe, cash, etc)
+	 *
+	 * @param String $payment_type
+     *
+	 */
+    public function paidPer($payment_type)
+    {
+        $this->status = self::STATUS_OK;
+        $this->payment_status = self::PAYMENT_STATUS_SUCCEEDED;
+        $this->payment_type = $payment_type;
+        $this->paid_at = now();
+        $this->save();
+		
+        $this->fireModelEvent('paid');
+    }
+    
+    /**
      * Get the payment tokens
      */
     public function paymentTokens()
     {
         return $this->hasMany(PaymentToken::class, 'order_id');
+    }
+    
+    /**
+     * Update order reserved place
+	 *
+	 * @param String $place
+     *
+	 */
+    public function updatePlace($place)
+    {
+        $this->place = $place;
+        $this->save();
+		
+        $this->fireModelEvent('place-changed');
+    }
+    
+    /**
+     * Set order as refund
+	 *
+	 * @param Float $value
+     *
+	 */
+    public function refund($value)
+    {
+        $this->refund = $value;
+        $this->payment_status = self::PAYMENT_STATUS_REFUNDED;
+        $this->save();
+		
+        $this->fireModelEvent('refunded');
     }
     
     /**
@@ -210,7 +304,6 @@ class Order extends Model
 				break;
 			}
 		}
-		
 		
 		// Ajouter le TVA
 		$this->coefficient = round($this->coefficient, 2);

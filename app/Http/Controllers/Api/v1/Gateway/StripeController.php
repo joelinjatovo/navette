@@ -112,7 +112,7 @@ class StripeController extends Controller
 					 // Set as paid
 					$order->status = Order::STATUS_OK;
 					$order->payment_status = Order::PAYMENT_STATUS_SUCCEEDED;
-					$order->payed_at = now();
+					$order->paid_at = now();
 					$order->save();
 					
 					if($order->user){

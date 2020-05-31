@@ -21,8 +21,10 @@ class CreateRidesTable extends Migration
                 $table->dateTime('started_at')->nullable(); // Date reelle
                 $table->dateTime('completed_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
-                $table->bigInteger('distance')->nullable();
-                $table->bigInteger('duration')->nullable();
+                $table->bigInteger('distance_value')->nullable();
+                $table->string('distance')->nullable();
+                $table->bigInteger('duration_value')->nullable();
+                $table->string('duration')->nullable();
                 $table->text('direction')->nullable();
                 $table->json('route')->nullable();
                 $table->unsignedBigInteger('car_id')->nullable();

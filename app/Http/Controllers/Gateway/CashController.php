@@ -31,7 +31,7 @@ class CashController extends Controller
         $order = $request->session()->get('cart');
         $order->status = Order::STATUS_OK;
         $order->payment_type = Order::PAYMENT_TYPE_CASH;
-        $order->payed_at = now();
+        $order->paid_at = now();
         $order->save();
         
         $request->session()->forget('cart');

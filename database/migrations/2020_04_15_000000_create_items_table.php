@@ -24,8 +24,9 @@ class CreateItemsTable extends Migration
                 $table->string('duration')->nullable();
                 $table->text('direction')->nullable();
                 $table->dateTime('ride_at')->nullable(); // date defini par le client
-                $table->dateTime('arrive_at')->nullable(); // date defini par le system à laquelle debutera la course
+                $table->dateTime('actived_at')->nullable();
                 $table->dateTime('arrived_at')->nullable();
+                $table->dateTime('start_at')->nullable(); // date defini par le system à laquelle debutera la course
                 $table->dateTime('started_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
                 $table->dateTime('completed_at')->nullable();

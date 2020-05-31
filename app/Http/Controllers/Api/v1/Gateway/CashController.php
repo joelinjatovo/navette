@@ -22,7 +22,6 @@ class CashController extends Controller
         
         $order->status = Order::STATUS_OK;
         $order->payment_type = Order::PAYMENT_TYPE_CASH;
-        $order->payed_at = now();
         $order->save();
         
         return new OrderItemResource($order);
