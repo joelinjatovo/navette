@@ -30,6 +30,7 @@ class CreatePasswordTokensTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('password_tokens');
     }
 }
