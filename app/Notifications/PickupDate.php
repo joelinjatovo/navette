@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
 
-class DriverArrived extends Notification implements ShouldQueue
+class PickupDate extends Notification implements ShouldQueue
 {
     use Queueable;
     

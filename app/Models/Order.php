@@ -111,22 +111,6 @@ class Order extends Model
 	}
     
     /**
-     * Check if order is can be set as canceled
-     */
-    public function cancelable()
-    {
-        switch($this->status){
-            case self::STATUS_COMPLETED:
-            case self::STATUS_CANCELED:
-                return false;
-            default:
-                return true;
-        }
-    
-        return true;
-    }
-    
-    /**
      * Cancel order and set canceler user
      */
     public function cancel(User $user)
@@ -185,6 +169,30 @@ class Order extends Model
     }
     
     /**
+     * Check if order is can be set as canceled
+     */
+    public function isCancelable()
+    {
+        switch($this->status){
+            case self::STATUS_COMPLETED:
+            case self::STATUS_CANCELED:
+                return false;
+            default:
+                return true;
+        }
+    
+        return true;
+    }
+    
+    /**
+     * Check if order is can be refunded
+     */
+    public function isRefundable()
+    {
+        return ($this->payment_status == self::PAYMENT_STATUS_SUCCEEDED);
+    }
+    
+    /**
      * Get the order's note.
      */
     public function notes()
@@ -198,6 +206,15 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    /**
+     * Set order as ok
+     */
+    public function ok()
+    {
+		$this->status = Order::STATUS_OK;
+		$this->save();
     }
     
     /**
@@ -237,6 +254,21 @@ class Order extends Model
         $this->save();
 		
         $this->fireModelEvent('place-changed');
+    }
+    
+    /**
+     * Update order status
+	 *
+     *
+	 */
+    public function updateStatus()
+    {
+		$ping_item = $this->items()->whereIn('items.status', [Item::STATUS_PING, Item::STATUS_ACTIVE])->exists();
+		if($ping_item){
+			$this->ok();
+		}else{
+			$this->complete();
+		}
     }
     
     /**

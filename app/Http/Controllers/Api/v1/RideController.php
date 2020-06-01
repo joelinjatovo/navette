@@ -89,29 +89,29 @@ class RideController extends Controller
     {
         $item = Item::findOrFail($request->input('id'));
 		
-		$ride->attach($item);
+		$ride->attach($item->point);
         
         return new RideItemResource($ride);
     }
     
     /**
-     * Active a ride.
+     * Start driving ride
      *
      * @param  Request  $request
      * @param  Ride  $ride
      *
      * @return Response
      */
-    public function active(Request $request)
+    public function start(Request $request)
     {
         $ride = Ride::findOrFail($request->input('id'));
         
-        if(!$ride->activable()){
-            return $this->error(400, 112, "Ride not activable");
+        if(!$ride->isStartable()){
+            return $this->error(400, 112, trans('messages.ride.not.startable'));
         }
         
-        $ride->active();
-        
+        $ride->start();
+		
         return $this->direction($request);
     }
     
@@ -126,11 +126,26 @@ class RideController extends Controller
     {
         $ride = Ride::findOrFail($request->input('id'));
         
-        if(!$ride->cancelable()){
-            return $this->error(400, 113, "Ride not cancelable");
+        if(!$ride->isCancelable()){
+            return $this->error(400, 113, trans('messages.ride.not.cancelable'));
         }
         
         $ride->cancel();
+		
+		$status = [Item::STATUS_CANCELED, Item::STATUS_COMPLETED];
+		// List of items can be detached
+		$items = $this->items()->whereNotIn('items.status', $status)->get();
+		forach($items as $item){
+			if($item->point){
+				$ride->detachPoint($item->point);
+			}
+			$item->detach();
+			$item->setStartAt(null);
+			
+			if($item->order){
+				$item->order->ok();
+			}
+		}
         
         return new RideItemResource($ride);
     }
@@ -148,6 +163,22 @@ class RideController extends Controller
         $ride = Ride::findOrFail($request->input('id'));
         
         $ride->complete();
+		
+		$points = $this->points()->wherePivot('status', RidePoint::STATUS_ONLINE)->get();
+        foreach($points as $point){
+            $this->points()->updateExistingPivot($point->getKey(), [
+				'status' => RidePoint::STATUS_COMPLETED,
+				'completed_at' => now()
+			]);
+		}
+		
+		$items = $this->items()->where('items.status', Item::STATUS_ONLINE)->get();
+		foreach($items as $item){
+			$item->complete();
+			if($item->order){
+				$item->order->updateStatus();
+			}
+		}
         
         return new RideItemResource($ride);
     }
@@ -173,7 +204,7 @@ class RideController extends Controller
             return $this->error(400, 115, "Ride direction not verified");
         }
         
-        $ride->next();
+        $ride->getNextPoint();
         
         return new RideItemResource($ride);
     }

@@ -35,16 +35,19 @@ class ItemController extends Controller
     {
         $item = Item::findOrFail($request->input('id'));
         
-        if(!$item->cancelable()){
-            return $this->error(400, 119, "Item not cancelable");
+        if(!$item->isCancelable()){
+            return $this->error(400, 119, trans('messages.item.not.cancelable'));
         }
         
         $item->cancel();
+		
+        if($item->order){
+			$item->order->cancel($request->user());
+		}
         
-        $ride = $item->ride;
-        if($ride){
-            // Select next item
-            $ride->next();
+        if($item->ride){
+            $item->ride->cancelPoint($item->point); // Cancel ride at the item's point
+			$item->ride->getNextPoint(); // Select next point or update status
         }
         
         return new ItemItemResource($item);

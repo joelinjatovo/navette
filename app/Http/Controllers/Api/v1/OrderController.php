@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Events\OrderStatusChanged;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
 use App\Http\Resources\OrderItem as OrderItemResource;
@@ -146,8 +145,6 @@ class OrderController extends Controller
         $order->setZone($zone);
         $order->save();
 
-        event(new OrderStatusChanged($order, 'created', null, Order::STATUS_PING));
-
         return new OrderItemResource($order);
     }
     
@@ -162,13 +159,21 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($request->input('id'));
 
-        if(!$order->cancelable()){
+        if(!$order->isCancelable()){
             return $this->error(400, 111, "Order not cancelable");
         }
         
         $order->cancel($request->user());
 		
-		// @TODO Cancel order items
+		foreach($order->items as $item){
+			if($item->isCancelable()){
+				$item->cancel();
+				if($item->ride){
+					$item->ride->cancelPoint($item->point); // Cancel ride at the item's point
+					$item->ride->getNextPoint(); // Select next point or update status
+				}
+			}
+		}
         
         return new OrderItemResource($order);
     }

@@ -52,10 +52,10 @@ class UserEventSubscriber
      * Handle user position created events.
      */
     public function handleUserPointCreated(\App\Events\UserPointCreated $event) {
-        $admin = $event->user;
+        $user = $event->user;
         $point = $event->point;
-        if( null != $admin ) {
-            $admin->notify(new \App\Notifications\UserPointCreated($admin, $point));
+        if( null != $user ) {
+            $user->notify(new \App\Notifications\UserPointCreated($user, $point));
         }
     }
 }

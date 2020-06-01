@@ -85,38 +85,6 @@ class Ride extends Model
     }
     
     /**
-     * Attach point to the ride
-     */
-    public function attachPoint(Point $point)
-    {
-		$item = $point->items()->first();
-		
-		$this->points()
-			->attach(
-				$point->getKey(), 
-				[
-					'status' => RidePoint::STATUS_PING,
-					'type' => ($item && ($item->type == Item::TYPE_BACK) ? RidePoint::TYPE_DROP : RidePoint::TYPE_PICKUP),
-					'order' => 0,
-					'item_id' => $item ? $item->getKey() : null,
-					'user_id' => $item->user ? $item->user->getKey() : null,
-				]
-			);
-
-		$this->fireModelEvent('point-attached');
-			
-		/*
-		$item->driver()->associate($this->driver); // Set item's driver
-		$item->ride()->associate($this->ride); // Set item's ride
-		$item->active(); // Set item as active
-		
-		if($item->order){
-			$item->order->active(); // Set order as active
-		}
-		*/
-	}
-    
-    /**
      * Mark ride as active
      */
     public function active()
@@ -152,6 +120,38 @@ class Ride extends Model
     }
     
     /**
+     * Attach point to the ride
+     */
+    public function attachPoint(Point $point)
+    {
+		$item = $point->items()->first();
+		
+		$this->points()
+			->attach(
+				$point->getKey(), 
+				[
+					'status' => RidePoint::STATUS_PING,
+					'type' => ($item && ($item->type == Item::TYPE_BACK) ? RidePoint::TYPE_DROP : RidePoint::TYPE_PICKUP),
+					'order' => 0,
+					'item_id' => $item ? $item->getKey() : null,
+					'user_id' => $item->user ? $item->user->getKey() : null,
+				]
+			);
+
+		$this->fireModelEvent('point-attached');
+			
+		/*
+		$item->driver()->associate($this->driver); // Set item's driver
+		$item->ride()->associate($this->ride); // Set item's ride
+		$item->active(); // Set item as active
+		
+		if($item->order){
+			$item->order->active(); // Set order as active
+		}
+		*/
+	}
+    
+    /**
      * Set ride status as cancelable and fired event
      */
     public function cancelable()
@@ -172,45 +172,6 @@ class Ride extends Model
         $this->save();
 		
         $this->fireModelEvent('canceled');
-    
-		/*
-        event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
-        
-        // Mark RidePoint NOT COMPLETED as CANCELED
-        $points = $this->points()->wherePivotNotIn('status', [RidePoint::STATUS_COMPLETED])->get();
-        foreach($points as $point){
-            $this->points()->updateExistingPivot($point->getKey(), [
-				'status' => RidePoint::STATUS_CANCELED,
-				'canceled_at' => now()
-			]);
-		}
-		
-		// Mark Item NOT COMPLETED as CANCELED
-        $items = $this->items()->whereNotIn('items.status', [Item::STATUS_COMPLETED])->get();
-        foreach($items as $item){
-			$oldStatus = $item->status;
-			$newStatus = Item::STATUS_CANCELED;
-
-			$item->status = $newStatus;
-        	$item->canceled_at = now();
-			$item->save();
-
-			// Notify *customer
-			event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-
-			$order = $item->order;
-			if($order){
-				$oldStatus = $order->status;
-				$newStatus = Order::STATUS_CANCELED;
-				$order->canceled_at = now();
-				$order->status = $newStatus;
-				$order->save();
-
-				// Notify *customer
-				event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
-			}
-        }
-		*/
     }
     
     /**
@@ -312,7 +273,7 @@ class Ride extends Model
      */
     public function detachPoint(Point $point)
     {
-		$this->points()->detach($item->point->getKey());
+		$this->points()->detach($point->getKey());
 		$this->fireModelEvent('point-detached');
 	}
     
@@ -322,6 +283,38 @@ class Ride extends Model
     public function driver()
     {
         return $this->belongsTo(User::class, 'driver_id', 'id')->with('roles');
+    }
+    
+    /**
+     * Get or select the next ride point
+	 * @return RidePoint
+     */
+    public function getNextPoint()
+    {
+        // Check if ride has next point
+        $next = $this->points()->wherePivotIn('status', [RidePoint::STATUS_NEXT, RidePoint::STATUS_ARRIVED])->first();
+        if($next)
+        {
+            return $next->pivot;
+        }
+        
+        // Set first active point as next
+        $point = $this->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->first();
+        if($point)
+        {
+            $this->points()->updateExistingPivot($point->getKey(), [
+				'status' => RidePoint::STATUS_NEXT,
+				'start_at' => now()->addSeconds($point->pivot->duration_value)
+			]);
+			
+			$this->processNext($point->pivot);
+			
+			return $point->pivot;
+        }
+		
+		$this->updateStatus();
+		
+        return null;
     }
     
     /**
@@ -370,74 +363,7 @@ class Ride extends Model
     {
         return $this->hasMany(Item::class);
     }
-    
-    /**
-     * Get or select the next ride point
-	 * @return RidePoint
-     */
-    public function getNextPoint()
-    {
-        // Check if ride has next point
-        $next = $this->points()->wherePivotIn('status', [RidePoint::STATUS_NEXT, RidePoint::STATUS_ARRIVED])->first();
-        if($next)
-        {
-            return $next->pivot;
-        }
-        
-        // Set first active point as next
-        $point = $this->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->first();
-        if($point)
-        {
-            $this->points()->updateExistingPivot($point->getKey(), [
-				'status' => RidePoint::STATUS_NEXT,
-				'start_at' => now()->addSeconds($point->pivot->duration_value)
-			]);
-			
-			return $point->pivot;
-			
-
-			/*
-            $item = $point->pivot->item;
-            if($item){
-                $oldStatus = $item->status;
-                $newStatus = Item::STATUS_NEXT;
-
-                $item->status = $newStatus;
-                $item->arrive_at = now()->addSeconds($point->pivot->duration_value);
-                $item->save();
-
-                // Notify *customer
-                event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-				
-				if($item->user && ($item->type == Item::TYPE_GO)){
-					$delay = 7 * 60; // Notifier 7 minutes avants arriver
-					if($point->pivot->duration_value < $delay){
-						$item->user->notify((new \App\Notifications\DriverArrived($item, $point->pivot->duration)));
-					}else{
-						$when = now()->addSeconds($point->pivot->duration_value - 7 * 60);
-						$item->user->notify((new \App\Notifications\DriverArrived($item, '7 min'))->delay($when));
-					}
-				}
-            }
-			*/
-        }
-
-		/*
-        $oldStatus = $this->status;
-        $count = $this->points()->wherePivot('status', '!=', RidePoint::STATUS_CANCELED)->count();
-        if($count==0){
-            $newStatus = self::STATUS_CANCELABLE;
-        }else{
-            $newStatus = self::STATUS_COMPLETABLE;
-        }
-        $this->status = $newStatus;
-        $this->save();
-        event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
-		*/
-		
-        return null;
-    }
-    
+	
     /**
      * Get the order's note.
      */
@@ -472,6 +398,32 @@ class Ride extends Model
 						'item_id',
                     ])->orderBy('order', 'asc');
     }
+    
+    /**
+     * Process next ride point
+     */
+    public function processNext(RidePoint $ridepoint)
+    {
+		if($ridepoint->item){
+			$ridepoint->item->next();
+			$ridepoint->item->setStartDate(now()->addSeconds($ridepoint->duration_value));
+		}
+	}
+    
+    /**
+     * Update status of the ride
+     */
+    public function updateStatus()
+    {
+		// Si tous les points sont annulés
+        $count = $this->points()->wherePivot('status', '!=', RidePoint::STATUS_CANCELED)->count();
+        if($count==0){
+			$this->cancelable(); // Set ride as cancelable
+        }else{
+			$this->completable(); // Set ride as completable
+		}
+	}
+    
     
     /**
      * Get the user who creates the ride.

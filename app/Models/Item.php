@@ -8,7 +8,9 @@ use App\Events\Item\ItemCompleted;
 use App\Events\Item\ItemDateDelayed;
 use App\Events\Item\ItemDateForwarded;
 use App\Events\Item\ItemDateInited;
+use App\Events\Item\ItemDateRefreshed;
 use App\Events\Item\ItemDeleted;
+use App\Events\Item\ItemDetached;
 use App\Events\Item\ItemDriverArrived;
 use App\Events\Item\ItemNexted;
 use App\Events\Item\ItemStarted;
@@ -32,9 +34,9 @@ class Item extends Model
     
     public const STATUS_NEXT = 'next';
     
-    public const STATUS_ONLINE = 'online';
-    
     public const STATUS_PING = 'ping';
+    
+    public const STATUS_STARTED = 'started';
     
     /**
      * The attributes that are mass assignable.
@@ -61,9 +63,11 @@ class Item extends Model
         'canceled' => ItemCanceled::class,
         'completed' => ItemCompleted::class,
         'deleted' => ItemDeleted::class,
+        'detached' => ItemDetached::class,
         'date-delayed' => ItemDateDelayed::class,
         'date-forwarded' => ItemDateForwarded::class,
         'date-inited' => ItemDateInited::class,
+        'date-refreshed' => ItemDateRefreshed::class,
         'driver-arrived' => ItemDriverArrived::class,
         'nexted' => ItemNexted::class,
         'started' => ItemStarted::class,
@@ -131,6 +135,18 @@ class Item extends Model
         $this->save();
 		
 		$this->fireModelEvent('completed');
+    }
+    
+    /**
+     * Detach the order item to the ride
+     */
+    public function detach()
+    {
+        $this->status = self::STATUS_PING;
+        $this->ride_id = null;
+        $this->save();
+		
+		$this->fireModelEvent('detached');
     }
     
     /**
@@ -202,6 +218,13 @@ class Item extends Model
      */
     public function setStartDate($date)
     {
+		if($date==null){
+			$this->start_at = $date;
+			$this->save();
+			$this->fireModelEvent('date-refreshed');
+			return;
+		}
+		
 		if($this->start_at){
 			if($model->start_at->greaterThan($date)){
 				$this->start_at = $date;
