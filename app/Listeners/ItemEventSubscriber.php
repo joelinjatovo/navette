@@ -37,6 +37,15 @@ class ItemEventSubscriber
     public function subscribe($events)
     {
         $events->listen(ItemActivedEvent::class, self::class .'@handle');
+        $events->listen(ItemCanceledEvent::class, self::class .'@handle');
+        $events->listen(ItemCompletedEvent::class, self::class .'@handle');
+        $events->listen(ItemDateDelayedEvent::class, self::class .'@handle');
+        $events->listen(ItemDateForwardedEvent::class, self::class .'@handle');
+        $events->listen(ItemDateInitedEvent::class, self::class .'@handle');
+        $events->listen(ItemDeletedEvent::class, self::class .'@handle');
+        $events->listen(ItemDriverArrivedEvent::class, self::class .'@handle');
+        $events->listen(ItemNextedEvent::class, self::class .'@handle');
+        $events->listen(ItemStartedEvent::class, self::class .'@handle');
     }
     
     /**
