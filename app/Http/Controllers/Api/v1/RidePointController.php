@@ -22,19 +22,21 @@ class RidePointController extends Controller
     {
         $ridepoint = RidePoint::findOrFail($request->input('id'));
         
-        if(!$ridepoint->arrivable()){
+        if(!$ridepoint->isArrivable()){
             return $this->error(400, 120, trans('messages.ridepoint.not.cancelable'));
         }
         
-		// 1- Set driver as arrived to the ride point
-		// 2- Set driver as arrived to the order item
-        $ridePoint->arrive();
+        $ridepoint->arrive();
+		
+		if($ridepoint->item){
+			$ridepoint->item->arrive();
+		}
+		
+		if($ridepoint->ride){
+			$ridepoint->ride->getNextPoint();
+		}
         
-		// Select next item
-        $ride = $ridePoint->ride;
-        if($ride){$ride->next();}
-        
-        return new RideItemResource($ride);
+        return new RideItemResource($ridepoint->ride);
     }
     
     /**
@@ -47,21 +49,23 @@ class RidePointController extends Controller
      */
     public function cancel(Request $request)
     {
-        $ridePoint = RidePoint::findOrFail($request->input('id'));
+        $ridepoint = RidePoint::findOrFail($request->input('id'));
         
-        if(!$ridePoint->cancelable()){
-            return $this->error(400, 117, "Ride Point not cancelable");
+        if(!$ridepoint->isCancelable()){
+            return $this->error(400, 117, trans('messages.ridepoint.not.cancelable'));
         }
         
-		// 1- Cancel ride point
-		// 2- Cancel order item
-        $ridePoint->cancel();
+        $ridepoint->cancel();
+		
+		if($ridepoint->item){
+			$ridepoint->item->cancel();
+		}
+		
+		if($ridepoint->ride){
+			$ridepoint->ride->getNextPoint();
+		}
         
-		// Select next item
-        $ride = $ridePoint->ride;
-        if($ride){$ride->next();}
-        
-        return new RideItemResource($ride);
+        return new RideItemResource($ridepoint->ride);
     }
     
     /**
@@ -73,20 +77,27 @@ class RidePointController extends Controller
      */
     public function pickOrDrop(Request $request)
     {
-        $ridePoint = RidePoint::findOrFail($request->input('id'));
+        $ridepoint = RidePoint::findOrFail($request->input('id'));
         
-        if(!$ridePoint->pickable() && !$ridePoint->dropable()){
-            return $this->error(400, 116, "Ride Point not finishable");
+        if(!$ridepoint->isPickable() && !$ridepoint->isDropable()){
+            return $this->error(400, 116, trans('messages.ridepoint.not.pickable.or.dropable'));
         }
         
-		// 1- Pick or drop ride point
-		// 2- Pick or drop order item
-        $ridePoint->pickOrDrop();
+        $ridepoint->pickOrDrop();
+		
+		if($ridepoint->item){
+			if($ridepoint->item->type == Item::TYPE_GO){
+				$ridepoint->item->start();
+            }else{
+				$ridepoint->item->complete();
+            }
+		}
+		
+		if($ridepoint->ride){
+			$ridepoint->ride->getNextPoint();
+		}
         
-		// Select next item
-        $ride = $ridePoint->ride;
-        if($ride){$ride->next();}
-        
-        return new RideItemResource($ride);
+        return new RideItemResource($ridepoint->ride);
     }
+	
 }

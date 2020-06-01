@@ -169,7 +169,10 @@ class OrderController extends Controller
 			if($item->isCancelable()){
 				$item->cancel();
 				if($item->ride){
-					$item->ride->cancelPoint($item->point); // Cancel ride at the item's point
+					$point = $item->ride->points()->wherePivot('item_id', $item->getKey())->first();
+					if($point && $point->pivot){
+						$point->pivot->cancel();// Cancel ride at the item's point
+					}
 					$item->ride->getNextPoint(); // Select next point or update status
 				}
 			}

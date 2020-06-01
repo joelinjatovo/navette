@@ -61,11 +61,11 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::get('ride/{ride}', 'RideController@show')->name('ride.show');
         Route::get('ride/{ride}/items', 'RideController@items')->name('ride.items');
         Route::get('ride/{ride}/points', 'RideController@points')->name('ride.points');
-        Route::post('ride/active', 'RideController@active')->name('ride.active');
+        Route::post('ride/{ride}/attach-item', 'RideController@attachItem')->name('ride.attach.item');
+        Route::post('ride/start', 'RideController@start')->name('ride.start');
         Route::post('ride/cancel', 'RideController@cancel')->name('ride.cancel');
         Route::post('ride/complete', 'RideController@complete')->name('ride.complete');
         Route::post('ride/direction', 'RideController@direction')->name('ride.direction');
-        Route::post('ride/{ride}/attach', 'RideController@attach')->name('ride.attach');
 		
         Route::post('ridepoint/arrive', 'RidePointController@arrive')->name('ridepoint.arrive'); // Driver
         Route::post('ridepoint/cancel', 'RidePointController@cancel')->name('ridepoint.cancel'); // Driver

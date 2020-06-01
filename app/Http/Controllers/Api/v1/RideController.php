@@ -78,18 +78,18 @@ class RideController extends Controller
     }
     
     /**
-     * Add item to the current ride
+     * Add item to the ride
      *
      * @param  Request  $request
      * @param  Ride  $ride
      *
      * @return Response
      */
-    public function attach(Request $request, Ride $ride)
+    public function attachItem(Request $request, Ride $ride)
     {
         $item = Item::findOrFail($request->input('id'));
 		
-		$ride->attachItem($item);
+		$ride->attachRidePoint($item);
 		$item->setRide($ride);
 		$item->active();
 		if($item->order){
@@ -137,13 +137,15 @@ class RideController extends Controller
         
         $ride->cancel();
 		
+		$points = $this->points()->wherePivotNotIn('status', [RidePoint::STATUS_CANCELED, RidePoint::STATUS_COMPLETED])->get();
+        foreach($points as $point){
+			$point->pivot->detach();
+		}
+		
 		$status = [Item::STATUS_CANCELED, Item::STATUS_COMPLETED];
 		// List of items can be detached
 		$items = $this->items()->whereNotIn('items.status', $status)->get();
 		forach($items as $item){
-			if($item->point){
-				$ride->detachPoint($item->point);
-			}
 			$item->detach();
 			$item->setStartAt(null);
 			
@@ -169,12 +171,12 @@ class RideController extends Controller
         
         $ride->complete();
 		
-		$points = $this->points()->wherePivot('status', RidePoint::STATUS_ONLINE)->get();
+		$points = $this->points()->wherePivot('status', RidePoint::STATUS_STARTED)->get();
         foreach($points as $point){
-			$ride->completePoint($point);
+			$point->pivot->complete();
 		}
 		
-		$items = $this->items()->where('items.status', Item::STATUS_ONLINE)->get();
+		$items = $this->items()->where('items.status', Item::STATUS_STARTED)->get();
 		foreach($items as $item){
 			$item->complete();
 			if($item->order){
@@ -199,11 +201,11 @@ class RideController extends Controller
         
         $points = $ride->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->get();
         if(empty($points)){
-            return $this->error(400, 114, "Empty ride locations");
+            return $this->error(400, 114, trans('messages.no.route.items.found'));
         }
         
         if(!$ride->verifyDirection($this->google)){
-            return $this->error(400, 115, "Ride direction not verified");
+            return $this->error(400, 115, trans('messages.no.route.found'));
         }
         
         $ride->getNextPoint();

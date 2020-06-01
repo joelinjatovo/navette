@@ -1,4 +1,5 @@
 <?php
+<?php
 
 namespace App\Http\Resources;
 
@@ -30,6 +31,11 @@ class Order extends JsonResource
                 'privatized' => (boolean) $this->privatized,
                 'preordered' => (boolean) $this->preordered,
                 'payment_type' => $this->payment_type,
+                'payment_status' => $this->payment_status,
+                'paid_at' => $this->paid_at,
+                'refunded_at' => $this->refunded_at,
+                'canceled_at' => $this->canceled_at,
+                'completed_at' => $this->completed_at,
                 'created_at' => $this->created_at,
             ],
             'items' => Item::collection($this->items),

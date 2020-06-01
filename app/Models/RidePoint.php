@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
-use App\Events\ItemStatusChanged;
-use App\Events\OrderStatusChanged;
-use App\Events\RideStatusChanged;
+use App\Events\RidePoint\RidePointActived;
+use App\Events\RidePoint\RidePointAttached;
+use App\Events\RidePoint\RidePointCanceled;
+use App\Events\RidePoint\RidePointCompleted;
+use App\Events\RidePoint\RidePointDetached;
+use App\Events\RidePoint\RidePointDriverArrived;
+use App\Events\RidePoint\RidePointStarted;
+
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Str;
 
@@ -44,6 +49,21 @@ class RidePoint extends Pivot
     protected $keyType = 'string';
 
     /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        'actived' => RidePointActived::class,
+        'attached' => RidePointAttached::class,
+        'canceled' => RidePointCanceled::class,
+        'completed' => RidePointCompleted::class,
+        'detached' => RidePointDetached::class,
+        'driver-arrived' => RidePointDriverArrived::class,
+        'started' => RidePointStarted::class,
+	];
+	
+    /**
      * Bootstrap the model and its traits.
      *
      * @return void
@@ -60,12 +80,15 @@ class RidePoint extends Pivot
     }
     
     /**
-     * Check if ride is arrivable
+     * Active ride point (Item is attached to the ride)
      */
-    public function arrivable()
+    public function active()
     {
-        return (self::STATUS_NEXT == $this->status) 
-            && (self::TYPE_PICKUP == $this->type);
+        $this->status = self::STATUS_ACTIVE;
+        $this->actived_at = now();
+        $this->save();
+		
+		$this->fireModelEvent('actived');
     }
     
     /**
@@ -73,33 +96,11 @@ class RidePoint extends Pivot
      */
     public function arrive()
     {
-        $oldStatus = $this->status;
-        $newStatus = self::STATUS_ARRIVED;
-        $this->status = $newStatus;
+        $this->status = self::STATUS_ARRIVED;
 		$this->arrived_at = now();
         $this->save();
-        
-        $item = $this->item;
-        if($item)
-        {
-            $oldStatus = $item->status;
-            $newStatus = Item::STATUS_ARRIVED;
-            $item->status = $newStatus;
-        	$item->arrived_at = now();
-            $item->save();
-                
-            // Notify *customer
-            event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-        }
-        
-    }
-    
-    /**
-     * Check if ride is cancelable
-     */
-    public function cancelable()
-    {
-        return (self::STATUS_COMPLETED != $this->status) && (self::STATUS_CANCELED != $this->status) ;
+		
+		$this->fireModelEvent('driver-arrived');
     }
     
     /**
@@ -107,42 +108,21 @@ class RidePoint extends Pivot
      */
     public function cancel()
     {
-        $oldStatus = $this->status;
-        $newStatus = self::STATUS_CANCELED;
-        
-        $this->status = $newStatus;
+        $this->status = self::STATUS_CANCELED;
         $this->canceled_at = now();
         $this->save();
-        
-        $item = $this->item;
-        if($item)
-        {
-            $oldStatus = $item->status;
-            $newStatus = Item::STATUS_CANCELED;
-            $item->status = $newStatus;
-        	$item->canceled_at = now();
-            $item->save();
-                
-            // Notify *customer
-            event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-        }
-        
+		
+		$this->fireModelEvent('canceled');
     }
     
     /**
-     * Check if ride is dropable
+     * Detach ride point
      */
-    public function dropable()
+    public function detach()
     {
-        return (self::STATUS_NEXT == $this->status) && (self::TYPE_DROP == $this->type);
-    }
-    
-    /**
-     * Check if ride is pickable
-     */
-    public function pickable()
-    {
-        return (self::STATUS_ARRIVED == $this->status) && (self::TYPE_PICKUP == $this->type);
+        $this->delete();
+		
+		$this->fireModelEvent('detached');
     }
     
     /**
@@ -150,34 +130,50 @@ class RidePoint extends Pivot
      */
     public function pickOrDrop()
     {
-        $oldStatus = $this->status;
         if($this->type == self::TYPE_PICKUP){
-            $newStatus = self::STATUS_ONLINE;
+			$this->status = self::STATUS_STARTED;
+			$this->started_at = now();
+			$this->save();
+			$this->fireModelEvent('started');
         }else{
-            $newStatus = self::STATUS_COMPLETED;
+			$this->status = self::STATUS_COMPLETED;
+			$this->started_at = now();
+			$this->save();
+			$this->fireModelEvent('completed');
         }
-        
-        $this->status = $newStatus;
-        $this->started_at = now();
-        $this->save();
-        
-        $item = $this->item;
-        if($item)
-        {
-            $oldStatus = $item->status;
-            if($item->type == Item::TYPE_GO){
-                $newStatus = Item::STATUS_ONLINE;
-            }else{
-                $newStatus = Item::STATUS_COMPLETED;
-            }
-            
-            $item->status = $newStatus;
-        	$item->started_at = now();
-            $item->save();
-                
-            // Notify *customer
-            event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-        }
+    }
+    
+    /**
+     * Check if ride is arrivable
+     */
+    public function isArrivable()
+    {
+        return (self::STATUS_NEXT == $this->status) 
+            && (self::TYPE_PICKUP == $this->type);
+    }
+    
+    /**
+     * Check if ride is cancelable
+     */
+    public function isCancelable()
+    {
+        return (self::STATUS_COMPLETED != $this->status) && (self::STATUS_CANCELED != $this->status) ;
+    }
+    
+    /**
+     * Check if ride is dropable
+     */
+    public function isDropable()
+    {
+        return (self::STATUS_NEXT == $this->status) && (self::TYPE_DROP == $this->type);
+    }
+    
+    /**
+     * Check if ride is pickable
+     */
+    public function isPickable()
+    {
+        return (self::STATUS_ARRIVED == $this->status) && (self::TYPE_PICKUP == $this->type);
     }
     
     /**

@@ -11,11 +11,6 @@ use App\Events\Ride\RideCreated;
 use App\Events\Ride\RideDeleted;
 use App\Events\Ride\RideStarted;
 
-use App\Events\RidePoint\RidePointAttached;
-use App\Events\RidePoint\RidePointCanceled;
-use App\Events\RidePoint\RidePointCompleted;
-use App\Events\RidePoint\RidePointDetached;
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -65,10 +60,6 @@ class Ride extends Model
         'completable' => RideCompletable::class,
         'completed' => RideCompleted::class,
         'deleted' => RideDeleted::class,
-        'point-attached' => RidePointAttached::class,
-        'point-canceled' => RidePointCanceled::class,
-        'point-completed' => RidePointCompleted::class,
-        'point-detached' => RidePointDetached::class,
         'started' => RideStarted::class,
     ];
 
@@ -103,7 +94,7 @@ class Ride extends Model
     /**
      * Attach point to the ride
      */
-    public function attachItem(Item $item)
+    public function attachRidePoint(Item $item)
     {
 		if($item->point){
 			$this->points()
@@ -118,7 +109,11 @@ class Ride extends Model
 					]
 				);
 
-			//$this->fireModelEvent('point-attached');
+			$point = $this->points()->wherePivot('point_id', $item->point->getKey())->first();
+			if($point && $point->pivot){
+				$point->pivot->fireModelEvent('attached');
+			}
+			
 		}
 	}
     
@@ -144,19 +139,6 @@ class Ride extends Model
 		
         $this->fireModelEvent('canceled');
     }
-    
-    /**
-     * Cancel ride point
-     */
-    public function cancelPoint(Point $point)
-    {
-		$item = $point->items()->first();
-		
-		$this->points()
-			->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_CANCELED, 'canceled_at' => now()]);
-
-		//$this->fireModelEvent('point-canceled');
-	}
     
     /**
      * Get the card associated with the race.
@@ -188,28 +170,6 @@ class Ride extends Model
 
 		$this->fireModelEvent('completed');
     }
-    
-    /**
-     * Complete ride point
-     */
-    public function completePoint(Point $point)
-    {
-		$item = $point->items()->first();
-		
-		$this->points()
-			->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_COMPLETED, 'completed_at' => now()]);
-
-		//$this->fireModelEvent('point-completed');
-	}
-    
-    /**
-     * Detach point to the ride
-     */
-    public function detachPoint(Point $point)
-    {
-		$this->points()->detach($point->getKey());
-		//$this->fireModelEvent('point-detached');
-	}
     
     /**
      * Get the driver associated with the race.
