@@ -9,10 +9,13 @@ use App\Events\Ride\RideCompletable;
 use App\Events\Ride\RideCompleted;
 use App\Events\Ride\RideCreated;
 use App\Events\Ride\RideDeleted;
-use App\Events\Ride\RidePointAttached;
-use App\Events\Ride\RidePointCanceled;
-use App\Events\Ride\RidePointDetached;
 use App\Events\Ride\RideStarted;
+
+use App\Events\RidePoint\RidePointAttached;
+use App\Events\RidePoint\RidePointCanceled;
+use App\Events\RidePoint\RidePointCompleted;
+use App\Events\RidePoint\RidePointDetached;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -64,6 +67,7 @@ class Ride extends Model
         'deleted' => RideDeleted::class,
         'point-attached' => RidePointAttached::class,
         'point-canceled' => RidePointCanceled::class,
+        'point-completed' => RidePointCompleted::class,
         'point-detached' => RidePointDetached::class,
         'started' => RideStarted::class,
     ];
@@ -94,61 +98,28 @@ class Ride extends Model
         $this->save();
 		
         $this->fireModelEvent('actived');
-        
-        // Notify *driver
-		/*
-        event(new RideStatusChanged($this, 'updated', $oldStatus, $newStatus));
-        
-        // Set all RidePoint as active
-        $points = $this->points()->wherePivot('status', RidePoint::STATUS_PING)->get();
-        foreach($points as $point){
-            $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_ACTIVE]);
-		}
-		
-        $items = $this->items()->where('items.status', Item::STATUS_PING)->get();
-        foreach($items as $item){
-			$oldStatus = $item->status;
-			$newStatus = Item::STATUS_ACTIVE;
-
-			$item->status = $newStatus;
-			$item->save();
-
-			// Notify *customer
-			event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
-        }
-		*/
     }
     
     /**
      * Attach point to the ride
      */
-    public function attachPoint(Point $point)
+    public function attachItem(Item $item)
     {
-		$item = $point->items()->first();
-		
-		$this->points()
-			->attach(
-				$point->getKey(), 
-				[
-					'status' => RidePoint::STATUS_PING,
-					'type' => ($item && ($item->type == Item::TYPE_BACK) ? RidePoint::TYPE_DROP : RidePoint::TYPE_PICKUP),
-					'order' => 0,
-					'item_id' => $item ? $item->getKey() : null,
-					'user_id' => $item->user ? $item->user->getKey() : null,
-				]
-			);
+		if($item->point){
+			$this->points()
+				->attach(
+					$item->point->getKey(), 
+					[
+						'status' => RidePoint::STATUS_PING,
+						'type' => Item::TYPE_BACK == $item->type ? RidePoint::TYPE_DROP : RidePoint::TYPE_PICKUP,
+						'order' => 0,
+						'item_id' => $item->getKey(),
+						'user_id' => $item->user ? $item->user->getKey() : null,
+					]
+				);
 
-		$this->fireModelEvent('point-attached');
-			
-		/*
-		$item->driver()->associate($this->driver); // Set item's driver
-		$item->ride()->associate($this->ride); // Set item's ride
-		$item->active(); // Set item as active
-		
-		if($item->order){
-			$item->order->active(); // Set order as active
+			//$this->fireModelEvent('point-attached');
 		}
-		*/
 	}
     
     /**
@@ -184,7 +155,7 @@ class Ride extends Model
 		$this->points()
 			->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_CANCELED, 'canceled_at' => now()]);
 
-		$this->fireModelEvent('point-canceled');
+		//$this->fireModelEvent('point-canceled');
 	}
     
     /**
@@ -216,57 +187,20 @@ class Ride extends Model
         $this->save();
 
 		$this->fireModelEvent('completed');
-
-		/*
-		$events = [];
-        $events[] = new RideStatusChanged($this, 'updated', $oldStatus, $newStatus);
-        
-        // Mark RidePoint ONLINE as COMPLETED
-        $points = $this->points()->wherePivot('status', RidePoint::STATUS_ONLINE)->get();
-        foreach($points as $point){
-            $this->points()->updateExistingPivot($point->getKey(), [
-				'status' => RidePoint::STATUS_COMPLETED,
-				'completed_at' => now()
-			]);
-		}
-		
-		$items = $this->items()->where('items.status', Item::STATUS_ONLINE)->get();
-		foreach($items as $item){
-			$oldStatus = $item->status;
-			$newStatus = Item::STATUS_COMPLETED;
-
-			$item->status = $newStatus;
-			$item->completed_at = now();
-			$item->save();
-
-			// Notify *customer
-			$events[] = new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus);
-
-			$order = $item->order;
-			if($order){
-				$ping_item = $order->items()->whereIn('items.status', [Item::STATUS_PING, Item::STATUS_ACTIVE])->exists();
-				if($ping_item){
-					$oldStatus = $order->status;
-					$newStatus = Order::STATUS_OK;
-				}else{
-					$oldStatus = $order->status;
-					$newStatus = Order::STATUS_COMPLETED;
-					$order->completed_at = now();
-				}
-
-				$order->status = $newStatus;
-				$order->save();
-
-				// Notify *customer
-				$events[] = new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus);
-			}
-        }
-		
-		foreach($events as $event){
-			event($event);
-		}
-		*/
     }
+    
+    /**
+     * Complete ride point
+     */
+    public function completePoint(Point $point)
+    {
+		$item = $point->items()->first();
+		
+		$this->points()
+			->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_COMPLETED, 'completed_at' => now()]);
+
+		//$this->fireModelEvent('point-completed');
+	}
     
     /**
      * Detach point to the ride
@@ -274,7 +208,7 @@ class Ride extends Model
     public function detachPoint(Point $point)
     {
 		$this->points()->detach($point->getKey());
-		$this->fireModelEvent('point-detached');
+		//$this->fireModelEvent('point-detached');
 	}
     
     /**
@@ -389,10 +323,10 @@ class Ride extends Model
                         'duration',
                         'duration_value',
                         'direction',
-						'start_at', 
 						'arrived_at', 
-						'started_at', 
-						'canceled_at', 
+						'start_at',
+						'started_at',
+						'canceled_at',
 						'completed_at',
 						'user_id',
 						'item_id',

@@ -113,6 +113,15 @@ class Item extends Model
 		$this->fireModelEvent('driver-arrived');
     }
     
+    public function associateRide(Ride $ride)
+    {
+		$this->driver()->associate($this->driver); // Set item's driver
+		$this->ride()->associate($this->ride); // Set item's ride
+		$this->save();
+		
+		$this->fireModelEvent('ride-associated');
+    }
+    
     /**
      * Cancel order iten
      */

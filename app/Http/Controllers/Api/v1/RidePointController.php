@@ -20,10 +20,10 @@ class RidePointController extends Controller
      */
     public function arrive(Request $request)
     {
-        $ridePoint = RidePoint::findOrFail($request->input('id'));
+        $ridepoint = RidePoint::findOrFail($request->input('id'));
         
-        if(!$ridePoint->arrivable()){
-            return $this->error(400, 120, "Ride Point not arrivable");
+        if(!$ridepoint->arrivable()){
+            return $this->error(400, 120, trans('messages.ridepoint.not.cancelable'));
         }
         
 		// 1- Set driver as arrived to the ride point

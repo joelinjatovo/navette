@@ -31,6 +31,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Listeners\ItemEventSubscriber',
         'App\Listeners\OrderEventSubscriber',
         'App\Listeners\RideEventSubscriber',
+        'App\Listeners\RidePointEventSubscriber',
         'App\Listeners\UserEventSubscriber',
     ];
 

@@ -23,7 +23,7 @@ class RidePoint extends Pivot
   
     const STATUS_ARRIVED = 'arrived';
     
-    const STATUS_ONLINE = 'online';
+    const STATUS_STARTED = 'started';
     
     const STATUS_COMPLETED = 'completed';
     

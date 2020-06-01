@@ -8,9 +8,6 @@ use App\Events\Ride\RideCompletable as RideCompletableEvent;
 use App\Events\Ride\RideCompleted as RideCompletedEvent;
 use App\Events\Ride\RideCreated as RideCreatedEvent;
 use App\Events\Ride\RideDeleted as RideDeletedEvent;
-use App\Events\Ride\RidePointAttached as RidePointAttachedEvent;
-use App\Events\Ride\RidePointCanceled as RidePointCanceledEvent;
-use App\Events\Ride\RidePointDetached as RidePointDetachedEvent;
 use App\Events\Ride\RideStarted as RideStartedEvent;
 
 use App\Notifications\RideCancelable as RideCancelableNotification;
@@ -19,9 +16,6 @@ use App\Notifications\RideCompletable as RideCompletableNotification;
 use App\Notifications\RideCompleted as RideCompletedNotification;
 use App\Notifications\RideCreated as RideCreatedNotification;
 use App\Notifications\RideDeleted as RideDeletedNotification;
-use App\Notifications\RidePointAttached as RidePointAttachedNotification;
-use App\Notifications\RidePointCanceled as RidePointCanceledNotification;
-use App\Notifications\RidePointDetached as RidePointDetachedNotification;
 use App\Notifications\RideStarted as RideStartedNotification;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -43,9 +37,6 @@ class RideEventSubscriber
         $events->listen(RideCompletedEvent::class, self::class .'@handle');
         $events->listen(RideCreatedEvent::class, self::class .'@handle');
         $events->listen(RideDeletedEvent::class, self::class .'@handle');
-        $events->listen(RidePointAttachedEvent::class, self::class .'@handle');
-        $events->listen(RidePointCanceledEvent::class, self::class .'@handle');
-        $events->listen(RidePointDetachedEvent::class, self::class .'@handle');
         $events->listen(RideStartedEvent::class, self::class .'@handle');
     }
     
@@ -53,7 +44,7 @@ class RideEventSubscriber
      * Hande events.
      */
     public function handle($event) {
-		if( !($ride = $event->ride) || !($driver = $item->driver) ){
+		if( !($ride = $event->ride) || !($driver = $ride->driver) ){
 			return;
 		}
 
@@ -75,15 +66,6 @@ class RideEventSubscriber
 			break;
 			case $event instanceof RideDeletedEvent:
 				$driver->notify(new RideDeletedNotification($ride));
-			break;
-			case $event instanceof RidePointAttachedEvent:
-				$driver->notify(new RidePointAttachedNotification($ride));
-			break;
-			case $event instanceof RidePointCanceledEvent:
-				$driver->notify(new RidePointCanceledNotification($ride));
-			break;
-			case $event instanceof RidePointDetachedEvent:
-				$driver->notify(new RidePointDetachedNotification($ride));
 			break;
 			case $event instanceof RideStartedEvent:
 				$driver->notify(new RideStartedNotification($ride));

@@ -89,7 +89,12 @@ class RideController extends Controller
     {
         $item = Item::findOrFail($request->input('id'));
 		
-		$ride->attach($item->point);
+		$ride->attachItem($item);
+		$item->setRide($ride);
+		$item->active();
+		if($item->order){
+			$item->order->active();
+		}
         
         return new RideItemResource($ride);
     }
@@ -166,17 +171,14 @@ class RideController extends Controller
 		
 		$points = $this->points()->wherePivot('status', RidePoint::STATUS_ONLINE)->get();
         foreach($points as $point){
-            $this->points()->updateExistingPivot($point->getKey(), [
-				'status' => RidePoint::STATUS_COMPLETED,
-				'completed_at' => now()
-			]);
+			$ride->completePoint($point);
 		}
 		
 		$items = $this->items()->where('items.status', Item::STATUS_ONLINE)->get();
 		foreach($items as $item){
 			$item->complete();
 			if($item->order){
-				$item->order->updateStatus();
+				$item->order->updateStatus(); // Check order status
 			}
 		}
         
