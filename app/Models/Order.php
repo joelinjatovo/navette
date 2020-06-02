@@ -174,20 +174,21 @@ class Order extends Model
 		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
 			->where('orders.club_id', '=', $this->club->id)
 			->where('orders.status', Order::STATUS_ACTIVE)
-			->whereIn('items.status', [Item::STATUS_PING, Item::STATUS_CANCELED, Item::STATUS_COMPLETED])
+			->whereNotIn('items.status', [Item::STATUS_PING, Item::STATUS_CANCELED, Item::STATUS_COMPLETED])
 			->with('ride')
 			->get();
 		
-		$rides = $items->reject(function ($item) use($max) {
-					$distance = $item->distance($this->items[0]);
-					return ($distance > $max) || !$item->ride;
-				})
-				->map(function ($item) {
-					return $item->ride;
-				})
-				->unique();
-		
-		dd($rides);
+		$ids = [];
+		$rides = [];
+		foreach($items as $item){
+			if(!$item->ride) continue;
+			if(in_array($item->ride->id, $ids)) continue;
+			$distance = $item->distance($this->items[0]);
+			if( $distance <= $max ) {
+				$rides[] = $item->ride;
+				$ids[] = $item->ride->id;
+			}
+		}
 		
         return $rides;
     }

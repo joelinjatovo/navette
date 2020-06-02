@@ -44,7 +44,7 @@ class Order extends JsonResource
             'items' => ItemSingle::collection($this->items),
 			
 			// Suggested rides
-			'rides' => $this->status == 'ping' ? RideSingle::collection($this->getSuggestedRides()) : [],
+			'rides' => RideSingle::collection($this->getSuggestedRides()),
         ];
     }
 }

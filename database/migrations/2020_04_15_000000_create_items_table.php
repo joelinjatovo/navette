@@ -18,6 +18,7 @@ class CreateItemsTable extends Migration
                 $table->id();
                 $table->string('type', 50)->default('go')->nullable();
                 $table->string('status', 50)->default('ping')->nullable();
+                $table->bigInteger('suggestion_count')->default(0);
                 $table->bigInteger('distance_value')->nullable();
                 $table->string('distance')->nullable();
                 $table->bigInteger('duration_value')->nullable();
