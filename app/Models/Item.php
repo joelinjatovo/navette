@@ -212,7 +212,7 @@ class Item extends Model
     /**
      * Get the ride points.
      */
-    public function ridePoints()
+    public function ridepoints()
     {
         return $this->hasMany(RidePoint::class, 'item_id', 'id');
     }

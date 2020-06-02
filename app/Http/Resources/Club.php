@@ -15,14 +15,12 @@ class Club extends JsonResource
     public function toArray($request)
     {
         return [
-            'club' => [
-                'id' => $this->id,
-                'name' => $this->name,
-                'created_at' => $this->created_at,
-                'image_url' => $this->image ? $this->image->url : null,
-            ],
+			'id' => $this->id,
+			'name' => $this->name,
+			'created_at' => $this->created_at,
+			'image_url' => $this->image ? $this->image->url : null,
             'point' => $this->point ? new Point($this->point) : null,
-            'cars' => Car::collection($this->cars),
+            //'cars' => Car::collection($this->cars),
         ];
     }
 }

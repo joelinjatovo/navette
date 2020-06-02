@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Ride extends JsonResource
+class RidePointSingle extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,25 +14,25 @@ class Ride extends JsonResource
      */
     public function toArray($request)
     {
+		/** 
+		* Ceci vient d'un objet du pivot RidePoint
+		*/
         return [
-			'id' => $this->id,
+			'rid' => $this->id,
+			'type' => $this->type,
 			'status' => $this->status,
-			'distance' => $this->distance,
-			'distance_value' => $this->distance_value,
+			'order' => $this->order,
 			'duration' => $this->duration,
 			'duration_value' => $this->duration_value,
+			'distance' => $this->distance,
+			'distance_value' => $this->distance_value,
 			'direction' => $this->direction,
+			'actived_at' => $this->actived_at,
+			'arrived_at' => $this->arrived_at,
 			'start_at' => $this->start_at,
 			'started_at' => $this->started_at,
 			'completed_at' => $this->completed_at,
 			'canceled_at' => $this->canceled_at,
-			'created_at' => $this->created_at,
-			'route' => is_array($this->route)?$this->route:json_decode($this->route),
-            'club' => ($this->car && $this->car->club ? new Club($this->car->club) : null),
-            'driver' => new User($this->driver),
-            'car' => new CarSingle($this->car),
-            'ridepoints' => RidePoint::collection($this->points),
-            'items' => ItemSingle::collection($this->items),
         ];
     }
 }

@@ -15,15 +15,13 @@ class Car extends JsonResource
     public function toArray($request)
     {
         return [
-            'car' => [
-                'id'   => $this->getKey(),
-                'name' => $this->name,
-                'year' => $this->year,
-                'place' => $this->place,
-                'image_url' => $this->image ? $this->image->url : null,
-            ],
-            'car_model' => $this->model ? new CarModel($this->model) : null,
-            'car_driver' => $this->driver ? new User($this->driver) : null,
+			'id'   => $this->getKey(),
+			'name' => $this->name,
+			'year' => $this->year,
+			'place' => $this->place,
+			'image_url' => $this->image ? $this->image->url : null,
+            'model' => $this->model ? new CarModel($this->model) : null,
+            'driver' => $this->driver ? new User($this->driver) : null,
         ];
     }
 }

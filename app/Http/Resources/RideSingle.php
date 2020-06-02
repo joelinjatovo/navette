@@ -15,11 +15,18 @@ class RideSingle extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'status' => $this->status,
-            'distance' => $this->distance,
-            'duration' => $this->duration,
-            'direction' => $this->direction,
+			'id' => $this->id,
+			'status' => $this->status,
+			'distance' => $this->distance,
+			'distance_value' => $this->distance_value,
+			'duration' => $this->duration,
+			'duration_value' => $this->duration_value,
+			'direction' => $this->direction,
+			'start_at' => $this->start_at,
+			'started_at' => $this->started_at,
+			'completed_at' => $this->completed_at,
+			'canceled_at' => $this->canceled_at,
+			'created_at' => $this->created_at,
         ];
     }
 }
