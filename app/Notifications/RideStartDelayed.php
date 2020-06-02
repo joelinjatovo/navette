@@ -7,7 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ItemDateForwarded extends BaseItemNotification
+class RideStartDelayed extends BaseRideNotification
 {
-	
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Item;
+namespace App\Events\Ride;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,19 +10,27 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ItemDateDelayed
+class RideStartDelayed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $item;
-    
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(\App\Models\Item $item)
+    public function __construct()
     {
-        $this->item = $item;
+        //
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return \Illuminate\Broadcasting\Channel|array
+     */
+    public function broadcastOn()
+    {
+        return new PrivateChannel('channel-name');
     }
 }

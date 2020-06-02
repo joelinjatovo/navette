@@ -9,6 +9,10 @@ use App\Events\Ride\RideCompleted as RideCompletedEvent;
 use App\Events\Ride\RideCreated as RideCreatedEvent;
 use App\Events\Ride\RideDeleted as RideDeletedEvent;
 use App\Events\Ride\RideStarted as RideStartedEvent;
+use App\Events\Ride\RideStartDelayed as RideStartDelayedEvent;
+use App\Events\Ride\RideStartForwarded as RideStartForwardedEvent;
+use App\Events\Ride\RideStartInited as RideStartInitedEvent;
+use App\Events\Ride\RideStartRefreshed as RideStartRefreshedEvent;
 
 use App\Notifications\RideCancelable as RideCancelableNotification;
 use App\Notifications\RideCanceled as RideCanceledNotification;
@@ -17,6 +21,10 @@ use App\Notifications\RideCompleted as RideCompletedNotification;
 use App\Notifications\RideCreated as RideCreatedNotification;
 use App\Notifications\RideDeleted as RideDeletedNotification;
 use App\Notifications\RideStarted as RideStartedNotification;
+use App\Notifications\RideStartDelayed as RideStartDelayedNotification;
+use App\Notifications\RideStartForwarded as RideStartForwardedNotification;
+use App\Notifications\RideStartInited as RideStartInitedNotification;
+use App\Notifications\RideStartRefreshed as RideStartRefreshedNotification;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -38,6 +46,10 @@ class RideEventSubscriber
         $events->listen(RideCreatedEvent::class, self::class .'@handle');
         $events->listen(RideDeletedEvent::class, self::class .'@handle');
         $events->listen(RideStartedEvent::class, self::class .'@handle');
+        $events->listen(RideStartDelayedEvent::class, self::class .'@handle');
+        $events->listen(RideStartForwardedEvent::class, self::class .'@handle');
+        $events->listen(RideStartInitedEvent::class, self::class .'@handle');
+        $events->listen(RideStartRefreshedEvent::class, self::class .'@handle');
     }
     
     /**
@@ -69,6 +81,18 @@ class RideEventSubscriber
 			break;
 			case $event instanceof RideStartedEvent:
 				$driver->notify(new RideStartedNotification($ride));
+			break;
+			case $event instanceof RideStartDelayedEvent:
+				$driver->notify(new RideStartDelayedNotification($ride));
+			break;
+			case $event instanceof RideStartForwardedEvent:
+				$driver->notify(new RideStartForwardedNotification($ride));
+			break;
+			case $event instanceof RideStartInitedEvent:
+				$driver->notify(new RideStartInitedNotification($ride));
+			break;
+			case $event instanceof RideStartRefreshedEvent:
+				$driver->notify(new RideStartRefreshedNotification($ride));
 			break;
 		}
     }

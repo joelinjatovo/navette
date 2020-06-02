@@ -5,10 +5,10 @@ namespace App\Models;
 use App\Events\Item\ItemActived;
 use App\Events\Item\ItemCanceled;
 use App\Events\Item\ItemCompleted;
-use App\Events\Item\ItemDateDelayed;
-use App\Events\Item\ItemDateForwarded;
-use App\Events\Item\ItemDateInited;
-use App\Events\Item\ItemDateRefreshed;
+use App\Events\Item\ItemStartDelayed;
+use App\Events\Item\ItemStartForwarded;
+use App\Events\Item\ItemStartInited;
+use App\Events\Item\ItemStartRefreshed;
 use App\Events\Item\ItemDeleted;
 use App\Events\Item\ItemDetached;
 use App\Events\Item\ItemDriverArrived;
@@ -64,10 +64,10 @@ class Item extends Model
         'completed' => ItemCompleted::class,
         'deleted' => ItemDeleted::class,
         'detached' => ItemDetached::class,
-        'date-delayed' => ItemDateDelayed::class,
-        'date-forwarded' => ItemDateForwarded::class,
-        'date-inited' => ItemDateInited::class,
-        'date-refreshed' => ItemDateRefreshed::class,
+        'start-delayed' => ItemStartDelayed::class,
+        'start-forwarded' => ItemStartForwarded::class,
+        'start-inited' => ItemStartInited::class,
+        'start-refreshed' => ItemStartRefreshed::class,
         'driver-arrived' => ItemDriverArrived::class,
         'nexted' => ItemNexted::class,
         'started' => ItemStarted::class,
@@ -115,8 +115,8 @@ class Item extends Model
     
     public function associateRide(Ride $ride)
     {
-		$this->driver()->associate($this->driver); // Set item's driver
-		$this->ride()->associate($this->ride); // Set item's ride
+		$this->driver()->associate($ride->driver); // Set item's driver
+		$this->ride()->associate($ride); // Set item's ride
 		$this->save();
 		
 		$this->fireModelEvent('ride-associated');
@@ -230,7 +230,7 @@ class Item extends Model
 		if($date==null){
 			$this->start_at = $date;
 			$this->save();
-			$this->fireModelEvent('date-refreshed');
+			$this->fireModelEvent('start-refreshed');
 			return;
 		}
 		
@@ -238,16 +238,16 @@ class Item extends Model
 			if($model->start_at->greaterThan($date)){
 				$this->start_at = $date;
         		$this->save();
-				$this->fireModelEvent('date-delayed');
+				$this->fireModelEvent('start-delayed');
 			}else{
 				$this->start_at = $date;
         		$this->save();
-				$this->fireModelEvent('date-forwarded');
+				$this->fireModelEvent('start-forwarded');
 			}
 		}else{
 			$this->start_at = $date;
         	$this->save();
-			$this->fireModelEvent('date-inited');
+			$this->fireModelEvent('start-inited');
 		}
     }
     

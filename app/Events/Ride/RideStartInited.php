@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Item;
+namespace App\Events\Ride;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ItemDateRefreshed
+class RideStartInited
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

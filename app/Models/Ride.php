@@ -10,6 +10,10 @@ use App\Events\Ride\RideCompleted;
 use App\Events\Ride\RideCreated;
 use App\Events\Ride\RideDeleted;
 use App\Events\Ride\RideStarted;
+use App\Events\Ride\RideStartDelayed;
+use App\Events\Ride\RideStartForwarded;
+use App\Events\Ride\RideStartInited;
+use App\Events\Ride\RideStartRefreshed;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -61,6 +65,10 @@ class Ride extends Model
         'completed' => RideCompleted::class,
         'deleted' => RideDeleted::class,
         'started' => RideStarted::class,
+        'start-delayed' => RideStartDelayed::class,
+        'start-forwarded' => RideStartForwarded::class,
+        'start-inited' => RideStartInited::class,
+        'start-refreshed' => RideStartRefreshed::class,
     ];
 
     /**
@@ -325,6 +333,35 @@ class Ride extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    /**
+     * Start the order item
+     */
+    public function setStartDate($date)
+    {
+		if($date==null){
+			$this->start_at = $date;
+			$this->save();
+			$this->fireModelEvent('start-refreshed');
+			return;
+		}
+		
+		if($this->start_at){
+			if($model->start_at->greaterThan($date)){
+				$this->start_at = $date;
+        		$this->save();
+				$this->fireModelEvent('start-delayed');
+			}else{
+				$this->start_at = $date;
+        		$this->save();
+				$this->fireModelEvent('start-forwarded');
+			}
+		}else{
+			$this->start_at = $date;
+        	$this->save();
+			$this->fireModelEvent('start-inited');
+		}
     }
     
     /**

@@ -2,9 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Events\ItemStatusChanged;
-use App\Events\OrderStatusChanged;
-use App\Events\RideStatusChanged;
 use App\Models\Car;
 use App\Models\Item;
 use App\Models\Order;
@@ -54,6 +51,10 @@ class RideProcessor implements ShouldQueue
 				$query->whereNull('items.ride_at');
 				$query->orWhere('items.ride_at', '<=', now()->addMinutes(30));
 			})
+			->with('user')
+			->with('order')
+			->with('order.car')
+			->with('order.car.driver')
 			->distinct('items.order_id')
 			->get();
 
@@ -83,7 +84,7 @@ class RideProcessor implements ShouldQueue
 				$count_go = $ride->items()->where('items.type', Item::TYPE_GO)->count();
 				
 				// Durée du trajet + Arret sur tous les point de ramassage + Arret sur le point de depart
-				$duration = $ride->duration + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
+				$duration = $ride->duration_value + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
 				$max_duration = 60 * 60; // Durée max 1 heure
 				
 				$place = 0;
@@ -100,15 +101,11 @@ class RideProcessor implements ShouldQueue
 					
 					$ride = new Ride();
 					$ride->status = Ride::STATUS_PING;
-					$ride->start_at = $start_date->addMinutes(5);
 					$ride->car()->associate($car);
 					$ride->driver()->associate($driver);
 					$ride->save();
-
-					$event_ride = new RideStatusChanged($ride, 'created', null, $ride->status);
-				}else{
-					// Ajouter le point à ce point
-					$event_ride = new RideStatusChanged($ride, 'updated', null, $ride->status);
+					
+					$ride->setStartDate($start_date->addMinutes(5));
 				}
 			}else{
 				$active_ride = $this->getActivedRide($item);
@@ -177,7 +174,7 @@ class RideProcessor implements ShouldQueue
 		if($item->order && $item->order->car){
         	$car = $item->order->car;
 			$query = Ride::where('car_id', $car->getKey());
-			$query->where('status', Ride::STATUS_ACTIVE);
+			$query->where('status', Ride::STATUS_STARTED);
 			return $query->first();
 		}
 		return null;

@@ -76,6 +76,14 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Check if user can pay per cash
+     */
+    public function canPayPerCash()
+    {
+        return true;
+    }
+    
+    /**
      * The cars drived that belong to the user.
      */
     public function car()

@@ -35,7 +35,12 @@ class RideController extends Controller
      * @return Response
      */
     public function index(Request $request){
-        return new RideCollection($request->user()->ridesDrived()->with('driver')->with('car')->orderBy('rides.created_at', 'desc')->paginate());
+		$models = $request->user()->ridesDrived()
+			->with('driver')
+			->with('car')
+			->orderBy('rides.created_at', 'desc')
+			->paginate();
+        return new RideCollection($models);
     }
     
     /**
@@ -137,15 +142,14 @@ class RideController extends Controller
         
         $ride->cancel();
 		
-		$points = $this->points()->wherePivotNotIn('status', [RidePoint::STATUS_CANCELED, RidePoint::STATUS_COMPLETED])->get();
+		$points = $ride->points()->wherePivotNotIn('status', [RidePoint::STATUS_CANCELED, RidePoint::STATUS_COMPLETED])->get();
         foreach($points as $point){
 			$point->pivot->detach();
 		}
 		
-		$status = [Item::STATUS_CANCELED, Item::STATUS_COMPLETED];
 		// List of items can be detached
-		$items = $this->items()->whereNotIn('items.status', $status)->get();
-		forach($items as $item){
+		$items = $ride->items()->whereNotIn('items.status', [Item::STATUS_CANCELED, Item::STATUS_COMPLETED])->get();
+		foreach($items as $item){
 			$item->detach();
 			$item->setStartAt(null);
 			
@@ -171,12 +175,12 @@ class RideController extends Controller
         
         $ride->complete();
 		
-		$points = $this->points()->wherePivot('status', RidePoint::STATUS_STARTED)->get();
+		$points = $ride->points()->wherePivot('status', RidePoint::STATUS_STARTED)->get();
         foreach($points as $point){
 			$point->pivot->complete();
 		}
 		
-		$items = $this->items()->where('items.status', Item::STATUS_STARTED)->get();
+		$items = $ride->items()->where('items.status', Item::STATUS_STARTED)->get();
 		foreach($items as $item){
 			$item->complete();
 			if($item->order){
