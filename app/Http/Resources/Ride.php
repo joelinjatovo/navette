@@ -27,7 +27,6 @@ class Ride extends JsonResource
 			'completed_at' => $this->completed_at,
 			'canceled_at' => $this->canceled_at,
 			'created_at' => $this->created_at,
-			'route' => is_array($this->route)?$this->route:json_decode($this->route),
             'club' => ($this->car && $this->car->club ? new Club($this->car->club) : null),
             'driver' => new User($this->driver),
             'car' => new CarSingle($this->car),

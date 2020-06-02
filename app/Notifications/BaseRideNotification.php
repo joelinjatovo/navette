@@ -36,5 +36,16 @@ class BaseRideNotification extends Notification
     {
         return ['database', 'broadcast'];
     }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toArray($notifiable)
+    {
+        return $this->ride->attributesToArray();
+    }
         
 }

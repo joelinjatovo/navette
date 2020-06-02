@@ -37,7 +37,8 @@ class OrderController extends Controller
      * @return Response
      */
     public function index(Request $request){
-        return new OrderCollection($request->user()->orders()->orderBy('created_at', 'desc')->paginate());
+		$models = $request->user()->orders()->orderBy('created_at', 'desc')->paginate();
+        return new OrderCollection($models);
     }
 
     /**

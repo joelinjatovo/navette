@@ -98,7 +98,7 @@ class Item extends Model
         $this->actived_at = now();
         $this->save();
 		
-		$this->fireModelEvent('actived');
+		//$this->fireModelEvent('actived');
     }
     
     /**

@@ -45,7 +45,7 @@ class BaseOrderNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->order->toArray();
+        return $this->order->attributesToArray();
     }
         
 }

@@ -51,16 +51,13 @@ class RideProcessor implements ShouldQueue
 				$query->whereNull('items.ride_at');
 				$query->orWhere('items.ride_at', '<=', now()->addMinutes(30));
 			})
-			->with('user')
-			->with('order')
-			->with('order.car')
-			->with('order.car.driver')
 			->distinct('items.order_id')
 			->get();
 
 		foreach($items as $item){
 			$this->performTask($item);
 		}
+		
     }
 	
     /**
@@ -77,70 +74,92 @@ class RideProcessor implements ShouldQueue
 			$driver = $item->order->car->driver;
 			$user = $item->user;
 			
-			// Attach this item to the ride
-			$ride = $this->getPingedRide($item);
-			if($ride){
-				$count_back = $ride->items()->where('items.type', Item::TYPE_BACK)->count();
-				$count_go = $ride->items()->where('items.type', Item::TYPE_GO)->count();
-				
-				// Durée du trajet + Arret sur tous les point de ramassage + Arret sur le point de depart
-				$duration = $ride->duration_value + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
-				$max_duration = 60 * 60; // Durée max 1 heure
-				
-				$place = 0;
-				foreach($ride->items as $_item){
-					if($_item->order){
-						$place += $_item->order->place;
-					}
-				}
-				$max_place = $car->place;
-				
-				if(($duration > $max_duration) || ($place + $order->place > $max_place)){
-					// Durée du trajet depassé ou nombre de place atteint
-					$start_date = $ride->start_at ? $ride->start_at->addSeconds($duration) : now()->addSeconds($duration); // Course après cette course en attente
-					
-					$ride = new Ride();
-					$ride->status = Ride::STATUS_PING;
-					$ride->car()->associate($car);
-					$ride->driver()->associate($driver);
-					$ride->save();
-					
-					$ride->setStartDate($start_date->addMinutes(5));
-				}
-			}else{
-				$active_ride = $this->getActivedRide($item);
-				if($active_ride){
-					// Duree du trajet + Arret sur tous les point de ramassage + Arret sur le point de depart
-					$count_back = $active_ride->items()->where('items.type', Item::TYPE_BACK)->count();
-					$count_go = $active_ride->items()->where('items.type', Item::TYPE_GO)->count();
-				
-					$duration = $active_ride->duration  + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
-					$start_date = $active_ride->started_at->addSeconds($duration);
-				}else{
-					// Aucune course active
-					$start_date = now();
-				}
-
-				// Created new ride
-				$ride = new Ride();
-				$ride->status = Ride::STATUS_PING;
-				$ride->start_at = $start_date->addMinutes(5);
-				$ride->car()->associate($car);
-				$ride->driver()->associate($driver);
-				$ride->save();
-				
-				$event_ride = new RideStatusChanged($ride, 'created', null, $ride->status);
-			}
+			$ride = $this->getOrCreateRide($item);
 			
 			// Attach the item's order point to the ride
-			$ride->attach($item);
+			$ride->attachRidePoint($item);
+			$item->associateRide($ride); // Set item ride
+			$item->active(); // Active item
+			if($item->order){
+				$item->order->active(); // Active order
+			}
 			
 			$ride->verifyDirection($this->google);
 			
-			// Triger events
-			event($event_ride);
 		}
     }
+
+    /**
+     * Get or Create ride
+     *
+     * @Param App\Models\Item $item
+     * @return App\Models\Ride
+     */
+    protected function getOrCreateRide($item)
+	{
+		$order = $item->order;
+		$car = $item->order->car;
+		$driver = $item->order->car->driver;
+		$user = $item->user;
+			
+		// Attach this item to the ride
+		$ride = $this->getPingedRide($item);
+		if($ride){
+			$count_back = $ride->items()->where('items.type', Item::TYPE_BACK)->count();
+			$count_go = $ride->items()->where('items.type', Item::TYPE_GO)->count();
+
+			// Durée du trajet + Arret sur tous les point de ramassage + Arret sur le point de depart
+			$duration = $ride->duration_value + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
+			$max_duration = 60 * 60; // Durée max 1 heure
+
+			$place = 0;
+			foreach($ride->items as $_item){
+				if($_item->order){
+					$place += $_item->order->place;
+				}
+			}
+			$max_place = $car->place;
+
+			if(($duration > $max_duration) || ($place + $order->place > $max_place)){
+				// Durée du trajet depassé ou nombre de place atteint
+				$start_date = $ride->start_at ? $ride->start_at->addSeconds($duration) : now()->addSeconds($duration); // Course après cette course en attente
+
+				$ride = new Ride();
+				$ride->status = Ride::STATUS_PING;
+				$ride->car()->associate($car);
+				$ride->driver()->associate($driver);
+				$ride->save();
+
+				$ride->setStartDate($start_date->addMinutes(5));
+			}
+		}else{
+			$active_ride = $this->getStartedRide($item);
+			if($active_ride){
+				// Duree du trajet + Arret sur tous les point de ramassage + Arret sur le point de depart
+				$count_back = $active_ride->items()->where('items.type', Item::TYPE_BACK)->count();
+				$count_go = $active_ride->items()->where('items.type', Item::TYPE_GO)->count();
+
+				$duration = $active_ride->duration  + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
+				$start_date = $active_ride->started_at->addSeconds($duration);
+			}else{
+				// Aucune course active
+				$start_date = now();
+			}
+
+			// Created new ride
+			$ride = new Ride();
+			$ride->status = Ride::STATUS_PING;
+			$ride->car()->associate($car);
+			$ride->driver()->associate($driver);
+			$ride->save();
+
+			// Notify date de debut
+			$ride->setStartDate($start_date->addMinutes(5));
+		}
+		
+		return $ride;
+		
+	}
 
     /**
      * Get pinged ride
@@ -169,7 +188,7 @@ class RideProcessor implements ShouldQueue
      * @Param App\Models\Item $item
      * @return mixed
      */
-    protected function getActivedRide($item)
+    protected function getStartedRide($item)
     {
 		if($item->order && $item->order->car){
         	$car = $item->order->car;
@@ -190,6 +209,7 @@ class RideProcessor implements ShouldQueue
     {
         // Send user notification of failure, etc...
 		info('Send user notification of failure...' . $exception->getMessage());
+		info($exception);
     }
 	
 	

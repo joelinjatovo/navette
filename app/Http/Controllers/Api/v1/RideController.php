@@ -53,7 +53,10 @@ class RideController extends Controller
      */
     public function show(Request $request, Ride $ride)
     {
-        return new RideItemResource($ride);
+        return (new RideItemResource($ride))
+				->additional([
+					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
+				]);
     }
     
     /**
@@ -95,13 +98,16 @@ class RideController extends Controller
         $item = Item::findOrFail($request->input('id'));
 		
 		$ride->attachRidePoint($item);
-		$item->setRide($ride);
+		$item->associateRide($ride);
 		$item->active();
 		if($item->order){
 			$item->order->active();
 		}
-        
-        return new RideItemResource($ride);
+		
+        return (new RideItemResour0ce($ride))
+				->additional([
+					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
+				]);
     }
     
     /**
@@ -157,8 +163,11 @@ class RideController extends Controller
 				$item->order->ok();
 			}
 		}
-        
-        return new RideItemResource($ride);
+		
+        return (new RideItemResource($ride))
+				->additional([
+					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
+				]);
     }
     
     /**
@@ -188,7 +197,10 @@ class RideController extends Controller
 			}
 		}
         
-        return new RideItemResource($ride);
+        return (new RideItemResource($ride))
+				->additional([
+					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
+				]);
     }
     
     /**
@@ -214,6 +226,9 @@ class RideController extends Controller
         
         $ride->getNextPoint();
         
-        return new RideItemResource($ride);
+        return (new RideItemResource($ride))
+				->additional([
+					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
+				]);
     }
 }
