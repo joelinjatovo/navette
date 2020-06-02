@@ -23,7 +23,7 @@ class RidePointController extends Controller
         $ridepoint = RidePoint::findOrFail($request->input('id'));
         
         if(!$ridepoint->isArrivable()){
-            return $this->error(400, 120, trans('messages.ridepoint.not.cancelable'));
+            return $this->error(400, 120, trans('messages.ridepoint.not.arrivable'));
         }
         
         $ridepoint->arrive();

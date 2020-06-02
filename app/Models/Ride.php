@@ -88,18 +88,6 @@ class Ride extends Model
     }
     
     /**
-     * Mark ride as active
-     */
-    public function active()
-    {
-        $this->status = self::STATUS_ACTIVE;
-        $this->started_at = now();
-        $this->save();
-		
-        $this->fireModelEvent('actived');
-    }
-    
-    /**
      * Attach point to the ride
      */
     public function attachRidePoint(Item $item)
@@ -248,7 +236,7 @@ class Ride extends Model
             // Check if car is not disponible
             $active_ride = $car->rides()
                 ->where('id', '!=', $this->getKey())
-                ->where('status', self::STATUS_ACTIVE)
+                ->where('status', self::STATUS_STARTED)
                 ->first();
             if($active_ride){
                 return false;

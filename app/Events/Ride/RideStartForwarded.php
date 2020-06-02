@@ -14,23 +14,15 @@ class RideStartForwarded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $ride;
+    
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(\App\Models\Ride $ride)
     {
-        //
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
+        $this->ride = $ride;
     }
 }
