@@ -157,6 +157,18 @@ class Item extends Model
 		
 		$this->fireModelEvent('detached');
     }
+	
+	/**
+    * Titre : Calcul la distance entre 2 points en km                                                                                         
+	*/
+	function distance(Item $item, $unit = 'km', $decimals = 2) 
+	{
+		if(!$this->point) return 0;
+		
+		if(!$item->point) return 0;
+		
+		return $this->point->distance($item->point, $unit, $decimals);
+	}
     
     /**
      * Get the driver that owns the order.

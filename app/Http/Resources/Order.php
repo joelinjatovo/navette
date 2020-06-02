@@ -42,6 +42,9 @@ class Order extends JsonResource
             'car' => new Car($this->car),
 			
             'items' => ItemSingle::collection($this->items),
+			
+			// Suggested rides
+			'rides' => $this->status == 'ping' ? RideSingle::collection($this->getSuggestedRides()) : [],
         ];
     }
 }

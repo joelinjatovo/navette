@@ -161,6 +161,38 @@ class Order extends Model
     }
     
     /**
+     * Get suggested rides
+     */
+    public function getSuggestedRides($max = 5)
+    {
+		/*
+		if( !$this->club || !is_array($this->items) || !isset($this->items[0]) ){
+			return [];
+		}
+		*/
+		
+		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
+			->where('orders.club_id', '=', $this->club->id)
+			->where('orders.status', Order::STATUS_ACTIVE)
+			->whereIn('items.status', [Item::STATUS_PING, Item::STATUS_CANCELED, Item::STATUS_COMPLETED])
+			->with('ride')
+			->get();
+		
+		$rides = $items->reject(function ($item) use($max) {
+					$distance = $item->distance($this->items[0]);
+					return ($distance > $max) || !$item->ride;
+				})
+				->map(function ($item) {
+					return $item->ride;
+				})
+				->unique();
+		
+		dd($rides);
+		
+        return $rides;
+    }
+    
+    /**
      * Get the order items
      */
     public function items()
