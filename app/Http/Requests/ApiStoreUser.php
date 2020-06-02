@@ -26,7 +26,7 @@ class ApiStoreUser extends FormRequest
         return [
             'name' => 'nullable|string|max:255',
             'phone' => 'nullable|numeric|unique:users',
-            'password' => 'nullable|string|max:32',
+            'password' => 'nullable|string|min:4|max:32',
             'email' => 'nullable|email|unique:users',
         ];
     }
