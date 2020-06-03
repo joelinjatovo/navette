@@ -36,10 +36,10 @@ class RideController extends Controller
      */
     public function index(Request $request){
 		$models = $request->user()->ridesDrived()
-			->with('driver')
-			->with('car')
-			->orderBy('rides.created_at', 'desc')
-			->paginate();
+						->with('driver')
+						->with('car')
+						->orderBy('rides.created_at', 'desc')
+						->paginate();
         return new RideCollection($models);
     }
     
@@ -123,7 +123,7 @@ class RideController extends Controller
         $ride = Ride::findOrFail($request->input('id'));
         
         if(!$ride->isStartable()){
-            return $this->error(400, 112, trans('messages.ride.not.startable'));
+            return $this->error(400, 4004, trans('messages.ride.not.startable'));
         }
         
         $ride->start();
@@ -143,7 +143,7 @@ class RideController extends Controller
         $ride = Ride::findOrFail($request->input('id'));
         
         if(!$ride->isCancelable()){
-            return $this->error(400, 113, trans('messages.ride.not.cancelable'));
+            return $this->error(400, 4003, trans('messages.ride.not.cancelable'));
         }
         
         $ride->cancel();
@@ -217,11 +217,11 @@ class RideController extends Controller
         
         $points = $ride->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->get();
         if(empty($points)){
-            return $this->error(400, 114, trans('messages.no.route.items.found'));
+            return $this->error(400, 4005, trans('messages.no.items.found'));
         }
         
         if(!$ride->verifyDirection($this->google)){
-            return $this->error(400, 115, trans('messages.no.route.found'));
+            return $this->error(400, 4006, trans('messages.no.route.found'));
         }
         
         $ride->getNextPoint();

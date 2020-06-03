@@ -24,10 +24,9 @@ class TokenController extends Controller
     public function create(Request $request, TokenRepository $repository)
     {
         $credentials = $request->only('phone', 'password');
-        $credentials['active'] = 1;
         
         if( ! Auth::attempt($credentials) ) {
-            return $this->error(400, 100, "Bad Credentials");
+            return $this->error(400, 1000, trans('messages.bad.credentials'));
         }
         
         $user = Auth::user();
@@ -58,7 +57,7 @@ class TokenController extends Controller
             return (new AccessTokenResource($token));
         }
         
-        return $this->error(400, 110, "Invalid Refresh Token");
+        return $this->error(400, 1001, trans('messages.invalid.access.token'));
     }
 
     /**
@@ -71,10 +70,11 @@ class TokenController extends Controller
     {
         Auth::logout();
         
-        /**
-        * @TODO Remove access token
-        */
+        $token = app('api_token');
+		if($token){
+			$token->delete();
+		}
         
-        return response()->success(200, "Success Logout");
+        return response()->success(200, trans('messages.logged.out'));
     }
 }

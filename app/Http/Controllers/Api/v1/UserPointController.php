@@ -31,6 +31,6 @@ class UserPointController extends Controller
         
         event(new \App\Events\UserPointCreated($user, $point));
         
-        return $this->success(200, "Position created");
+        return $this->success(200, trans('messages.position.created'));
     }
 }

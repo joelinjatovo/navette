@@ -20,13 +20,4 @@ class ClubController extends Controller
     public function index(){
         return new ClubCollection(Club::paginate());
     }
-    
-    /**
-     * Paginate cars
-     *
-     * @return Response
-     */
-    public function cars(Club $club){
-        return new CarCollection($club->cars()->paginate());
-    }
 }

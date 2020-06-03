@@ -111,13 +111,7 @@ class StripeController extends Controller
 				   && ($order->status == Order::STATUS_ON_HOLD)){
 					 // Set as paid
 					$order->status = Order::STATUS_OK;
-					$order->payment_status = Order::PAYMENT_STATUS_SUCCEEDED;
-					$order->paid_at = now();
-					$order->save();
-					
-					if($order->user){
-						$order->user->notify(new \App\Notifications\PaymentStatus('paid', trans('Carte Bancaire'), $order));
-					}
+					$order->paidPer(Order::PAYMENT_TYPE_STRIPE);
 				}
 			}
 		}
@@ -138,10 +132,6 @@ class StripeController extends Controller
 					 // Set as failed
 					$order->payment_status = Order::PAYMENT_STATUS_FAILED;
 					$order->save();
-					
-					if($order->user){
-						$order->user->notify(new \App\Notifications\PaymentStatus('failed', trans('Carte Bancaire'), $order));
-					}
 				}
 			}
 		}

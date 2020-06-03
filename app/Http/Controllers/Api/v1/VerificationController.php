@@ -28,11 +28,11 @@ class VerificationController extends Controller
         $user = $request->user();
         
         if (!$user->isValidCode($request->input('code'))){
-            return $this->error(400, 108, "Invalid Verification Code");
+            return $this->error(400, 1100, trans('messages.invalid.verification.code'));
         }
 
         if ($user->hasVerifiedPhone()) {
-            return $this->error(400, 109, "Phone Already Verified");
+            return $this->error(400, 1101, trans('messages.phone.verified'));
         }
 
         if ($user->markPhoneAsVerified()) {
@@ -60,6 +60,6 @@ class VerificationController extends Controller
 
         $user->sendPhoneVerificationNotification();
 
-        return $this->success(200, "Verification Code Sent");
+        return $this->success(200, trans('messages.verification.code.sent'));
     }
 }

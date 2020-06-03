@@ -48,8 +48,6 @@ class FacebookController extends Controller
                 $user->roles()->save($role);
             }
             
-            //$user->sendPasswordNotification();
-        
             $user->sendPhoneVerificationNotification();
 
             event(new Registered($user));

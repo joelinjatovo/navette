@@ -18,18 +18,27 @@ class CashController extends Controller
      */
     public function pay(Request $request)
     {
-        $order = Order::with('items')
-			->with('items.point')
-			->with('user')
-			->with('club')
-			->with('car')
-			->with('car.model')
-			->with('car.driver')
-			->findOrFail($request->input('id'));
+        $order = Order::findOrFail($request->input('id'));
         
         $order->status = Order::STATUS_OK;
         $order->payment_type = Order::PAYMENT_TYPE_CASH;
         $order->save();
+        
+        return new OrderItemResource($order);
+    }
+	
+    /**
+     * Confirm order per cash
+     *
+     * @param  Request  $type
+     * @param  String  $zone
+     * @return Response
+     */
+    public function confirm(Request $request)
+    {
+        $order = Order::findOrFail($request->input('id'));
+    	
+        $order->paidPer(Order::PAYMENT_TYPE_CASH);
         
         return new OrderItemResource($order);
     }

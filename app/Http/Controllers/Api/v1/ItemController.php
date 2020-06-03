@@ -36,7 +36,7 @@ class ItemController extends Controller
         $item = Item::findOrFail($request->input('id'));
         
         if(!$item->isCancelable()){
-            return $this->error(400, 119, trans('messages.item.not.cancelable'));
+            return $this->error(400, 3003, trans('messages.item.not.cancelable'));
         }
         
         $item->cancel();

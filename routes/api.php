@@ -28,10 +28,10 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
     Route::post('token', 'TokenController@create')->name('token');
     Route::post('token/refresh', 'TokenController@refresh')->name('token.refresh');
     Route::post('register', 'UserController@store')->name('user.create');
-    Route::get('clubs', 'ClubController@index')->name('clubs');
-    Route::get('club/{club}/cars', 'ClubController@cars')->name('club.cars');
     Route::post('facebook/connect', 'FacebookController@connect')->name('facebook.connect');
-    Route::post('cart', 'OrderController@cart')->name('order.cart');
+	
+	Route::get('clubs', 'ClubController@index')->name('clubs');
+	Route::post('cart', 'OrderController@cart')->name('order.cart');
     Route::middleware('auth:api')->group(function () {
         Route::post('logout', 'TokenController@logout')->name('logout');
         Route::post('verify', 'VerificationController@verify')->name('verification.verify');

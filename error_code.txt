@@ -4,12 +4,32 @@
 103: HttpException
 104: Autres
 
+Auth && Token
+1000: messages.bad.credentials
+1001: messages.invalid.access.token
+
+1100: messages.invalid.verification.code
+1101: messages.phone.verified
+
 Order
 2000: messages.club.no.point
 2001: messages.no.route.found
 2002: messages.no.zone.found
 2003: messages.order.not.cancelable
 
+Item
+3003: messages.item.not.cancelable
+
+Ride
+4003: messages.ride.not.cancelable
+4004: messages.ride.not.startable
+4005: messages.no.items.found
+4006: messages.no.route.found
+
+RideItem
+5002: messages.rideitem.not.arrivable
+5003: messages.rideitem.not.cancelable
+5004: messages.rideitem.not.pickable.or.dropable
 
 105: Invalid Club Position
 106: Invalid Distance Between User Position and Club

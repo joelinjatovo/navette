@@ -250,7 +250,6 @@ class Order extends Model
 	 */
     public function paidPer($payment_type)
     {
-        $this->status = self::STATUS_OK;
         $this->payment_status = self::PAYMENT_STATUS_SUCCEEDED;
         $this->payment_type = $payment_type;
         $this->paid_at = now();
