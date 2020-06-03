@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ClubSingle extends JsonResource
+class RideRes extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,11 @@ class ClubSingle extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'created_at' => $this->created_at,
-            'image_url' => $this->image ? $this->image->url : null,
+            'status' => 200,
+            'code' => 0,
+            'message' => null,
+            'errors' => [],
+            'data' => new Ride($this)
         ];
     }
 }

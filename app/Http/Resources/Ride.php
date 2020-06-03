@@ -30,8 +30,7 @@ class Ride extends JsonResource
             'club' => ($this->car && $this->car->club ? new Club($this->car->club) : null),
             'driver' => new User($this->driver),
             'car' => new CarSingle($this->car),
-            'ridepoints' => RidePoint::collection($this->points),
-            'items' => ItemSingle::collection($this->items),
+            'items' => ItemRaw::collection($this->items),
         ];
     }
 }

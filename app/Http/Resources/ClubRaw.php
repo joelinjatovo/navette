@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserItem extends JsonResource
+class ClubRaw extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +15,11 @@ class UserItem extends JsonResource
     public function toArray($request)
     {
         return [
-            'status' => 200,
-            'code' => 0,
-            'message' => null,
-            'errors' => [],
-            'data' => new User($this)
+            'id' => $this->id,
+            'name' => $this->name,
+            'created_at' => $this->created_at,
+            'image_url' => $this->image ? $this->image->url : null,,
+			'note' => 5,
         ];
     }
 }

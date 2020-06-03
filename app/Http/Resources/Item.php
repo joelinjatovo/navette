@@ -34,7 +34,7 @@ class Item extends JsonResource
 			'created_at' => $this->created_at,
             'point' => new Point($this->point),
             'order' => new OrderSingle($this->order),
-			'rides' => [],
+			'rides' => RideRaw::collection($this->rides),
 			'suggestions' => [],
         ];
     }

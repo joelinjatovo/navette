@@ -17,10 +17,11 @@ class Club extends JsonResource
         return [
 			'id' => $this->id,
 			'name' => $this->name,
+			'description' => $this->description,
 			'created_at' => $this->created_at,
 			'image_url' => $this->image ? $this->image->url : null,
-            'point' => $this->point ? new Point($this->point) : null,
-            //'cars' => Car::collection($this->cars),
+            'point' => new Point($this->point),
+			'note' => 5,
         ];
     }
 }

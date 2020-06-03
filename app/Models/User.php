@@ -200,7 +200,7 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function points()
     {
-        return $this->hasMany(Point::class, 'role_user');
+        return $this->hasMany(Point::class, 'user_id');
     }
     
     /**

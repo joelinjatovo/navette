@@ -17,12 +17,6 @@ class AccessToken extends JsonResource
     {
         $data = [];
         if( null != $this->user ) {
-            
-            $roles = [];
-            foreach($this->user->roles as $role){
-                $roles[] = $role->name;
-            }
-
             $data = [
                 'id' => $this->user->getKey(),
                 'facebook_id' => $this->user->facebook_id,
@@ -32,7 +26,7 @@ class AccessToken extends JsonResource
                 'locale' => $this->user->locale,
                 'verified' => $this->user->hasVerifiedPhone(),
                 'image_url' => $this->user->image ? $this->user->image->url : null,
-                'roles' => $roles
+                'roles' => RoleRaw::collection($this->user->roles),
             ];
         }
         

@@ -37,7 +37,7 @@ class Order extends JsonResource
 			'created_at' => $this->created_at,
             'user' => new User($this->user),
             'club' => new Club($this->club),
-            'items' => ItemSingle::collection($this->items),
+            'items' => ItemRaw::collection($this->items),
         ];
     }
 }

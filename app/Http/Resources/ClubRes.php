@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ItemItem extends JsonResource
+class ClubRes extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,7 +19,7 @@ class ItemItem extends JsonResource
             'code' => 0,
             'message' => null,
             'errors' => [],
-            'data' => new Item($this)
+            'data' => new Club($this)
         ];
     }
 }

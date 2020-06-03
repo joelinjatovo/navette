@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderSingle extends JsonResource
+class OrderRaw extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -35,14 +35,9 @@ class OrderSingle extends JsonResource
 			'canceled_at' => $this->canceled_at,
 			'completed_at' => $this->completed_at,
 			'created_at' => $this->created_at,
-  
 			'user' => new User($this->user),
-			
             'club' => new Club($this->club),
-			
             'car' => new Car($this->car),
-			
-            //'items' => ItemSingle::collection($this->items),
         ];
     }
 }
