@@ -3,6 +3,14 @@
 102: ValidationException
 103: HttpException
 104: Autres
+
+Order
+2000: messages.club.no.point
+2001: messages.no.route.found
+2002: messages.no.zone.found
+2003: messages.order.not.cancelable
+
+
 105: Invalid Club Position
 106: Invalid Distance Between User Position and Club
 107: No Zone Found

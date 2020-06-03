@@ -32,21 +32,10 @@ class Item extends JsonResource
 			'canceled_at' => $this->canceled_at,
 			'completed_at' => $this->completed_at,
 			'created_at' => $this->created_at,
-			
-			// The item point
             'point' => new Point($this->point),
-			
-			// The item order
             'order' => new OrderSingle($this->order),
-			
-			// The ride assigned to this item
-            'ride' => new RideSingle($this->ride),
-			
-			// And his driver
-            'driver' => new User($this->driver),
-			
-			// The related ride points
-            'ridepoints' => RidePointSingle::collection($this->ridepoints),
+			'rides' => [],
+			'suggestions' => [],
         ];
     }
 }

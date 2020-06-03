@@ -59,10 +59,8 @@ class OrderController extends Controller
     public function cart(Request $request)
     {
         $club = Club::findOrFail($request->input('order.club_id'));
-        $car = Car::find($request->input('order.car_id'));
-        
         if( null === $club->point ) {
-            return $this->error(400, 105, "Club Without Position");
+            return $this->error(400, 2000, trans('messages.club.no.point'));
         }
         
         $order = new Order($request->input('order'));
@@ -73,21 +71,19 @@ class OrderController extends Controller
         $distance = 0;
         $values = $request->input('items');
         foreach($values as $value){
-            if(isset($value['item']) && $value['item']){
-                $item = new Item($value['item']);
-                $distance += (int) $item->distance_value;
-				$item_count++;
-            }
+			$item = new Item($value['item']);
+			$distance += (int) $item->distance_value;
+			$item_count++;
         }
         
         if($distance == 0){
-            return $this->error(400, 106, "Invalid Distance Between User Position And Club");
+            return $this->error(400, 2001, trans('messages.no.route.found'));
         }
         
         $distance = ($item_count > 0 ? (int) ( $distance / $item_count ) : $distance );
         $zone = Zone::findByDistance($distance);
         if(null == $zone){
-            return $this->error(400, 107, "No Zone Found");
+            return $this->error(400, 2002, trans('messages.no.zone.found'));
         }
         $order->distance = $distance;
         $order->setZone($zone);
@@ -104,27 +100,25 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $club = Club::findOrFail($request->input('order.club_id'));
-        $car = Car::find($request->input('order.car_id'));
         
         if( null === $club->point ) {
-            return $this->error(400, 105, "Club Without Position");
+            return $this->error(400, 2000, trans('messages.club.no.point'));
         }
         
         $order = new Order($request->input('order'));
         $order->status = Order::STATUS_PING;
         $order->setVat(0);
         $order->club()->associate($club);
-        if($car) $order->car()->associate($car);
         $order->save();
         
         $distance = 0;
         $values = $request->input('items');
         foreach($values as $value){
-            if(isset($value['point']) && isset($value['item'])){
+            if(isset($value['point'])){
                 $point = new Point($value['point']);
                 $point->save();
 
-                $item = new Item($value['item']);
+                $item = new Item($value);
                 $item->point()->associate($point);
                 $item->order()->associate($order);
                 $item->save();
@@ -134,13 +128,13 @@ class OrderController extends Controller
         }
         
         if($distance == 0){
-            return $this->error(400, 106, "Invalid Distance Between User Position And Club");
+            return $this->error(400, 2001, trans('messages.no.route.found'));
         }
         
         $distance = (int) ( $distance / 2 );
         $zone = Zone::findByDistance($distance);
         if(null == $zone){
-            return $this->error(400, 107, "No Zone Found");
+            return $this->error(400, 2002, trans('messages.no.zone.found'));
         }
         $order->distance = $distance;
         $order->setZone($zone);
@@ -161,7 +155,7 @@ class OrderController extends Controller
         $order = Order::findOrFail($request->input('id'));
 
         if(!$order->isCancelable()){
-            return $this->error(400, 111, "Order not cancelable");
+            return $this->error(400, 2003, trans('messages.order.not.cancelable'));
         }
         
         $order->cancel($request->user());

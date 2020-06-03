@@ -36,15 +36,8 @@ class Order extends JsonResource
 			'completed_at' => $this->completed_at,
 			'created_at' => $this->created_at,
             'user' => new User($this->user),
-			
             'club' => new Club($this->club),
-			
-            'car' => new Car($this->car),
-			
             'items' => ItemSingle::collection($this->items),
-			
-			// Suggested rides
-			'rides' => RideSingle::collection($this->getSuggestedRides()),
         ];
     }
 }
