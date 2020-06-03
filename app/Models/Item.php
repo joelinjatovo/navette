@@ -198,7 +198,7 @@ class Item extends Model
     public function rides()
     {
         return $this->belongsToMany(Ride::class, 'ride_item')
-                    ->using(RidePoint::class)
+                    ->using(RideItem::class)
                     ->withPivot([
                         'id', 
                         'status', 
@@ -216,6 +216,14 @@ class Item extends Model
 						'canceled_at',
 						'completed_at',
                     ])->orderBy('order', 'asc');
+    }
+    
+    /**
+     * Get the ride items that owns the item.
+     */
+    public function rideitems()
+    {
+        return $this->hasMany(RideItem::class, 'item_id')->with('ride');
     }
     
     public function setRideAtAttribute($value)

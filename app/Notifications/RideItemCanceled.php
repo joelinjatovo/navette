@@ -7,6 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RidePointStarted extends BaseRidePointNotification
+class RideItemCanceled extends BaseRidePointNotification
 {
 }

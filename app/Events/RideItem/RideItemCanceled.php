@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\RidePoint;
+namespace App\Events\RideItem;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,19 +10,20 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class RidePointDriverArrived
+class RideItemCanceled
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $ridepoint;
+    public $rideitem;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(\App\Models\RidePoint $ridepoint)
+    public function __construct(\App\Models\RideItem $rideitem)
     {
-        $this->ridepoint = $ridepoint;
+        $this->rideitem = $rideitem;
     }
+}
 }

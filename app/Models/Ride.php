@@ -143,23 +143,23 @@ class Ride extends Model
     
     /**
      * Get or select the next ride point
-	 * @return RidePoint
+	 * @return RideItem
      */
     public function getNextPoint()
     {
         // Check if ride has next point
-        $next = $this->points()->wherePivotIn('status', [RidePoint::STATUS_NEXT, RidePoint::STATUS_ARRIVED])->first();
+        $next = $this->items()->wherePivotIn('status', [RideItem::STATUS_NEXT, RideItem::STATUS_ARRIVED])->first();
         if($next)
         {
             return $next->pivot;
         }
         
         // Set first active point as next
-        $point = $this->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->first();
+        $point = $this->items()->wherePivot('status', RideItem::STATUS_ACTIVE)->first();
         if($point)
         {
-            $this->points()->updateExistingPivot($point->getKey(), [
-				'status' => RidePoint::STATUS_NEXT,
+            $this->items()->updateExistingPivot($point->getKey(), [
+				'status' => RideItem::STATUS_NEXT,
 				'start_at' => now()->addSeconds($point->pivot->duration_value)
 			]);
 			
@@ -211,14 +211,6 @@ class Ride extends Model
         
         return !in_array($this->status, [self::STATUS_COMPLETED, self::STATUS_CANCELED]);
     }
-    
-    /**
-     * Get the items
-     */
-    public function items()
-    {
-        return $this->hasMany(Item::class);
-    }
 	
     /**
      * Get the order's note.
@@ -257,11 +249,11 @@ class Ride extends Model
     /**
      * Process next ride point
      */
-    public function processNext(RidePoint $ridepoint)
+    public function processNext(RideItem $rideitem)
     {
-		if($ridepoint->item){
-			$ridepoint->item->next();
-			$ridepoint->item->setStartDate(now()->addSeconds($ridepoint->duration_value));
+		if($rideitem->item){
+			$rideitem->item->next();
+			$rideitem->item->setStartDate(now()->addSeconds($rideitem->duration_value));
 		}
 	}
     
@@ -271,7 +263,7 @@ class Ride extends Model
     public function updateStatus()
     {
 		// Si tous les points sont annulés
-        $count = $this->points()->wherePivot('status', '!=', RidePoint::STATUS_CANCELED)->count();
+        $count = $this->items()->wherePivot('status', '!=', RideItem::STATUS_CANCELED)->count();
         if($count==0){
 			$this->cancelable(); // Set ride as cancelable
         }else{
@@ -279,6 +271,13 @@ class Ride extends Model
 		}
 	}
     
+    /**
+     * Get the ride items that owns the ride.
+     */
+    public function rideitems()
+    {
+        return $this->hasMany(RideItem::class, 'ride_id')->with('item');
+    }
     
     /**
      * Get the user who creates the ride.
@@ -354,7 +353,7 @@ class Ride extends Model
             return false;
         }
         
-        $points = $ride->points()->wherePivotIn('status', [RidePoint::STATUS_PING, RidePoint::STATUS_ACTIVE, RidePoint::STATUS_NEXT])->get();
+        $points = $ride->items()->wherePivotIn('status', [RideItem::STATUS_PING, RideItem::STATUS_ACTIVE, RideItem::STATUS_NEXT])->get();
         if(empty($points)){
             return false;
         }
@@ -387,7 +386,7 @@ class Ride extends Model
                         foreach($orders as $key => $order){
                             if(isset($points[$order])){
                                 $point = $points[$order];
-                                $ride->points()->updateExistingPivot($point->getKey(), ['order' => $key + 1]);
+                                $ride->items()->updateExistingPivot($point->getKey(), ['order' => $key + 1]);
                             }
                         }
                     }
@@ -437,7 +436,7 @@ class Ride extends Model
                                 $order = $orders[$key];
                                 if(isset($points[$order])){
                                     $point = $points[$order];
-                                    $ride->points()->updateExistingPivot($point->getKey(), [
+                                    $ride->items()->updateExistingPivot($point->getKey(), [
                                         'direction' => $polyline,
                                         'distance_value' => $leg_distance,
                                         'distance' => $leg_distance_text,
