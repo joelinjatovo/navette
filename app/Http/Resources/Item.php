@@ -36,8 +36,8 @@ class Item extends JsonResource
 			// The item point
             'point' => new Point($this->point),
 			
-			// The club that items is ordered
-			'club' => $this->order && $this->order->club ? new Club($this->order->club) : null,
+			// The item order
+            'order' => new OrderSingle($this->order),
 			
 			// The ride assigned to this item
             'ride' => new RideSingle($this->ride),
