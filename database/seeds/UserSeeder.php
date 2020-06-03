@@ -24,7 +24,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin!'),
             'phone_verified_at' => now(),
             'created_at' => now(),
-            'active' => 1,
             'locale' => 'fr',
         ]);
         DB::table('images')->insert([
@@ -59,7 +58,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('driver2!'),
             'phone_verified_at' => now(),
             'created_at' => now(),
-            'active' => 1,
             'locale' => 'fr',
         ]);
         DB::table('role_user')->insert(['approved' => 1, 'user_id' => 2, 'role_id' => 2]);
@@ -71,7 +69,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('driver3!'),
             'phone_verified_at' => now(),
             'created_at' => now(),
-            'active' => 1,
             'locale' => 'fr',
         ]);
         DB::table('role_user')->insert(['approved' => 1, 'user_id' => 3, 'role_id' => 2]);
@@ -83,7 +80,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('driver4!'),
             'phone_verified_at' => now(),
             'created_at' => now(),
-            'active' => 1,
             'locale' => 'fr',
         ]);
         DB::table('role_user')->insert(['approved' => 1, 'user_id' => 4, 'role_id' => 2]);
@@ -95,7 +91,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('driver5!'),
             'phone_verified_at' => now(),
             'created_at' => now(),
-            'active' => 1,
             'locale' => 'fr',
         ]);
         DB::table('role_user')->insert(['approved' => 1, 'user_id' => 5, 'role_id' => 2]);
