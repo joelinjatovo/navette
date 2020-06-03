@@ -50,6 +50,22 @@ class User extends Authenticatable implements MustVerifyPhone
     protected $casts = [
         'phone_verified_at' => 'datetime',
     ];
+
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($model) {
+            if ( empty( $model->code ) ) {
+                $model->code = (string) Str::uuid();
+            }
+        });
+    }
     
     /**
      * Get the access log for the user.
@@ -92,35 +108,19 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
-     * The car brands that belong to the user.
-     */
-    public function carBrands()
-    {
-        return $this->hasMany(CarBrand::class);
-    }
-    
-    /**
-     * The car models that belong to the user.
-     */
-    public function carModels()
-    {
-        return $this->hasMany(CarModel::class);
-    }
-    
-    /**
-     * The car types that belong to the user.
-     */
-    public function carTypes()
-    {
-        return $this->hasMany(CarType::class);
-    }
-    
-    /**
      * Get the orders canceled by the user.
      */
     public function canceledOrders()
     {
         return $this->hasMany(Order::class, 'canceler_id');
+    }
+    
+    /**
+     * Get parent children
+     */
+    public function children()
+    {
+        return $this->hasMany(User::class, 'parent_id');
     }
     
     /**
@@ -169,6 +169,15 @@ class User extends Authenticatable implements MustVerifyPhone
     {
         return $this->hasMany(Item::class, 'driver_id');
     }
+    
+    /**
+     * Get user's parent
+     */
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+    
     
     /**
      * Get the payment tokens for the user.

@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             Schema::create('users', function (Blueprint $table) {
                 $table->id();
                 $table->string('facebook_id', 200)->nullable();
+                $table->uuid('code')->nullable()->unique();
                 $table->string('name', 100);
                 $table->string('email', 100)->nullable();
                 $table->string('phone', 20)->nullable();
@@ -26,6 +27,8 @@ class CreateUsersTable extends Migration
                 $table->timestamp('phone_verified_at')->nullable();
                 $table->string('phone_verification_code')->nullable();
                 $table->timestamp('phone_verification_expires_at')->nullable();
+                $table->unsignedBigInteger('parent_id')->nullable();
+                $table->foreign('parent_id')->references('id')->on('users');
                 $table->rememberToken();
                 $table->timestamps();
                 $table->softDeletes();
