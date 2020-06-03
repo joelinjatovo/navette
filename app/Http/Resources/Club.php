@@ -20,8 +20,7 @@ class Club extends JsonResource
 			'description' => $this->description,
 			'created_at' => $this->created_at,
 			'image_url' => $this->image ? $this->image->url : null,
-            'point' => new Point($this->point),
-			'note' => 5,
+            'point' => $this->when($this->relationLoaded('point'), new Point($this->point)),
         ];
     }
 }

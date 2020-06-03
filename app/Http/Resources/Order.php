@@ -35,9 +35,9 @@ class Order extends JsonResource
 			'canceled_at' => $this->canceled_at,
 			'completed_at' => $this->completed_at,
 			'created_at' => $this->created_at,
-            'user' => new User($this->user),
-            'club' => new Club($this->club),
-            'items' => ItemRaw::collection($this->items),
+            'user' => $this->when($this->relationLoaded('user'), new User($this->user)),
+            'club' => $this->when($this->relationLoaded('club'), new Club($this->club)),
+            'items' => Item::collection($this->whenLoaded('items')),
         ];
     }
 }

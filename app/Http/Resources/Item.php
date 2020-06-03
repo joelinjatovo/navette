@@ -32,9 +32,9 @@ class Item extends JsonResource
 			'canceled_at' => $this->canceled_at,
 			'completed_at' => $this->completed_at,
 			'created_at' => $this->created_at,
-            'point' => new Point($this->point),
-            'order' => new OrderSingle($this->order),
-			'rides' => RideRaw::collection($this->rides),
+            'point' => $this->when($this->relationLoaded('point'), new Point($this->point)),
+            'order' => $this->when($this->relationLoaded('order'), new Order($this->order)),
+			'rides' => Ride::collection($this->whenLoaded('rides')),
 			'suggestions' => [],
         ];
     }

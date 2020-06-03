@@ -27,10 +27,8 @@ class Ride extends JsonResource
 			'completed_at' => $this->completed_at,
 			'canceled_at' => $this->canceled_at,
 			'created_at' => $this->created_at,
-            'club' => ($this->car && $this->car->club ? new Club($this->car->club) : null),
-            'driver' => new User($this->driver),
-            'car' => new CarSingle($this->car),
-            'items' => ItemRaw::collection($this->items),
+            'driver' => $this->when($this->relationLoaded('driver'), new User($this->driver)),
+            'items' => Item::collection($this->whenLoaded('items')),
         ];
     }
 }

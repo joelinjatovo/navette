@@ -23,7 +23,7 @@ class User extends JsonResource
             'locale' => $this->locale,
             'verified' => $this->hasVerifiedPhone(),
             'image_url' => $this->image ? $this->image->url : null,
-            'roles' => RoleItem::collection($this->whenLoaded('roles'))
+            'roles' => Role::collection($this->whenLoaded('roles'))
         ];
     }
 }
