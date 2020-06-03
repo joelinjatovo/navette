@@ -17,6 +17,7 @@ class Club extends Model
      */
     protected $fillable = [
         'name',
+		'description'
     ];
 
     /**
@@ -49,6 +50,14 @@ class Club extends Model
     public function image()
     {
         return $this->morphOne(Image::class, 'imageable')->orderBy('images.created_at', 'desc');;
+    }
+    
+    /**
+     * Get the order's note.
+     */
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
     }
     
     /**

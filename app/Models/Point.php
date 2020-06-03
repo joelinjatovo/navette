@@ -55,9 +55,9 @@ class Point extends Model
     /**
      * Get the clubs what owns the point.
      */
-    public function clubs()
+    public function club()
     {
-        return $this->hasMany(Club::class);
+        return $this->hasOne(Club::class);
     }
 	
 	/**
@@ -87,27 +87,11 @@ class Point extends Model
 	}
     
     /**
-     * The items that belong to the point.
+     * The item that belong to the point.
      */
-    public function items()
+    public function item()
     {
-        return $this->hasMany(Item::class, 'point_id');
-    }
-    
-    /**
-     * The rides that belong to the point.
-     */
-    public function rides()
-    {
-        return $this->belongsToMany(Ride::class, 'ride_point')->using(RidePoint::class);
-    }
-    
-    /**
-     * The ridepoints that belong to the point. (Pivot)
-     */
-    public function ridepoints()
-    {
-        return $this->hasMany(RidePoint::class, 'point_id', 'id');
+        return $this->hasOne(Item::class, 'point_id');
     }
 
     /**

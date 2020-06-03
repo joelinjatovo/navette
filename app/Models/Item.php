@@ -98,7 +98,7 @@ class Item extends Model
         $this->actived_at = now();
         $this->save();
 		
-		//$this->fireModelEvent('actived');
+		$this->fireModelEvent('actived');
     }
     
     /**
@@ -111,15 +111,6 @@ class Item extends Model
         $this->save();
 		
 		$this->fireModelEvent('driver-arrived');
-    }
-    
-    public function associateRide(Ride $ride)
-    {
-		$this->driver()->associate($ride->driver); // Set item's driver
-		$this->ride()->associate($ride); // Set item's ride
-		$this->save();
-		
-		$this->fireModelEvent('ride-associated');
     }
     
     /**
@@ -145,18 +136,6 @@ class Item extends Model
 		
 		$this->fireModelEvent('completed');
     }
-    
-    /**
-     * Detach the order item to the ride
-     */
-    public function detach()
-    {
-        $this->status = self::STATUS_PING;
-        $this->ride_id = null;
-        $this->save();
-		
-		$this->fireModelEvent('detached');
-    }
 	
 	/**
     * Titre : Calcul la distance entre 2 points en km                                                                                         
@@ -171,11 +150,11 @@ class Item extends Model
 	}
     
     /**
-     * Get the driver that owns the order.
+     * Check if order item is cancelable
      */
-    public function driver()
+    public function isCancelable()
     {
-        return $this->belongsTo(User::class, 'driver_id');
+        return !in_array($this->status, [self::STATUS_COMPLETED, self::STATUS_CANCELED]);
     }
     
     /**
@@ -214,19 +193,29 @@ class Item extends Model
     }
     
     /**
-     * Get the ride that owns the item.
+     * Get the rides.
      */
-    public function ride()
+    public function rides()
     {
-        return $this->belongsTo(Ride::class, 'ride_id');
-    }
-    
-    /**
-     * Get the ride points.
-     */
-    public function ridepoints()
-    {
-        return $this->hasMany(RidePoint::class, 'item_id', 'id');
+        return $this->belongsToMany(Ride::class, 'ride_item')
+                    ->using(RidePoint::class)
+                    ->withPivot([
+                        'id', 
+                        'status', 
+                        'type', 
+                        'place', 
+                        'order', 
+                        'distance', 
+                        'distance_value', 
+                        'duration',
+                        'duration_value',
+                        'direction',
+						'arrived_at', 
+						'start_at',
+						'started_at',
+						'canceled_at',
+						'completed_at',
+                    ])->orderBy('order', 'asc');
     }
     
     public function setRideAtAttribute($value)
@@ -281,13 +270,5 @@ class Item extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-    
-    /**
-     * Check if order item is cancelable
-     */
-    public function isCancelable()
-    {
-        return !in_array($this->status, [self::STATUS_COMPLETED, self::STATUS_CANCELED]);
     }
 }

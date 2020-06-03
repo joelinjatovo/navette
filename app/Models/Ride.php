@@ -88,32 +88,6 @@ class Ride extends Model
     }
     
     /**
-     * Attach point to the ride
-     */
-    public function attachRidePoint(Item $item)
-    {
-		if($item->point){
-			$this->points()
-				->attach(
-					$item->point->getKey(), 
-					[
-						'status' => RidePoint::STATUS_PING,
-						'type' => Item::TYPE_BACK == $item->type ? RidePoint::TYPE_DROP : RidePoint::TYPE_PICKUP,
-						'order' => 0,
-						'item_id' => $item->getKey(),
-						'user_id' => $item->user ? $item->user->getKey() : null,
-					]
-				);
-
-			$point = $this->points()->wherePivot('point_id', $item->point->getKey())->first();
-			if($point && $point->pivot){
-				$point->pivot->fireModelEvent('attached');
-			}
-			
-		}
-	}
-    
-    /**
      * Set ride status as cancelable and fired event
      */
     public function cancelable()
@@ -134,14 +108,6 @@ class Ride extends Model
         $this->save();
 		
         $this->fireModelEvent('canceled');
-    }
-    
-    /**
-     * Get the card associated with the race.
-     */
-    public function car()
-    {
-        return $this->belongsTo(Car::class);
     }
     
     /**
@@ -263,15 +229,16 @@ class Ride extends Model
     }
     
     /**
-     * The points that belong to the order.
+     * The items that belong to the order.
      */
-    public function points()
+    public function items()
     {
-        return $this->belongsToMany(Point::class, 'ride_point')
-                    ->using(RidePoint::class)
+        return $this->belongsToMany(Item::class, 'ride_item')
+                    ->using(RideItem::class)
                     ->withPivot([
                         'id', 
                         'status', 
+                        'place', 
                         'type', 
                         'order', 
                         'distance', 
@@ -284,8 +251,6 @@ class Ride extends Model
 						'started_at',
 						'canceled_at',
 						'completed_at',
-						'user_id',
-						'item_id',
                     ])->orderBy('order', 'asc');
     }
     

@@ -133,14 +133,6 @@ class Order extends Model
     }
     
     /**
-     * Get the car privatized with the order.
-     */
-    public function car()
-    {
-        return $this->belongsTo(Car::class, 'car_id');
-    }
-    
-    /**
      * Get the club that owns the order.
      */
     public function club()

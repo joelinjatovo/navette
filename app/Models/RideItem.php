@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
-use App\Events\RidePoint\RidePointActived;
-use App\Events\RidePoint\RidePointAttached;
-use App\Events\RidePoint\RidePointCanceled;
-use App\Events\RidePoint\RidePointCompleted;
-use App\Events\RidePoint\RidePointDetached;
-use App\Events\RidePoint\RidePointDriverArrived;
-use App\Events\RidePoint\RidePointStarted;
+use App\Events\RideItem\RideItemActived;
+use App\Events\RideItem\RideItemAttached;
+use App\Events\RideItem\RideItemCanceled;
+use App\Events\RideItem\RideItemCompleted;
+use App\Events\RideItem\RideItemDetached;
+use App\Events\RideItem\RideItemDriverArrived;
+use App\Events\RideItem\RideItemStarted;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Str;
 
-class RidePoint extends Pivot
+class RideItem extends Pivot
 {
     
     const TYPE_PICKUP = 'pickup';
@@ -54,13 +54,13 @@ class RidePoint extends Pivot
      * @var array
      */
     protected $dispatchesEvents = [
-        'actived' => RidePointActived::class,
-        'attached' => RidePointAttached::class,
-        'canceled' => RidePointCanceled::class,
-        'completed' => RidePointCompleted::class,
-        'detached' => RidePointDetached::class,
-        'driver-arrived' => RidePointDriverArrived::class,
-        'started' => RidePointStarted::class,
+        'actived' => RideItemActived::class,
+        'attached' => RideItemAttached::class,
+        'canceled' => RideItemCanceled::class,
+        'completed' => RideItemCompleted::class,
+        'detached' => RideItemDetached::class,
+        'driver-arrived' => RideItemDriverArrived::class,
+        'started' => RideItemStarted::class,
 	];
 	
     /**
@@ -114,17 +114,7 @@ class RidePoint extends Pivot
 		
 		$this->fireModelEvent('canceled');
     }
-    
-    /**
-     * Detach ride point
-     */
-    public function detach()
-    {
-        $this->delete();
-		
-		$this->fireModelEvent('detached');
-    }
-    
+	
     /**
      * Pick or Drop ride point
      */
@@ -182,30 +172,6 @@ class RidePoint extends Pivot
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id');
-    }
-    
-    /**
-     * Get the order related to the item in this point.
-     */
-    public function order()
-    {
-        return $this->item()->order();
-    }
-    
-    /**
-     * Get the user who has the ride point.
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-    
-    /**
-     * Get the point related to this ride point.
-     */
-    public function point()
-    {
-        return $this->belongsTo(Point::class, 'point_id');
     }
     
     /**

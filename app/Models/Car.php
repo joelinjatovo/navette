@@ -13,8 +13,9 @@ class Car extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 
-        'year', 
+        'status',
+        'name',
+        'descriprion',
         'place',
     ];
 
@@ -56,30 +57,6 @@ class Car extends Model
     public function image()
     {
         return $this->morphOne(Image::class, 'imageable')->orderBy('images.created_at', 'desc');;
-    }
-    
-    /**
-     * Get the model that owns the car.
-     */
-    public function model()
-    {
-        return $this->belongsTo(CarModel::class, 'car_model_id');
-    }
-    
-    /**
-     * Get the rides for the car.
-     */
-    public function rides()
-    {
-        return $this->hasMany(Ride::class);
-    }
-    
-    /**
-     * Get the orders for the car.
-     */
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
     }
     
     /**
