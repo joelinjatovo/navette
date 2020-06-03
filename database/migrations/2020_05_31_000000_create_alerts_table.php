@@ -18,8 +18,8 @@ class CreateAlertsTable extends Migration
 				$table->id();
                 $table->boolean('is_public')->default(true);
                 $table->string('event');
-                $table->string('title');
                 $table->string('type');
+                $table->string('title');
                 $table->text('description');
                 $table->string('uri');
 				$table->timestamps();

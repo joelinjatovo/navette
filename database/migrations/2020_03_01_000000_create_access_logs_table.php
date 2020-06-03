@@ -19,9 +19,9 @@ class CreateAccessLogsTable extends Migration
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->integer('status')->default(0);
-                $table->string('url')->nullable();
-                $table->string('referer')->nullable();
-                $table->string('user_agent')->nullable();
+                $table->text('url')->nullable();
+                $table->text('referer')->nullable();
+                $table->text('user_agent')->nullable();
                 $table->string('country', 2)->nullable();
                 $table->ipAddress('ip')->nullable();
                 $table->string('platform', 100)->nullable();

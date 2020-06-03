@@ -16,10 +16,13 @@ class CreateNotesTable extends Migration
         if( ! Schema::hasTable('notes') ) {
             Schema::create('notes', function (Blueprint $table) {
                 $table->id();
-                $table->text('content');
                 $table->string('type');
+                $table->text('description');
+                $table->unsignedBigInteger('star')->nullable();
                 $table->unsignedBigInteger('notable_id')->index();
                 $table->string('notable_type');
+                $table->unsignedBigInteger('user_id')->nullable();
+                $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
             });
         }

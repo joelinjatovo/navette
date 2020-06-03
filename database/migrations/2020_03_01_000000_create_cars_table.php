@@ -16,13 +16,12 @@ class CreateCarsTable extends Migration
         if( ! Schema::hasTable('cars') ) {
             Schema::create('cars', function (Blueprint $table) {
                 $table->id();
+                $table->string('status', 100);
                 $table->string('name', 100);
-                $table->string('year', 4);
+                $table->text('description');
                 $table->integer('place');
                 $table->unsignedBigInteger('club_id')->nullable();
                 $table->foreign('club_id')->references('id')->on('clubs');
-                $table->unsignedBigInteger('car_model_id')->nullable();
-                $table->foreign('car_model_id')->references('id')->on('car_models');
                 $table->unsignedBigInteger('driver_id')->nullable();
                 $table->foreign('driver_id')->references('id')->on('users');
                 $table->unsignedBigInteger('user_id')->nullable();

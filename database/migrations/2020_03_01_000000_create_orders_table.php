@@ -40,8 +40,6 @@ class CreateOrdersTable extends Migration
                 $table->string('canceler_role')->nullable();
                 $table->unsignedBigInteger('canceler_id')->nullable();
                 $table->foreign('canceler_id')->references('id')->on('users');
-                $table->unsignedBigInteger('car_id')->nullable();
-                $table->foreign('car_id')->references('id')->on('cars');
                 $table->unsignedBigInteger('club_id')->nullable();
                 $table->foreign('club_id')->references('id')->on('clubs');
                 $table->unsignedBigInteger('zone_id')->nullable();

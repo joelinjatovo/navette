@@ -16,19 +16,17 @@ class CreateRidesTable extends Migration
         if( ! Schema::hasTable('rides') ) {
             Schema::create('rides', function (Blueprint $table) {
                 $table->id();
-                $table->string('status', 50)->default('created');
-                $table->dateTime('start_at')->nullable(); // Date prevue
-                $table->dateTime('started_at')->nullable(); // Date reelle
-                $table->dateTime('completed_at')->nullable();
-                $table->dateTime('canceled_at')->nullable();
+                $table->string('status', 50)->default('ping');
                 $table->bigInteger('distance_value')->nullable();
                 $table->string('distance')->nullable();
                 $table->bigInteger('duration_value')->nullable();
                 $table->string('duration')->nullable();
                 $table->text('direction')->nullable();
                 $table->json('route')->nullable();
-                $table->unsignedBigInteger('car_id')->nullable();
-                $table->foreign('car_id')->references('id')->on('cars');
+                $table->dateTime('start_at')->nullable(); // Date prevue
+                $table->dateTime('started_at')->nullable(); // Date reelle
+                $table->dateTime('completed_at')->nullable();
+                $table->dateTime('canceled_at')->nullable();
                 $table->unsignedBigInteger('driver_id')->nullable();
                 $table->foreign('driver_id')->references('id')->on('users');
                 $table->unsignedBigInteger('user_id')->nullable();
