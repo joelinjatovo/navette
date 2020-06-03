@@ -53,8 +53,10 @@
       console.log("User Id  = " + this.user_id);
       window.Echo.private('App.User.' + this.user_id)
             .notification((res) => {
-                console.log(res);
-				$.notify({icon:"add_alert", message:this.formatMessage(res)}, {type:"danger"});
+				var message = this.formatMessage(res);
+				if(message!=null){
+					toastr.success(message);
+				}
                 this.$store.commit('ADD_NOTIFICATION', res)
             });
     },
@@ -148,7 +150,7 @@
 				}
 			break;
 		}
-		return 'Inconnu';
+		return null;
       }
     }
   }

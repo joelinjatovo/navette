@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\PaymentToken;
+use App\Events\OrderStatusChanged;
 
 class StripeController extends Controller
 {
@@ -39,9 +40,11 @@ class StripeController extends Controller
            'amount' => $order->total * 100,
            'currency' => $order->currency,
            'order_id' => $order->getKey(),
-           'token' => md5($intent->client_secret),
+           'token' => $intent->id,
         ]);
-
+		
+		info($intent->id);
+		
         $output = [
             'publishable_key' => env('STRIPE_KEY_PUBLIC'),
             'client_secret' => $intent->client_secret,
@@ -59,24 +62,31 @@ class StripeController extends Controller
     public function webhook(Request $request){
         $event = null;
 
+		$payload = @file_get_contents('php://input');
         try {
             // Make sure the event is coming from Stripe by checking the signature header
-            $event = \Stripe\Webhook::constructEvent($input, $_SERVER['HTTP_STRIPE_SIGNATURE'], env('STRIPE_WEBHOOK_SECRET'));
-        }catch (Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'details' => $e->getMessage()
-            ])->statusCode(403);
+            $event = \Stripe\Webhook::constructEvent($payload, $_SERVER['HTTP_STRIPE_SIGNATURE'], env('STRIPE_WEBHOOK_SECRET'));
+		} catch(\UnexpectedValueException $e) {
+            return response()->json(['status' => 'error','details' => 'Invalid payload'])->setStatusCode(403);
+		} catch(\Stripe\Exception\SignatureVerificationException $e) {
+            return response()->json(['status' => 'error','details' => 'Invalid signature'])->setStatusCode(403);
+		} catch (\Exception $e) {
+            return response()->json(['status' => 'error','details' => $e->getMessage()])->setStatusCode(403);
         }
 
         $details = null;
 
+		info($event->type);
+		info($event->data->object);
+		
         if ($event->type == 'payment_intent.succeeded') {
-            // Fulfill any orders, e-mail receipts, etc
-            // To cancel the payment you will need to issue a Refund (https://stripe.com/docs/api/refunds)
             $details = '💰 Payment received!';
+			$paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
+			$this->handlePaymentIntentSucceeded($paymentIntent);
         }else if ($event->type == 'payment_intent.payment_failed') {
             $details = '❌ Payment failed.';
+			$paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
+			$this->handlePaymentIntentFailed($paymentIntent);
         }
 
         $output = [
@@ -86,4 +96,54 @@ class StripeController extends Controller
 
         return response()->json($output);
     }
+	
+	// Then define and call a method to handle the successful payment intent.
+	protected function handlePaymentIntentSucceeded($intent){
+		$transaction = PaymentToken::where('payment_type', Order::PAYMENT_TYPE_STRIPE)
+				->where('token', $intent->id)
+				->first();
+		if($transaction){
+			if($order = $transaction->order){
+				$currency = strtoupper($intent->currency);
+				if(($order->payment_type == Order::PAYMENT_TYPE_STRIPE) 
+				   && ($order->total * 100 = $intent->amount_received)
+				   && ($order->currency = strtoupper($intent->currency))
+				   && ($order->status == Order::STATUS_ON_HOLD)){
+					 // Set as paid
+					$order->status = Order::STATUS_OK;
+					$order->payment_status = Order::PAYMENT_STATUS_SUCCEEDED;
+					$order->payed_at = now();
+					$order->save();
+					
+					if($order->user){
+						$order->user->notify(new \App\Notifications\PaymentStatus('paid', trans('Carte Bancaire'), $order));
+					}
+				}
+			}
+		}
+	}
+}
+	
+	protected function handlePaymentIntentFailed($intent){
+		$transaction = PaymentToken::where('payment_type', Order::PAYMENT_TYPE_STRIPE)
+				->where('token', $intent->id)
+				->first();
+		if($transaction){
+			if($order = $transaction->order){
+				$currency = strtoupper($intent->currency);
+				if(($order->payment_type == Order::PAYMENT_TYPE_STRIPE) 
+				   && ($order->total * 100 = $intent->amount_received)
+				   && ($order->currency = strtoupper($intent->currency))
+				   && ($order->status == Order::STATUS_ON_HOLD)){
+					 // Set as failed
+					$order->payment_status = Order::PAYMENT_STATUS_FAILED;
+					$order->save();
+					
+					if($order->user){
+						$order->user->notify(new \App\Notifications\PaymentStatus('failed', trans('Carte Bancaire'), $order));
+					}
+				}
+			}
+		}
+	}
 }

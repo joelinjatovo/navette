@@ -212,7 +212,10 @@ class Ride extends Model
         $point = $this->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->first();
         if($point)
         {
-            $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_NEXT]);
+            $this->points()->updateExistingPivot($point->getKey(), [
+				'status' => RidePoint::STATUS_NEXT,
+				'arrive_at' => now()->addSeconds($point->pivot->duration_value)
+			]);
 
             $item = $point->pivot->item;
             if($item){
@@ -220,6 +223,7 @@ class Ride extends Model
                 $newStatus = Item::STATUS_NEXT;
 
                 $item->status = $newStatus;
+                $item->arrive_at = now()->addSeconds($point->pivot->duration_value);
                 $item->save();
 
                 // Notify *customer
@@ -227,15 +231,14 @@ class Ride extends Model
 				
 				if($item->user && ($item->type == Item::TYPE_GO)){
 					$delay = 7 * 60; // Notifier 7 minutes avants arriver
-					if($item->duration_value < $delay){
-						$item->user->notify((new \App\Notifications\DriverArrived($item, $item->duration)));
+					if($point->pivot->duration_value < $delay){
+						$item->user->notify((new \App\Notifications\DriverArrived($item, $point->pivot->duration)));
 					}else{
-						$when = now()->addSeconds($item->duration_value - 7 * 60);
+						$when = now()->addSeconds($point->pivot->duration_value - 7 * 60);
 						$item->user->notify((new \App\Notifications\DriverArrived($item, '7 min'))->delay($when));
 					}
 				}
             }
-			
 
             return true;
         }
@@ -336,7 +339,10 @@ class Ride extends Model
         // Mark RidePoint NOT COMPLETED as CANCELED
         $points = $this->points()->wherePivotNotIn('status', [RidePoint::STATUS_COMPLETED])->get();
         foreach($points as $point){
-            $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_CANCELED]);
+            $this->points()->updateExistingPivot($point->getKey(), [
+				'status' => RidePoint::STATUS_CANCELED,
+				'canceled_at' => now()
+			]);
 		}
 		
 		// Mark Item NOT COMPLETED as CANCELED
@@ -346,10 +352,23 @@ class Ride extends Model
 			$newStatus = Item::STATUS_CANCELED;
 
 			$item->status = $newStatus;
+        	$item->canceled_at = now();
 			$item->save();
 
 			// Notify *customer
 			event(new ItemStatusChanged($item, 'updated', $oldStatus, $newStatus));
+
+			$order = $item->order;
+			if($order){
+				$oldStatus = $order->status;
+				$newStatus = Order::STATUS_CANCELED;
+				$order->canceled_at = now();
+				$order->status = $newStatus;
+				$order->save();
+
+				// Notify *customer
+				event(new OrderStatusChanged($order, 'updated', $oldStatus, $newStatus));
+			}
         }
     }
     
@@ -379,7 +398,10 @@ class Ride extends Model
         // Mark RidePoint ONLINE as COMPLETED
         $points = $this->points()->wherePivot('status', RidePoint::STATUS_ONLINE)->get();
         foreach($points as $point){
-            $this->points()->updateExistingPivot($point->getKey(), ['status' => RidePoint::STATUS_COMPLETED]);
+            $this->points()->updateExistingPivot($point->getKey(), [
+				'status' => RidePoint::STATUS_COMPLETED,
+				'completed_at' => now()
+			]);
 		}
 		
 		$items = $this->items()->where('items.status', Item::STATUS_ONLINE)->get();
@@ -388,6 +410,7 @@ class Ride extends Model
 			$newStatus = Item::STATUS_COMPLETED;
 
 			$item->status = $newStatus;
+			$item->completed_at = now();
 			$item->save();
 
 			// Notify *customer
@@ -395,13 +418,14 @@ class Ride extends Model
 
 			$order = $item->order;
 			if($order){
-				$ping_item = $order->items()->where('items.status', Item::STATUS_PING)->exists();
+				$ping_item = $order->items()->whereIn('items.status', [Item::STATUS_PING, Item::STATUS_ACTIVE])->exists();
 				if($ping_item){
 					$oldStatus = $order->status;
 					$newStatus = Order::STATUS_OK;
 				}else{
 					$oldStatus = $order->status;
 					$newStatus = Order::STATUS_COMPLETED;
+					$order->completed_at = now();
 				}
 
 				$order->status = $newStatus;

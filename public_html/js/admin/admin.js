@@ -2132,13 +2132,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.$store.dispatch('GET_NOTIFICATIONS');
     console.log("User Id  = " + this.user_id);
     window.Echo["private"]('App.User.' + this.user_id).notification(function (res) {
-      console.log(res);
-      $.notify({
-        icon: "add_alert",
-        message: _this.formatMessage(res)
-      }, {
-        type: "danger"
-      });
+      var message = _this.formatMessage(res);
+
+      if (message != null) {
+        toastr.success(message);
+      }
 
       _this.$store.commit('ADD_NOTIFICATION', res);
     });
@@ -2254,7 +2252,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           break;
       }
 
-      return 'Inconnu';
+      return null;
     }
   }
 });

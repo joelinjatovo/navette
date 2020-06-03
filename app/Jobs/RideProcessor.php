@@ -49,17 +49,12 @@ class RideProcessor implements ShouldQueue
 		// Handle job...
 		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
 			->where('orders.status', Order::STATUS_OK)
-			->where(function($query) {
-				$query->where('items.status', Item::STATUS_PING);
-				$query->where(function($query) {
-					$query->where('orders.type', Order::TYPE_GO);
-					$query->orWhere('orders.type', Order::TYPE_BACK);
-				});
-			})
+			->where('items.status', Item::STATUS_PING)
 			->where(function($query) {
 				$query->whereNull('items.ride_at');
 				$query->orWhere('items.ride_at', '<=', now()->addMinutes(30));
 			})
+			->distinct('items.order_id')
 			->get();
 
 		foreach($items as $item){
@@ -119,8 +114,8 @@ class RideProcessor implements ShouldQueue
 				$active_ride = $this->getActivedRide($item);
 				if($active_ride){
 					// Duree du trajet + Arret sur tous les point de ramassage + Arret sur le point de depart
-					$count_back = $ride->items()->where('items.type', Item::TYPE_BACK)->count();
-					$count_go = $ride->items()->where('items.type', Item::TYPE_GO)->count();
+					$count_back = $active_ride->items()->where('items.type', Item::TYPE_BACK)->count();
+					$count_go = $active_ride->items()->where('items.type', Item::TYPE_GO)->count();
 				
 					$duration = $active_ride->duration  + $count_go * 5 * 60 + ( $count_back > 0 ? 60 : 0 );
 					$start_date = $active_ride->started_at->addSeconds($duration);

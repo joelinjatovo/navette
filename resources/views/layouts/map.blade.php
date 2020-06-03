@@ -456,7 +456,12 @@
         <script src="{{ asset('/js/admin/scripts.bundle.js') }}"></script>
         <!--end::Global Theme Bundle(used by all pages)-->
 		
-        <!--end::Global Theme Bundle-->
+        <script type="text/javascript">
+        $(document).ready(function() {
+			$.notifyDefaults({type: 'success',allow_dismiss: false,delay:5000});
+        });
+        </script>
+		
         @yield('javascript')
         <!--end::Page Scripts-->
     </body>

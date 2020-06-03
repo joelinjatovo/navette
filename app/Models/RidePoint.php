@@ -76,6 +76,7 @@ class RidePoint extends Pivot
         $oldStatus = $this->status;
         $newStatus = self::STATUS_ARRIVED;
         $this->status = $newStatus;
+		$this->arrived_at = now();
         $this->save();
         
         $item = $this->item;
@@ -84,6 +85,7 @@ class RidePoint extends Pivot
             $oldStatus = $item->status;
             $newStatus = Item::STATUS_ARRIVED;
             $item->status = $newStatus;
+        	$item->arrived_at = now();
             $item->save();
                 
             // Notify *customer
@@ -109,6 +111,7 @@ class RidePoint extends Pivot
         $newStatus = self::STATUS_CANCELED;
         
         $this->status = $newStatus;
+        $this->canceled_at = now();
         $this->save();
         
         $item = $this->item;
@@ -117,6 +120,7 @@ class RidePoint extends Pivot
             $oldStatus = $item->status;
             $newStatus = Item::STATUS_CANCELED;
             $item->status = $newStatus;
+        	$item->canceled_at = now();
             $item->save();
                 
             // Notify *customer
@@ -154,6 +158,7 @@ class RidePoint extends Pivot
         }
         
         $this->status = $newStatus;
+        $this->started_at = now();
         $this->save();
         
         $item = $this->item;
@@ -167,6 +172,7 @@ class RidePoint extends Pivot
             }
             
             $item->status = $newStatus;
+        	$item->started_at = now();
             $item->save();
                 
             // Notify *customer
