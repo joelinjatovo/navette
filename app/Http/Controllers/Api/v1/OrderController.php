@@ -60,12 +60,12 @@ class OrderController extends Controller
      */
     public function cart(Request $request)
     {
-        $club = Club::findOrFail($request->input('order.club_id'));
+        $club = Club::findOrFail($request->input('club_id'));
         if( null === $club->point ) {
             return $this->error(400, 2000, trans('messages.club.no.point'));
         }
         
-        $order = new Order($request->input('order'));
+        $order = new Order($request->all());
         $order->status = Order::STATUS_PING;
         $order->setVat(0);
         
@@ -101,13 +101,13 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $club = Club::findOrFail($request->input('order.club_id'));
+        $club = Club::findOrFail($request->input('club_id'));
         
         if( null === $club->point ) {
             return $this->error(400, 2000, trans('messages.club.no.point'));
         }
         
-        $order = new Order($request->input('order'));
+        $order = new Order($request->all());
         $order->status = Order::STATUS_PING;
         $order->setVat(0);
         $order->club()->associate($club);
@@ -162,21 +162,20 @@ class OrderController extends Controller
         
         $order->cancel($request->user());
 		
-		/*
 		foreach($order->items as $item){
 			if($item->isCancelable()){
 				$item->cancel();
-				if($item->ride){
-					$point = $item->ride->points()->wherePivot('item_id', $item->getKey())->first();
-					if($point && $point->pivot){
-						$point->pivot->cancel();// Cancel ride at the item's point
+				foreach($item->rideitems as $rideitem){
+					if($rideitem->isCancelable()){
+						$rideitem->cancel();
+						if($rideitem->ride){
+							$rideitem->ride->getNextRideItem();
+						}
 					}
-					$item->ride->getNextPoint(); // Select next point or update status
 				}
 			}
 		}
-		*/
         
-        return new OrderResource($order);
+        return new OrderResource($order->load(['items', 'items.point']));
     }
 }

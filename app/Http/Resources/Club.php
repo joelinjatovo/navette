@@ -36,7 +36,7 @@ class Club extends JsonResource
             'http_status' => 200,
             'status_code' => 0,
             'message' => null,
-			"errors": [],
+			"errors" => [],
         ];
     }
 }

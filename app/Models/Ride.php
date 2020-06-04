@@ -162,34 +162,34 @@ class Ride extends Model
      * Get or select the next ride point
 	 * @return RideItem
      */
-    public function getNextPoint()
+    public function getNextRideItem()
     {
         // Check if ride has next point
-		/*
-        $next = $this->items()->wherePivotIn('status', [RideItem::STATUS_NEXT, RideItem::STATUS_ARRIVED])->first();
-        if($next)
-        {
-            return $next->pivot;
+        $rideitem = $this->rideitems()->where('status', [RideItem::STATUS_NEXT, RideItem::STATUS_ARRIVED])->first();
+        if($rideitem){
+            return $rideitem;
         }
         
         // Set first active point as next
-        $point = $this->items()->wherePivot('status', RideItem::STATUS_ACTIVE)->first();
-        if($point)
+        $rideitem = $this->rideitems()->where('status', RideItem::STATUS_ACTIVE)->orderBy('order', 'asc')->first();
+        if($rideitem)
         {
-            $this->items()->updateExistingPivot($point->getKey(), [
-				'status' => RideItem::STATUS_NEXT,
-				'start_at' => now()->addSeconds($point->pivot->duration_value)
-			]);
+			$rideitem->status = RideItem::STATUS_NEXT;
+			$rideitem->start_at = now()->addSeconds($rideitem->duration_value);
+			$rideitem->save();
 			
-			$this->processNext($point->pivot);
-			
-			return $point->pivot;
+			return $rideitem;
         }
 		
-		$this->updateStatus();
+		// Si tous les points sont annulés
+        $count = $this->rideitems()->where('status', '!=', RideItem::STATUS_CANCELED)->count();
+        if($count == 0){
+			$this->cancelable(); // Set ride as cancelable
+        }else{
+			$this->completable(); // Set ride as completable
+		}
 		
         return null;
-		*/
     }
     
     /**
@@ -264,35 +264,6 @@ class Ride extends Model
 						'completed_at',
                     ])->orderBy('order', 'asc');
     }
-    
-    /**
-     * Process next ride point
-     */
-    public function processNext(RideItem $rideitem)
-    {
-		/*
-		if($rideitem->item){
-			$rideitem->item->next();
-			$rideitem->item->setStartDate(now()->addSeconds($rideitem->duration_value));
-		}
-		*/
-	}
-    
-    /**
-     * Update status of the ride
-     */
-    public function updateStatus()
-    {
-		/*
-		// Si tous les points sont annulés
-        $count = $this->items()->wherePivot('status', '!=', RideItem::STATUS_CANCELED)->count();
-        if($count==0){
-			$this->cancelable(); // Set ride as cancelable
-        }else{
-			$this->completable(); // Set ride as completable
-		}
-		*/
-	}
     
     /**
      * Get the ride items that owns the ride.

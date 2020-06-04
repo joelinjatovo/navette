@@ -45,16 +45,15 @@ class ItemController extends Controller
 			$item->order->cancel($request->user());
 		}
         
-		/*
-        if($item->ride){
-			$point = $item->ride->points()->wherePivot('item_id', $item->getKey())->first();
-			if($point && $point->pivot){
-				$point->pivot->cancel();// Cancel ride at the item's point
+		foreach($item->rideitems as $rideitem){
+			if($rideitem->isCancelable()){
+				$rideitem->cancel();
+				if($rideitem->ride){
+					$rideitem->ride->getNextRideItem();
+				}
 			}
-			$item->ride->getNextPoint(); // Select next point or update status
-        }
-		*/
-        
-        return new ItemResource($item);
+		}
+		
+        return new ItemResource($item->load(['order']));
     }
 }

@@ -82,11 +82,13 @@ class Item extends Model
     {
         parent::boot();
         
+		/*
         static::creating(function ($model) {
             if( empty( $model->user_id ) && auth()->check() ) {
                 $model->user_id = auth()->user()->id;
             }
         });
+		*/
     }
     
     /**

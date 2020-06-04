@@ -24,7 +24,7 @@ class CashController extends Controller
         $order->payment_type = Order::PAYMENT_TYPE_CASH;
         $order->save();
         
-        return new OrderResource($order);
+        return new OrderResource($order->load(['items', 'items.point']));
     }
 	
     /**
@@ -40,6 +40,6 @@ class CashController extends Controller
     	
         $order->paidPer(Order::PAYMENT_TYPE_CASH);
         
-        return new OrderResource($order);
+        return new OrderResource($order->load(['items', 'items.point']));
     }
 }
