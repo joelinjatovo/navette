@@ -148,6 +148,7 @@ class Ride extends Model
     public function getNextPoint()
     {
         // Check if ride has next point
+		/*
         $next = $this->items()->wherePivotIn('status', [RideItem::STATUS_NEXT, RideItem::STATUS_ARRIVED])->first();
         if($next)
         {
@@ -171,6 +172,7 @@ class Ride extends Model
 		$this->updateStatus();
 		
         return null;
+		*/
     }
     
     /**
@@ -251,10 +253,12 @@ class Ride extends Model
      */
     public function processNext(RideItem $rideitem)
     {
+		/*
 		if($rideitem->item){
 			$rideitem->item->next();
 			$rideitem->item->setStartDate(now()->addSeconds($rideitem->duration_value));
 		}
+		*/
 	}
     
     /**
@@ -262,6 +266,7 @@ class Ride extends Model
      */
     public function updateStatus()
     {
+		/*
 		// Si tous les points sont annulés
         $count = $this->items()->wherePivot('status', '!=', RideItem::STATUS_CANCELED)->count();
         if($count==0){
@@ -269,6 +274,7 @@ class Ride extends Model
         }else{
 			$this->completable(); // Set ride as completable
 		}
+		*/
 	}
     
     /**

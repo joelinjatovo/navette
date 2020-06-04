@@ -86,10 +86,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('rides', 'Driver\RideController@delete');
         Route::put('rides', 'Driver\RideController@action');
         
-        Route::get('ridepoints', 'Driver\RidePointController@index')->name('ridepoints');
-        Route::get('ridepoint/{ridepoint}', 'Driver\RidePointController@show')->name('ridepoint.show');
-        Route::delete('ridepoints', 'Driver\RidePointController@delete');
-        Route::put('ridepoints', 'Driver\RidePointController@action');
+        Route::get('rideitems', 'Driver\RideItemController@index')->name('rideitems');
+        Route::get('rideitem/{rideitem}', 'Driver\RideItemController@show')->name('rideitem.show');
+        Route::delete('rideitems', 'Driver\RideItemController@delete');
+        Route::put('rideitems', 'Driver\RideItemController@action');
     });
     
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -140,10 +140,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('rides', 'Admin\RideController@delete');
         Route::put('rides', 'Admin\RideController@action');
         
-        Route::get('ridepoints', 'Admin\RidePointController@index')->name('ridepoints');
-        Route::get('ridepoint/{ridepoint}', 'Admin\RidePointController@show')->name('ridepoint.show');
-        Route::delete('ridepoints', 'Admin\RidePointController@delete');
-        Route::put('ridepoints', 'Admin\RidePointController@action');
+        Route::get('rideitems', 'Admin\RideItemController@index')->name('rideitems');
+        Route::get('rideitem/{rideitem}', 'Admin\RideItemController@show')->name('rideitem.show');
+        Route::delete('rideitems', 'Admin\RideItemController@delete');
+        Route::put('rideitems', 'Admin\RideItemController@action');
         
         Route::get('apikeys', 'Admin\ApiKeyController@index')->name('apikeys');
         Route::get('apikey', 'Admin\ApiKeyController@create')->name('apikey.create');

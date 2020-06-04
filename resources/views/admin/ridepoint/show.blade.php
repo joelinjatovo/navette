@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title'){{ __('messages.form.ridepoint.view') }}@endsection
+@section('title'){{ __('messages.form.rideitem.view') }}@endsection
 
 @section('subheader')
 <div class="subheader py-2 py-lg-4  subheader-solid " id="kt_subheader">
@@ -9,7 +9,7 @@
         <div class="d-flex align-items-center flex-wrap mr-2">
 			
             <!--begin::Title-->
-            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.form.ridepoint.view') }}</h5>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.form.rideitem.view') }}</h5>
             <!--end::Title-->
 
             <!--begin::Separator-->
@@ -30,39 +30,39 @@
         <!--begin::Toolbar-->
         <div class="d-flex align-items-center">
             <!--begin::Button-->
-            <a href="{{ route('admin.ridepoints') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2"><i class="la la-arrow-left"></i> {{ __('messages.button.back') }}</a>
+            <a href="{{ route('admin.rideitems') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2"><i class="la la-arrow-left"></i> {{ __('messages.button.back') }}</a>
             <!--end::Button-->
 			
 			@if($model->cancelable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" 
+			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-rideitem-action" 
 			   data-action="cancel" data-id="{{ $model->getKey() }}"
 			   data-toggle="tooltip" 
 			   data-placement="left" 
-			   data-original-title="{{ __('messages.cancel.ridepoint') }}"
-			   title="{{ __('messages.cancel.ridepoint') }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
+			   data-original-title="{{ __('messages.cancel.rideitem') }}"
+			   title="{{ __('messages.cancel.rideitem') }}"><i class="la la-close"></i> {{ __('messages.button.cancel') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->arrivable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" 
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-rideitem-action" 
 			   data-action="arrive" data-id="{{ $model->getKey() }}"
 			   data-toggle="tooltip" 
 			   data-placement="left" 
-			   data-original-title="{{ __('messages.arrive.ridepoint') }}"
-			   title="{{ __('messages.arrive.ridepoint') }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.arrive') }}</a>
+			   data-original-title="{{ __('messages.arrive.rideitem') }}"
+			   title="{{ __('messages.arrive.rideitem') }}"><i class="la la-play-circle-o"></i> {{ __('messages.button.arrive') }}</a>
 			<!--end::Button-->
 			@endif
 			
 			@if($model->pickable() || $model->dropable())
 			<!--begin::Button-->
-			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-ridepoint-action" 
+			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-rideitem-action" 
 			   data-action="pick-or-drop" data-id="{{ $model->getKey() }}"
 			   data-toggle="tooltip" 
 			   data-placement="left" 
-			   data-original-title="{{ __('messages.pick-or-drop.ridepoint') }}"
-			   title="{{ __('messages.pick-or-drop.ridepoint') }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
+			   data-original-title="{{ __('messages.pick-or-drop.rideitem') }}"
+			   title="{{ __('messages.pick-or-drop.rideitem') }}"><i class="la la-check"></i> {{ __('messages.button.complete') }}</a>
 			<!--end::Button-->
 			@endif
                             

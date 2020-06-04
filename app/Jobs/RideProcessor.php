@@ -6,7 +6,7 @@ use App\Models\Car;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Ride;
-use App\Models\RidePoint;
+use App\Models\RideItem;
 use App\Models\User;
 use App\Services\GoogleApiService;
 use Carbon\Carbon;
@@ -76,6 +76,7 @@ class RideProcessor implements ShouldQueue
 			
 			$ride = $this->getOrCreateRide($item);
 			
+			/*
 			// Attach the item's order point to the ride
 			$ride->attachRidePoint($item);
 			$item->associateRide($ride); // Set item ride
@@ -85,6 +86,7 @@ class RideProcessor implements ShouldQueue
 			}
 			
 			$ride->verifyDirection($this->google);
+			*/
 			
 		}
     }

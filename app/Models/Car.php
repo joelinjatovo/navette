@@ -15,7 +15,7 @@ class Car extends Model
     protected $fillable = [
         'status',
         'name',
-        'descriprion',
+        'description',
         'place',
     ];
 

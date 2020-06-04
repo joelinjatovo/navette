@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title'){{ __('messages.ridepoints.list') }}@endsection
+@section('title'){{ __('messages.rideitems.list') }}@endsection
 
 @section('subheader')
 <div class="subheader py-2 py-lg-4  subheader-solid " id="kt_subheader">
@@ -9,7 +9,7 @@
         <div class="d-flex align-items-center flex-wrap mr-2">
 			
             <!--begin::Title-->
-            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.ridepoints.list') }}</h5>
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.rideitems.list') }}</h5>
             <!--end::Title-->
 
             <!--begin::Separator-->
@@ -77,19 +77,19 @@
                             </td>
                             <td data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
                                 <span style="overflow: visible; position: relative; width: 130px;">
-                                    <a href="{{ route('admin.ridepoint.show', $model) }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" 
+                                    <a href="{{ route('admin.rideitem.show', $model) }}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" 
 									   data-toggle="tooltip" 
 									   data-placement="top" 
-									   data-original-title="{{ __('messages.view.ridepoint') }}"
-									   title="{{ __('messages.view.ridepoint') }}" >
+									   data-original-title="{{ __('messages.view.rideitem') }}"
+									   title="{{ __('messages.view.rideitem') }}" >
                                         <i class="la la-eye"></i>
                                     </a>
                                     <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete"  
 									   data-id="{{ $model->getKey() }}" 
 									   data-toggle="tooltip" 
 									   data-placement="top" 
-									   data-original-title="{{ __('messages.delete.ridepoint') }}"
-									   title="{{ __('messages.delete.ridepoint') }}" >
+									   data-original-title="{{ __('messages.delete.rideitem') }}"
+									   title="{{ __('messages.delete.rideitem') }}" >
                                         <i class="la la-trash"></i>
                                     </a>	                    
                                 </span>

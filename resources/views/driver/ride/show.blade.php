@@ -246,7 +246,7 @@
 												@endif
 											@endif
 											<li class="navi-item">
-												<a href="{{ route('driver.ridepoint.show', $point->pivot) }}" class="navi-link" data-action="cancel" data-id="">
+												<a href="{{ route('driver.rideitem.show', $point->pivot) }}" class="navi-link" data-action="cancel" data-id="">
 													<span class="navi-icon"><i class="flaticon-eye"></i></span>
 													<span class="navi-text">{{ __('messages.button.view') }}</span>
 												</a>
@@ -256,7 +256,7 @@
 											@endif
 											@if($point->pivot->arrivable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-ridepoint-action" data-action="arrive" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-rideitem-action" data-action="arrive" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon-cancel"></i></span>
 													<span class="navi-text">{{ __('messages.button.arrive') }}</span>
 												</a>
@@ -264,7 +264,7 @@
 											@endif
 											@if($point->pivot->cancelable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-ridepoint-action" data-action="cancel" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-rideitem-action" data-action="cancel" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon-cancel"></i></span>
 													<span class="navi-text">{{ __('messages.button.cancel') }}</span>
 												</a>
@@ -272,7 +272,7 @@
 											@endif
 											@if($point->pivot->dropable() || $point->pivot->pickable())
 											<li class="navi-item">
-												<a href="#" class="navi-link btn-ridepoint-action" data-action="pick-or-drop" data-id="{{ $point->pivot->id }}">
+												<a href="#" class="navi-link btn-rideitem-action" data-action="pick-or-drop" data-id="{{ $point->pivot->id }}">
 													<span class="navi-icon"><i class="flaticon2-bell-2"></i></span>
 													<span class="navi-text">{{ __('messages.button.complete') }}</span>
 												</a>
@@ -342,7 +342,7 @@ $(document).ready(function() {
 	});
 });
 $(document).ready(function() {
-	$(document).on('click', '.btn-ridepoint-action', function() {
+	$(document).on('click', '.btn-rideitem-action', function() {
 		var $this = $(this);
 		swal.fire({
 			title:"{{ __('messages.swal.action.title') }}",
@@ -354,7 +354,7 @@ $(document).ready(function() {
 		}).then(function(e){
 			if(e.value){
 				KTApp.blockPage();
-				axios.put("{{ route('driver.ridepoints') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
+				axios.put("{{ route('driver.rideitems') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
 					.then(res => {
 						KTApp.unblockPage();
 						var type = "danger";

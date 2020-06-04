@@ -275,8 +275,8 @@
                                         </ul>
                                     </div>
                                 </li>
-								<li class="menu-item {{ Route::is('admin.ridepoints') ? 'menu-item-active' : '' }}" aria-haspopup="true" >
-                                    <a  href="{{ route('admin.ridepoints') }}" class="menu-link ">
+								<li class="menu-item {{ Route::is('admin.rideitems') ? 'menu-item-active' : '' }}" aria-haspopup="true" >
+                                    <a  href="{{ route('admin.rideitems') }}" class="menu-link ">
                                        <span class="svg-icon menu-icon">
                                             <!--begin::Svg Icon-->
                                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -287,7 +287,7 @@
                                             </svg>
                                             <!--end::Svg Icon-->
                                         </span>
-                                        <span class="menu-text">{{ __('messages.ridepoints') }}</span>
+                                        <span class="menu-text">{{ __('messages.rideitems') }}</span>
                                     </a>
                                 </li>
                                 

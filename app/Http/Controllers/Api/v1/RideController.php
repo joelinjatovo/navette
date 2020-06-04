@@ -8,10 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RideCollection;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\ItemCollection;
-use App\Http\Resources\RidePointCollection;
+use App\Http\Resources\RideItemCollection;
 use App\Http\Resources\Ride as RideResource;
 use App\Models\Ride;
-use App\Models\RidePoint;
+use App\Models\RideItem;
 use App\Models\Item;
 use App\Services\GoogleApiService;
 use Illuminate\Http\Request;
@@ -78,7 +78,7 @@ class RideController extends Controller
      */
     public function rideitems(Request $request, Ride $ride)
     {
-        return new RideItemCollection($ride->ridepoints()->paginate());
+        return new RideItemCollection($ride->rideitems()->paginate());
     }
     
     /**
@@ -102,7 +102,7 @@ class RideController extends Controller
 		}
 		*/
 		
-        return new RideItemResource($ride);
+        return new RideItemResource($item);
     }
     
     /**
@@ -161,7 +161,7 @@ class RideController extends Controller
 		}
 		*/
 		
-        return new RideItemResource($ride);
+        return new RideResource($ride);
     }
     
     /**
@@ -178,6 +178,7 @@ class RideController extends Controller
         
         $ride->complete();
 		
+		/*
 		$points = $ride->points()->wherePivot('status', RidePoint::STATUS_STARTED)->get();
         foreach($points as $point){
 			$point->pivot->complete();
@@ -190,11 +191,9 @@ class RideController extends Controller
 				$item->order->updateStatus(); // Check order status
 			}
 		}
+		*/
         
-        return (new RideItemResource($ride))
-				->additional([
-					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
-				]);
+        return new RideResource($ride);
     }
     
     /**
@@ -209,6 +208,7 @@ class RideController extends Controller
     {
         $ride = Ride::findOrFail($request->input('id'));
         
+		/*
         $points = $ride->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->get();
         if(empty($points)){
             return $this->error(400, 4005, trans('messages.no.items.found'));
@@ -219,10 +219,8 @@ class RideController extends Controller
         }
         
         $ride->getNextPoint();
+		*/
         
-        return (new RideItemResource($ride))
-				->additional([
-					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
-				]);
+        return new RideResource($ride);
     }
 }
