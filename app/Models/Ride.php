@@ -332,11 +332,6 @@ class Ride extends Model
     {
         $ride = $this;
         
-        $car = $ride->car;
-        if(!$car){
-            return false;
-        }
-        
         $club = $car->club;
         if(!$club){
             return false;

@@ -9,6 +9,7 @@ use App\Http\Resources\RideCollection;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\ItemCollection;
 use App\Http\Resources\RideItemCollection;
+use App\Http\Resources\Item as ItemResource;
 use App\Http\Resources\Ride as RideResource;
 use App\Models\Ride;
 use App\Models\RideItem;
@@ -36,7 +37,8 @@ class RideController extends Controller
      */
     public function index(Request $request){
 		$models = $request->user()->ridesDrived()
-						->with('items')
+						->with(['items', 'items.point'])
+						->with(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point'])
 						->orderBy('rides.created_at', 'desc')
 						->paginate();
         return new RideCollection($models);
@@ -52,6 +54,8 @@ class RideController extends Controller
      */
     public function show(Request $request, Ride $ride)
     {
+		$ride->load(['items', 'items.point'])
+			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point']);
         return new RideResource($ride);
     }
     
@@ -102,7 +106,7 @@ class RideController extends Controller
 		}
 		*/
 		
-        return new RideItemResource($item);
+        return new ItemResource($item);
     }
     
     /**
@@ -142,24 +146,27 @@ class RideController extends Controller
         }
         
         $ride->cancel();
-		
-		/*
-		$points = $ride->points()->wherePivotNotIn('status', [RidePoint::STATUS_CANCELED, RidePoint::STATUS_COMPLETED])->get();
-        foreach($points as $point){
-			$point->pivot->detach();
-		}
-		
-		// List of items can be detached
-		$items = $ride->items()->whereNotIn('items.status', [Item::STATUS_CANCELED, Item::STATUS_COMPLETED])->get();
-		foreach($items as $item){
-			$item->detach();
-			$item->setStartAt(null);
-			
-			if($item->order){
-				$item->order->ok();
+        
+		foreach($ride->rideitems as $rideitem){
+			if($rideitem->isCancelable()){
+				$rideitem->cancel();
+				if($rideitem->ride){
+					$rideitem->ride->getNextRideItem();
+				}
+				
+				if($rideitem->item){
+        			if($item->isCancelable()){
+						$rideitem->item->cancel();
+						if($rideitem->item->order){
+							$rideitem->item->order->cancel($request->user());
+						}
+					}
+				}
 			}
 		}
-		*/
+		
+		$ride->load(['items', 'items.point'])
+			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point']);
 		
         return new RideResource($ride);
     }
@@ -178,21 +185,25 @@ class RideController extends Controller
         
         $ride->complete();
 		
-		/*
-		$points = $ride->points()->wherePivot('status', RidePoint::STATUS_STARTED)->get();
-        foreach($points as $point){
-			$point->pivot->complete();
-		}
+		$rideitems = $ride->rideitems()
+			->with('item')
+			->with('item.order')
+			->where('status', RideItem::STATUS_STARTED)
+			->get();
 		
-		$items = $ride->items()->where('items.status', Item::STATUS_STARTED)->get();
-		foreach($items as $item){
-			$item->complete();
-			if($item->order){
-				$item->order->updateStatus(); // Check order status
+        foreach($rideitems as $rideitem){
+			$rideitem->complete();
+			if($ride->item){
+				$ride->item->complete();
+				if($ride->item->order){
+					$ride->item->order->updateStatus(); // Check order status
+				}
 			}
 		}
-		*/
         
+		$ride->load(['items', 'items.point'])
+			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point']);
+		
         return new RideResource($ride);
     }
     
@@ -208,9 +219,8 @@ class RideController extends Controller
     {
         $ride = Ride::findOrFail($request->input('id'));
         
-		/*
-        $points = $ride->points()->wherePivot('status', RidePoint::STATUS_ACTIVE)->get();
-        if(empty($points)){
+        $rideitems = $ride->rideitems()->where('status', RideItem::STATUS_ACTIVE)->get();
+        if(empty($rideitems)){
             return $this->error(400, 4005, trans('messages.no.items.found'));
         }
         
@@ -218,9 +228,11 @@ class RideController extends Controller
             return $this->error(400, 4006, trans('messages.no.route.found'));
         }
         
-        $ride->getNextPoint();
-		*/
+		$ride->getNextRideItem();
         
+		$ride->load(['items', 'items.point'])
+			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point']);
+		
         return new RideResource($ride);
     }
 }
