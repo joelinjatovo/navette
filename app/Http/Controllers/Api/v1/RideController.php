@@ -36,7 +36,6 @@ class RideController extends Controller
      */
     public function index(Request $request){
 		$models = $request->user()->ridesDrived()
-						->with('driver')
 						->orderBy('rides.created_at', 'desc')
 						->paginate();
         return new RideCollection($models);
