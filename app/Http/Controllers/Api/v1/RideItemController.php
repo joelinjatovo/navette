@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\RidePoint;
-use App\Http\Resources\Ride as RideResource;
+use App\Http\Resources\RideItem as RideItemResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -28,6 +28,7 @@ class RideItemController extends Controller
         
         $rideitem->arrive();
 		
+		/*
 		if($rideitem->item){
 			$rideitem->item->arrive();
 		}
@@ -35,8 +36,9 @@ class RideItemController extends Controller
 		if($rideitem->ride){
 			$rideitem->ride->getNextPoint();
 		}
+		*/
         
-        return new RideResource($rideitem->ride);
+        return new RideItemResource($rideitem);
     }
     
     /**
@@ -57,6 +59,7 @@ class RideItemController extends Controller
         
         $rideitem->cancel();
 		
+		/*
 		if($rideitem->item){
 			$rideitem->item->cancel();
 		}
@@ -64,8 +67,9 @@ class RideItemController extends Controller
 		if($rideitem->ride){
 			$rideitem->ride->getNextPoint();
 		}
+		*/
         
-        return new RideResource($rideitem->ride);
+        return new RideItemResource($rideitem);
     }
     
     /**
@@ -85,6 +89,7 @@ class RideItemController extends Controller
         
         $rideitem->pickOrDrop();
 		
+		/*
 		if($rideitem->item){
 			if($rideitem->item->type == Item::TYPE_GO){
 				$rideitem->item->start();
@@ -96,8 +101,9 @@ class RideItemController extends Controller
 		if($rideitem->ride){
 			$rideitem->ride->getNextPoint();
 		}
+		*/
         
-        return new RideResource($rideitem->ride);
+        return new RideItemResource($rideitem);
     }
 	
 }

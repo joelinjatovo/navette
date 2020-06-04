@@ -34,6 +34,7 @@ class Item extends JsonResource
 			'created_at' => $this->created_at,
             'point' => $this->when($this->relationLoaded('point'), new Point($this->point)),
             'order' => $this->when($this->relationLoaded('order'), new Order($this->order)),
+            'rideitem' => $this->when($this->pivot, new RideItem($this->pivot)),
 			'rides' => Ride::collection($this->whenLoaded('rides')),
 			'suggestions' => [],
         ];

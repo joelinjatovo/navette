@@ -18,6 +18,6 @@ class ClubController extends Controller
      * @return Response
      */
     public function index(){
-        return new ClubCollection(Club::paginate());
+        return new ClubCollection(Club::with('point')->paginate());
     }
 }

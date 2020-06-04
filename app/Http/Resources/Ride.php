@@ -28,6 +28,7 @@ class Ride extends JsonResource
 			'canceled_at' => $this->canceled_at,
 			'created_at' => $this->created_at,
             'driver' => $this->when($this->relationLoaded('driver'), new User($this->driver)),
+            'rideitem' => $this->when($this->pivot, new RideItem($this->pivot)),
             'items' => Item::collection($this->whenLoaded('items')),
         ];
     }

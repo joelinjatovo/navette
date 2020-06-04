@@ -9,7 +9,7 @@ use App\Http\Resources\RideCollection;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\ItemCollection;
 use App\Http\Resources\RidePointCollection;
-use App\Http\Resources\RideItem as RideItemResource;
+use App\Http\Resources\Ride as RideResource;
 use App\Models\Ride;
 use App\Models\RidePoint;
 use App\Models\Item;
@@ -37,7 +37,6 @@ class RideController extends Controller
     public function index(Request $request){
 		$models = $request->user()->ridesDrived()
 						->with('driver')
-						->with('car')
 						->orderBy('rides.created_at', 'desc')
 						->paginate();
         return new RideCollection($models);
@@ -53,10 +52,7 @@ class RideController extends Controller
      */
     public function show(Request $request, Ride $ride)
     {
-        return (new RideItemResource($ride))
-				->additional([
-					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
-				]);
+        return new RideResource($ride);
     }
     
     /**
@@ -80,9 +76,9 @@ class RideController extends Controller
      *
      * @return Response
      */
-    public function points(Request $request, Ride $ride)
+    public function rideitems(Request $request, Ride $ride)
     {
-        return new RidePointCollection($ride->points()->paginate());
+        return new RideItemCollection($ride->ridepoints()->paginate());
     }
     
     /**
@@ -97,17 +93,16 @@ class RideController extends Controller
     {
         $item = Item::findOrFail($request->input('id'));
 		
+		/*
 		$ride->attachRidePoint($item);
 		$item->associateRide($ride);
 		$item->active();
 		if($item->order){
 			$item->order->active();
 		}
+		*/
 		
-        return (new RideItemResour0ce($ride))
-				->additional([
-					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
-				]);
+        return new RideItemResource($ride);
     }
     
     /**
@@ -148,6 +143,7 @@ class RideController extends Controller
         
         $ride->cancel();
 		
+		/*
 		$points = $ride->points()->wherePivotNotIn('status', [RidePoint::STATUS_CANCELED, RidePoint::STATUS_COMPLETED])->get();
         foreach($points as $point){
 			$point->pivot->detach();
@@ -163,11 +159,9 @@ class RideController extends Controller
 				$item->order->ok();
 			}
 		}
+		*/
 		
-        return (new RideItemResource($ride))
-				->additional([
-					'route' => is_array($ride->route)?$ride->route:json_decode($ride->route),
-				]);
+        return new RideItemResource($ride);
     }
     
     /**

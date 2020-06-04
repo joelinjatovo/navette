@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
-use App\Http\Resources\OrderItem as OrderItemResource;
+use App\Http\Resources\Order as OrderResource;
 use App\Http\Resources\OrderCollection;
 use App\Models\Car;
 use App\Models\Club;
@@ -37,7 +37,9 @@ class OrderController extends Controller
      * @return Response
      */
     public function index(Request $request){
-		$models = $request->user()->orders()->orderBy('created_at', 'desc')->paginate();
+		$models = $request->user()->orders()
+			->orderBy('created_at', 'desc')
+			->paginate();
         return new OrderCollection($models);
     }
 
@@ -47,7 +49,7 @@ class OrderController extends Controller
      * @return Response
      */
     public function show(Request $request, Order $order){
-        return new OrderItemResource($order);
+        return new OrderResource($order);
     }
 
     /**
@@ -88,7 +90,7 @@ class OrderController extends Controller
         $order->distance = $distance;
         $order->setZone($zone);
 
-        return new OrderItemResource($order);
+        return new OrderResource($order);
     }
 
     /**
@@ -140,7 +142,7 @@ class OrderController extends Controller
         $order->setZone($zone);
         $order->save();
 
-        return new OrderItemResource($order);
+        return new OrderResource($order->load(['items', 'items.point']));
     }
     
     /**
@@ -160,6 +162,7 @@ class OrderController extends Controller
         
         $order->cancel($request->user());
 		
+		/*
 		foreach($order->items as $item){
 			if($item->isCancelable()){
 				$item->cancel();
@@ -172,7 +175,8 @@ class OrderController extends Controller
 				}
 			}
 		}
+		*/
         
-        return new OrderItemResource($order);
+        return new OrderResource($order);
     }
 }

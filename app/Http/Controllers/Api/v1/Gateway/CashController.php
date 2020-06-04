@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\v1\Gateway;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OrderItem as OrderItemResource;
+use App\Http\Resources\Order as OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class CashController extends Controller
         $order->payment_type = Order::PAYMENT_TYPE_CASH;
         $order->save();
         
-        return new OrderItemResource($order);
+        return new OrderResource($order);
     }
 	
     /**
@@ -40,6 +40,6 @@ class CashController extends Controller
     	
         $order->paidPer(Order::PAYMENT_TYPE_CASH);
         
-        return new OrderItemResource($order);
+        return new OrderResource($order);
     }
 }

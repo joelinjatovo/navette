@@ -50,7 +50,7 @@ class StripeController extends Controller
             'client_secret' => $intent->client_secret,
         ];
 
-        return $this->success(200, "Payment intent created with success", $output);
+        return $this->success(200, trans('messages.payment.intent.created'), $output);
     }
     
     /**

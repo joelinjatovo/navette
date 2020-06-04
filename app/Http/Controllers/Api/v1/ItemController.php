@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\Item;
-use App\Http\Resources\ItemItem as ItemItemResource;
-use App\Http\Resources\RideItem as RideItemResource;
+use App\Http\Resources\Item as ItemResource;
+use App\Http\Resources\Ride as RideResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -21,7 +21,7 @@ class ItemController extends Controller
      */
     public function show(Request $request, Item $item)
     {
-        return new ItemItemResource($item);
+        return new ItemResource($item);
     }
     
     /**
@@ -45,6 +45,7 @@ class ItemController extends Controller
 			$item->order->cancel($request->user());
 		}
         
+		/*
         if($item->ride){
 			$point = $item->ride->points()->wherePivot('item_id', $item->getKey())->first();
 			if($point && $point->pivot){
@@ -52,7 +53,8 @@ class ItemController extends Controller
 			}
 			$item->ride->getNextPoint(); // Select next point or update status
         }
+		*/
         
-        return new ItemItemResource($item);
+        return new ItemResource($item);
     }
 }

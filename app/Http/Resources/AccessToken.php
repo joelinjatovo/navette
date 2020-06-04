@@ -26,7 +26,7 @@ class AccessToken extends JsonResource
                 'locale' => $this->user->locale,
                 'verified' => $this->user->hasVerifiedPhone(),
                 'image_url' => $this->user->image ? $this->user->image->url : null,
-                'roles' => RoleRaw::collection($this->user->roles),
+                'roles' => Role::collection($this->user->roles),
             ];
         }
         
