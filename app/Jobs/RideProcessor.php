@@ -63,33 +63,119 @@ class RideProcessor implements ShouldQueue
     /**
      * Process this item
      *
-     * @param  Exception  $exception
-     * @return void
+     * @return boolean
      */
     protected function performTask(Item $item)
     {
-		if($item->order && $item->order->car){
-			$order = $item->order;
-			$car = $item->order->car;
-			$driver = $item->order->car->driver;
-			$user = $item->user;
-			
-			$ride = $this->getOrCreateRide($item);
-			
-			/*
-			// Attach the item's order point to the ride
-			$ride->attachRidePoint($item);
-			$item->associateRide($ride); // Set item ride
-			$item->active(); // Active item
-			if($item->order){
-				$item->order->active(); // Active order
-			}
-			
-			$ride->verifyDirection($this->google);
-			*/
-			
+		$ride = null;
+		$order = $item->order;
+		$club = $item->club;
+		
+		if(!$order || !$club){
+			return $ride;
 		}
+		
+		// Find the available car who has place count
+		$car = $this->findPerfectCar($club, $order->place);
+		if($car && $car->driver){
+			$ride = $this->createRide($item, $car);
+		}
+		
+		// Find the good car who has car_place > ordered_place
+		if(!$ride){
+			$car = $this->findBestCar($club, $order->place);
+			if($car && $car->driver){
+				$ride = $this->createRide($item, $car);
+			}
+		}
+		
+		// Find locked car who has rides.available_place = order_place
+		if(!$ride){
+			$ride = $this->findPerfectPingedRide($club, $order->place);
+			if($ride){
+				$ride->attachRide($item);
+			}
+		}
+		
+		// Find locked car who has rides.available_place > order_place
+		if(!$ride){
+			$ride = $this->findBestPingedRide($club, $order->place);
+			if($ride){
+				$ride->attachRide($item);
+			}
+		}
+		
+		return $ride;
+		
+		/*
+		// Attach the item's order point to the ride
+		$ride->attachRidePoint($item);
+		$item->associateRide($ride); // Set item ride
+		$item->active(); // Active item
+		if($item->order){
+			$item->order->active(); // Active order
+		}
+
+		$ride->verifyDirection($this->google);
+		*/
+			
     }
+	
+	private createRide(Item $item, Car $car){
+		$ride = new Ride();
+		$ride->status = Ride::STATUS_PING;
+		$ride->driver()->associate($car->driver);
+		if($ride->save()){
+			$car->lock();
+			return $ride;
+		}
+		return null;
+	}
+	
+	private function findPerfectCar(Club $club, $place, $excludedCars = []){
+		$query = $club->cars()
+			->where('place', '=', $place)
+			->whereHas('driver')
+			->where('status', Car::STATUS_AVAILABLE);
+		if(!is_array($excludedCars) && !empty($excludedCars)){
+			$query->whereNotIn('cars.id', $excludedCars);
+		}
+		return $query->first();
+	}
+	
+	private function findBestCar(Club $club, $place, $excludedCars = []){
+		$query = $club->cars()
+			->where('place', '>=', $place)
+			->whereHas('driver')
+			->where('status', Car::STATUS_AVAILABLE)
+			->orderBy('place', 'asc');
+		if(!is_array($excludedCars) && !empty($excludedCars)){
+			$query->whereNotIn('cars.id', $excludedCars);
+		}
+		return $query->first();
+	}
+	
+	private function findPerfectPingedRide(Club $club, $place, $excludedCars = []){
+		$query = $club->cars()
+			->join('rides', 'rides.driver_id', '=', 'cars.driver_id')
+			->where('rides.available_place', '=', $place)
+			->where('rides.status', Ride::STATUS_PING);
+		if(!is_array($excludedCars) && !empty($excludedCars)){
+			$query->whereNotIn('cars.id', $excludedCars);
+		}
+		return $query->first();
+	}
+	
+	private function findBestPingedRide(Club $club, $place, $excludedCars = []){
+		$query = Ride::join('cars', 'rides.driver_id', '=', 'cars.driver_id')
+			->where('rides.available_place', '>=', $place)
+			->where('rides.status', Ride::STATUS_PING)
+			->orderBy('rides.available_place', 'asc');
+		if(!is_array($excludedCars) && !empty($excludedCars)){
+			$query->whereNotIn('cars.id', $excludedCars);
+		}
+		return $query->first();
+	}
 
     /**
      * Get or Create ride
@@ -100,9 +186,7 @@ class RideProcessor implements ShouldQueue
     protected function getOrCreateRide($item)
 	{
 		$order = $item->order;
-		$car = $item->order->car;
-		$driver = $item->order->car->driver;
-		$user = $item->user;
+		$club = $item->club;
 			
 		// Attach this item to the ride
 		$ride = $this->getPingedRide($item);
@@ -171,8 +255,7 @@ class RideProcessor implements ShouldQueue
      */
     protected function getPingedRide($item)
     {
-		if($item->order && $item->order->car){
-        	$car = $item->order->car;
+		if($item->order){
 			$query = Ride::where('car_id', $car->getKey());
 			$query->where('status', Ride::STATUS_PING);
 			$query->orderBy('start_at', 'asc');

@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Car extends Model
 {
-
+    
+    public const STATUS_AVAILBALE = 'available';
+	
+    public const STATUS_LOCKED = 'locked';
+	
     /**
      * The attributes that are mass assignable.
      *
@@ -51,12 +55,31 @@ class Car extends Model
         return $this->belongsTo(User::class, 'driver_id');
     }
     
+    
+    /**
+     * 
+     */
+    public function free()
+    {
+        $this->status = self::STATUS_AVAILABLE;
+		$this->save();
+    }
+    
     /**
      * Get the car's image.
      */
     public function image()
     {
         return $this->morphOne(Image::class, 'imageable')->orderBy('images.created_at', 'desc');;
+    }
+    
+    /**
+     * 
+     */
+    public function lock()
+    {
+        $this->status = self::STATUS_LOCKED;
+		$this->save();
     }
     
     /**

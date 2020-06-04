@@ -17,6 +17,9 @@ class CreateRidesTable extends Migration
             Schema::create('rides', function (Blueprint $table) {
                 $table->id();
                 $table->string('status', 50)->default('ping');
+                $table->bigInteger('available_place')->nullable();
+                $table->bigInteger('current_place')->nullable();
+                $table->bigInteger('max_place')->nullable();
                 $table->bigInteger('distance_value')->nullable();
                 $table->string('distance')->nullable();
                 $table->bigInteger('duration_value')->nullable();
