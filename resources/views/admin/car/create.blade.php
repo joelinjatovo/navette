@@ -81,18 +81,6 @@
                     
                     <!--begin::Group-->
                     <div class="form-group row">
-                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.car.year') }}</label>
-                        <div class="col-9">
-                            <input class="form-control form-control-lg form-control-solid @error('year') is-invalid @enderror" type="text" name="year" placeholder="{{ __('messages.form.car.year') }}" value="{{ old('year', $model->year) }}">
-                            @error('year')
-                                <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
-                            @enderror
-                        </div>
-                    </div>
-                    <!--end::Group-->
-                    
-                    <!--begin::Group-->
-                    <div class="form-group row">
                         <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.car.place') }}</label>
                         <div class="col-9">
                             <input class="form-control form-control-lg form-control-solid @error('place') is-invalid @enderror" type="text" name="place" placeholder="{{ __('messages.form.car.place') }}" value="{{ old('place', $model->place) }}">
@@ -113,22 +101,6 @@
                                 @endforeach
                             </select>
                             @error('club')
-                                <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
-                            @enderror
-                        </div>
-                    </div>
-                    <!--end::Group-->
-                    
-                    <!--begin::Group-->
-                    <div class="form-group row">
-                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.car.model') }}</label>
-                        <div class="col-9">
-                            <select name="model" id="kt_select2_model" class="form-control form-control-lg form-control-solid @error('model') is-invalid @enderror">
-                                @foreach($models as $carmodel)
-                                    <option value="{{ $carmodel->getKey() }}" @if($carmodel->getKey() == old('model', $model->model ? $model->model->getKey() : 0)) selected="selected" @endif>{{ $carmodel->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('model')
                                 <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
                             @enderror
                         </div>

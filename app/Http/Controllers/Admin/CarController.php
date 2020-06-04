@@ -31,15 +31,11 @@ class CarController extends Controller
         if(!empty($s)){
             $s = '%'.$s.'%';
             $cars = Car::orWhere('name', 'LIKE', $s)
-                        ->withCount('orders')
-                        ->with('model')
                         ->with('driver')
                         ->with('club')
                         ->paginate();
         }else{
-            $cars = Car::withCount('orders')
-                        ->with('model')
-                        ->with('driver')
+            $cars = Car::with('driver')
                         ->with('club')
                         ->paginate();
         }
@@ -55,8 +51,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        $orders = $car->orders()->with('user')->paginate();
-        return view('admin.car.show', ['model' => $car, 'orders' => $orders]);
+        return view('admin.car.show', ['model' => $car]);
     }
     
     /**
@@ -80,7 +75,6 @@ class CarController extends Controller
     {
         $validated = $request->validated();
         $car = new Car($validated);
-        $car->car_model_id = $request->input('model');
         $car->driver_id = $request->input('driver');
         $car->club_id = $request->input('club');
         $car->save();
@@ -114,7 +108,6 @@ class CarController extends Controller
     {
         $validated = $request->validated();
         $car->fill($validated);
-        $car->car_model_id = $request->input('model');
         $car->driver_id = $request->input('driver');
         $car->club_id = $request->input('club');
         if($car->save()){

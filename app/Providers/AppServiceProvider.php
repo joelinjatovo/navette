@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Http\Middleware\AccessLog as AccessLogMiddleware;
 use App\Models\Club;
-use App\Models\CarModel;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\GoogleApiService;
@@ -58,7 +57,6 @@ class AppServiceProvider extends ServiceProvider
         
         View::composer(['admin.car.create', 'admin.car.edit'], function ($view) {
             $view->with('drivers', User::all() /*Role::where('name', Role::DRIVER)->users*/);
-            $view->with('models', CarModel::all());
             $view->with('clubs', Club::all());
         });
         
