@@ -9,6 +9,8 @@ class Car extends Model
     
     public const STATUS_AVAILABLE = 'available';
 	
+    public const STATUS_UNAVAILABLE = 'unavailable';
+	
     public const STATUS_LOCKED = 'locked';
 	
     /**

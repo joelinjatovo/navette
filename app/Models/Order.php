@@ -183,7 +183,7 @@ class Order extends Model
     {
 		$max_place = 0;
 		if($this->club){
-			$max_place = $this->club->getCarMaxPlace();
+			$max_place = $this->club->getMaxCarPlace();
 		}
 		
         return ($max_place >= $this->place);

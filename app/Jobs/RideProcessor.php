@@ -166,7 +166,7 @@ class RideProcessor implements ShouldQueue
 		$query = $club->cars()
 			->where('place', '>=', $place)
 			->whereHas('driver')
-			->whereNot('status', Car::STATUS_UNAVAILABLE)
+			->where('status', '!=', Car::STATUS_UNAVAILABLE)
 			->orderBy('place', 'asc');
 		if(!is_array($excludedCars) && !empty($excludedCars)){
 			$query->whereNotIn('cars.id', $excludedCars);

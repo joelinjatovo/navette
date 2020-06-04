@@ -19,7 +19,7 @@ class Club extends JsonResource
 			'name' => $this->name,
 			'description' => $this->description,
 			'created_at' => $this->created_at,
-			'car_max_place' => $this->getCarMaxPlace(),
+			'max_car_place' => $this->getMaxCarPlace(),
 			'image_url' => $this->image ? $this->image->url : null,
             'point' => $this->when($this->relationLoaded('point'), new Point($this->point)),
         ];

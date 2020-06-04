@@ -47,9 +47,9 @@ class Club extends Model
     /**
      * Get the club's car max place
      */
-    public function getCarMaxPlace()
+    public function getMaxCarPlace()
     {
-        return $this->cars()->whereNot('cars.status', Car::STATUS_UNAVAILABLE)->max('cars.place');
+        return $this->cars()->where('cars.status', '!=', Car::STATUS_UNAVAILABLE)->max('cars.place');
     }
     
     /**
