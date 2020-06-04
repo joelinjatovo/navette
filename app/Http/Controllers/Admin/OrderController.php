@@ -58,7 +58,7 @@ class OrderController extends Controller
         $order = Order::findOrFail($request->input('id'));
 		switch($request->input('action')){
 			case 'cancel':
-				if(!$order->cancelable()){
+				if(!$order->isCancelable()){
 					return response()->json([
 						'status' => "error",
 						'message' => trans('messages.controller.success.order.not.cancelable'),
@@ -72,7 +72,8 @@ class OrderController extends Controller
 				return response()->json([
 					'status' => "success",
 					'message' => trans('messages.controller.success.order.canceled'),
-				]);
+					'view' => view('admin.order.table-row', ['model' => $order])->render(),
+				]); 
 			break;
 		}
 		

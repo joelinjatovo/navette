@@ -130,24 +130,6 @@ class RideItem extends Pivot
     {
         return $this->ride ? $this->ride->driver : null;
     }
-	
-    /**
-     * Pick or Drop ride point
-     */
-    public function pickOrDrop()
-    {
-        if($this->type == self::TYPE_PICKUP){
-			$this->status = self::STATUS_STARTED;
-			$this->started_at = now();
-			$this->save();
-			$this->fireModelEvent('started');
-        }else{
-			$this->status = self::STATUS_COMPLETED;
-			$this->started_at = now();
-			$this->save();
-			$this->fireModelEvent('completed');
-        }
-    }
     
     /**
      * Check if ride is arrivable
@@ -196,6 +178,24 @@ class RideItem extends Pivot
     public function order()
     {
         return $this->item ? $this->item->order : null;
+    }
+	
+    /**
+     * Pick or Drop ride point
+     */
+    public function pickOrDrop()
+    {
+        if($this->type == self::TYPE_PICKUP){
+			$this->status = self::STATUS_STARTED;
+			$this->started_at = now();
+			$this->save();
+			$this->fireModelEvent('started');
+        }else{
+			$this->status = self::STATUS_COMPLETED;
+			$this->started_at = now();
+			$this->save();
+			$this->fireModelEvent('completed');
+        }
     }
     
     /**
