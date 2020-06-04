@@ -88,6 +88,23 @@ class Ride extends Model
     }
     
     /**
+     * 
+     */
+    public function attachItem(Item $item, $place)
+    {
+		$this->items()->attach($item->getKey(), ['status' => RideItem::STATUS_PING, 'place' => $place]);
+    }
+    
+    /**
+     * 
+     */
+    public function addPlace($place)
+    {
+		$this->current_place += $place;
+		$this->available_place -= $place;
+    }
+    
+    /**
      * Set ride status as cancelable and fired event
      */
     public function cancelable()
