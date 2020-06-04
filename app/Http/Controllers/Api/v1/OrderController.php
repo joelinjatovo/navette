@@ -38,6 +38,8 @@ class OrderController extends Controller
      */
     public function index(Request $request){
 		$models = $request->user()->orders()
+			->with(['club', 'club.point'])
+			->with(['items', 'items.point', 'items.rides'])
 			->orderBy('created_at', 'desc')
 			->paginate();
         return new OrderCollection($models);

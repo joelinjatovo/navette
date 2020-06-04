@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Car extends Model
 {
     
-    public const STATUS_AVAILBALE = 'available';
+    public const STATUS_AVAILABLE = 'available';
 	
     public const STATUS_LOCKED = 'locked';
 	

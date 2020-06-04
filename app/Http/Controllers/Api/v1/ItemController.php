@@ -4,12 +4,29 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Models\Item;
 use App\Http\Resources\Item as ItemResource;
+use App\Http\Resources\ItemCollection;
 use App\Http\Resources\Ride as RideResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+
+    /**
+     * Paginate items
+     *
+     * @return Response
+     */
+    public function index(Request $request){
+		$models = Item::join('orders', 'orders.id', '=', 'items.order_id')
+			->where('orders.user_id', '=', $request->user()->getKey())
+			->with('point')
+			->with(['rides', 'rides.driver'])
+			->with(['order', 'order.club'])
+			->orderBy('items.created_at', 'desc')
+			->paginate();
+        return new ItemCollection($models);
+    }
     
     /**
      * Active a ride point.
@@ -21,6 +38,9 @@ class ItemController extends Controller
      */
     public function show(Request $request, Item $item)
     {
+		$item->load('point')
+			->load(['rides', 'rides.driver'])
+			->load(['order', 'order.club']);
         return new ItemResource($item);
     }
     
@@ -54,6 +74,10 @@ class ItemController extends Controller
 			}
 		}
 		
-        return new ItemResource($item->load(['order']));
+		$item->load('point')
+			->load(['rides', 'rides.driver'])
+			->load(['order', 'order.club']);
+		
+        return new ItemResource($item);
     }
 }

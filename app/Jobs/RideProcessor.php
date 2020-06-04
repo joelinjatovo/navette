@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Car;
+use App\Models\Club;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Ride;
@@ -55,6 +56,7 @@ class RideProcessor implements ShouldQueue
 			->get();
 
 		foreach($items as $item){
+			info('RideProcessor...' . $item->getKey());
 			$this->performTask($item);
 		}
 		
@@ -68,31 +70,33 @@ class RideProcessor implements ShouldQueue
     protected function performTask(Item $item)
     {
 		$ride = null;
-		$order = $item->order;
-		$club = $item->club;
 		
-		if(!$order || !$club){
+		if(!($order = $item->order) || !($club = $order->club)){
 			return $ride;
 		}
 		
 		// Find locked car who has rides.available_place = order_place
 		if(!$ride){
+			info("findPerfectPingedRide " . $item->getKey());
 			$ride = $this->findPerfectPingedRide($club, $order->place);
 		}
 		
 		// Find locked car who has rides.available_place > order_place
 		if(!$ride){
+			info("findBestPingedRide " . $item->getKey());
 			$ride = $this->findBestPingedRide($club, $order->place);
 		}
 		
 		// Find the available car who has place count
 		$car = $this->findPerfectCar($club, $order->place);
 		if($car && $car->driver){
+			info("findPerfectCar " . $item->getKey());
 			$ride = $this->createRide($item, $car);
 		}
 		
 		// Find the good car who has car_place > ordered_place
 		if(!$ride){
+			info("findBestCar " . $item->getKey());
 			$car = $this->findBestCar($club, $order->place);
 			if($car && $car->driver){
 				$ride = $this->createRide($item, $car);
@@ -101,18 +105,22 @@ class RideProcessor implements ShouldQueue
 		
 		// Create basic car
 		if(!$ride){
+			info("findCar " . $item->getKey());
 			$car = $this->findCar($club, $order->place);
 			if($car && $car->driver){
-				$ride = $this->createRide($item, $car;
+				$ride = $this->createRide($item, $car);
 			}
 		}
 		
 		// Attach item to ride
 		if($ride){
+			info("attachItem " . $item->getKey());
 			$ride->attachItem($item, $order->place);
 			$ride->addPlace($order->place);
 			$item->active();
 			$order->active();
+		}else{
+			info("No ride for " . $item->getKey());
 		}
 		
 		return $ride;

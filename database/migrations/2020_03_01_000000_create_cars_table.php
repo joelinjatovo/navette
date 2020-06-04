@@ -16,7 +16,7 @@ class CreateCarsTable extends Migration
         if( ! Schema::hasTable('cars') ) {
             Schema::create('cars', function (Blueprint $table) {
                 $table->id();
-                $table->string('status', 100)->default('active');
+                $table->string('status', 100)->default('available');
                 $table->string('name', 100);
                 $table->text('description')->nullable();
                 $table->integer('place');

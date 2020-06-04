@@ -71,6 +71,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('rideitem/cancel', 'RideItemController@cancel')->name('rideitem.cancel'); // Driver
         Route::post('rideitem/pick-or-drop', 'RideItemController@pickOrDrop')->name('rideitem.pickOrDrop'); // Driver
 		
+        Route::get('items', 'ItemController@index')->name('items'); // Customer
         Route::get('item/{item}', 'ItemController@show')->name('item.show'); // Customer
         Route::post('item/cancel', 'ItemController@cancel')->name('item.cancel'); // Customer
     });
