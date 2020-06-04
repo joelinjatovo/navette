@@ -31,9 +31,9 @@ class CreateRideItemTable extends Migration
                 $table->dateTime('canceled_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
                 $table->unsignedBigInteger('ride_id')->nullable();
-                $table->foreign('ride_id')->references('id')->on('rides');
+                $table->foreign('ride_id')->references('id')->on('rides')->onDelete('cascade');
                 $table->unsignedBigInteger('item_id')->nullable();
-                $table->foreign('item_id')->references('id')->on('items');
+                $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
                 $table->timestamps();
             });
         }
@@ -47,6 +47,6 @@ class CreateRideItemTable extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('ride_point');
+        Schema::dropIfExists('ride_item');
     }
 }

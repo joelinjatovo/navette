@@ -31,10 +31,12 @@ class CreateItemsTable extends Migration
                 $table->dateTime('started_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
+                $table->unsignedBigInteger('ride_id')->nullable();
+                $table->foreign('ride_id')->references('id')->on('rides');
                 $table->uuid('point_id')->nullable();
                 $table->foreign('point_id')->references('id')->on('points');
                 $table->unsignedBigInteger('order_id')->nullable();
-                $table->foreign('order_id')->references('id')->on('orders');
+                $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
                 $table->timestamps();
                 $table->softDeletes();
             });

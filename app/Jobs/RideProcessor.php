@@ -75,28 +75,29 @@ class RideProcessor implements ShouldQueue
 			return $ride;
 		}
 		
+		// Find choosen ride
+		if( $item->ride && $item->ride->isPing() && $item->ride->hasAvailablePlace($order->place) ){
+			$ride = $item->ride;
+		}
+		
 		// Find locked car who has rides.available_place = order_place
 		if(!$ride){
-			info("findPerfectPingedRide " . $item->getKey());
 			$ride = $this->findPerfectPingedRide($club, $order->place);
 		}
 		
-		// Find locked car who has rides.available_place > order_place
+		// Find locked car who has rides.available_place >= order_place
 		if(!$ride){
-			info("findBestPingedRide " . $item->getKey());
 			$ride = $this->findBestPingedRide($club, $order->place);
 		}
 		
 		// Find the available car who has place count
 		$car = $this->findPerfectCar($club, $order->place);
 		if($car && $car->driver){
-			info("findPerfectCar " . $item->getKey());
 			$ride = $this->createRide($item, $car);
 		}
 		
-		// Find the good car who has car_place > ordered_place
+		// Find the good car who has car_place >= ordered_place
 		if(!$ride){
-			info("findBestCar " . $item->getKey());
 			$car = $this->findBestCar($club, $order->place);
 			if($car && $car->driver){
 				$ride = $this->createRide($item, $car);
@@ -105,7 +106,6 @@ class RideProcessor implements ShouldQueue
 		
 		// Create basic car
 		if(!$ride){
-			info("findCar " . $item->getKey());
 			$car = $this->findCar($club, $order->place);
 			if($car && $car->driver){
 				$ride = $this->createRide($item, $car);
@@ -114,7 +114,6 @@ class RideProcessor implements ShouldQueue
 		
 		// Attach item to ride
 		if($ride){
-			info("attachItem " . $item->getKey());
 			$ride->attachItem($item, $order->place);
 			$ride->addPlace($order->place);
 			$item->active();

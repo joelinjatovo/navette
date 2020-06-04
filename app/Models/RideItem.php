@@ -120,7 +120,7 @@ class RideItem extends Pivot
      */
     public function club()
     {
-        return $this->ride()->club();
+        return $this->ride ? $this->ride->club : null;
     }
     
     /**
@@ -128,7 +128,7 @@ class RideItem extends Pivot
      */
     public function driver()
     {
-        return $this->ride()->driver();
+        return $this->ride ? $this->ride->driver : null;
     }
 	
     /**
@@ -195,7 +195,7 @@ class RideItem extends Pivot
      */
     public function order()
     {
-        return $this->item()->order();
+        return $this->item ? $this->item->order : null;
     }
     
     /**
@@ -203,7 +203,7 @@ class RideItem extends Pivot
      */
     public function point()
     {
-        return $this->item()->point();
+        return $this->item ? $this->item->point : null;
     }
     
     /**

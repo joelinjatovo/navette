@@ -92,7 +92,11 @@ class Ride extends Model
      */
     public function attachItem(Item $item, $place)
     {
-		$this->items()->attach($item->getKey(), ['status' => RideItem::STATUS_PING, 'place' => $place]);
+		$this->items()->attach($item->getKey(), [
+			'type' => $item->type == Item::TYPE_BACK ? RideItem::TYPE_DROP : RideItem::TYPE_PICKUP,
+			'status' => RideItem::STATUS_PING,
+			'place' => $place
+		]);
     }
     
     /**
@@ -173,13 +177,13 @@ class Ride extends Model
     public function getNextRideItem()
     {
         // Check if ride has next point
-        $rideitem = $this->rideitems()->where('status', [RideItem::STATUS_NEXT, RideItem::STATUS_ARRIVED])->first();
+        $rideitem = $this->rideitems()->whereIn('status', [RideItem::STATUS_NEXT, RideItem::STATUS_ARRIVED])->first();
         if($rideitem){
             return $rideitem;
         }
         
         // Set first active point as next
-        $rideitem = $this->rideitems()->where('status', RideItem::STATUS_ACTIVE)->orderBy('order', 'asc')->first();
+        $rideitem = $this->rideitems()->where('status', [RideItem::STATUS_PING, RideItem::STATUS_ACTIVE])->orderBy('order', 'asc')->first();
         if($rideitem)
         {
 			$rideitem->status = RideItem::STATUS_NEXT;
@@ -201,6 +205,15 @@ class Ride extends Model
     }
     
     /**
+     * Check if ride has available place
+	 * @return bool
+     */
+    public function hasAvailablePlace($place)
+    {
+		return $this->avalaible_place >= $place;
+    }
+    
+    /**
      * Check if ride is cancelable
 	 * @return bool
      */
@@ -219,19 +232,28 @@ class Ride extends Model
     }
     
     /**
+     * Check if ride is ping
+	 * @return bool
+     */
+    public function isPing()
+    {
+        return self::STATUS_PING == $this->status;
+    }
+    
+    /**
      * Check if ride is startable
 	 * @return bool
      */
     public function isStartable()
     {
-        $car = $this->car;
-        if($car){
+        $driver = $this->driver;
+        if($driver){
             // Check if car is not disponible
-            $active_ride = $car->rides()
-                ->where('id', '!=', $this->getKey())
-                ->where('status', self::STATUS_STARTED)
-                ->first();
-            if($active_ride){
+            $hasActiveRide = $driver->ridesDrived()
+                ->where('rides.id', '!=', $this->getKey())
+                ->where('rides.status', self::STATUS_STARTED)
+                ->exists();
+            if($hasActiveRide){
                 return false;
             }
         }
@@ -278,7 +300,7 @@ class Ride extends Model
      */
     public function point()
     {
-        return $this->club()->point();
+    	return $this->club ? $this->club->point : null;
     }
     
     /**
@@ -346,12 +368,11 @@ class Ride extends Model
      */
     public function verifyDirection($google)
     {
-		if(!$ride->point){ 
+		if(!$this->point()){ 
 			return false;
         }
 		
-		$query = $ride->rideitems()
-			->whereHas('point')
+		$query = $this->rideitems()
 			->whereIn('status', [
 				RideItem::STATUS_PING, 
 				RideItem::STATUS_ACTIVE, 
@@ -364,13 +385,13 @@ class Ride extends Model
 		
 		$rideitems = $query->get();
         
-        $origins = sprintf("%s,%s", $ride->point->lat, $ride->point->lng);
-        $destinations = sprintf("%s,%s", $ride->point->lat, $ride->point->lng);
+        $origins = sprintf("%s,%s", $this->point()->lat, $this->point()->lng);
+        $destinations = sprintf("%s,%s", $this->point()->lat, $this->point()->lng);
         
         $array_waypoints = ['optimize:true'];
         foreach($rideitems as $rideitem){
-			if($rideitem->point){
-				$array_waypoints[] = sprintf("%s,%s", $rideitem->point->lat, $rideitem->point->lng);
+			if($rideitem->point()){
+				$array_waypoints[] = sprintf("%s,%s", $rideitem->point()->lat, $rideitem->point()->lng);
 			}
         }
         
@@ -441,28 +462,27 @@ class Ride extends Model
                             
                             // Update pivot info
                             if( is_array($orders) && isset($orders[$key]) && isset($rideitems[$orders[$key]]) ) {
-                                    $rideitem = $rideitems[$orders[$key]];
-									$rideitem->direction = $polyline;
-									$rideitem->distance = $leg_distance_text;
-									$rideitem->distance_value = $leg_distance;
-									$rideitem->duration_value = $leg_duration;
-									$rideitem->duration = $leg_duration_text;
-									$rideitem->save();
-                                }
+								$rideitem = $rideitems[$orders[$key]];
+								$rideitem->direction = $polyline;
+								$rideitem->distance = $leg_distance_text;
+								$rideitem->distance_value = $leg_distance;
+								$rideitem->duration_value = $leg_duration;
+								$rideitem->duration = $leg_duration_text;
+								$rideitem->save();
                             }
                         }
                         
-                        $ride->distance_value = $distance;
-                        $ride->duration_value = $duration;
+                        $this->distance_value = $distance;
+                        $this->duration_value = $duration;
                     }
                     
                     if(isset($route['overview_polyline']) && isset($route['overview_polyline']['points'])){
-                        $ride->direction = $route['overview_polyline']['points'];
+                        $this->direction = $route['overview_polyline']['points'];
                     }
                     
-                    $ride->route = $route;
+                    $this->route = $route;
 				
-                    return $ride->save();
+                    return $this->save();
                 }
             }
         }

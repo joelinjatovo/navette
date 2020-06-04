@@ -152,11 +152,53 @@ class Item extends Model
 	}
     
     /**
+     * Get suggested rides
+     */
+    public function getSuggestions($max = 5)
+    {
+		$rides = [];
+		
+		/*
+		if( !$this->club || !is_array($this->items) || !isset($this->items[0]) ){
+			return [];
+		}
+		*/
+		
+		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
+			->where('orders.club_id', '=', $this->club->id)
+			->where('orders.status', Order::STATUS_ACTIVE)
+			->whereNotIn('items.status', [Item::STATUS_PING, Item::STATUS_CANCELED, Item::STATUS_COMPLETED])
+			->with('ride')
+			->get();
+		
+		$ids = [];
+		foreach($items as $item){
+			if(!$item->ride) continue;
+			if(in_array($item->ride->id, $ids)) continue;
+			$distance = $item->distance($this->items[0]);
+			if( $distance <= $max ) {
+				$rides[] = $item->ride;
+				$ids[] = $item->ride->id;
+			}
+		}
+		
+        return $rides;
+    }
+    
+    /**
      * Check if order item is cancelable
      */
     public function isCancelable()
     {
         return !in_array($this->status, [self::STATUS_COMPLETED, self::STATUS_CANCELED]);
+    }
+    
+    /**
+     * Check if item is one car
+     */
+    public function isOneCar()
+    {
+		return $this->order && $this->order->isOneCar();
     }
     
     /**
@@ -192,6 +234,14 @@ class Item extends Model
     public function point()
     {
         return $this->belongsTo(Point::class, 'point_id');
+    }
+    
+    /**
+     * Get the ride chosen by the user
+     */
+    public function ride()
+    {
+        return $this->belongsTo(Ride::class, 'ride_id');
     }
     
     /**

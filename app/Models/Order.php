@@ -153,39 +153,6 @@ class Order extends Model
     }
     
     /**
-     * Get suggested rides
-     */
-    public function getSuggestedRides($max = 5)
-    {
-		/*
-		if( !$this->club || !is_array($this->items) || !isset($this->items[0]) ){
-			return [];
-		}
-		*/
-		
-		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
-			->where('orders.club_id', '=', $this->club->id)
-			->where('orders.status', Order::STATUS_ACTIVE)
-			->whereNotIn('items.status', [Item::STATUS_PING, Item::STATUS_CANCELED, Item::STATUS_COMPLETED])
-			->with('ride')
-			->get();
-		
-		$ids = [];
-		$rides = [];
-		foreach($items as $item){
-			if(!$item->ride) continue;
-			if(in_array($item->ride->id, $ids)) continue;
-			$distance = $item->distance($this->items[0]);
-			if( $distance <= $max ) {
-				$rides[] = $item->ride;
-				$ids[] = $item->ride->id;
-			}
-		}
-		
-        return $rides;
-    }
-    
-    /**
      * Get the order items
      */
     public function items()
@@ -207,6 +174,19 @@ class Order extends Model
         }
     
         return true;
+    }
+    
+    /**
+     * Check if order is one car
+     */
+    public function isOneCar()
+    {
+		$max_place = 0;
+		if($this->club){
+			$max_place = $this->club->getCarMaxPlace();
+		}
+		
+        return ($max_place >= $this->place);
     }
     
     /**

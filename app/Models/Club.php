@@ -45,11 +45,19 @@ class Club extends Model
     }
     
     /**
+     * Get the club's car max place
+     */
+    public function getCarMaxPlace()
+    {
+        return $this->cars()->whereNot('cars.status', Car::STATUS_UNAVAILABLE)->max('cars.place');
+    }
+    
+    /**
      * Get the club's image.
      */
     public function image()
     {
-        return $this->morphOne(Image::class, 'imageable')->orderBy('images.created_at', 'desc');;
+        return $this->morphOne(Image::class, 'imageable')->orderBy('images.created_at', 'desc');
     }
     
     /**
