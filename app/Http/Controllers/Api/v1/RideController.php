@@ -122,7 +122,7 @@ class RideController extends Controller
         $ride = Ride::findOrFail($request->input('id'));
         
         if(!$ride->isStartable()){
-            //return $this->error(400, 4004, trans('messages.ride.not.startable'));
+            return $this->error(400, 4004, trans('messages.ride.not.startable'));
         }
         
         $ride->start();

@@ -28,15 +28,9 @@ class RideItemController extends Controller
         
         $rideitem->arrive();
 		
-		/*
-		if($rideitem->item){
-			$rideitem->item->arrive();
-		}
-		
 		if($rideitem->ride){
-			$rideitem->ride->getNextPoint();
+			$rideitem->ride->getNextRideItem();
 		}
-		*/
         
         return new RideItemResource($rideitem);
     }
@@ -59,15 +53,9 @@ class RideItemController extends Controller
         
         $rideitem->cancel();
 		
-		/*
-		if($rideitem->item){
-			$rideitem->item->cancel();
-		}
-		
 		if($rideitem->ride){
-			$rideitem->ride->getNextPoint();
+			$rideitem->ride->getNextRideItem();
 		}
-		*/
         
         return new RideItemResource($rideitem);
     }
@@ -89,19 +77,9 @@ class RideItemController extends Controller
         
         $rideitem->pickOrDrop();
 		
-		/*
-		if($rideitem->item){
-			if($rideitem->item->type == Item::TYPE_GO){
-				$rideitem->item->start();
-            }else{
-				$rideitem->item->complete();
-            }
-		}
-		
 		if($rideitem->ride){
-			$rideitem->ride->getNextPoint();
+			$rideitem->ride->getNextRideItem();
 		}
-		*/
         
         return new RideItemResource($rideitem);
     }
