@@ -41,7 +41,7 @@ class Authenticate extends Middleware
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->guest()) {
                 if ($guard === 'api') {
-                    abort(401, 'Invalid Access Token');
+					throw new \App\Exceptions\AccessTokenException(trans('messages.invalid.access.token'));
                 }
             }
         }

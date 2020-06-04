@@ -75,9 +75,39 @@ class Handler extends ExceptionHandler
                         ]
                     ];
                 break;
+                case $exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException:
+                    $status = 404;
+                    $code = 104;
+                    $errors = [
+                        [
+                            'file' => $exception->getFile(),
+                            'line' => $exception->getLine(),
+                        ]
+                    ];
+                break;
+                case $exception instanceof ApiKeyException:
+                    $status = 401;
+                    $code = 105;
+                    $errors = [
+                        [
+                            'file' => $exception->getFile(),
+                            'line' => $exception->getLine(),
+                        ]
+                    ];
+                break;
+                case $exception instanceof AccessTokenException:
+                    $status = 401;
+                    $code = 106;
+                    $errors = [
+                        [
+                            'file' => $exception->getFile(),
+                            'line' => $exception->getLine(),
+                        ]
+                    ];
+                break;
                 default:
                     $status = 500;
-                    $code = 104;
+                    $code = 199;
                     $errors = [
                         [
                             'file' => $exception->getFile(),
@@ -88,14 +118,15 @@ class Handler extends ExceptionHandler
             }
 
             return response()->json([
-                'status' => $status,
-                'code' => $code,
+                'http_status' => $status,
+                'status_code' => $code,
                 'message' => $exception->getMessage(),
                 'errors' => $errors,
                 'validation' => $validation,
                 'data' => null
             ])->setStatusCode(200);
         }
+		
         return parent::render($request, $exception);
     }
 }

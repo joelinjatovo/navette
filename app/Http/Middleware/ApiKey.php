@@ -19,7 +19,7 @@ class ApiKey
     {
         $apikey = $request->header('x-api-key');
         if( empty($apikey) || !$this->isValidApiKey($apikey)){
-            abort(403, 'Invalid Api Key');
+			throw new \App\Exceptions\ApiKeyException(trans('messages.invalid.api.key'));
         }
         
         return $next($request);

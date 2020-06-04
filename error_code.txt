@@ -1,8 +1,12 @@
+Handler
 100: Bad Credentials
-101: Unauthorized
+101: AuthorizationException
 102: ValidationException
 103: HttpException
-104: Autres
+104: ModelNotFoundException
+105: ApiTokenException
+106: AccessTokenException
+199: Others
 
 Auth && Token
 1000: messages.bad.credentials
