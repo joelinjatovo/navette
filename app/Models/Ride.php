@@ -128,6 +128,14 @@ class Ride extends Model
     }
     
     /**
+     * Get the club associated with the race.
+     */
+    public function club()
+    {
+        return $this->belongsTo(Club::class, 'club_id', 'id');
+    }
+    
+    /**
      * Check if ride is completable
      */
     public function completable()
@@ -230,14 +238,6 @@ class Ride extends Model
         
         return !in_array($this->status, [self::STATUS_COMPLETED, self::STATUS_CANCELED]);
     }
-	
-    /**
-     * Get the order's note.
-     */
-    public function notes()
-    {
-        return $this->morphMany(Note::class, 'notable');
-    }
     
     /**
      * The items that belong to the order.
@@ -263,6 +263,22 @@ class Ride extends Model
 						'canceled_at',
 						'completed_at',
                     ])->orderBy('order', 'asc');
+    }
+	
+    /**
+     * Get the order's note.
+     */
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
+    }
+    
+    /**
+     * Get the club point
+     */
+    public function point()
+    {
+        return $this->club()->point();
     }
     
     /**
@@ -330,30 +346,32 @@ class Ride extends Model
      */
     public function verifyDirection($google)
     {
-        $ride = $this;
-        
-        $club = $car->club;
-        if(!$club){
-            return false;
+		if(!$ride->point){ 
+			return false;
         }
+		
+		$query = $ride->rideitems()
+			->whereHas('point')
+			->whereIn('status', [
+				RideItem::STATUS_PING, 
+				RideItem::STATUS_ACTIVE, 
+				RideItem::STATUS_NEXT
+			]);
+		
+		if(!$query->exists()){
+			return false;
+		}
+		
+		$rideitems = $query->get();
         
-        $clubPoint = $club->point;
-        if(!$clubPoint){
-            return false;
-        }
+        $origins = sprintf("%s,%s", $ride->point->lat, $ride->point->lng);
+        $destinations = sprintf("%s,%s", $ride->point->lat, $ride->point->lng);
         
-        $points = $ride->items()->wherePivotIn('status', [RideItem::STATUS_PING, RideItem::STATUS_ACTIVE, RideItem::STATUS_NEXT])->get();
-        if(empty($points)){
-            return false;
-        }
-        
-        $origins = sprintf("%s,%s", $clubPoint->lat, $clubPoint->lng);
-        $destinations = sprintf("%s,%s", $clubPoint->lat, $clubPoint->lng);
-        
-        $array_waypoints = [];
-        $array_waypoints[] = 'optimize:true';
-        foreach($points as $point){
-            $array_waypoints[] = sprintf("%s,%s", $point->lat, $point->lng);
+        $array_waypoints = ['optimize:true'];
+        foreach($rideitems as $rideitem){
+			if($rideitem->point){
+				$array_waypoints[] = sprintf("%s,%s", $rideitem->point->lat, $rideitem->point->lng);
+			}
         }
         
         $waypoints = null;
@@ -373,9 +391,10 @@ class Ride extends Model
                     if(isset($route['waypoint_order'])){
                         $orders = $route['waypoint_order'];
                         foreach($orders as $key => $order){
-                            if(isset($points[$order])){
-                                $point = $points[$order];
-                                $ride->items()->updateExistingPivot($point->getKey(), ['order' => $key + 1]);
+                            if(isset($rideitems[$order])){
+                                $rideitem = $rideitems[$order];
+								$rideitem->order = $key + 1;
+								$rideitem->save();
                             }
                         }
                     }
@@ -385,24 +404,24 @@ class Ride extends Model
                         $duration = 0;
                         $legs = $route['legs'];
                         foreach($legs as $key => $leg){
-                            // Calculate distance
                             $leg_distance = 0;
                             if(isset($leg['distance']) && isset($leg['distance']['value'])){
                                 $leg_distance = $leg['distance']['value'];
-                                $distance += $leg_distance;
+                                $distance += $leg_distance; // Calculate ride distance
                             }
+							
                             $leg_distance_text = null;
                             if(isset($leg['distance']) && isset($leg['distance']['text'])){
                                 $leg_distance_text = $leg['distance']['text'];
                             }
                             
-                            // Calculate duration
                             $leg_duration = 0;
                             if(isset($leg['duration']) && isset($leg['duration']['value'])){
                                 $leg_duration = $leg['duration']['value'];
-                                $duration += $leg_duration;
+                                $duration += $leg_duration; // Calculate ride duration
                             }
-                            $leg_duration_text = null;
+                            
+							$leg_duration_text = null;
                             if(isset($leg['duration']) && isset($leg['duration']['text'])){
                                 $leg_duration_text = $leg['duration']['text'];
                             }
@@ -420,25 +439,21 @@ class Ride extends Model
                             }
                             $polyline = \App\Services\Polyline::encode($positions);
                             
-                            // Update polyline
-                            if(is_array($orders)&&isset($orders[$key])){
-                                $order = $orders[$key];
-                                if(isset($points[$order])){
-                                    $point = $points[$order];
-                                    $ride->items()->updateExistingPivot($point->getKey(), [
-                                        'direction' => $polyline,
-                                        'distance_value' => $leg_distance,
-                                        'distance' => $leg_distance_text,
-                                        'duration_value' => $leg_duration,
-                                        'duration' => $leg_duration_text,
-                                    ]);
+                            // Update pivot info
+                            if( is_array($orders) && isset($orders[$key]) && isset($rideitems[$orders[$key]]) ) {
+                                    $rideitem = $rideitems[$orders[$key]];
+									$rideitem->direction = $polyline;
+									$rideitem->distance = $leg_distance_text;
+									$rideitem->distance_value = $leg_distance;
+									$rideitem->duration_value = $leg_duration;
+									$rideitem->duration = $leg_duration_text;
+									$rideitem->save();
                                 }
                             }
-                            
                         }
                         
-                        $ride->distance = $distance;
-                        $ride->duration = $duration;
+                        $ride->distance_value = $distance;
+                        $ride->duration_value = $duration;
                     }
                     
                     if(isset($route['overview_polyline']) && isset($route['overview_polyline']['points'])){
@@ -446,6 +461,7 @@ class Ride extends Model
                     }
                     
                     $ride->route = $route;
+				
                     return $ride->save();
                 }
             }

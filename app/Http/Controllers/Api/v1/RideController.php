@@ -150,6 +150,7 @@ class RideController extends Controller
 		foreach($ride->rideitems as $rideitem){
 			if($rideitem->isCancelable()){
 				$rideitem->cancel();
+				
 				if($rideitem->ride){
 					$rideitem->ride->getNextRideItem();
 				}
@@ -157,10 +158,11 @@ class RideController extends Controller
 				if($rideitem->item){
         			if($item->isCancelable()){
 						$rideitem->item->cancel();
-						if($rideitem->item->order){
-							$rideitem->item->order->cancel($request->user());
-						}
 					}
+				}
+				
+				if($rideitem->order){
+					$rideitem->order->cancel($request->user());
 				}
 			}
 		}

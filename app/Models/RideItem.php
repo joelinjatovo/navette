@@ -114,6 +114,22 @@ class RideItem extends Pivot
 		
 		$this->fireModelEvent('canceled');
     }
+    
+    /**
+     * Get the club
+     */
+    public function club()
+    {
+        return $this->ride()->club();
+    }
+    
+    /**
+     * Get the driver
+     */
+    public function driver()
+    {
+        return $this->ride()->driver();
+    }
 	
     /**
      * Pick or Drop ride point
@@ -175,10 +191,34 @@ class RideItem extends Pivot
     }
     
     /**
+     * Get the order
+     */
+    public function order()
+    {
+        return $this->item()->order();
+    }
+    
+    /**
+     * Get the point
+     */
+    public function point()
+    {
+        return $this->item()->point();
+    }
+    
+    /**
      * Get the ride related to this ride point.
      */
     public function ride()
     {
         return $this->belongsTo(Ride::class, 'ride_id');
+    }
+    
+    /**
+     * Get the user
+     */
+    public function user()
+    {
+        return $this->order()->user();
     }
 }

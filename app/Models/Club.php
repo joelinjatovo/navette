@@ -92,6 +92,14 @@ class Club extends Model
     }
     
     /**
+     * Get the rides for the club
+     */
+    public function rides()
+    {
+        return $this->hasMany(Ride::class);
+    }
+    
+    /**
      * Get the user that adds the club.
      */
     public function user()

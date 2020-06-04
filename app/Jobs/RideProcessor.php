@@ -131,6 +131,7 @@ class RideProcessor implements ShouldQueue
 		$ride->status = Ride::STATUS_PING;
 		$ride->available_place = $car->place;
 		$ride->max_place = $car->place;
+		$ride->club()->associate($car->club);
 		$ride->driver()->associate($car->driver);
 		if($ride->save()){
 			$car->lock();
@@ -174,24 +175,23 @@ class RideProcessor implements ShouldQueue
 		return $query->first();
 	}
 	
-	private function findPerfectPingedRide(Club $club, $place, $excludedCars = []){
-		$query = $club->cars()
-			->join('rides', 'rides.driver_id', '=', 'cars.driver_id')
+	private function findPerfectPingedRide(Club $club, $place, $excludedRides = []){
+		$query = $club->rides()
 			->where('rides.available_place', '=', $place)
 			->where('rides.status', Ride::STATUS_PING);
-		if(!is_array($excludedCars) && !empty($excludedCars)){
-			$query->whereNotIn('cars.id', $excludedCars);
+		if(!is_array($excludedRides) && !empty($excludedRides)){
+			$query->whereNotIn('rides.id', $excludedRides);
 		}
 		return $query->first();
 	}
 	
-	private function findBestPingedRide(Club $club, $place, $excludedCars = []){
-		$query = Ride::join('cars', 'rides.driver_id', '=', 'cars.driver_id')
+	private function findBestPingedRide(Club $club, $place, $excludedRides = []){
+		$query = $club->rides()
 			->where('rides.available_place', '>=', $place)
 			->where('rides.status', Ride::STATUS_PING)
 			->orderBy('rides.available_place', 'asc');
-		if(!is_array($excludedCars) && !empty($excludedCars)){
-			$query->whereNotIn('cars.id', $excludedCars);
+		if(!is_array($excludedRides) && !empty($excludedRides)){
+			$query->whereNotIn('rides.id', $excludedRides);
 		}
 		return $query->first();
 	}

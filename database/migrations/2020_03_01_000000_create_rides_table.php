@@ -30,6 +30,8 @@ class CreateRidesTable extends Migration
                 $table->dateTime('started_at')->nullable(); // Date reelle
                 $table->dateTime('completed_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
+                $table->unsignedBigInteger('club_id')->nullable();
+                $table->foreign('club_id')->references('id')->on('clubs');
                 $table->unsignedBigInteger('driver_id')->nullable();
                 $table->foreign('driver_id')->references('id')->on('users');
                 $table->unsignedBigInteger('user_id')->nullable();
