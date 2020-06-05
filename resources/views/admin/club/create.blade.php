@@ -110,7 +110,6 @@
 </form>
 @endsection
 
-
 @section('javascript')
 <script type="text/javascript">
 var KTClubEdit={init:function(){new KTImageInput("kt_club_edit_image")}};

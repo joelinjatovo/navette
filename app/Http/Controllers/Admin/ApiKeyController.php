@@ -16,7 +16,7 @@ class ApiKeyController extends Controller
      */
     public function index()
     {
-        $apikeys = ApiKey::all();
+        $apikeys = ApiKey::paginate();
         
         return view('admin.apikey.index', ['models' => $apikeys]);
     }
@@ -51,8 +51,15 @@ class ApiKeyController extends Controller
      */
     public function store(Request $request)
     {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
+        $request->validate([
+			'name' => 'required|string|max:255',
+			'scopes' => 'required|string|max:255',
+			'version' => 'sometimes|string|max:255',
+		]);
+		
+        ApiKey::create($request->all());
+		
+		return back()->with("success", trans('messages.controller.success.apikey.created'));
     }
     
     /**
@@ -75,8 +82,15 @@ class ApiKeyController extends Controller
      */
     public function update(Request $request, ApiKey $apikey)
     {
-        // Retrieve the validated input data...
-        $validated = $request->validated();
+        $request->validate([
+			'name' => 'required|string|max:255',
+			'scopes' => 'required|string|max:255',
+			'version' => 'sometimes|string|max:255',
+		]);
+		
+        $apikey->fill($request->all());
+		
+		return back()->with("success", trans('messages.controller.success.apikey.updated'));
     }
 
     /**
