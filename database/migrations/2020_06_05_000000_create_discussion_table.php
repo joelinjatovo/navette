@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDiscutionTable extends Migration
+class CreateDiscussionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateDiscutionTable extends Migration
      */
     public function up()
     {
-        if( ! Schema::hasTable('discution') ) {
-            Schema::create('discution', function (Blueprint $table) {
+        if( ! Schema::hasTable('discussion') ) {
+            Schema::create('discussion', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_1_id')->nullable();
                 $table->foreign('user_1_id')->references('id')->on('users')->onDelete('cascade');
@@ -33,6 +33,6 @@ class CreateDiscutionTable extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('discution');
+        Schema::dropIfExists('discussion');
     }
 }

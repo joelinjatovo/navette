@@ -36,7 +36,7 @@ class MessageSent
     public function broadcastOn()
     {
 		switch($this->message->messageable_type){
-			case \App\Models\Discution::class: return new PrivateChannel('App.Discution.' . $this->message->messageable_id);
+			case \App\Models\Discution::class: return new PrivateChannel('App.Discussion.' . $this->message->messageable_id);
 			case \App\Models\Ride::class: return new PrivateChannel('App.Ride.' . $this->message->messageable_id);
 			case \App\Models\RideItem::class: return new PrivateChannel('App.RideItem.' . $this->message->messageable_id);
 			case \App\Models\Item::class: return new PrivateChannel('App.Item.' . $this->message->messageable_id);

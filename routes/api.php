@@ -25,6 +25,8 @@ Route::prefix('v1')->name('api.')->namespace('Api\v1\Gateway')->group(function (
     Route::post('paypal/webhook', 'PayPalController@webhook')->name('gateway.paypal.webhook');
 });
 Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->group(function () {
+    Route::get('settings', 'SettingsController@index')->name('settings');
+	
     Route::post('token', 'TokenController@create')->name('token');
     Route::post('token/refresh', 'TokenController@refresh')->name('token.refresh');
     Route::post('register', 'UserController@store')->name('user.create');

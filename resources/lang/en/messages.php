@@ -168,6 +168,10 @@ return [
             'view' => 'View Ride Point',
             'live' => 'Live Ride Point',
         ],
+        'settings' => [
+            'app_name' => 'App Name',
+            'app_slogan' => 'App Slogan',
+        ],
     ],
     'item' => 'Item',
     'item.create' => 'Add Item',
@@ -220,6 +224,7 @@ return [
     'roles' => 'Roles',
     'search' => 'Search',
     'settings' => 'Settings',
+    'settings.general' => 'General Settings',
     'status.active' => 'Active',
     'status.arrived' => 'Arrived',
     'status.cancelable' => 'Cancelable',
