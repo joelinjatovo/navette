@@ -117,7 +117,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.apikey.expires') }}</label>
                         <div class="col-9">
-                            <input class="form-control form-control-lg form-control-solid @error('expires_at') is-invalid @enderror" type="text" id="expires_at" name="expires_at" placeholder="{{ __('messages.form.apikey.expires_at') }}" value="{{ old('expires_at', $model->expires_at) }}">
+                            <input class="form-control form-control-lg form-control-solid @error('expires_at') is-invalid @enderror" type="text" id="expires_at" name="expires_at" placeholder="{{ __('messages.form.apikey.expires_at') }}" value="{{ old('expires_at', $model->expires_at ? $model->expires_at->format('d/m/Y') : now()->addYear(1)->format('d/m/Y') ) }}">
                             @error('expires_at')
                                 <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
                             @enderror
