@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\RidePoint;
+use App\Models\RideItem;
 
-class RidePointController extends Controller
+class RideItemController extends Controller
 {
     
     /**
@@ -19,7 +19,7 @@ class RidePointController extends Controller
         $s = $request->get('s');
         if(!empty($s)){
             $s = '%'.$s.'%';
-            $points = RidePoint::join('items', 'items.id', '=', 'ride_point.item_id')
+            $rideitems = RideItem::join('items', 'items.id', '=', 'ride_point.item_id')
 						->join('orders', 'orders.id', '=', 'items.order_id')
 						->join('users', 'users.id', '=', 'orders.user_id')
 						->orWhere('users.name', 'LIKE', $s)
@@ -27,23 +27,21 @@ class RidePointController extends Controller
                         ->orWhere('users.email', 'LIKE', $s)
                         ->paginate();
         }else{
-	        $points = RidePoint::with('point')
-				->with('point.user')
-				->paginate();
+	        $rideitems = RideItem::paginate();
         }
         
-        return view('admin.ridepoint.index', ['models' => $points]);
+        return view('admin.rideitem.index', ['models' => $rideitems]);
     }
 
     /**
      * Show the ride point info.
      *
-     * @param RidePoint $ridepoint
+     * @param RideItem $rideitem
      * @return Response
      */
-    public function show(RidePoint $ridepoint)
+    public function show(RideItem $rideitem)
     {
-        return view('admin.ridepoint.show', ['model' => $ridepoint]);
+        return view('admin.rideitem.show', ['model' => $rideitem]);
     }
 
     /**
@@ -55,53 +53,54 @@ class RidePointController extends Controller
      */
     public function action(Request $request)
     {
-        $ridepoint = RidePoint::findOrFail($request->input('id'));
+        $rideitem = RideItem::findOrFail($request->input('id'));
 		switch($request->input('action')){
 			case 'arrive':
-				if(!$ridepoint->arrivable()){
+				if(!$rideitem->arrivable()){
 					return response()->json([
 						'status' => "error",
-						'message' => trans('messages.controller.success.ridepoint.not.arrivable'),
+						'message' => trans('messages.controller.success.rideitem.not.arrivable'),
 					]);
 				}
 
-				$ridepoint->arrive();
+				$rideitem->arrive();
 
-				$ride = $ridepoint->ride;
+				$ride = $rideitem->ride;
 				if($ride){
 					// Select next item
 					$ride->next();
 				}
+				
 				return response()->json([
 					'status' => "success",
-					'message' => trans('messages.controller.success.ridepoint.arrived'),
+					'message' => trans('messages.controller.success.rideitem.arrived'),
 				]);
 			break;
 			case 'pick-or-drop':
-				if(!$ridepoint->dropable() && !$ridepoint->pickable()){
+				if(!$rideitem->dropable() && !$rideitem->pickable()){
 					return response()->json([
 						'status' => "error",
-						'message' => trans('messages.controller.success.ridepoint.not.completable'),
+						'message' => trans('messages.controller.success.rideitem.not.completable'),
 					]);
 				}
 
-				$ridepoint->pickOrDrop();
+				$rideitem->pickOrDrop();
 
-				$ride = $ridepoint->ride;
+				$ride = $rideitem->ride;
 				if($ride){
 					// Select next item
 					$ride->next();
 				}
 				return response()->json([
 					'status' => "success",
-					'message' => trans('messages.controller.success.ridepoint.completed'),
+					'message' => trans('messages.controller.success.rideitem.completed'),
 				]);
 			break;
 		}
 		
         return response()->json([
             'status' => "error",
-            'message' => trans('messages.controller.success.ridepoint.unknown'),
+            'message' => trans('messages.controller.success.rideitem.unknown'),
         ]);
     }
 
@@ -114,11 +113,11 @@ class RidePointController extends Controller
      */
     public function delete(Request $request)
     {
-        $ridepoint = RidePoint::findOrFail($request->input('id'));
-		$ridepoint->delete();
+        $rideitem = RideItem::findOrFail($request->input('id'));
+		$rideitem->delete();
         return response()->json([
             'status' => "success",
-            'message' => trans('messages.controller.success.ridepoint.deleted'),
+            'message' => trans('messages.controller.success.rideitem.deleted'),
         ]);
     }
 }

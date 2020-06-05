@@ -55,7 +55,7 @@
 			<!--end::Button-->
 			@endif
 			
-			@if($model->pickable() || $model->dropable())
+			@if($model->isPickable() || $model->isDropable())
 			<!--begin::Button-->
 			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-rideitem-action" 
 			   data-action="pick-or-drop" data-id="{{ $model->getKey() }}"
@@ -82,12 +82,12 @@
 				<!--begin::Timeline-->
 				<div class="timeline timeline-2">
 					<div class="timeline-bar"></div>
-					@if($model->point)
+					@if($model->point())
 					<!--begin::Item-->
 					<div class="timeline-item">
 						<div class="timeline-badge bg-danger"></div>
 						<div class="timeline-content text-dark-50">
-							{{ $model->point->name }}
+							{{ $model->point()->name }}
 						</div>
 					</div>
 					<!--end::Item-->

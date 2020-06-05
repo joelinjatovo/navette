@@ -32,7 +32,7 @@
             <a href="{{ route('admin.orders') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2"><i class="la la-arrow-left"></i> {{ __('messages.button.back') }}</a>
             <!--end::Button-->
 			
-			@if($model->cancelable())
+			@if($model->isCancelable())
 			<!--begin::Button-->
 			<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-order-action"
 			   data-action="cancel" 
@@ -113,41 +113,6 @@
             <!--end::Body-->
         </div>
         <!--end::Card-->
-		@endif
-		
-		@if($model->car)
-		<div class="card card-custom gutter-b">
-			<!--begin::Header-->
-			<div class="card-header">
-				<div class="card-title">
-					<h3 class="card-label">{{ __('messages.car') }}</h3>
-				</div>
-			</div>
-			<!--end::Header-->
-
-			<!--begin::Body-->
-			<div class="card-body py-2">
-				<!--begin::Item-->
-				<div class="d-flex align-items-center mb-2 mt-2">
-					<!--begin::Symbol-->
-					<div class="symbol symbol-60 symbol-xxl-75 mr-5 align-self-start align-self-xxl-center">
-						<div class="symbol-label" style="background-image:url('{{ $model->car->image ? asset($model->car->image->url) : asset('img/car.jpg') }}')"></div>
-					</div>
-					<!--end::Symbol-->
-
-					<!--begin::Text-->
-					<div class="d-flex flex-column flex-grow-1 font-weight-bold">
-						<a href="{{ route('admin.car.show', $model->car) }}" class="text-dark text-hover-primary mb-1 font-size-lg">{{ $model->car->name }}</a>
-						@if($model->car->driver)
-						<span class="text-muted">{{ $model->car->driver->name }}</span>
-						@endif
-					</div>
-					<!--end::Text-->
-				</div>
-				<!--end::Item-->
-			</div>
-			<!--end::Body-->
-		</div>
 		@endif
     </div>
     <!--end::Aside-->
@@ -280,12 +245,13 @@ $(document).ready(function() {
 						KTApp.unblockPage();
 						var type = "danger";
 						if (res.data.status === "success"){
-							type = "success";
+							toastr.success(res.data.message);
+						}else{
+							toastr.error(res.data.message);
 						}
-						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
 					}).catch(err => {
 						KTApp.unblockPage();
-						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+						toastr.error("{{ __('messages.swal.error') }}");
 					})
 			}
 		})

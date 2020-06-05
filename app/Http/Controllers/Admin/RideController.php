@@ -20,16 +20,13 @@ class RideController extends Controller
         if(!empty($s)){
             $s = '%'.$s.'%';
             $rides = Ride::join('users', 'users.id', '=', 'rides.driver_id')
-						->join('cars', 'cars.id', '=', 'rides.car_id')
-						->orWhere('cars.name', 'LIKE', $s)
 						->orWhere('users.name', 'LIKE', $s)
                         ->orWhere('users.phone', 'LIKE', $s)
                         ->orWhere('users.email', 'LIKE', $s)
 						->with('driver')
-						->with('car')
                         ->paginate();
         }else{
-	        $rides = Ride::with('driver')->with('car')->paginate();
+	        $rides = Ride::with('driver')->paginate();
         }
         
         return view('admin.ride.index', ['models' => $rides]);
@@ -132,17 +129,18 @@ class RideController extends Controller
     {
         $ride = Ride::findOrFail($request->input('id'));
 		switch($request->input('action')){
-			case 'active':
-				if(!$ride->activable()){
+			case 'start':
+				if(!$ride->isStartable()){
 					return response()->json([
 						'status' => "error",
-						'message' => trans('messages.controller.success.ride.not.activable'),
+						'message' => trans('messages.controller.success.ride.not.startable'),
 					]);
 				}
-        		$ride->active();
+        		$ride->start();
 				return response()->json([
 					'status' => "success",
-					'message' => trans('messages.controller.success.ride.actived'),
+					'message' => trans('messages.controller.success.ride.started'),
+					'view' => view('admin.ride.table-row', ['model' => $ride])->render(),
 				]);
 			break;
 			case 'cancel':
@@ -156,6 +154,7 @@ class RideController extends Controller
 				return response()->json([
 					'status' => "success",
 					'message' => trans('messages.controller.success.ride.canceled'),
+					'view' => view('admin.ride.table-row', ['model' => $ride])->render(),
 				]);
 			break;
 			case 'complete':
@@ -163,6 +162,7 @@ class RideController extends Controller
 				return response()->json([
 					'status' => "success",
 					'message' => trans('messages.controller.success.ride.completed'),
+					'view' => view('admin.ride.table-row', ['model' => $ride])->render(),
 				]);
 			break;
 		}

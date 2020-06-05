@@ -47,7 +47,7 @@
                         </tr>
                     </thead>
                     <tbody class="datatable-body" style="">
-						@each('admin.order.table-row', $orders, 'model')
+						@each('admin.order.table-row', $models, 'model')
                     </tbody>
                     </table>
                     <div class="datatable-pager datatable-paging-loaded">

@@ -90,6 +90,10 @@ class Status extends Component
 				$this->type = 'danger';
 				$this->text = trans('messages.status.processing');
 			break;
+			case 'started': 
+				$this->type = 'danger';
+				$this->text = trans('messages.status.started');
+			break;
 			case 'online': 
 				$this->type = 'success';
 				$this->text = trans('messages.status.online');

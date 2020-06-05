@@ -70,8 +70,10 @@ return [
     'controller.success.ride.canceled' => 'La course a été bien annulée avec succès.',
     'controller.success.ride.created' => 'La course a été bien créée avec succès.',
     'controller.success.ride.not.completable' => 'La course ne peut pas être términée.',
+    'controller.success.ride.not.startable' => 'La course ne peut pas être commencée.',
     'controller.success.ride.completed' => 'La course a été bien términée avec succès.',
     'controller.success.ride.deleted' => 'La course a été bien supprimée avec succès.',
+    'controller.success.ride.started' => 'La course a été bien commencée avec succès.',
     'controller.success.ride.unknown' => 'Une erreur s\est produite. Action non définie.',
     'controller.success.ride.updated' => 'La course a été bien mise à jour avec succès.',
 	
@@ -225,12 +227,14 @@ return [
     'status.completable' => 'Completable',
     'status.completed' => 'Completed',
     'status.next' => 'Next',
+    'status.started' => 'Started',
     'status.ok' => 'OK',
     'status.on-hold' => 'On Hold',
     'status.online' => 'Online',
     'status.ping' => 'Ping',
     'status.processing' => 'Processing',
     'status.unknown' => 'Unknown',
+    'start.ride' => 'Commencer la course',
     'subtotal' => 'Subtotal',
     'success' => [
         'club' => [
