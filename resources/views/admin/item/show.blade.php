@@ -53,7 +53,7 @@
             <a href="{{ route('admin.items') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2"><i class="la la-arrow-left"></i> {{ __('messages.button.back') }}</a>
             <!--end::Button-->
 			
-			@if($model->cancelable())
+			@if($model->isCancelable())
 			<!--begin::Button-->
 			<a href="#" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-item-action" 
 			   data-action="cancel" 
