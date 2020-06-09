@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
 		// Settings
 		if (Schema::hasTable('settings')) {
 			foreach (\App\Models\Setting::all() as $setting) {
-				\Config::set('settings.'.$setting->key, $setting->value);
+				//\Config::set('settings.'.$setting->key, $setting->value);
 			}
 		}
         
