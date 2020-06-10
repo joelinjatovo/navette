@@ -45,6 +45,9 @@ class UserController extends Controller
         $data = $request->validated();
         
         $user = User::create([
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'birthday' => $data['birthday'],
             'name' => $data['name'],
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
@@ -55,6 +58,13 @@ class UserController extends Controller
         if($role){
             $user->roles()->attach($role->getKey(), ['approved' => true]);
         }
+		
+		if(isset($data['code']) && !empty($data['code'])){
+			$parent = User::where('code', $data['code'])->first();
+			if($parent){
+				$parent->children()->save($user);
+			}
+		}
         
         $user->sendPhoneVerificationNotification();
         

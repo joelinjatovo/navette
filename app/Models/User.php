@@ -30,7 +30,15 @@ class User extends Authenticatable implements MustVerifyPhone
      * @var array
      */
     protected $fillable = [
-        'facebook_id', 'name', 'email', 'phone', 'password',
+        'stripe_id', 
+		'facebook_id', 
+		'first_name', 
+		'last_name', 
+		'birthday', 
+		'name', 
+		'email', 
+		'phone', 
+		'password',
     ];
 
     /**

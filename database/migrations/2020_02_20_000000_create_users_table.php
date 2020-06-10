@@ -19,6 +19,9 @@ class CreateUsersTable extends Migration
                 $table->string('stripe_id', 200)->nullable();
                 $table->string('facebook_id', 200)->nullable();
                 $table->uuid('code')->nullable()->unique();
+                $table->string('first_name', 100);
+                $table->string('last_name', 100);
+                $table->string('birthday', 100);
                 $table->string('name', 100);
                 $table->string('email', 100)->nullable();
                 $table->string('phone', 20)->nullable();
