@@ -23,7 +23,7 @@ class TokenController extends Controller
      */
     public function create(Request $request, TokenRepository $repository)
     {
-        $credentials = $request->only('phone', 'password');
+        $credentials = $this->credentials($request);
         
         if( ! Auth::attempt($credentials) ) {
             return $this->error(400, 1000, trans('messages.bad.credentials'));
@@ -77,4 +77,25 @@ class TokenController extends Controller
         
         return response()->success(200, trans('messages.logged.out'));
     }
+
+    /**
+     * Get credential from request
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+	protected function credentials(Request $request)
+	{
+		if(filter_var($request->imput('email_or_phone'), FILTER_VALIDATE_EMAIL)) {
+			return [
+				'email' => $request->imput('email_or_phone'), 
+				'password' => $request->imput('password')
+			];
+		}
+		
+		return [
+			'phone' => $request->imput('email_or_phone'),
+			'password' => $request->imput('password')
+		];
+	}
 }
