@@ -295,7 +295,7 @@
                                     <h4 class="menu-text">{{ __('messages.settings') }}</h4><i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
                                 
-                                <li class="menu-item menu-item-submenu {{ Route::is('admin.ride*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
+                                <li class="menu-item menu-item-submenu {{ Route::is('admin.apikey*') || Route::is('admin.settings*') ? 'menu-item-open' : '' }}" aria-haspopup="true" data-menu-toggle="hover">
                                     <a href="javascript:;" class="menu-link menu-toggle">
                                         <span class="svg-icon menu-icon">
                                             <!--begin::Svg Icon | path:/assets/media/svg/icons/General/Settings-1.svg-->
@@ -315,7 +315,8 @@
                                         <i class="menu-arrow"></i>
                                         <ul class="menu-subnav">
                                             <li class="menu-item  menu-item-parent" aria-haspopup="true"><span class="menu-link"><span class="menu-text">{{ __('messages.settings') }}</span></span></li>
-                                            <li class="menu-item {{ Route::is('admin.apikeys') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.apikeys') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.list') }}</span></a></li>
+                                            <li class="menu-item {{ Route::is('admin.settings.general') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.settings.general') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.settings.general') }}</span></a></li>
+                                            <li class="menu-item {{ Route::is('admin.apikeys') ? 'menu-item-active' : '' }}" aria-haspopup="true"><a href="{{ route('admin.apikeys') }}" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">{{ __('messages.apikeys') }}</span></a></li>
                                         </ul>
                                     </div>
                                 </li>

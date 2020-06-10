@@ -171,6 +171,14 @@ class RideItem extends Pivot
     {
         return $this->belongsTo(Item::class, 'item_id');
     }
+	
+    /**
+     * Get the ride items's chat message.
+     */
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'messageable');
+    }
     
     /**
      * Get the order

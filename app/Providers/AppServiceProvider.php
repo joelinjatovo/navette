@@ -36,6 +36,13 @@ class AppServiceProvider extends ServiceProvider
     {
         // String DB Lengths
         Schema::defaultStringLength(191);
+		
+		// Settings
+		if (Schema::hasTable('settings')) {
+			foreach (\App\Models\Setting::all() as $setting) {
+				//\Config::set('settings.'.$setting->key, $setting->value);
+			}
+		}
         
         // share key to all view blade file
         View::share('key', 'value');

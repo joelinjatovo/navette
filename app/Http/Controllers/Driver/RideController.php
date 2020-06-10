@@ -45,9 +45,8 @@ class RideController extends Controller
      */
     public function show(Ride $ride)
     {
-		$points = $ride->points()->with('items')->with('items.order')->get();
 		$items = $ride->items()->with('order')->with('order.user')->get();
-        return view('driver.ride.show', ['model' => $ride, 'items' => $items, 'points' => $points]);
+        return view('driver.ride.show', ['model' => $ride, 'items' => $items]);
     }
 
     /**
@@ -58,9 +57,8 @@ class RideController extends Controller
      */
     public function live(Ride $ride)
     {
-		$points = $ride->points()->with('items')->with('items.order')->get();
 		$items = $ride->items()->with('order')->with('order.user')->get();
-        return view('driver.ride.live', ['model' => $ride, 'items' => $items, 'points' => $points]);
+        return view('driver.ride.live', ['model' => $ride, 'items' => $items]);
     }
     
     /**
@@ -121,17 +119,18 @@ class RideController extends Controller
     {
         $ride = Ride::findOrFail($request->input('id'));
 		switch($request->input('action')){
-			case 'active':
-				if(!$ride->activable()){
+			case 'start':
+				if(!$ride->isStartable()){
 					return response()->json([
 						'status' => "error",
-						'message' => trans('messages.controller.success.ride.not.activable'),
+						'message' => trans('messages.controller.success.ride.not.startable'),
 					]);
 				}
-        		$ride->active();
+        		$ride->start();
 				return response()->json([
 					'status' => "success",
-					'message' => trans('messages.controller.success.ride.actived'),
+					'message' => trans('messages.controller.success.ride.started'),
+					'view' => view('driver.ride.table-row', ['model' => $ride])->render(),
 				]);
 			break;
 			case 'cancel':
@@ -145,6 +144,7 @@ class RideController extends Controller
 				return response()->json([
 					'status' => "success",
 					'message' => trans('messages.controller.success.ride.canceled'),
+					'view' => view('driver.ride.table-row', ['model' => $ride])->render(),
 				]);
 			break;
 			case 'complete':
@@ -152,6 +152,7 @@ class RideController extends Controller
 				return response()->json([
 					'status' => "success",
 					'message' => trans('messages.controller.success.ride.completed'),
+					'view' => view('driver.ride.table-row', ['model' => $ride])->render(),
 				]);
 			break;
 		}

@@ -32,7 +32,6 @@
 @endsection
 
 @section('content')
-
 <form class="form" id="kt_form" method="post" enctype="multipart/form-data">
     @csrf
     <div class="card card-custom">

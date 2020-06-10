@@ -39,10 +39,9 @@ class RideController extends Controller
      * @return Response
      */
     public function show(Ride $ride)
-    {
-		$points = $ride->points()->with('items')->with('items.order')->get();
+	{
 		$items = $ride->items()->with('order')->with('order.user')->get();
-        return view('admin.ride.show', ['model' => $ride, 'items' => $items, 'points' => $points]);
+        return view('admin.ride.show', ['model' => $ride, 'items' => $items]);
     }
 
     /**
@@ -53,9 +52,8 @@ class RideController extends Controller
      */
     public function live(Ride $ride)
     {
-		$points = $ride->points()->with('items')->with('items.order')->get();
 		$items = $ride->items()->with('order')->with('order.user')->get();
-        return view('admin.ride.live', ['model' => $ride, 'items' => $items, 'points' => $points]);
+        return view('admin.ride.live', ['model' => $ride, 'items' => $items]);
     }
 
     /**
@@ -66,9 +64,8 @@ class RideController extends Controller
      */
     public function vuejs(Ride $ride)
     {
-		$points = $ride->points()->with('items')->with('items.order')->get();
 		$items = $ride->items()->with('order')->with('order.user')->get();
-        return view('admin.ride.vuejs', ['model' => $ride, 'items' => $items, 'points' => $points]);
+        return view('admin.ride.vuejs', ['model' => $ride, 'items' => $items]);
     }
     
     /**

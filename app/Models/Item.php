@@ -150,9 +150,17 @@ class Item extends Model
     {
 		return $this->order && $this->order->isOneCar();
     }
+	
+    /**
+     * Get the item's chat message.
+     */
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'messageable');
+    }
     
     /**
-     * Get the order's note.
+     * Get the item's note.
      */
     public function notes()
     {

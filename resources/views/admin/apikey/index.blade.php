@@ -1,124 +1,73 @@
 @extends('layouts.admin')
 
+@section('title'){{ __('messages.apikeys.list') }}@endsection
+
+@section('subheader')
+<div class="subheader py-2 py-lg-4  subheader-solid " id="kt_subheader">
+    <div class=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Details-->
+        <div class="d-flex align-items-center flex-wrap mr-2">
+            <!--begin::Title-->
+            <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">{{ __('messages.apikeys.list') }}</h5>
+            <!--end::Title-->
+            <!--begin::Separator-->
+            <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+            <!--end::Separator-->
+            <!--begin::Search Form-->
+            <div class="d-flex align-items-center" id="kt_subheader_search">
+                <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">{{ trans_choice('messages.count.total', $models->total(), ['value' => $models->total()]) }}</span>
+                <x-search/>
+            </div>
+            <!--end::Search Form-->
+        </div>
+        <!--end::Details-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+            <!--begin::Button-->
+            <a href="{{ route('admin.apikey.create') }}" class="btn btn-light-primary font-weight-bold btn-sm px-4 font-size-base ml-2"><i class="la la-plus"></i> {{ __('messages.apikey.create') }}</a>
+            <!--end::Button-->
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-md-12">
-      <div class="card">
-        <div class="card-header card-header-rose card-header-icon">
-          <div class="card-icon">
-            <i class="material-icons">assignment</i>
-          </div>
-          <h4 class="card-title">{{ __('messages.apikeys.list') }}</h4>
+        <!--begin::Card-->
+        <div class="card card-custom">
+            <!--begin::Body-->
+            <div class="card-body">
+                <!--begin: Datatable-->
+                <div class="datatable datatable-bordered datatable-head-custom datatable-default datatable-primary datatable-loaded" id="kt_datatable" style=""><table class="datatable-table" style="display: block;">
+                    <thead class="datatable-head">
+                        <tr class="datatable-row" style="left: 0px;">
+                            <th data-field="RecordID" class="datatable-cell-left datatable-cell datatable-cell-sort datatable-cell-sorted" data-sort="asc"><span style="width: 40px;">#</span></th>
+                            <th data-field="{{ __('messages.names') }}" class="datatable-cell datatable-cell-sort"><span style="width: 100px;">{{ __('messages.names') }}</span></th>
+                            <th data-field="{{ __('messages.user_agents') }}" class="datatable-cell datatable-cell-sort"><span style="width: 100px;">{{ __('messages.user_agents') }}</span></th>
+                            <th data-field="{{ __('messages.expires') }}" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.expires') }}</span></th>
+                            <th data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.actions') }}</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="datatable-body" style="">
+                        @each ('admin.apikey.table-row', $models, 'model')
+                    </tbody>
+                    </table>
+                    <div class="datatable-pager datatable-paging-loaded">
+                    </div>
+                </div>
+                <!--end: Datatable-->
+            </div>
+            <!--end::Body-->
+            
+            <!--begin::Footer-->
+            <div class="card-footer">
+                {{ $models->links() }}
+            </div>
+            <!--end::Footer-->
         </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th class="text-center">#</th>
-                  <th>{{ __('messages.name') }}</th>
-                  <th>{{ __('messages.phone') }}</th>
-                  <th>{{ __('messages.date') }}</th>
-                  <th class="text-right">{{ __('messages.role') }}</th>
-                  <th class="text-right">{{ __('messages.actions') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="text-center">1</td>
-                  <td>Andrew Mike</td>
-                  <td>Develop</td>
-                  <td>2013</td>
-                  <td class="text-right">€ 99,225</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">2</td>
-                  <td>John Doe</td>
-                  <td>Design</td>
-                  <td>2012</td>
-                  <td class="text-right">€ 89,241</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">3</td>
-                  <td>Alex Mike</td>
-                  <td>Design</td>
-                  <td>2010</td>
-                  <td class="text-right">€ 92,144</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">4</td>
-                  <td>Mike Monday</td>
-                  <td>Marketing</td>
-                  <td>2013</td>
-                  <td class="text-right">€ 49,990</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="text-center">5</td>
-                  <td>Paul Dickens</td>
-                  <td>Communication</td>
-                  <td>2015</td>
-                  <td class="text-right">€ 69,201</td>
-                  <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" class="btn btn-info btn-link" data-original-title="" title="">
-                      <i class="material-icons">person</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-success btn-link" data-original-title="" title="">
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" class="btn btn-danger btn-link" data-original-title="" title="">
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+        <!--end::Card-->
     </div>
 </div>
 @endsection

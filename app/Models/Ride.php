@@ -288,6 +288,14 @@ class Ride extends Model
     }
 	
     /**
+     * Get the ride's chat message.
+     */
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'messageable');
+    }
+	
+    /**
      * Get the order's note.
      */
     public function notes()

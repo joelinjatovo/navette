@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ItemItem as ItemItemResource;
+use App\Http\Resources\Item as ItemResource;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
@@ -52,7 +52,7 @@ class ItemController extends Controller
     public function show(Request $request, Item $item)
     {
         if($request->ajax()){
-            return new ItemItemResource($item);
+            return new ItemResource($item);
         }
         return view('admin.item.show', ['model' => $item]);
     }
@@ -69,7 +69,7 @@ class ItemController extends Controller
         $item = Item::findOrFail($request->input('id'));
 		switch($request->input('action')){
 			case 'cancel':
-				if(!$item->cancelable()){
+				if(!$item->isCancelable()){
 					return response()->json([
 						'status' => "error",
 						'message' => trans('messages.controller.success.item.not.cancelable'),
@@ -79,11 +79,15 @@ class ItemController extends Controller
 				$item->cancel();
 
 				// Select next item
+				/*
 				$ride = $item->ride;
 				if($ride){$ride->next();}
+				*/
+				
 				return response()->json([
 					'status' => "success",
 					'message' => trans('messages.controller.success.item.canceled'),
+					'view' => view('admin.item.table-row', ['model' => $item])->render(),
 				]);
 			break;
 		}

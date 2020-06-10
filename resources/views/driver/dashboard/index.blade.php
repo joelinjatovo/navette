@@ -20,95 +20,14 @@
                     <thead class="datatable-head">
                         <tr class="datatable-row" style="left: 0px;">
                             <th data-field="RecordID" class="datatable-cell-left datatable-cell datatable-cell-sort datatable-cell-sorted" data-sort="asc"><span style="width: 40px;">#</span></th>
-                            <th data-field="{{ __('messages.cars') }}" class="datatable-cell datatable-cell-sort"><span style="width: 200px;">{{ __('messages.cars') }}</span></th>
+                            <th data-field="{{ __('messages.clubs') }}" class="datatable-cell datatable-cell-sort"><span style="width: 200px;">{{ __('messages.clubs') }}</span></th>
                             <th data-field="{{ __('messages.drivers') }}" class="datatable-cell datatable-cell-sort"><span style="width: 250px;">{{ __('messages.drivers') }}</span></th>
                             <th data-field="{{ __('messages.date') }}" class="datatable-cell datatable-cell-sort"><span style="width: 130px;">{{ __('messages.date') }}</span></th>
                             <th data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" class="datatable-cell datatable-cell-sort"><span style="width: 200px;">{{ __('messages.actions') }}</span></th>
                         </tr>
                     </thead>
                     <tbody class="datatable-body" style="">
-                        @foreach ($rides as $ride)
-                        <tr data-row="0" class="datatable-row datatable-row-hover" style="left: 0px;">
-                            <td class="datatable-cell-sorted datatable-cell-left datatable-cell" data-field="RecordID" aria-label="350">
-                                <span style="width: 40px;"><span class="font-weight-bolder">{{ $ride->id }}</span></span>
-                            </td>
-                            <td data-field="{{ __('messages.cars') }}" aria-label="" class="datatable-cell">
-                                <span style="width: 200px;">
-									<x-car :model="$ride->car" />
-                                </span>
-                            </td>
-                            <td data-field="{{ __('messages.drivers') }}" aria-label="" class="datatable-cell">
-                                <span style="width: 250px;">
-									<x-user :model="$ride->driver" />
-                                </span>
-                            </td>
-                            <td data-field="{{ __('Date') }}" aria-label="{{ $ride->created_at }}" class="datatable-cell">
-                                <span style="width: 130px;">
-                                    <div class="text-primary mb-0">{{ $ride->created_at->diffForHumans() }}</div>
-									<x-status theme="light" :status="$ride->status" />
-                                </span>
-                            </td>
-                            <td data-field="{{ __('Actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">
-                                <span style="overflow: visible; position: relative; width: 200px;">
-                                    <a href="{{ route('driver.ride.show', $ride)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2" 
-									   data-toggle="tooltip" 
-									   data-placement="top" 
-									   data-original-title="{{ __('messages.view.ride') }}"
-									   title="{{ __('messages.view.ride') }}" >
-                                        <i class="la la-eye"></i>
-                                    </a>
-                                    <a href="{{ route('driver.ride.live', $ride)}}" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2"
-									   data-toggle="tooltip" 
-									   data-placement="top" 
-									   data-original-title="{{ __('messages.view.map.ride') }}"
-									   title="{{ __('messages.view.map.ride') }}" >
-                                        <i class="la la-map"></i>
-                                    </a>
-									@if($ride->cancelable())
-									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action"
-									   data-action="cancel"
-									   data-id="{{ $ride->getKey() }}" 
-									   data-toggle="tooltip" 
-									   data-placement="top" 
-									   data-original-title="{{ __('messages.cancel.ride') }}"
-									   title="{{ __('messages.cancel.ride') }}" >
-										<i class="la la-close"></i>
-									</a>
-									@endif
-									@if($ride->activable())
-									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action" 
-									   data-action="active" 
-									   data-id="{{ $ride->getKey() }}" 
-									   data-toggle="tooltip" 
-									   data-placement="top" 
-									   data-original-title="{{ __('messages.active.ride') }}"
-									   title="{{ __('messages.active.ride') }}" >
-										<i class="la la-play-circle-o"></i>
-									</a>
-									@endif
-									@if($ride->completable())
-									<a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary mr-2 btn-ride-action"
-									   data-action="complete" 
-									   data-id="{{ $ride->getKey() }}" 
-									   data-toggle="tooltip" 
-									   data-placement="top" 
-									   data-original-title="{{ __('messages.complete.ride') }}"
-									   title="{{ __('messages.complete.ride') }}" >
-										<i class="la la-check"></i>
-									</a>
-									@endif
-                                    <a href="javascript:;" class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon btn-delete" 
-									   data-id="{{ $ride->getKey() }}"
-									   data-toggle="tooltip" 
-									   data-placement="top" 
-									   data-original-title="{{ __('messages.delete.ride') }}"
-									   title="{{ __('messages.delete.ride') }}" >
-                                        <i class="la la-trash"></i>
-                                    </a>	                    
-                                </span>
-                            </td>
-                        </tr>
-                        @endforeach
+                        @each('driver.ride.table-row', $rides, 'model')
                     </tbody>
                     </table>
                     <div class="datatable-pager datatable-paging-loaded">
@@ -141,14 +60,17 @@ $(document).ready(function() {
 				axios.put("{{ route('driver.rides') }}", {action:$this.attr('data-action'),id: $this.attr('data-id')})
 					.then(res => {
 						KTApp.unblockPage();
-						var type = "danger";
 						if (res.data.status === "success"){
-							type = "success";
+							toastr.success(res.data.message);
+							if(res.data.view!=undefined){
+								$this.closest('tr').replaceWith(res.data.view);
+							}
+						}else{
+							toastr.error(res.data.message);
 						}
-						$.notify({icon:"add_alert", message:res.data.message}, {type:type});
 					}).catch(err => {
 						KTApp.unblockPage();
-						$.notify({icon:"add_alert", message:"{{ __('messages.swal.error') }}"}, {type:"danger"});
+						toastr.error("{{ __('messages.swal.error') }}");
 					})
 			}
 		})

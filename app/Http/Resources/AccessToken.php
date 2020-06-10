@@ -19,6 +19,7 @@ class AccessToken extends JsonResource
         if( null != $this->user ) {
             $data = [
                 'id' => $this->user->getKey(),
+                'stripe_id' => $this->user->stripe_id,
                 'facebook_id' => $this->user->facebook_id,
                 'name' => $this->user->name,
                 'email' => $this->user->email,

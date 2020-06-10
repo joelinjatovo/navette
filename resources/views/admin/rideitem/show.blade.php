@@ -33,7 +33,7 @@
             <a href="{{ route('admin.rideitems') }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2"><i class="la la-arrow-left"></i> {{ __('messages.button.back') }}</a>
             <!--end::Button-->
 			
-			@if($model->cancelable())
+			@if($model->isCancelable())
 			<!--begin::Button-->
 			<a href="#" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base mr-2 btn-rideitem-action" 
 			   data-action="cancel" data-id="{{ $model->getKey() }}"
@@ -44,7 +44,7 @@
 			<!--end::Button-->
 			@endif
 			
-			@if($model->arrivable())
+			@if($model->isArrivable())
 			<!--begin::Button-->
 			<a href="#" class="btn btn-light-primary font-weight-bold btn-sm px-3 font-size-base mr-2 btn-rideitem-action" 
 			   data-action="arrive" data-id="{{ $model->getKey() }}"

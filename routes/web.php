@@ -153,7 +153,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('apikey/{apikey}/edit', 'Admin\ApiKeyController@update');
         Route::post('apikey/{apikey}/delete', 'Admin\ApiKeyController@delete')->name('apikey.delete');
         
-        Route::get('/settings', 'Admin\SettingController@index')->name('settings');
+        Route::get('/settings', 'Admin\Settings\IndexController@edit')->name('settings.general');
+        Route::post('/settings', 'Admin\Settings\IndexController@update');
     });
     
 });
