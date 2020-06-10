@@ -45,9 +45,9 @@ class UserController extends Controller
         $data = $request->validated();
         
         $user = User::create([
-            'first_name' => $data['first_name'],
-            'last_name' => $data['last_name'],
-            'birthday' => $data['birthday'],
+            'first_name' => $data['first_name']??null,
+            'last_name' => $data['last_name']??null,
+            'birthday' => $data['birthday']??null,
             'name' => $data['name'],
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
