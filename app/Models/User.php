@@ -179,6 +179,14 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the user's note.
+     */
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
+    }
+    
+    /**
      * Get user's parent
      */
     public function parent()
@@ -217,6 +225,22 @@ class User extends Authenticatable implements MustVerifyPhone
     public function positions()
     {
         return $this->belongsToMany(Point::class, 'user_point')->using(UserPoint::class);
+    }
+    
+    /**
+     * Get rating count
+     */
+    public function rating()
+    {
+        return (float) $this->notes()->avg('star');
+    }
+    
+    /**
+     * Get reviews count
+     */
+    public function reviews()
+    {
+        return (int) $this->notes()->count();
     }
     
     /**

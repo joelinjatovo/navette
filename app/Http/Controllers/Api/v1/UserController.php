@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ApiStoreUser as StoreUserRequest;
 use App\Http\Requests\ApiUpdateUser as UpdateUserRequest;
 use App\Http\Requests\VerifyPhone as VerifyPhoneRequest;
+use App\Http\Requests\RateUser as RateUserRequest;
 use App\Http\Resources\AccessToken as AccessTokenResource;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\UserItem as UserItemResource;
 use App\Http\Resources\UserCollection;
 use App\Models\AccessToken;
+use App\Models\Note;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\RefreshToken;
@@ -101,5 +103,26 @@ class UserController extends Controller
         $token = app('api_token');
 
         return (new AccessTokenResource($token));
+    }
+
+    /**
+     * Rate driver
+     *
+     * @param RateUserRequest $request
+     * 
+     * @return Response
+     */
+    public function rate(RateUserRequest $request)
+    {
+        $driver = User::findOrFail($request->input('id'));
+        $star = $request->input('star');
+		
+		$note = new Note();
+		$note->type = Note::TYPE_REVIEWS;
+		$note->star = $star;
+		
+		$driver->notes()->save($note);
+        
+        return $this->success(200, trans('messages.driver.rated'));
     }
 }

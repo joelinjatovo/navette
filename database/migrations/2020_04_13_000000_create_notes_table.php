@@ -16,8 +16,8 @@ class CreateNotesTable extends Migration
         if( ! Schema::hasTable('notes') ) {
             Schema::create('notes', function (Blueprint $table) {
                 $table->id();
-                $table->string('type');
-                $table->text('description');
+                $table->string('type')->nullable();
+                $table->text('description')->nullable();
                 $table->unsignedBigInteger('star')->nullable();
                 $table->unsignedBigInteger('notable_id')->index();
                 $table->string('notable_type');

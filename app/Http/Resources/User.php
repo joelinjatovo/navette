@@ -24,7 +24,9 @@ class User extends JsonResource
             'locale' => $this->locale,
             'verified' => $this->hasVerifiedPhone(),
             'image_url' => $this->image ? $this->image->url : null,
-            'roles' => Role::collection($this->whenLoaded('roles'))
+            'roles' => Role::collection($this->whenLoaded('roles')),
+            'rating' => $this->rating(),
+            'reviews' => $this->reviews(),
         ];
     }
 

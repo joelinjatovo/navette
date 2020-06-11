@@ -86,16 +86,16 @@ class TokenController extends Controller
      */
 	protected function credentials(Request $request)
 	{
-		if(filter_var($request->imput('email_or_phone'), FILTER_VALIDATE_EMAIL)) {
+		if(filter_var($request->input('email_or_phone'), FILTER_VALIDATE_EMAIL)) {
 			return [
-				'email' => $request->imput('email_or_phone'), 
-				'password' => $request->imput('password')
+				'email' => $request->input('email_or_phone'), 
+				'password' => $request->input('password')
 			];
 		}
 		
 		return [
-			'phone' => $request->imput('email_or_phone'),
-			'password' => $request->imput('password')
+			'phone' => $request->input('email_or_phone'),
+			'password' => $request->input('password')
 		];
 	}
 }
