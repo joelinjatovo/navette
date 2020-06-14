@@ -73,6 +73,13 @@ class UserController extends Controller
         event(new Registered($user));
 
         $token = $repository->generateToken($user);
+		
+		\Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
+		$customer = \Stripe\Customer::create([
+			'name' => $user->name,
+			'email' => $user->email,
+			'phone' => $user->phone,
+		]);
 
         return (new AccessTokenResource($token));
     }
