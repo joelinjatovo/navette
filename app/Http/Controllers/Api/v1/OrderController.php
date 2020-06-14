@@ -75,7 +75,7 @@ class OrderController extends Controller
         $distance = 0;
         $values = $request->input('items');
         foreach($values as $value){
-			$item = new Item($value['item']);
+			$item = new Item($value);
 			$distance += (int) $item->distance_value;
 			$item_count++;
         }
@@ -143,6 +143,19 @@ class OrderController extends Controller
         $order->distance = $distance;
         $order->setZone($zone);
         $order->save();
+		
+		switch($request->input('payment_type')){
+			case Order::PAYMENT_TYPE_STRIPE:
+				$order->status = Order::STATUS_OK;
+				$order->paidPer(Order::PAYMENT_TYPE_STRIPE);
+			break;
+			default:
+			case Order::PAYMENT_TYPE_CASH:
+				$order->status = Order::STATUS_OK;
+				$order->payment_type = Order::PAYMENT_TYPE_CASH;
+				$order->save();
+			break;
+		}
 
         return new OrderResource($order->load(['items', 'items.point']));
     }
