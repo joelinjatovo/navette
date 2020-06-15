@@ -82,7 +82,10 @@ class StripeController extends Controller
             'customer' => $user->stripe_id
         ]);
         
-        return $this->success(200, 'ok', ['client_secret' => $setup_intent->client_secret]);
+        return $this->success(200, 'ok', [
+            'publishable_key' => env('STRIPE_KEY_PUBLIC'),
+			'client_secret' => $setup_intent->client_secret
+		]);
     }
 
     /**
@@ -122,7 +125,7 @@ class StripeController extends Controller
 			'errors' => [],
 			'data' => isset($list['data']) ? $list['data'] : [],
 		]; 
-        return response()->json($list);
+        return response()->json($output);
     }
     
     /**
