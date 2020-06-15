@@ -17,6 +17,7 @@ class User extends JsonResource
         return [
             'id' => $this->getKey(),
             'stripe_id' => $this->stripe_id,
+            'payment_method_id' => $this->payment_method_id,
             'facebook_id' => $this->facebook_id,
             'name' => $this->name,
             'email' => $this->email,
