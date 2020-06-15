@@ -273,7 +273,8 @@ jQuery(document).ready(function($){
 });
 </script>
 <script>
-    $('#kt_datepicker_1').bootstrapMaterialDatePicker({ format: 'DD-MM-YYYY  HH:mm', shortTime : true, lang : 'fr', cancelText : 'ANNULER' });
+    var hotlist=["2020-06-09", "2020-06-10"];
+    $('#kt_datepicker_1').bootstrapMaterialDatePicker({ format: 'DD-MM-YYYY  HH:mm', shortTime : true, lang : 'fr', cancelText : 'ANNULER', minDate : new Date(), disabledDates:hotlist});
     $('#kt_datepicker_2').bootstrapMaterialDatePicker({ format: 'DD-MM-YYYY  HH:mm', shortTime : true, lang : 'fr', cancelText : 'ANNULER' });
     
     //choose parcours

@@ -43555,7 +43555,7 @@ if (token) {
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "005a1b44bf7e4f2cef2d",
+  key: "69f8d746e9b5ad39d512",
   cluster: "eu",
   encrypted: true
 });
@@ -43967,7 +43967,7 @@ var state = {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\wamp64\www\navette.com\resources\js\admin\ride.js */"./resources/js/admin/ride.js");
+module.exports = __webpack_require__(/*! C:\Users\hellsing\Desktop\projet navette\navette\resources\js\admin\ride.js */"./resources/js/admin/ride.js");
 
 
 /***/ })
