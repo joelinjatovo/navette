@@ -151,14 +151,8 @@ class OrderController extends Controller
 			case Order::PAYMENT_TYPE_STRIPE:
 				// Set your secret key. Remember to switch to your live secret key in production!
 				// See your keys here: https://dashboard.stripe.com/account/apikeys
-				\Stripe\Stripe::setApiKey('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+				\Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
                 
-                if($request->input('payment_method_id')){
-                    $payment_method_id = $request->input('payment_method_id');
-                }else{
-                    $payment_method_id = $user->payment_method_id;
-                }
-
                 try {
                     $intent = \Stripe\PaymentIntent::create([
                         'amount' => $order->total * 100,
