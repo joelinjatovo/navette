@@ -107,6 +107,7 @@ class UserController extends Controller
         
         $user->update([
             'name' => $data['name'],
+            'payment_method_id' => $data['payment_method_id']??null,
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
         ]);
