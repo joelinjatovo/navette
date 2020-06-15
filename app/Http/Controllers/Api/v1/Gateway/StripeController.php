@@ -62,7 +62,7 @@ class StripeController extends Controller
      */
     public function setupIntent(Request $request)
     {
-        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET', 'sk_test_AGtOdev3uNODXDanANv5QYty'));
+        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
         
         $user = $request->user();
         
@@ -94,7 +94,7 @@ class StripeController extends Controller
      */
     public function paymentMethods(Request $request)
     {
-        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET', 'sk_test_AGtOdev3uNODXDanANv5QYty'));
+        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
         
         $user = $request->user();
         if(empty($user->stripe_id)){
@@ -113,9 +113,15 @@ class StripeController extends Controller
             'customer' => $user->stripe_id,
             'type' => 'card',
         ]);
-        
-       $list = array_merge((array) $list, ['http_status' => 200, 'status_code' => 0, 'message'=>'ok', 'errors' => []]); 
-        
+		
+		$list = $list->toArray();
+        $output = [
+			'http_status' => 200,
+			'status_code' => 0, 
+			'message'=>'ok', 
+			'errors' => [],
+			'data' => isset($list['data']) ? $list['data'] : [],
+		]; 
         return response()->json($list);
     }
     

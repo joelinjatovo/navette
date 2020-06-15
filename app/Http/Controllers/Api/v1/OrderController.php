@@ -104,6 +104,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+		$user = $request->user();
+		
         $club = Club::findOrFail($request->input('club_id'));
         
         if( null === $club->point ) {
