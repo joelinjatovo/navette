@@ -10,6 +10,7 @@ use App\Models\Car;
 use App\Models\Club;
 use App\Models\Order;
 use App\Models\Item;
+use App\Models\PaymentToken;
 use App\Models\Phone;
 use App\Models\Point;
 use App\Models\Zone;
@@ -149,29 +150,50 @@ class OrderController extends Controller
 				// Set your secret key. Remember to switch to your live secret key in production!
 				// See your keys here: https://dashboard.stripe.com/account/apikeys
 				\Stripe\Stripe::setApiKey('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+                
+                if($request->input('payment_method_id')){
+                    $payment_method_id = $request->input('payment_method_id');
+                }else{
+                    $payment_method_id = $user->payment_method_id;
+                }
 
-				try {
-				  \Stripe\PaymentIntent::create([
-					'amount' => 1099,
-					'currency' => 'usd',
-					'customer' => '{{CUSTOMER_ID}}',
-					'payment_method' => '{{PAYMENT_METHOD_ID}}',
-					'off_session' => true,
-					'confirm' => true,
-				  ]);
-				} catch (\Stripe\Exception\CardException $e) {
-				  // Error code will be authentication_required if authentication is needed
-				  echo 'Error code is:' . $e->getError()->code;
-				  $payment_intent_id = $e->getError()->payment_intent->id;
-				  $payment_intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
-				}
+                try {
+                    $intent = \Stripe\PaymentIntent::create([
+                        'amount' => $order->total * 100,
+                        'currency' => $order->currency,
+                        'customer' => $user->stripe_id,
+                        'payment_method' => $user->payment_method_id,
+                        'off_session' => true,
+                        'confirm' => true,
+                    ]);
+        
+                    $intent_id = $intent->id;
+				    $order->payment_status = Order::PAYMENT_STATUS_PING;
+                    
+                } catch (\Stripe\Exception\CardException $e) {
+                    // Error code will be authentication_required if authentication is needed
+                    //echo 'Error code is:' . $e->getError()->code;
+                    $intent_id = $e->getError()->payment_intent->id;
+                    //$intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
+				    $order->payment_status = Order::PAYMENT_STATUS_AUTH_REQUIRED;
+                }
+        
+                PaymentToken::create([
+                    'payment_type' => Order::PAYMENT_TYPE_STRIPE,
+                    'amount' => $order->total * 100,
+                    'currency' => $order->currency,
+                    'order_id' => $order->getKey(),
+                    'token' => $intent_id,
+                ]);
 
-				$order->status = Order::STATUS_OK;
-				$order->paidPer(Order::PAYMENT_TYPE_STRIPE);
+				$order->status = Order::STATUS_ON_HOLD;
+				$order->payment_type = Order::PAYMENT_TYPE_STRIPE;
+				$order->save();
 			break;
 			default:
 			case Order::PAYMENT_TYPE_CASH:
 				$order->status = Order::STATUS_OK;
+                $order->payment_status = Order::PAYMENT_STATUS_PING;
 				$order->payment_type = Order::PAYMENT_TYPE_CASH;
 				$order->save();
 			break;

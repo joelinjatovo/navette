@@ -28,6 +28,10 @@ class Order extends Model
 	
     public const PAYMENT_STATUS_SUCCEEDED = 'succeeded';
     
+	public const PAYMENT_STATUS_PING = 'ping';
+    
+	public const PAYMENT_STATUS_AUTH_REQUIRED = 'auth-required';
+    
 	public const PAYMENT_STATUS_FAILED = 'failed';
 	
 	public const PAYMENT_STATUS_CANCELED = 'canceled';
