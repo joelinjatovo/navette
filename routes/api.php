@@ -55,6 +55,8 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
                 Route::post('paypal/pay', 'PayPalController@pay')->name('paypal.pay');
             });
         });
+        Route::get('stripe/setup-intent', 'Gateway\StripeController@setupIntent')->name('stripe.setup.intent');
+        Route::get('stripe/cards', 'Gateway\StripeController@paymentMethods')->name('stripe.cards');
         
         Route::get('notifications', 'NotificationController@index')->name('notifications');
         Route::post('notifications', 'NotificationController@markAsRead')->name('notifications.markAsRead');

@@ -52,6 +52,72 @@ class StripeController extends Controller
 
         return $this->success(200, trans('messages.payment.intent.created'), $output);
     }
+
+    /**
+     * Rate driver
+     *
+     * @param Request $request
+     * 
+     * @return Response
+     */
+    public function setupIntent(Request $request)
+    {
+        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET', 'sk_test_AGtOdev3uNODXDanANv5QYty'));
+        
+        $user = $request->user();
+        
+        if(empty($user->stripe_id)){
+            $customer = \Stripe\Customer::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+            ]);
+            if($customer){
+                $user->stripe_id = $customer->id;
+                $user->save();
+            }
+        }
+        
+        $setup_intent = \Stripe\SetupIntent::create([
+            'customer' => $user->stripe_id
+        ]);
+        
+        return $this->success(200, 'ok', ['client_secret' => $setup_intent->client_secret]);
+    }
+
+    /**
+     * Rate driver
+     *
+     * @param Request $request
+     * 
+     * @return Response
+     */
+    public function paymentMethods(Request $request)
+    {
+        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET', 'sk_test_AGtOdev3uNODXDanANv5QYty'));
+        
+        $user = $request->user();
+        if(empty($user->stripe_id)){
+            $customer = \Stripe\Customer::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+            ]);
+            if($customer){
+                $user->stripe_id = $customer->id;
+                $user->save();
+            }
+        }
+        
+        $list = \Stripe\PaymentMethod::all([
+            'customer' => $user->stripe_id,
+            'type' => 'card',
+        ]);
+        
+       $list = array_merge((array) $list, ['http_status' => 200, 'status_code' => 0, 'message'=>'ok', 'errors' => []]); 
+        
+        return response()->json($list);
+    }
     
     /**
      * Handle stripe webhook
@@ -106,32 +172,12 @@ class StripeController extends Controller
 			if($order = $transaction->order){
 				$currency = strtoupper($intent->currency);
 				if(($order->payment_type == Order::PAYMENT_TYPE_STRIPE) 
-				   && ($order->total * 100 = $intent->amount_received)
+				   && ($order->total * 100 == $intent->amount_received)
 				   && ($order->currency = strtoupper($intent->currency))
 				   && ($order->status == Order::STATUS_ON_HOLD)){
 					 // Set as paid
 					$order->status = Order::STATUS_OK;
 					$order->paidPer(Order::PAYMENT_TYPE_STRIPE);
-				}
-			}
-		}
-	}
-}
-	
-	protected function handlePaymentIntentFailed($intent){
-		$transaction = PaymentToken::where('payment_type', Order::PAYMENT_TYPE_STRIPE)
-				->where('token', $intent->id)
-				->first();
-		if($transaction){
-			if($order = $transaction->order){
-				$currency = strtoupper($intent->currency);
-				if(($order->payment_type == Order::PAYMENT_TYPE_STRIPE) 
-				   && ($order->total * 100 = $intent->amount_received)
-				   && ($order->currency = strtoupper($intent->currency))
-				   && ($order->status == Order::STATUS_ON_HOLD)){
-					 // Set as failed
-					$order->payment_status = Order::PAYMENT_STATUS_FAILED;
-					$order->save();
 				}
 			}
 		}
