@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Note extends Model
 {
 
+	const TYPE_REVIEWS = 'reviews';
+	
     /**
      * Bootstrap the model and its traits.
      *

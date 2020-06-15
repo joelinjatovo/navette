@@ -75,7 +75,7 @@ class OrderController extends Controller
         $distance = 0;
         $values = $request->input('items');
         foreach($values as $value){
-			$item = new Item($value['item']);
+			$item = new Item($value);
 			$distance += (int) $item->distance_value;
 			$item_count++;
         }
@@ -143,6 +143,39 @@ class OrderController extends Controller
         $order->distance = $distance;
         $order->setZone($zone);
         $order->save();
+		
+		switch($request->input('payment_type')){
+			case Order::PAYMENT_TYPE_STRIPE:
+				// Set your secret key. Remember to switch to your live secret key in production!
+				// See your keys here: https://dashboard.stripe.com/account/apikeys
+				\Stripe\Stripe::setApiKey('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+
+				try {
+				  \Stripe\PaymentIntent::create([
+					'amount' => 1099,
+					'currency' => 'usd',
+					'customer' => '{{CUSTOMER_ID}}',
+					'payment_method' => '{{PAYMENT_METHOD_ID}}',
+					'off_session' => true,
+					'confirm' => true,
+				  ]);
+				} catch (\Stripe\Exception\CardException $e) {
+				  // Error code will be authentication_required if authentication is needed
+				  echo 'Error code is:' . $e->getError()->code;
+				  $payment_intent_id = $e->getError()->payment_intent->id;
+				  $payment_intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
+				}
+
+				$order->status = Order::STATUS_OK;
+				$order->paidPer(Order::PAYMENT_TYPE_STRIPE);
+			break;
+			default:
+			case Order::PAYMENT_TYPE_CASH:
+				$order->status = Order::STATUS_OK;
+				$order->payment_type = Order::PAYMENT_TYPE_CASH;
+				$order->save();
+			break;
+		}
 
         return new OrderResource($order->load(['items', 'items.point']));
     }

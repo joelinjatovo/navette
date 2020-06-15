@@ -24,7 +24,11 @@ class ApiStoreUser extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'nullable|string|max:255',
+            'first_name' => 'nullable|string|max:100',
+            'last_name' => 'nullable|string|max:100',
+            'birthday' => 'nullable|string|max:100',
+            'code' => 'nullable|string|max:100',
+            'name' => 'nullable|string|max:100',
             'phone' => 'nullable|numeric|unique:users',
             'password' => 'nullable|string|min:4|max:32',
             'email' => 'nullable|email|unique:users',
