@@ -52,6 +52,8 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
             Route::namespace('Gateway')->name('gateway.')->group(function () {
                 Route::post('cash/pay', 'CashController@pay')->name('cash.pay');
                 Route::post('stripe/pay', 'StripeController@pay')->name('stripe.pay');
+				Route::get('stripe/setup-intent', 'StripeController@setupIntent')->name('stripe.setup.intent');
+				Route::get('stripe/cards', 'StripeController@paymentMethods')->name('stripe.cards');
                 Route::post('paypal/pay', 'PayPalController@pay')->name('paypal.pay');
             });
         });

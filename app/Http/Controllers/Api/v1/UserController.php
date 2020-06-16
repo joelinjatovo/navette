@@ -80,6 +80,10 @@ class UserController extends Controller
 			'email' => $user->email,
 			'phone' => $user->phone,
 		]);
+        if($customer){
+            $user->stripe_id = $customer->id;
+            $user->save();
+        }
 
         return (new AccessTokenResource($token));
     }
@@ -103,6 +107,7 @@ class UserController extends Controller
         
         $user->update([
             'name' => $data['name'],
+            'payment_method_id' => $data['payment_method_id']??null,
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
         ]);

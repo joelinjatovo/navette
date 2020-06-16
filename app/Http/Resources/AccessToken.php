@@ -20,6 +20,7 @@ class AccessToken extends JsonResource
             $data = [
                 'id' => $this->user->getKey(),
                 'stripe_id' => $this->user->stripe_id,
+                'payment_method_id' => $this->user->payment_method_id,
                 'facebook_id' => $this->user->facebook_id,
                 'name' => $this->user->name,
                 'email' => $this->user->email,

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RidePoint;
 
-class RidePointController extends Controller
+class RideItemController extends Controller
 {
     
     /**

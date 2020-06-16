@@ -32,6 +32,7 @@ class User extends Authenticatable implements MustVerifyPhone
     protected $fillable = [
         'stripe_id', 
 		'facebook_id', 
+		'payment_method_id', 
 		'first_name', 
 		'last_name', 
 		'birthday', 

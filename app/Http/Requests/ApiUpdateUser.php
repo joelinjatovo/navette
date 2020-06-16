@@ -24,6 +24,7 @@ class ApiUpdateUser extends FormRequest
     public function rules()
     {
         return [
+            'payment_method_id' => 'nullable|string|max:100',
             'first_name' => 'nullable|string|max:100',
             'last_name' => 'nullable|string|max:100',
             'birthday' => 'nullable|string|max:100',
