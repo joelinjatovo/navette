@@ -1,0 +1,329 @@
+AWSTATS DATA FILE 7.7 (build 20161204)
+# If you remove this file, all statistics for date 202006 will be lost/reset.
+# Last config file used to build this data file was /etc/awstats/awstats.beta.my-app-demo.com.conf.
+
+# Position (offset in bytes) in this file for beginning of each section for
+# direct I/O access. If you made changes somewhere in this file, you should
+# also remove completely the MAP section (AWStats will rewrite it at next
+# update).
+BEGIN_MAP 28
+POS_GENERAL 2003                
+POS_TIME 2676                
+POS_VISITOR 7545                
+POS_DAY 8197                
+POS_DOMAIN 3312                
+POS_LOGIN 3568                
+POS_ROBOT 3723                
+POS_WORMS 3933                
+POS_EMAILSENDER 4064                
+POS_EMAILRECEIVER 4207                
+POS_SESSION 8371                
+POS_SIDER 8564                
+POS_FILETYPES 4342                
+POS_DOWNLOADS 4598                
+POS_OS 4646                
+POS_BROWSER 4767                
+POS_SCREENSIZE 5038                
+POS_UNKNOWNREFERER 5112                
+POS_UNKNOWNREFERERBROWSER 5319                
+POS_ORIGIN 5521                
+POS_SEREFERRALS 5658                
+POS_PAGEREFS 5802                
+POS_SEARCHWORDS 5950                
+POS_KEYWORDS 6102                
+POS_MISC 2340                
+POS_ERRORS 6161                
+POS_CLUSTER 3424                
+POS_SIDER_404 6321                
+END_MAP
+
+# LastLine    = Date of last record processed - Last record line number in last log - Last record offset in last log - Last record signature value
+# FirstTime   = Date of first visit for history file
+# LastTime    = Date of last visit for history file
+# LastUpdate  = Date of last update - Nb of parsed records - Nb of parsed old records - Nb of parsed new records - Nb of parsed corrupted - Nb of parsed dropped
+# TotalVisits = Number of visits
+# TotalUnique = Number of unique visitors
+# MonthHostsKnown   = Number of hosts known
+# MonthHostsUnKnown = Number of hosts unknown
+BEGIN_GENERAL 8
+LastLine 20200613053904 1831 529099 0
+FirstTime 20200601081648
+LastTime 20200608150100
+LastUpdate 20200616043614 1831 1831 0 0 0
+TotalVisits 13                  
+TotalUnique 13                  
+MonthHostsKnown 0                   
+MonthHostsUnknown 15                  
+END_GENERAL
+
+# Misc ID - Pages - Hits - Bandwidth
+BEGIN_MISC 10
+QuickTimeSupport 0 0 0
+JavaEnabled 0 0 0
+JavascriptDisabled 0 0 0
+PDFSupport 0 0 0
+WindowsMediaPlayerSupport 0 0 0
+AddToFavourites 0 0 0
+RealPlayerSupport 0 0 0
+TotalMisc 0 0 0
+DirectorSupport 0 0 0
+FlashSupport 0 0 0
+END_MISC
+
+# Hour - Pages - Hits - Bandwidth - Not viewed Pages - Not viewed Hits - Not viewed Bandwidth
+BEGIN_TIME 24
+0 0 0 0 0 0 0
+1 0 0 0 0 0 0
+2 0 0 0 0 0 0
+3 7 7 1725 0 0 0
+4 4 11 19714705 3 7 4924556
+5 9 27 31857621 13 14 50044769
+6 6 12 351573 52 54 90656
+7 63 84 7429996 10 12 9763072
+8 45 115 22883033 19 22 11832921
+9 22 48 8658458 6 8 14872390
+10 2 14 1601634 2 4 2419435
+11 0 0 0 1 1 245760
+12 0 0 0 0 0 0
+13 0 0 0 1 1 1570
+14 1 8 808905 1 2 4125559
+15 5 16 1581272 2 2 2830613
+16 3 5 232933 2 2 2044
+17 2 2 1567 0 0 0
+18 0 0 0 0 0 0
+19 0 0 0 2 2 1244
+20 0 0 0 0 0 0
+21 1 1 95 2 2 2586
+22 0 0 0 0 0 0
+23 0 0 0 0 0 0
+END_TIME
+
+# Domain - Pages - Hits - Bandwidth
+# The 10 first Pages must be first (order not required for others)
+BEGIN_DOMAIN 3
+mg 169 347 95096272
+fr 1 1 1569
+ie 0 2 25676
+END_DOMAIN
+
+# Cluster ID - Pages - Hits - Bandwidth
+BEGIN_CLUSTER 0
+END_CLUSTER
+
+# Login - Pages - Hits - Bandwidth - Last visit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_LOGIN 0
+END_LOGIN
+
+# Robot ID - Hits - Bandwidth - Last visit - Hits on robots.txt
+# The 10 first Hits must be first (order not required for others)
+BEGIN_ROBOT 2
+facebookexternalhit/ 10 52622 20200612132416 0
+Dalvik/ 2 216 20200602072704 0
+END_ROBOT
+
+# Worm ID - Hits - Bandwidth - Last visit
+# The 5 first Hits must be first (order not required for others)
+BEGIN_WORMS 0
+END_WORMS
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first Hits must be first (order not required for others)
+BEGIN_EMAILSENDER 0
+END_EMAILSENDER
+
+# EMail - Hits - Bandwidth - Last visit
+# The 20 first hits must be first (order not required for others)
+BEGIN_EMAILRECEIVER 0
+END_EMAILRECEIVER
+
+# Files type - Hits - Bandwidth - Bandwidth without compression - Bandwidth after compression
+BEGIN_FILETYPES 10
+css 51 3153611 0 0
+png 43 1122445 0 0
+woff 9 154744 0 0
+woff2 11 960424 0 0
+html 18 28285 0 0
+js 41 12958018 0 0
+jpg 38 3514857 0 0
+apk 6 72907414 0 0
+Unknown 126 214498 0 0
+gif 7 109221 0 0
+END_FILETYPES
+
+# Downloads - Hits - Bandwidth
+BEGIN_DOWNLOADS 0
+END_DOWNLOADS
+
+# OS ID - Hits
+BEGIN_OS ID - Hits - Pages 4
+linuxandroid 94 85
+Unknown 32 10
+win10 223 74
+linux 1 1
+END_OS
+
+# Browser ID - Hits - Pages
+BEGIN_BROWSER 11
+opera68.0.3618.125 14 2
+firefox68.0 8 2
+chrome81.0.4044.138 2 2
+android 4 4
+chrome81.0.4044.111 3 3
+chrome83.0.4103.61 209 72
+samsung 72 72
+chrome78.0.3904.108 1 1
+firefox68.1.1 1 0
+Unknown 32 10
+chrome80.0.3987.149 4 2
+END_BROWSER
+
+# Screen size - Hits
+BEGIN_SCREENSIZE 0
+END_SCREENSIZE
+
+# Unknown referer OS - Last visit date
+BEGIN_UNKNOWNREFERER 4
+adreview/1.0 20200602064355
+PostmanRuntime/7.25.0 20200608032819
+cortex/1.0 20200602064356
+okhttp/3.12.0 20200602093108
+END_UNKNOWNREFERER
+
+# Unknown referer Browser - Last visit date
+BEGIN_UNKNOWNREFERERBROWSER 4
+adreview/1.0 20200602064355
+PostmanRuntime/7.25.0 20200608032819
+cortex/1.0 20200602064356
+okhttp/3.12.0 20200602093108
+END_UNKNOWNREFERERBROWSER
+
+# Origin - Pages - Hits 
+BEGIN_ORIGIN 6
+From0 105 128
+From1 0 0
+From2 0 0
+From3 0 0
+From4 65 222
+From5 0 0
+END_ORIGIN
+
+# Search engine referers ID - Pages - Hits
+BEGIN_SEREFERRALS 0
+END_SEREFERRALS
+
+# External page referers - Pages - Hits
+# The 10 first Pages must be first (order not required for others)
+BEGIN_PAGEREFS 0
+END_PAGEREFS
+
+# Search keyphrases - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_SEARCHWORDS 0
+END_SEARCHWORDS
+
+# Search keywords - Number of search
+# The 10 first number of search must be first (order not required for others)
+BEGIN_KEYWORDS 0
+END_KEYWORDS
+
+# Errors - Hits - Bandwidth
+BEGIN_ERRORS 7
+403 2 1246
+302 8 3960
+201 7 13894
+206 35 101033128
+419 1 11871
+499 3 0
+404 65 40238
+END_ERRORS
+
+# URL with 404 errors - Hits - Last URL referrer
+BEGIN_SIDER_404 13
+/css/main/fonts/@fortawesome/fa-brands-400.woff2 1 https://beta.my-app-demo.com/css/main/plugins.bundle.css
+/api/v1/settings 3 -
+/or 13 -
+/css/main/fonts/@fortawesome/fa-brands-400.ttf 1 https://beta.my-app-demo.com/css/main/plugins.bundle.css
+/images/video_bg.png 11 https://beta.my-app-demo.com/css/custom-home.min.css
+/ord 11 -
+/metronic/themes/metronic/theme/html/demo9/dist/assets/media/users/300_13.jpg 1 https://beta.my-app-demo.com/customer/order/1/item/1
+/orde 10 -
+/o 10 -
+/css/main/fonts/@fortawesome/fa-regular-400.woff2 1 https://beta.my-app-demo.com/css/main/plugins.bundle.css
+/css/main/fonts/@fortawesome/fa-brands-400.woff 1 https://beta.my-app-demo.com/css/main/plugins.bundle.css
+/css/main/fonts/@fortawesome/fa-regular-400.ttf 1 https://beta.my-app-demo.com/css/main/plugins.bundle.css
+/css/main/fonts/@fortawesome/fa-regular-400.woff 1 https://beta.my-app-demo.com/css/main/plugins.bundle.css
+END_SIDER_404
+
+# Host - Pages - Hits - Bandwidth - Last visit date - [Start date of last visit] - [Last page of last visit]
+# [Start date of last visit] and [Last page of last visit] are saved only if session is not finished
+# The 10 first Hits must be first (order not required for others)
+BEGIN_VISITOR 15
+154.126.9.138 49 54 5510613 20200602073359
+154.126.11.59 43 106 7664123 20200601082145
+197.149.43.109 27 65 34102240 20200602073901
+154.126.113.177 22 48 8658458 20200602093820
+154.126.11.35 7 7 1725 20200608032819
+154.126.12.69 6 24 2390177 20200608150100
+154.126.10.87 5 7 234500 20200601170009
+154.126.12.49 3 10 19713136 20200602042752
+154.126.9.97 2 2 661 20200605065709
+154.126.11.97 2 9 15218910 20200602082231
+51.158.109.172 1 1 1569 20200603044034
+154.126.9.9 2 14 1601634 20200602103911
+31.13.115.1 0 1 12838 
+31.13.115.23 0 1 12838 
+154.126.9.88 1 1 95 20200605215128
+END_VISITOR
+
+# Date - Pages - Hits - Bandwidth - Visits
+BEGIN_DAY 5
+20200601 48 113 7898623 2
+20200602 105 202 84830667 6
+20200603 1 1 1569 1
+20200605 3 3 756 2
+20200608 13 31 2391902 2
+END_DAY
+
+# Session range - Number of visits
+BEGIN_SESSION 6
+1h+ 1
+5mn-15mn 2
+0s-30s 3
+2mn-5mn 4
+30s-2mn 2
+30mn-1h 1
+END_SESSION
+
+# URL - Pages - Bandwidth - Entry - Exit
+# The 10 first Pages must be first (order not required for others)
+BEGIN_SIDER 28
+/api/v1/cart 32 6011 0 0
+/api/v1/clubs 25 19017 1 2
+/ 18 28285 10 2
+/api/v1/club/1/cars 9 3615 0 1
+/broadcasting/auth 8 775 0 1
+/order 7 95840 0 0
+/order/cars 7 3173 0 2
+/api/v1/club/3/cars 7 847 0 1
+/notifications/unread 7 154 0 0
+/css/main/fonts/@fortawesome/fa-solid-900.woff2 6 476664 0 0
+/api/v1/settings 1 95 1 1
+/cart 1 7739 0 0
+/customer/order/1/item/1 2 12390 0 0
+/css/main/fonts/line-awesome/la-solid-900.woff2 5 483760 0 0
+/api/v1/stripe/pay 1 222 0 0
+/apps/android.apk 6 72907414 0 2
+/api/v1/token 1 92 0 0
+/customer/order/1 2 19424 0 0
+/css/main/fonts/flaticon/Flaticon.woff 2 91160 0 0
+/api/v1/verify 4 3120 0 1
+/css/main/fonts/flaticon2/Flaticon2.woff 1 29816 0 0
+/customer/orders 2 28968 0 0
+/api/v1/cash/pay 3 2134 0 0
+/api/v1/scope 2 409 1 0
+/css/main/fonts/keenthemes-icons/Ki.woff 6 33768 0 0
+/api/v1/notifications 1 286 0 0
+/login 1 3939 0 0
+/account/verify 3 6248 0 0
+END_SIDER
