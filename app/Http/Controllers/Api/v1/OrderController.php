@@ -10,8 +10,10 @@ use App\Models\Car;
 use App\Models\Club;
 use App\Models\Order;
 use App\Models\Item;
+use App\Models\PaymentToken;
 use App\Models\Phone;
 use App\Models\Point;
+use App\Models\Ride;
 use App\Models\Zone;
 use App\Services\GoogleApiService;
 use App\Repositories\OrderRepository;
@@ -75,7 +77,7 @@ class OrderController extends Controller
         $distance = 0;
         $values = $request->input('items');
         foreach($values as $value){
-			$item = new Item($value['item']);
+			$item = new Item($value);
 			$distance += (int) $item->distance_value;
 			$item_count++;
         }
@@ -103,6 +105,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+		$user = $request->user();
+		
         $club = Club::findOrFail($request->input('club_id'));
         
         if( null === $club->point ) {
@@ -116,6 +120,7 @@ class OrderController extends Controller
         $order->save();
         
         $distance = 0;
+        $items = [];
         $values = $request->input('items');
         foreach($values as $value){
             if(isset($value['point'])){
@@ -126,8 +131,14 @@ class OrderController extends Controller
                 $item->point()->associate($point);
                 $item->order()->associate($order);
                 $item->save();
+                $items[] = $item;
 
                 $distance += (int) $item->distance_value;
+                
+                if(isset($value['ride_id'])){
+                    $item->ride_id = $value['ride_id'];
+                    $items[] = $item;
+                }
             }
         }
         
@@ -143,7 +154,66 @@ class OrderController extends Controller
         $order->distance = $distance;
         $order->setZone($zone);
         $order->save();
+		
+		switch($request->input('payment_type')){
+			case Order::PAYMENT_TYPE_STRIPE:
+                try {
+                    $intent = \Stripe\PaymentIntent::create([
+                        'amount' => $order->total * 100,
+                        'currency' => $order->currency,
+                        'customer' => $user->stripe_id,
+                        'payment_method' => $user->payment_method_id,
+                        'off_session' => true,
+                        'confirm' => true,
+                    ]);
+        
+                    $intent_id = $intent->id;
+				    $order->payment_status = Order::PAYMENT_STATUS_PING;
+                    $status = PaymentToken::STATUS_PING;
+                    
+                } catch (\Stripe\Exception\CardException $e) {
+                    // Error code will be authentication_required if authentication is needed
+                    //echo 'Error code is:' . $e->getError()->code;
+                    $intent_id = $e->getError()->payment_intent->id;
+                    $intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
+				    $order->payment_status = Order::PAYMENT_STATUS_AUTH_REQUIRED;
+                    $status = PaymentToken::STATUS_AUTH_REQUIRED;
+                }
+        
+                PaymentToken::create([
+                    'status' => $status,
+                    'payment_type' => Order::PAYMENT_TYPE_STRIPE,
+                    'amount' => $order->total * 100,
+                    'currency' => $order->currency,
+                    'order_id' => $order->getKey(),
+                    'token' => $intent_id,
+                ]);
 
+				$order->status = Order::STATUS_ON_HOLD;
+				$order->payment_type = Order::PAYMENT_TYPE_STRIPE;
+				$order->save();
+			break;
+			default:
+			case Order::PAYMENT_TYPE_CASH:
+				$order->status = Order::STATUS_OK;
+                $order->payment_status = Order::PAYMENT_STATUS_PING;
+				$order->payment_type = Order::PAYMENT_TYPE_CASH;
+				$order->save();
+			break;
+		}
+        
+        foreach($items as $item){
+            if($item->ride_id){
+                $ride = Ride::find($item->ride_id);
+                if($ride && $ride->hasAvailablePlace($order->place)){
+                    $ride->attachItem($item, $order->place);
+                    $ride->addPlace($order->place);
+                    $item->active();
+                    $order->active();
+                }
+            }
+        }
+		
         return new OrderResource($order->load(['items', 'items.point']));
     }
     

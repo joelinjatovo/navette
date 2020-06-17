@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ApiStoreUser extends FormRequest
+class RateUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,8 @@ class ApiStoreUser extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'nullable|string|max:100',
-            'last_name' => 'nullable|string|max:100',
-            'birthday' => 'nullable|string|max:100',
-            'code' => 'nullable|string|max:100',
-            'phone' => 'nullable|numeric|unique:users',
-            'password' => 'nullable|string|min:4|max:32',
-            'email' => 'nullable|email|unique:users',
+            'id' => 'numeric|exists:users,id',
+            'star' => 'numeric|min:0|max:5',
         ];
     }
 }

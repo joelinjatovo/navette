@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Zone extends Model
 {
-    
-    use SoftDeletes;
 
     /**
      * Bootstrap the model and its traits.

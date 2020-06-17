@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentToken extends Model
 {
+    
+    public const STATUS_PING = 'ping';
+    
+    public const STATUS_FAILED = 'failed';
+    
+    public const STATUS_SUCCESS = 'success';
+    
+    public const STATUS_AUTH_REQUIRED = 'auth_required';
 
     /**
      * The attributes that are mass assignable.

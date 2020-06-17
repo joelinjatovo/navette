@@ -16,9 +16,14 @@ class CreateUsersTable extends Migration
         if( ! Schema::hasTable('users') ) {
             Schema::create('users', function (Blueprint $table) {
                 $table->id();
+                $table->string('stripe_id', 200)->nullable();
+                $table->string('payment_method_id', 200)->nullable();
                 $table->string('facebook_id', 200)->nullable();
                 $table->uuid('code')->nullable()->unique();
-                $table->string('name', 100);
+                $table->string('first_name', 100)->nullable();
+                $table->string('last_name', 100)->nullable();
+                $table->string('birthday', 100)->nullable();
+                $table->string('name', 100)->nullable();
                 $table->string('email', 100)->nullable();
                 $table->string('phone', 20)->nullable();
                 $table->string('password');
@@ -31,7 +36,6 @@ class CreateUsersTable extends Migration
                 $table->foreign('parent_id')->references('id')->on('users');
                 $table->rememberToken();
                 $table->timestamps();
-                $table->softDeletes();
             });
         }
     }

@@ -13,8 +13,8 @@ class Controller extends BaseController
     
     protected function success($status, $message, $data = null){
         return response()->json([
-            'status' => $status,
-            'code' => 0,
+            'http_status' => $status,
+            'status_code' => 0,
             'message' => $message,
             'errors' => [],
             'data' => $data,
@@ -23,8 +23,8 @@ class Controller extends BaseController
     
     protected function error($status, $code, $message){
         return response()->json([
-            'status' => $status,
-            'code' => $code,
+            'http_status' => $status,
+            'status_code' => $code,
             'message' => $message,
             'errors' => [],
             'data' => null,

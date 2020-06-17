@@ -40,6 +40,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::get('resend', 'VerificationController@resend')->name('verification.resend');
         Route::get('user', 'UserController@show')->name('user.show');
         Route::put('user', 'UserController@update')->name('user.edit');
+        Route::post('user/rate', 'UserController@rate')->name('user.rate');
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         
         Route::get('orders', 'OrderController@index')->name('orders');
@@ -51,6 +52,8 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
             Route::namespace('Gateway')->name('gateway.')->group(function () {
                 Route::post('cash/pay', 'CashController@pay')->name('cash.pay');
                 Route::post('stripe/pay', 'StripeController@pay')->name('stripe.pay');
+				Route::get('stripe/setup-intent', 'StripeController@setupIntent')->name('stripe.setup.intent');
+				Route::get('stripe/cards', 'StripeController@paymentMethods')->name('stripe.cards');
                 Route::post('paypal/pay', 'PayPalController@pay')->name('paypal.pay');
             });
         });

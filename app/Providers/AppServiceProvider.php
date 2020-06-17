@@ -34,13 +34,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Set your secret key. Remember to switch to your live secret key in production!
+        // See your keys here: https://dashboard.stripe.com/account/apikeys
+		\Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
+        
         // String DB Lengths
         Schema::defaultStringLength(191);
 		
 		// Settings
 		if (Schema::hasTable('settings')) {
 			foreach (\App\Models\Setting::all() as $setting) {
-				\Config::set('settings.'.$setting->key, $setting->value);
+				//\Config::set('settings.'.$setting->key, $setting->value);
 			}
 		}
         

@@ -13,8 +13,6 @@ class User extends Authenticatable implements MustVerifyPhone
 {
     use Notifiable;
     
-    use SoftDeletes;
-
     /**
      * The attributes that are datetime type.
      *
@@ -30,7 +28,16 @@ class User extends Authenticatable implements MustVerifyPhone
      * @var array
      */
     protected $fillable = [
-        'facebook_id', 'name', 'email', 'phone', 'password',
+        'stripe_id', 
+		'facebook_id', 
+		'payment_method_id', 
+		'first_name', 
+		'last_name', 
+		'birthday', 
+		'name', 
+		'email', 
+		'phone', 
+		'password',
     ];
 
     /**
@@ -64,6 +71,11 @@ class User extends Authenticatable implements MustVerifyPhone
             if ( empty( $model->code ) ) {
                 $model->code = (string) \Str::uuid();
             }
+            $model->name = $model->first_name . ' ' . $model->last_name;
+        });
+        
+        static::updating(function ($model) {
+            $model->name = $model->first_name . ' ' . $model->last_name;
         });
     }
     
@@ -171,6 +183,14 @@ class User extends Authenticatable implements MustVerifyPhone
     }
     
     /**
+     * Get the user's note.
+     */
+    public function notes()
+    {
+        return $this->morphMany(Note::class, 'notable');
+    }
+    
+    /**
      * Get user's parent
      */
     public function parent()
@@ -209,6 +229,22 @@ class User extends Authenticatable implements MustVerifyPhone
     public function positions()
     {
         return $this->belongsToMany(Point::class, 'user_point')->using(UserPoint::class);
+    }
+    
+    /**
+     * Get rating count
+     */
+    public function rating()
+    {
+        return (float) $this->notes()->avg('star');
+    }
+    
+    /**
+     * Get reviews count
+     */
+    public function reviews()
+    {
+        return (int) $this->notes()->count();
     }
     
     /**

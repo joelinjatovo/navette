@@ -48,14 +48,8 @@ class IndexController extends Controller
         if(!$club || null === $club->point ) {
             return back()->with('error', "Club Without Position");
         }
-        $input_order = $request->input('order');
-        //$ride_at = $input_order['items'][0]['item']['ride_at'];
-        //$t=Carbon::parse($ride_at['date'].' '.$ride_at['time']);
-        //$input_order['items'][0]['item']['ride_at'] = $t->format('d-m-Y H:i:s');
-        //$input_order['items'][0]['item']['ride_at'] = $ride_at['date'].' '.$ride_at['time'];
 
-
-        $order = new Order($input_order);
+        $order = new Order($request->input('order'));
         $order->status = Order::STATUS_PING;
         $order->setVat(0);
         $order->club()->associate($club);

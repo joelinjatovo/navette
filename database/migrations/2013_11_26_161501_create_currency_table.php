@@ -26,6 +26,7 @@ class CreateCurrencyTable extends Migration
      */
     public function up()
     {
+        /*
         Schema::create($this->table_name, function ($table) {
             $table->increments('id')->unsigned();
             $table->string('name');
@@ -36,6 +37,7 @@ class CreateCurrencyTable extends Migration
             $table->boolean('active')->default(false);
             $table->timestamps();
         });
+        */
     }
 
     /**
@@ -45,6 +47,6 @@ class CreateCurrencyTable extends Migration
      */
     public function down()
     {
-        Schema::drop($this->table_name);
+        Schema::dropIfExists($this->table_name);
     }
 }
