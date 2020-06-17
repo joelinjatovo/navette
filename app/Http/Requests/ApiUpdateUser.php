@@ -29,7 +29,6 @@ class ApiUpdateUser extends FormRequest
             'last_name' => 'nullable|string|max:100',
             'birthday' => 'nullable|string|max:100',
             'code' => 'nullable|string|max:100',
-            'name' => 'nullable|string|max:255',
             'phone' => 'nullable|numeric|unique:users,phone,' . auth()->user()->id,
             'email' => 'nullable|email|unique:users,email,' . auth()->user()->id,
             'password' => 'nullable|string|min:4|max:32',

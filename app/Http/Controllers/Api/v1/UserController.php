@@ -73,6 +73,7 @@ class UserController extends Controller
 
         $token = $repository->generateToken($user);
 		
+        /*
 		$customer = \Stripe\Customer::create([
 			'name' => $user->name,
 			'email' => $user->email,
@@ -82,7 +83,7 @@ class UserController extends Controller
         if($customer){
             $user->stripe_id = $customer->id;
             $user->save();
-        }
+        }*/
 
         return (new AccessTokenResource($token));
     }
