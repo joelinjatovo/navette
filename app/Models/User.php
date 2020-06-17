@@ -71,6 +71,11 @@ class User extends Authenticatable implements MustVerifyPhone
             if ( empty( $model->code ) ) {
                 $model->code = (string) \Str::uuid();
             }
+            $model->name = $model->first_name . ' ' . $model->last_name;
+        });
+        
+        static::updating(function ($model) {
+            $model->name = $model->first_name . ' ' . $model->last_name;
         });
     }
     
