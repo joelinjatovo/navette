@@ -34,6 +34,8 @@ class User extends Authenticatable implements MustVerifyPhone
 		'first_name', 
 		'last_name', 
 		'birthday', 
+		'address', 
+		'postal_code', 
 		'name', 
 		'email', 
 		'phone', 

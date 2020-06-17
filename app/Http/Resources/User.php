@@ -29,7 +29,7 @@ class User extends JsonResource
             'postal_code' => $this->postal_code,
             'locale' => $this->locale,
             'verified' => $this->hasVerifiedPhone(),
-            'image_url' => $this->image ? $this->image->url : null,
+            'image_url' => $this->image ? url($this->image->url) : null,
             'roles' => Role::collection($this->whenLoaded('roles')),
             'rating' => $this->rating(),
             'reviews' => $this->reviews(),

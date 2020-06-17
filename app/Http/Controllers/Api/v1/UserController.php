@@ -117,6 +117,8 @@ class UserController extends Controller
             'first_name' => $data['first_name']??null,
             'last_name' => $data['last_name']??null,
             'birthday' => $data['birthday']??null,
+            'address' => $data['address']??null,
+            'postal_code' => $data['postal_code']??null,
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
         ]);

@@ -33,7 +33,7 @@ class AccessToken extends JsonResource
                 'postal_code' => $this->user->postal_code,
                 'locale' => $this->user->locale,
                 'verified' => $this->user->hasVerifiedPhone(),
-                'image_url' => $this->user->image ? $this->user->image->url : null,
+                'image_url' => $this->user->image ? url($this->user->image->url) : null,
                 'roles' => Role::collection($this->user->roles),
             ];
         }
