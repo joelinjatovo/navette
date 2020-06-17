@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\RefreshToken;
 use App\Repositories\TokenRepository;
+use App\Services\ImageUploader;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -24,6 +25,13 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    
+    private $uploader;
+    
+    public function __construct(ImageUploader $uploader)
+    {
+        $this->uploader = $uploader;
+    }
 
     /**
      * Show logged in user.
@@ -33,7 +41,7 @@ class UserController extends Controller
      */
     public function show(Request $request)
     {
-        return new UserResource($request->user());
+        return new UserResource($request->user()->load('roles'));
     }
 
     /**
@@ -112,6 +120,26 @@ class UserController extends Controller
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
         ]);
+        
+        $token = app('api_token');
+
+        return (new AccessTokenResource($token));
+    }
+
+    /**
+     * Upload avatar photo
+     *
+     * @return Response
+     */
+    public function avatar(Request $request)
+    {
+        $request->validate([
+            'image' => 'file|mimes:jpeg,png,jpg'
+        ]);
+        
+        $user = $request->user();
+        
+        $this->uploader->upload('image', $user);
         
         $token = app('api_token');
 

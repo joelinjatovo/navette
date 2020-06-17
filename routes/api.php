@@ -40,6 +40,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::get('resend', 'VerificationController@resend')->name('verification.resend');
         Route::get('user', 'UserController@show')->name('user.show');
         Route::put('user', 'UserController@update')->name('user.edit');
+        Route::post('user/avatar', 'UserController@avatar')->name('user.avatar');
         Route::post('user/rate', 'UserController@rate')->name('user.rate');
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         

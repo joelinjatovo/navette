@@ -27,6 +27,8 @@ class CreateUsersTable extends Migration
                 $table->string('email', 100)->nullable();
                 $table->string('phone', 20)->nullable();
                 $table->string('password');
+                $table->string('address', 100)->nullable();
+                $table->string('postal_code', 100)->nullable();
                 $table->string('locale', 2)->default('fr');
                 $table->timestamp('blocked_at')->nullable();
                 $table->timestamp('phone_verified_at')->nullable();
