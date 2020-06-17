@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ApiKey extends Model
 {
     
-    use SoftDeletes;
-
     /**
      * The attributes that are datetime type.
      *

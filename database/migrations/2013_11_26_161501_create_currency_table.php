@@ -47,6 +47,6 @@ class CreateCurrencyTable extends Migration
      */
     public function down()
     {
-        Schema::drop($this->table_name);
+        Schema::dropIfExists($this->table_name);
     }
 }

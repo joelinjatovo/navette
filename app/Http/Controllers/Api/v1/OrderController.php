@@ -165,16 +165,19 @@ class OrderController extends Controller
         
                     $intent_id = $intent->id;
 				    $order->payment_status = Order::PAYMENT_STATUS_PING;
+                    $status = PaymentToken::STATUS_PING;
                     
                 } catch (\Stripe\Exception\CardException $e) {
                     // Error code will be authentication_required if authentication is needed
                     //echo 'Error code is:' . $e->getError()->code;
                     $intent_id = $e->getError()->payment_intent->id;
-                    //$intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
+                    $intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
 				    $order->payment_status = Order::PAYMENT_STATUS_AUTH_REQUIRED;
+                    $status = PaymentToken::STATUS_AUTH_REQUIRED;
                 }
         
                 PaymentToken::create([
+                    'status' => $status,
                     'payment_type' => Order::PAYMENT_TYPE_STRIPE,
                     'amount' => $order->total * 100,
                     'currency' => $order->currency,

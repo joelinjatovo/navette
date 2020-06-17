@@ -13,8 +13,6 @@ class User extends Authenticatable implements MustVerifyPhone
 {
     use Notifiable;
     
-    use SoftDeletes;
-
     /**
      * The attributes that are datetime type.
      *

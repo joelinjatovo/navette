@@ -74,12 +74,12 @@ class UserController extends Controller
 
         $token = $repository->generateToken($user);
 		
-		\Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
 		$customer = \Stripe\Customer::create([
 			'name' => $user->name,
 			'email' => $user->email,
 			'phone' => $user->phone,
 		]);
+        
         if($customer){
             $user->stripe_id = $customer->id;
             $user->save();
@@ -106,8 +106,11 @@ class UserController extends Controller
         }
         
         $user->update([
-            'name' => $data['name'],
             'payment_method_id' => $data['payment_method_id']??null,
+            'first_name' => $data['first_name']??null,
+            'last_name' => $data['last_name']??null,
+            'birthday' => $data['birthday']??null,
+            'name' => $data['name'],
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
         ]);

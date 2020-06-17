@@ -18,12 +18,12 @@ class CreateClubsTable extends Migration
                 $table->id();
                 $table->string('name', 200);
                 $table->text('description')->nullable();
+                $table->unsignedBigInteger('max_car_place')->nullable();
                 $table->uuid('point_id')->nullable();
                 $table->foreign('point_id')->references('id')->on('points');
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
-                $table->softDeletes();
             });
         }
     }

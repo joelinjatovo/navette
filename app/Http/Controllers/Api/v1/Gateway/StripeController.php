@@ -22,10 +22,6 @@ class StripeController extends Controller
     {
         $order = Order::findOrFail($request->input('id'));
 
-        // Set your secret key. Remember to switch to your live secret key in production!
-        // See your keys here: https://dashboard.stripe.com/account/apikeys
-        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
-
         $intent = \Stripe\PaymentIntent::create([
           'amount' => $order->total * 100,
           'currency' => $order->currency,
@@ -42,8 +38,6 @@ class StripeController extends Controller
            'order_id' => $order->getKey(),
            'token' => $intent->id,
         ]);
-		
-		info($intent->id);
 		
         $output = [
             'publishable_key' => env('STRIPE_KEY_PUBLIC'),
@@ -62,8 +56,6 @@ class StripeController extends Controller
      */
     public function setupIntent(Request $request)
     {
-        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
-        
         $user = $request->user();
         
         if(empty($user->stripe_id)){
@@ -97,8 +89,6 @@ class StripeController extends Controller
      */
     public function paymentMethods(Request $request)
     {
-        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
-        
         $user = $request->user();
         if(empty($user->stripe_id)){
             $customer = \Stripe\Customer::create([
@@ -150,9 +140,6 @@ class StripeController extends Controller
         }
 
         $details = null;
-
-		info($event->type);
-		info($event->data->object);
 		
         if ($event->type == 'payment_intent.succeeded') {
             $details = '💰 Payment received!';
@@ -184,6 +171,8 @@ class StripeController extends Controller
 				   && ($order->total * 100 == $intent->amount_received)
 				   && ($order->currency = strtoupper($intent->currency))
 				   && ($order->status == Order::STATUS_ON_HOLD)){
+                    $transaction->status = PaymentToken::STATUS_SUCCESS;
+                    $transaction->save();
 					 // Set as paid
 					$order->status = Order::STATUS_OK;
 					$order->paidPer(Order::PAYMENT_TYPE_STRIPE);

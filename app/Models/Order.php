@@ -16,8 +16,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     
-    use SoftDeletes;
-    
     public const PAYMENT_TYPE_CASH = 'cash';
     
     public const PAYMENT_TYPE_STRIPE = 'stripe';

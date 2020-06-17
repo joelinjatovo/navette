@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Club extends Model
 {
-    
-    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -49,6 +47,10 @@ class Club extends Model
      */
     public function getMaxCarPlace()
     {
+        if($this->max_car_place > 0){
+            return $this->max_car_place;
+        }
+        
         return $this->cars()->where('cars.status', '!=', Car::STATUS_UNAVAILABLE)->max('cars.place');
     }
     

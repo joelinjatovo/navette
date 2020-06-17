@@ -31,10 +31,6 @@ class StripeController extends Controller
         
         $order = $request->session()->get('cart');
         
-        // Set your secret key. Remember to switch to your live secret key in production!
-        // See your keys here: https://dashboard.stripe.com/account/apikeys
-        \Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
-
         $intent = \Stripe\PaymentIntent::create([
           'amount' => $order->total * 100 + 100,
           'currency' => $order->currency,

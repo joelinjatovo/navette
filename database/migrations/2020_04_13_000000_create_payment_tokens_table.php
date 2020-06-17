@@ -17,6 +17,7 @@ class CreatePaymentTokensTable extends Migration
             Schema::create('payment_tokens', function (Blueprint $table) {
                 $table->id();
                 $table->string('payment_type', 100)->nullable();
+                $table->string('status', 100)->default('ping')->nullable();
                 $table->float('amount', 20, 4)->nullable();
                 $table->string('currency', 3)->nullable();
                 $table->text('token')->nullable();

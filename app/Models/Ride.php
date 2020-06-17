@@ -21,8 +21,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Ride extends Model
 {
     
-    use SoftDeletes;
-    
     const STATUS_PING = 'ping';
     
     const STATUS_CANCELABLE = 'cancelable';
