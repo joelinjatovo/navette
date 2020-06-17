@@ -50,7 +50,6 @@ class UserController extends Controller
             'first_name' => $data['first_name']??null,
             'last_name' => $data['last_name']??null,
             'birthday' => $data['birthday']??null,
-            'name' => $data['name'],
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
             'password' => Hash::make($data['password']),
@@ -110,7 +109,6 @@ class UserController extends Controller
             'first_name' => $data['first_name']??null,
             'last_name' => $data['last_name']??null,
             'birthday' => $data['birthday']??null,
-            'name' => $data['name'],
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
         ]);
