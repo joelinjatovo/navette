@@ -17,6 +17,9 @@ class Ride extends JsonResource
         return [
 			'id' => $this->id,
 			'status' => $this->status,
+			'available_place' => $this->available_place,
+			'current_place' => $this->current_place,
+			'max_place' => $this->max_place,
 			'distance' => $this->distance,
 			'distance_value' => $this->distance_value,
 			'duration' => $this->duration,

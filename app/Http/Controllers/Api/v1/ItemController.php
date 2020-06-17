@@ -19,6 +19,7 @@ class ItemController extends Controller
      */
     public function index(Request $request){
 		$models = Item::join('orders', 'orders.id', '=', 'items.order_id')
+            ->select('items.*')
 			->where('orders.user_id', '=', $request->user()->getKey())
 			->with('point')
 			->with(['rides', 'rides.driver'])

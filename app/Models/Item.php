@@ -54,6 +54,15 @@ class Item extends Model
     ];
     
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'ride_at'
+    ];
+    
+    /**
      * Active item (Item is attached to the ride)
      */
     public function active()
@@ -107,31 +116,34 @@ class Item extends Model
     public function getSuggestions($max = 5)
     {
 		$rides = [];
+        if(!$this->ride_at || ($this->status != self::STATUS_PING) || !$this->order || !$this->order->club){
+            return $rides;
+        }
 		
-		/*
-		if( !$this->club || !is_array($this->items) || !isset($this->items[0]) ){
-			return [];
-		}
-		*/
-		
+        $to = $this->ride_at;
+        $from = $this->ride_at->subMinutes(60);
 		$items = Item::join('orders', 'orders.id', '=', 'items.order_id')
-			->where('orders.club_id', '=', $this->club->id)
+			->where('orders.club_id', '=', $this->order->club->id)
 			->where('orders.status', Order::STATUS_ACTIVE)
+			->where('items.id', '!=', $this->getKey())
+			->whereBetween('items.ride_at', [$from, $to])
 			->whereNotIn('items.status', [Item::STATUS_PING, Item::STATUS_CANCELED, Item::STATUS_COMPLETED])
-			->with('ride')
+			->with('rides')
 			->get();
-		
+        
 		$ids = [];
 		foreach($items as $item){
-			if(!$item->ride) continue;
-			if(in_array($item->ride->id, $ids)) continue;
-			$distance = $item->distance($this->items[0]);
-			if( $distance <= $max ) {
-				$rides[] = $item->ride;
-				$ids[] = $item->ride->id;
-			}
+            foreach($item->rides as $ride){
+                if(in_array($ride->id, $ids)) continue;
+                if(!$ride->hasAvailablePlace($item->order->place)) continue;
+                $distance = $this->distance($item);
+                if( $distance <= $max ) {
+                    $rides[] = $ride;
+                    $ids[] = $ride->id;
+                }
+            }
 		}
-		
+        
         return $rides;
     }
     

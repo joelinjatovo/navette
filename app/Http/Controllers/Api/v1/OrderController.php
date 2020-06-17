@@ -13,6 +13,7 @@ use App\Models\Item;
 use App\Models\PaymentToken;
 use App\Models\Phone;
 use App\Models\Point;
+use App\Models\Ride;
 use App\Models\Zone;
 use App\Services\GoogleApiService;
 use App\Repositories\OrderRepository;
@@ -119,6 +120,7 @@ class OrderController extends Controller
         $order->save();
         
         $distance = 0;
+        $items = [];
         $values = $request->input('items');
         foreach($values as $value){
             if(isset($value['point'])){
@@ -129,8 +131,14 @@ class OrderController extends Controller
                 $item->point()->associate($point);
                 $item->order()->associate($order);
                 $item->save();
+                $items[] = $item;
 
                 $distance += (int) $item->distance_value;
+                
+                if(isset($value['ride_id'])){
+                    $item->ride_id = $value['ride_id'];
+                    $items[] = $item;
+                }
             }
         }
         
@@ -149,10 +157,6 @@ class OrderController extends Controller
 		
 		switch($request->input('payment_type')){
 			case Order::PAYMENT_TYPE_STRIPE:
-				// Set your secret key. Remember to switch to your live secret key in production!
-				// See your keys here: https://dashboard.stripe.com/account/apikeys
-				\Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
-                
                 try {
                     $intent = \Stripe\PaymentIntent::create([
                         'amount' => $order->total * 100,
@@ -197,7 +201,19 @@ class OrderController extends Controller
 				$order->save();
 			break;
 		}
-
+        
+        foreach($items as $item){
+            if($item->ride_id){
+                $ride = Ride::find($item->ride_id);
+                if($ride && $ride->hasAvailablePlace($order->place)){
+                    $ride->attachItem($item, $order->place);
+                    $ride->addPlace($order->place);
+                    $item->active();
+                    $order->active();
+                }
+            }
+        }
+		
         return new OrderResource($order->load(['items', 'items.point']));
     }
     
