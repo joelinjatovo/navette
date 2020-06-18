@@ -34,7 +34,10 @@ class AccessToken extends JsonResource
                 'locale' => $this->user->locale,
                 'verified' => $this->user->hasVerifiedPhone(),
                 'image_url' => $this->user->image ? url($this->user->image->url) : null,
+                'rating' => $this->user->rating(),
+                'reviews' => $this->user->reviews(),
                 'roles' => Role::collection($this->user->roles),
+                'car' => new Car($this->user->car),
             ];
         }
         

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Club extends JsonResource
+class Car extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,12 @@ class Club extends JsonResource
     {
         return [
 			'id' => $this->id,
+			'status' => $this->status,
 			'name' => $this->name,
+			'type' => $this->type,
+			'place' => $this->place,
 			'description' => $this->description,
 			'created_at' => $this->created_at,
-			'max_car_place' => $this->getMaxCarPlace(),
-			'image_url' => $this->image ? url($this->image->url) : null,
-            'point' => $this->when($this->relationLoaded('point'), new Point($this->point)),
-            'cars' => $this->when($this->relationLoaded('cars'), Car::collection($this->cars)),
         ];
     }
 

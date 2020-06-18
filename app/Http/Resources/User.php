@@ -33,6 +33,7 @@ class User extends JsonResource
             'roles' => Role::collection($this->whenLoaded('roles')),
             'rating' => $this->rating(),
             'reviews' => $this->reviews(),
+            'car' => new Car($this->car),
         ];
     }
 
