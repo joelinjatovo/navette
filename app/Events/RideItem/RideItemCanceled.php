@@ -26,4 +26,3 @@ class RideItemCanceled
         $this->rideitem = $rideitem;
     }
 }
-}

@@ -26,4 +26,3 @@ class RideItemAttached
         $this->rideitem = $rideitem;
     }
 }
-}
