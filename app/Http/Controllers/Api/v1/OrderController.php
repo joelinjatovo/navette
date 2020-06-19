@@ -53,6 +53,8 @@ class OrderController extends Controller
      * @return Response
      */
     public function show(Request $request, Order $order){
+        $order->load(['club', 'club.point'])
+            ->load(['items', 'items.point', 'items.rides']);
         return new OrderResource($order);
     }
 
