@@ -218,6 +218,18 @@ class OrderController extends Controller
 		
         return new OrderResource($order->load(['items', 'items.point']));
     }
+
+    /**
+     * Update n order.
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function update(Request $request, Order $order)
+    {
+		
+        return new OrderResource($order->load(['items', 'items.point']));
+    }
     
     /**
      * Cancel order

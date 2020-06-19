@@ -49,6 +49,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('order/cancel', 'OrderController@cancel')->name('order.cancel');
         Route::middleware('verified')->group(function () {
             Route::post('order', 'OrderController@store')->name('order.create');
+            Route::post('order/{order}', 'OrderController@update')->name('order.update');
             Route::post('order/cancel', 'OrderController@cancel')->name('order.cancel');
             Route::namespace('Gateway')->name('gateway.')->group(function () {
                 Route::post('cash/pay', 'CashController@pay')->name('cash.pay');
