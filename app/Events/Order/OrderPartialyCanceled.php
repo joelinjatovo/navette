@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Item;
+namespace App\Events\Order;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,19 +10,19 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ItemDetached
+class OrderPartialyCanceled
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $item;
+    public $order;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(\App\Models\Item $item)
+    public function __construct(\App\Models\Order $order)
     {
-        $this->item = $item;
+        $this->order = $order;
     }
 }

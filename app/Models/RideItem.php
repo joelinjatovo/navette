@@ -19,6 +19,7 @@ class RideItem extends Pivot
     const TYPE_PICKUP = 'pickup';
     
     const TYPE_DROP = 'drop';
+	
     
     const STATUS_PING = 'ping';
     

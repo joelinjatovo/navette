@@ -8,8 +8,11 @@ use App\Events\Order\OrderCreated as OrderCreatedEvent;
 use App\Events\Order\OrderCompleted as OrderCompletedEvent;
 use App\Events\Order\OrderDeleted as OrderDeletedEvent;
 use App\Events\Order\OrderPaid as OrderPaidEvent;
+use App\Events\Order\OrderPartialyCanceled as OrderPartialyCanceledEvent;
+use App\Events\Order\OrderPartialyCompleted as OrderPartialyCompletedEvent;
 use App\Events\Order\OrderPlaceChanged as OrderPlaceChangedEvent;
 use App\Events\Order\OrderRefunded as OrderRefundedEvent;
+use App\Events\Order\OrderReceived as OrderReceivedEvent;
 
 use App\Notifications\OrderActived as OrderActivedNotification;
 use App\Notifications\OrderCanceled as OrderCanceledNotification;
@@ -17,8 +20,11 @@ use App\Notifications\OrderCreated as OrderCreatedNotification;
 use App\Notifications\OrderCompleted as OrderCompletedNotification;
 use App\Notifications\OrderDeleted as OrderDeletedNotification;
 use App\Notifications\OrderPaid as OrderPaidNotification;
+use App\Notifications\OrderPartialyCanceled as OrderPartialyCanceledNotification;
+use App\Notifications\OrderPartialyCompleted as OrderPartialyCompletedNotification;
 use App\Notifications\OrderPlaceChanged as OrderPlaceChangedNotification;
 use App\Notifications\OrderRefunded as OrderRefundedNotification;
+use App\Notifications\OrderReceived as OrderReceivedNotification;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -38,8 +44,11 @@ class OrderEventSubscriber
         $events->listen(OrderCompletedEvent::class, self::class .'@handle');
         $events->listen(OrderDeletedEvent::class, self::class .'@handle');
         $events->listen(OrderPaidEvent::class, self::class .'@handle');
+        $events->listen(OrderPartialyCanceledEvent::class, self::class .'@handle');
+        $events->listen(OrderPartialyCompletedEvent::class, self::class .'@handle');
         $events->listen(OrderPlaceChangedEvent::class, self::class .'@handle');
         $events->listen(OrderRefundedEvent::class, self::class .'@handle');
+        $events->listen(OrderReceivedEvent::class, self::class .'@handle');
     }
     
     public function handle($event) {
@@ -66,11 +75,20 @@ class OrderEventSubscriber
 			case $event instanceof OrderPaidEvent:
 				$user->notify(new OrderPaidNotification($order));
 			break;
+			case $event instanceof OrderPartialyCanceledEvent:
+				$user->notify(new OrderPartialyCanceledNotification($order));
+			break;
+			case $event instanceof OrderPartialyCompletedEvent:
+				$user->notify(new OrderPartialyCompletedNotification($order));
+			break;
 			case $event instanceof OrderPlaceChangedEvent:
 				$user->notify(new OrderPlaceChangedNotification($order));
 			break;
 			case $event instanceof OrderRefundedEvent:
 				$user->notify(new OrderRefundedNotification($order));
+			break;
+			case $event instanceof OrderReceivedEvent:
+				$user->notify(new OrderReceivedNotification($order));
 			break;
 		}
     }
