@@ -64,8 +64,8 @@ class RideProcessor implements ShouldQueue
 		}
 		
 		foreach($rides as $ride){
-			$ride->verifyDirection($google);
-			$ride->verifyDates();
+			//$ride->verifyDirection($google);
+			//$ride->verifyDates();
 		} 
     }
 	
@@ -82,21 +82,7 @@ class RideProcessor implements ShouldQueue
 		}
 		
 		$max_ride_delay = 60; // 60 minutes par course
-		
-		$notification_delay = $item->type == Item::TYPE_GO ?  ( 7 + 5 ) * 60 : ( 15 + 5 ) * 60;
-		$date = $item->ride_at
-			->subSeconds($item->duration_value)
-			->subSeconds($notification_delay);
-		if($date->greaterThan(now())){
-			$date = $item->ride_at
-				->subSeconds($item->duration_value);
-		}
-		if($date->greaterThan(now())){
-			$date = $item->ride_at;
-		}
-		if($date->greaterThan(now())){
-			$date = now();
-		}
+		$date = $this->getDate($item);
 		
 		// Try to add item to active ride
 		$excludedRides = [];
@@ -341,6 +327,26 @@ class RideProcessor implements ShouldQueue
 			$query->whereNotIn('rides.id', $excludedRides);
 		}
 		return $query->get();
+	}
+	
+    private function getDate(Item $item)
+    {
+		$notification_delay = $item->type == Item::TYPE_GO ?  ( 7 + 5 ) * 60 : ( 15 + 5 ) * 60;
+		$date = $item->ride_at
+			->subSeconds($item->duration_value)
+			->subSeconds($notification_delay);
+		if($date->greaterThan(now())){
+			$date = $item->ride_at
+				->subSeconds($item->duration_value);
+		}
+		if($date->greaterThan(now())){
+			$date = $item->ride_at;
+		}
+		if($date->greaterThan(now())){
+			$date = now();
+		}
+		
+		return $date;
 	}
 
     /**
