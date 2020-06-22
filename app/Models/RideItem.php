@@ -142,6 +142,24 @@ class RideItem extends Pivot
     {
         return $this->ride ? $this->ride->driver : null;
     }
+	
+    /**
+     * If pickup, charge > 0
+     * If drop, charge < 0
+     */
+    public function getCharge()
+    {
+        return (self::TYPE_PICKUP == $this->type ? $this->place : -$this->place);
+    }
+	
+    /**
+     * If pickup, charge > 0
+     * If drop, charge < 0
+     */
+    public function getMaxDuration()
+    {
+        return $item->duration_value + (self::TYPE_PICKUP == $this->type ? 5 * 60 : 0);
+    }
     
     /**
      * Check if ride is arrivable

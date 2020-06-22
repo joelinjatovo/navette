@@ -162,6 +162,15 @@ class Ride extends Model
     }
     
     /**
+     * 
+     */
+    public function delayAfter(Ride $prev, $date)
+    {
+        $this->setStartDate($date);
+        $this->updateTimeWidows();
+    }
+    
+    /**
      * Get the driver associated with the race.
      */
     public function driver()
@@ -403,60 +412,13 @@ class Ride extends Model
     }
 
     /**
-     * Verify start dates
-     *
-	 * @params $query
-     * @return mixed
-     */
-    public function verifyDate($query)
-    {
-		if($query->count() == 1){
-			$rideitem = $query->with('item')->first();
-			if($rideitem && $rideitem->item){
-				$this->start_at = $rideitem->item->ride_at;
-			}
-		}
-	}
-
-    /**
-     * Verify all dates
+     * Update time intervalle
      *
      * @return mixed
      */
-    public function verifyDates()
+    public function updateTimeWidows()
     {
-		$query = $this->rideitems()
-			->where(function($query){
-				$query->where('type', RideItem::TYPE_PICKUP);
-				$query->whereIn('status', [
-					RideItem::STATUS_OK, 
-					RideItem::STATUS_ACTIVE
-				]);
-			})
-			->orWhere(function($query){
-				$query->where('type', RideItem::TYPE_DROP);
-				$query->whereIn('status', [
-					RideItem::STATUS_OK,
-					RideItem::STATUS_ACTIVE,
-					RideItem::STATUS_STARTED
-				]);
-			})
-			;
-		
-		if(!$query->exists()){
-			return false;
-		}
-		
-		if($this->start_at==null){
-			$this->verifyDate($query);
-		}
-		
-		$rideitems = $query->get();
-        foreach($rideitems as $rideitem){
-			
-        }
-		
-        return true;
+        // @TODO
     }
 
     /**

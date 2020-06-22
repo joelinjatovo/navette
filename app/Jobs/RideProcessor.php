@@ -46,27 +46,41 @@ class RideProcessor implements ShouldQueue
 		// Handle job...
 		$items = Item::where('items.status', Item::STATUS_OK)
 			->whereNotNull('items.ride_at');
-			/*
-			->where(function($query) {
-				$query->whereNull('items.ride_at');
-				$query->orWhere('items.ride_at', '<=', now()->addMinutes(30));
-			})
-			*/
 			->distinct('items.order_id')
+			->orderBy('items.ride_at', 'asc') // First In First Served
 			->get();
 
 		$rides = [];
 		foreach($items as $item){
-			$ride = $this->performTask($item);
-			if($ride && !isset($rides[$ride->getKey()])){
-				$rides[$ride->getKey()] = $ride;
-			}
+            if(!($order = $item->order) || !($club = $order->club)){
+                continue;
+            }
+            
+			$rides = $this->getOptimizedRides($club, $item);
+            $ride = $this->getSolution($rides);
+            if($ride){
+                $this->attachItem($ride, $item, $order->place);
+                continue;
+            }
+            
+            $car = $this->getCar($club, $item);
+            if($car){
+                $ride = $this->createRide($club, $car, $item);
+            }
 		}
-		
-		foreach($rides as $ride){
-			//$ride->verifyDirection($google);
-			//$ride->verifyDates();
-		} 
+    }
+
+    /**
+     * The job failed to process.
+     *
+     * @param  Exception  $exception
+     * @return void
+     */
+    public function failed($exception)
+    {
+        // Send user notification of failure, etc...
+		info('Send user notification of failure...' . $exception->getMessage());
+		info($exception);
     }
 	
     /**
@@ -74,183 +88,265 @@ class RideProcessor implements ShouldQueue
      *
      * @return boolean
      */
-    protected function performTask(Item $item)
+    protected function getSolution($rides = [])
     {
-		
-		if(!($order = $item->order) || !($club = $order->club)){
-			return null;
-		}
-		
-		$max_ride_delay = 60; // 60 minutes par course
-		$date = $this->getDate($item);
-		
-		// Try to add item to active ride
-		$excludedRides = [];
-		$rides = $this->getPerfectActivedRide($club, $item->ride_at, $order->place);
-		foreach($rides as $ride){
-			if(($ride->started_at->greaterThan($date))
-			   && ($date->greaterThan($item->complete_at))){
-				if($item->canJoinRide($ride)){
-					break;
-				}else{
-					$excludedRides[] = $ride->getKey();
-					$ride = null;
-				}
-			}
-			
-			if(($ride->duration_value <= (60 * $max_ride_delay))
-			   && ($ride->started_at->greaterThan($date))
-			   && ($date->greaterThan($item->started_at->addMinutes($max_ride_delay)))){
-				if($item->canJoinRide($ride)){
-					break;
-				}else{
-					$excludedRides[] = $ride->getKey();
-					$ride = null;
-				}
-			}
-		}
-		
-		if(!$ride){
-			$rides = $this->getBestActivedRide($club, $item->ride_at, $order->place);
-			foreach($rides as $ride){
-				if(($ride->started_at->greaterThan($date))
-				   && ($date->greaterThan($item->complete_at))){
-					if($item->canJoinRide($ride)){
-						break;
-					}else{
-						$excludedRides[] = $ride->getKey();
-						$ride = null;
-					}
-				}
-
-				if(($ride->duration_value <= (60 * $max_ride_delay))
-				   && ($ride->started_at->greaterThan($date))
-				   && ($date->greaterThan($item->started_at->addMinutes($max_ride_delay)))){
-					if($item->canJoinRide($ride)){
-						break;
-					}else{
-						$excludedRides[] = $ride->getKey();
-						$ride = null;
-					}
-				}
-			}
-		}
-		
-		// Find locked car who has rides.available_place = order_place
-		if(!$ride){
-			$rides = $this->getPerfectPingedRide($club, $item->ride_at, $order->place);
-			foreach($rides as $ride){
-				if($ride->start_at->greaterThan($date)
-				  && $date->greaterThan($ride->complete_at)){
-					if($item->canJoinRide($ride)){
-						break;
-					}else{
-						$excludedRides[] = $ride->getKey();
-						$ride = null;
-					}
-				}
-				
-				if(($ride->duration_value <= (60 * $max_ride_delay))
-				   && ($ride->started_at->greaterThan($date))
-				   && ($date->greaterThan($item->start_at->addMinutes($max_ride_delay)))){
-					if($item->canJoinRide($ride)){
-						break;
-					}else{
-						$excludedRides[] = $ride->getKey();
-						$ride = null;
-					}
-				}
-			}
-		}
-		
-		// Find locked car who has rides.available_place >= order_place
-		if(!$ride){
-			$rides = $this->getBestPingedRide($club, $item->ride_at, $order->place);
-			foreach($rides as $ride){
-				if($ride->start_at->greaterThan($date)
-				  && $date->greaterThan($ride->complete_at)){
-					if($item->canJoinRide($ride)){
-						break;
-					}else{
-						$excludedRides[] = $ride->getKey();
-						$ride = null;
-					}
-				}
-				
-				if(($ride->duration_value <= (60 * $max_ride_delay))
-				   && ($ride->started_at->greaterThan($date))
-				   && ($date->greaterThan($item->start_at->addMinutes($max_ride_delay)))){
-					if($item->canJoinRide($ride)){
-						break;
-					}else{
-						$excludedRides[] = $ride->getKey();
-						$ride = null;
-					}
-				}
-			}
-		}
-		
-		// Find the available car who has place count
-		if(!$ride){
-			$car = $this->findPerfectCar($club, $item->ride_at, $order->place);
-			if($car && $car->driver){
-				$ride = $this->createRide($item, $car, $date);
-			}
-		}
-		
-		// Find the good car who has car_place >= ordered_place
-		if(!$ride){
-			$car = $this->findBestCar($club, $item->ride_at, $order->place);
-			if($car && $car->driver){
-				$ride = $this->createRide($item, $car, $date);
-			}
-		}
-		
-		// Create basic car
-		if(!$ride){
-			$car = $this->findCar($club, $item->ride_at, $order->place);
-			if($car && $car->driver){
-				$ride = $this->createRide($item, $car, $date);
-			}
-		}
-		
-		// Attach item to ride
-		if($ride){
-			$ride->attachItem($item, $order->place);
-			$ride->addPlace($order->place);
-			$item->active();
-			$order->active();
-		}else{
-			info("No ride for " . $item->getKey());
-		}
-		
-		return $ride;
+        $ride = null;
+        foreach($rides as $ride){
+            break;
+        }
+        return $ride;
     }
 	
-	private function createRide(Item $item, Car $car, $date){
+    /**
+     * Process this item
+     *
+     * @return array
+     */
+    protected function getOptimizedRides(Club $club, Item $item, $excludedRides = [])
+    {
+        $solutions = [];
+		
+        $max_car_place = $club->getMaxCarPlace();
+		$max_ride_duration = 60; // 60 minutes par course
+		$date = $this->getStartDate($item);
+		
+		$rides = $this->getActivedRide($club, $item->ride_at, $order->place);
+		foreach($rides as $ride){
+            $items = $ride->rideitems;
+            if(!$this->hasNotServed($items)){
+                continue;
+            }
+            $items[] = $item;
+            $items = $this->getDirection($items);
+            if(!$this->isChargeValid($items, $max_car_place)){
+                continue;
+            }
+            if(!$this->isDurationValid($items, $max_ride_duration)){
+                continue;
+            }
+            $solutions[$ride->getKey()] = $ride;
+		}
+        
+        $rides = $this->getPingedRide($club, $item->ride_at, $order->place);
+        foreach($rides as $ride){
+            $items = $ride->rideitems;
+            $items[] = $item;
+            $items = $this->getDirection($items);
+            if(!$this->isChargeValid($items, $max_car_place)){
+                continue;
+            }
+            if(!$this->isDurationValid($items, $max_ride_duration)){
+                continue;
+            }
+            $solutions[$ride->getKey()] = $ride;
+        }
+        
+        return $solutions;
+    }
+	
+    /**
+     *
+     * @return Car $car
+     */
+    protected function getCar(Club $club, Item $item, $excludedRides = [])
+    {
+        $car = $this->findPerfectCar($club, $item->ride_at, $order->place);
+        if($car && $car->driver){
+            return $car;
+        }
+		
+        $car = $this->findBestCar($club, $item->ride_at, $order->place);
+        if($car && $car->driver){
+            return $car;
+        }
+        
+        $car = $this->findCar($club, $item->ride_at, $order->place);
+        if($car && $car->driver){
+             return $car;
+        }
+		
+		return null;
+    }
+	
+    /**
+    * 
+    */
+	private function attachItem(Ride $ride, Item $item, $place)
+    {
+        $ride->attachItem($item, $place);
+        $ride->addPlace($place);
+        $item->active();
+        $order->active();
+    }
+	
+    /**
+    * 
+    */
+	private function isChargeValid(RideItem $items, $max)
+    {
+        $currentCharge = 0;
+        foreach($items as $order => $item){
+            if(RideItem::TYPE_DROP == $item->type){
+                $currentCharge += $item->place;
+            }
+        }
+        
+        foreach($items as $item){
+            $currentCharge += $item->getCharge();
+            if($currentCharge>$max) return false;
+        }
+        return true;
+    }
+	
+    /**
+    * 
+    */
+	private function isDurationValid(RideItem $items, $max){
+        $currentItems = [];
+        foreach($items as $order => $item){
+            if(RideItem::TYPE_DROP == $item->type){
+                $currentItems[$order] = $item;
+            }
+        }
+        
+        $preds = [];
+        $from = 0;
+        foreach($items as $order => $item){
+            $duration = $this->getDuration($preds, $from) + $item->getMaxDuration();
+            if($duration>$max) return false;
+            
+            $preds[$order] = $item;
+            if(RideItem::TYPE_DROP == $item->type){
+                unset($currentItems[$order]);
+                if(!$this->containsDropOff($currentItems)){
+                    $from = $this->getFirstPickupOrder($preds);
+                }
+            }else{
+                $currentItems[$order] = $item;
+            }
+        }
+        
+        return true;
+    }
+	
+    /**
+    * 
+    */
+	private function getDuration(RideItem $items, $from = 0){
+        $duration = 0;
+        if(($from == 0) && $this->containsDropOff($items)){
+            $duration = 5 * 60;
+        }
+        
+        for($i = $from; $i < count($items); $i++){
+            $duration += $items[$i]->getMaxDuration();
+        }
+        return $duration;
+    }
+	
+    /**
+    * 
+    */
+	private function getFirstPickupOrder(RideItem $items){
+        foreach($items as $order => $item){
+            if(RideItem::TYPE_PICKUP == $item->type){
+                return $order;
+            }
+        }
+        return 0;
+    }
+	
+    /**
+    * 
+    */
+	private function containsDropOff(RideItem $items){
+        foreach($items as $key => $item){
+            if(RideItem::TYPE_DROP == $item->type){
+                return true;
+            }
+        }
+        return false;
+    }
+	
+    /**
+    * 
+    */
+	private function hasNotServed(RideItem $items){
+        foreach($items as $key => $item) {
+            if(in_array($item->status, [RideItem::TYPE_PING, RideItem::TYPE_ACTIVE, RideItem::TYPE_NEXT])) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+	private function createRide(Club $club, Car $car, Item $item){
 		$ride = new Ride();
 		$ride->status = Ride::STATUS_PING;
 		$ride->available_place = $car->place;
 		$ride->max_place = $car->place;
 		$ride->club()->associate($car->club);
 		$ride->driver()->associate($car->driver);
+		
+        $start_date = $this->getStartDate($item);
+        $end_date = $this->getEndDate($item);
+        $active = $club->rides()->where('status', Ride::STATUS_ACTIVE)->first();
+        $ping = $club->rides()->where('status', Ride::STATUS_PING)->orderby('start_at', 'asc')->first();
+        if($active && $start_date->greaterThan($active->complete_at))
+        {
+            $start_date = $active->complete_at->addMinutes(5);
+            $end_date = $start_date->addSeconds((2 * $item->duration_value) + (5 * 60));
+        }
+
+        $ride->setStartDate($start_date);
+        $ride->setEndDate($end_date);
+
+        if($ping && $ping->start_at->greaterThan($end_date))
+        {
+            $date = $item->complete_at->addMinutes(5);
+            $ping->delayAfter($ride, $date);
+        }
+        
 		if($ride->save()){
 			$car->lock();
 		}else{
 			$ride = null;
 		}
 		
-		if($ride){
-			$has_active = Ride::where('status', Ride::STATUS_ACTIVE)->exists();
-			$has_ping = Ride::where('status', Ride::STATUS_PING)->exists();
-			if(!$has_active && !$has_ping){
-				$ride->setStartDate($date);
-			}elseif(!$has_active && $has_ping){
-				//$ride->setStartDate($date);
-			}
-		}
-		
 		return $ride;
+	}
+	
+	private function getActivedRide(Club $club, $date, $excludedRides = []){
+		$query = $club->rides()
+			->where('rides.started_at', '<=', $date)
+			->where('rides.complete_at', '>=', $date)
+			->where('TIMEDIFF(rides.started_at, rides.complete_at)', '<=', 3600)
+			->where('rides.status', Ride::STATUS_ACTIVE);
+		if(is_array($excludedRides) && !empty($excludedRides)){
+			$query->whereNotIn('rides.id', $excludedRides);
+		}
+		return $query->get();
+	}
+	
+	private function getPingedRide(Club $club, $date, $place, $excludedRides = []){
+		$query = $club->rides()
+			->where(function($query) use($date){
+                $query->orWhere(function($subquery) use($date){
+                    $subquery->where('rides.start_at', '<=', $date);
+                    $subquery->where('rides.complete_at', '>=', $date);
+                });
+                $query->orWhere(function($subquery) use($date){
+                    $subquery->where('rides.start_at', '<=', $date);
+                    $subquery->where('ADDTIME(rides.start_at, 3600)', '>=', $date);
+                });
+            })
+			->where('TIMEDIFF(rides.start_at, rides.complete_at)', '<=', 3600)
+			->where('rides.status', Ride::STATUS_PING)
+			->orderBy('rides.available_place', 'asc');
+		if(is_array($excludedRides) && !empty($excludedRides)){
+			$query->whereNotIn('rides.id', $excludedRides);
+		}
+		return $query->get();
 	}
 	
 	private function findPerfectCar(Club $club, $date, $place, $excludedCars = []){
@@ -288,48 +384,15 @@ class RideProcessor implements ShouldQueue
 		return $query->first();
 	}
 	
-	private function getPerfectPingedRide(Club $club, $date, $place, $excludedRides = []){
-		$query = $club->rides()
-			->where('rides.available_place', '=', $place)
-			->where('rides.status', Ride::STATUS_PING);
-		if(is_array($excludedRides) && !empty($excludedRides)){
-			$query->whereNotIn('rides.id', $excludedRides);
-		}
-		return $query->get();
+    private function getEndDate(Item $item)
+    {
+		$waiting_delay = $item->type == Item::TYPE_GO ?  5 * 60 : 0;
+		return $item->ride_at
+			->addSeconds($item->duration_value)
+			->addSeconds($waiting_delay);
 	}
 	
-	private function getBestPingedRide(Club $club, $date, $place, $excludedRides = []){
-		$query = $club->rides()
-			->where('rides.available_place', '>=', $place)
-			->where('rides.status', Ride::STATUS_PING)
-			->orderBy('rides.available_place', 'asc');
-		if(is_array($excludedRides) && !empty($excludedRides)){
-			$query->whereNotIn('rides.id', $excludedRides);
-		}
-		return $query->get();
-	}
-	
-	private function getPerfectActivedRide(Club $club, $date, $place, $excludedRides = []){
-		$query = $club->rides()
-			->where('rides.available_place', '=', $place)
-			->where('rides.status', Ride::STATUS_ACTIVE);
-		if(is_array($excludedRides) && !empty($excludedRides)){
-			$query->whereNotIn('rides.id', $excludedRides);
-		}
-		return $query->get();
-	}
-	
-	private function getBestActivedRide(Club $club, $date, $place, $excludedRides = []){
-		$query = $club->rides()
-			->where('rides.available_place', '>=', $place)
-			->where('rides.status', Ride::STATUS_ACTIVE);
-		if(is_array($excludedRides) && !empty($excludedRides)){
-			$query->whereNotIn('rides.id', $excludedRides);
-		}
-		return $query->get();
-	}
-	
-    private function getDate(Item $item)
+    private function getStartDate(Item $item)
     {
 		$notification_delay = $item->type == Item::TYPE_GO ?  ( 7 + 5 ) * 60 : ( 15 + 5 ) * 60;
 		$date = $item->ride_at
@@ -348,19 +411,6 @@ class RideProcessor implements ShouldQueue
 		
 		return $date;
 	}
-
-    /**
-     * The job failed to process.
-     *
-     * @param  Exception  $exception
-     * @return void
-     */
-    public function failed($exception)
-    {
-        // Send user notification of failure, etc...
-		info('Send user notification of failure...' . $exception->getMessage());
-		info($exception);
-    }
 	
 	
 }
