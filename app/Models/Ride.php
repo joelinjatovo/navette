@@ -39,7 +39,7 @@ class Ride extends Model
      * @var array
      */
     protected $fillable = [
-        'status', 'user_id', 'driver_id', 'car_id',
+        'status', 'user_id', 'driver_id', 'car_id'
     ];
 
     /**
@@ -48,7 +48,7 @@ class Ride extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at', 'start_at', 'started_at', 'canceled_at', 'complete_at',, 'completed_at', 'deleted_at',
+        'created_at', 'updated_at', 'start_at', 'started_at', 'canceled_at', 'complete_at', 'completed_at', 'deleted_at'
     ];
 
     /**

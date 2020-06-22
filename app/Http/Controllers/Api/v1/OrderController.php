@@ -201,6 +201,9 @@ class OrderController extends Controller
                 $order->payment_status = Order::PAYMENT_STATUS_PING;
 				$order->payment_type = Order::PAYMENT_TYPE_CASH;
 				$order->save();
+                foreach($items as $item){
+                    $item->ok();
+                }
 			break;
 		}
         

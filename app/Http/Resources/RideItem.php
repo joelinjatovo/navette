@@ -32,6 +32,7 @@ class RideItem extends JsonResource
 			'arrived_at' => $this->arrived_at,
 			'start_at' => $this->start_at,
 			'started_at' => $this->started_at,
+			'complete_at' => $this->complete_at,
 			'completed_at' => $this->completed_at,
 			'canceled_at' => $this->canceled_at,
             'item' => $this->when($this->relationLoaded('item'), new Item($this->item)),

@@ -45,10 +45,12 @@ class RideProcessor implements ShouldQueue
 
 		// Handle job...
 		$items = Item::where('items.status', Item::STATUS_OK)
-			->whereNotNull('items.ride_at');
+			->whereNotNull('items.ride_at')
 			->distinct('items.order_id')
 			->orderBy('items.ride_at', 'asc') // First In First Served
 			->get();
+        
+        info("here");
 
 		$rides = [];
 		foreach($items as $item){
@@ -56,16 +58,21 @@ class RideProcessor implements ShouldQueue
                 continue;
             }
             
-			$rides = $this->getOptimizedRides($club, $item);
+			$rides = $this->getOptimizedRides($club, $item, $order->place);
             $ride = $this->getSolution($rides);
             if($ride){
                 $this->attachItem($ride, $item, $order->place);
                 continue;
             }
             
-            $car = $this->getCar($club, $item);
+            $car = $this->getCar($club, $item, $order->place);
             if($car){
                 $ride = $this->createRide($club, $car, $item);
+            }
+            
+            if($ride){
+                $this->attachItem($ride, $item, $order->place);
+                continue;
             }
 		}
     }
@@ -102,7 +109,7 @@ class RideProcessor implements ShouldQueue
      *
      * @return array
      */
-    protected function getOptimizedRides(Club $club, Item $item, $excludedRides = [])
+    protected function getOptimizedRides(Club $club, Item $item, $place, $excludedRides = [])
     {
         $solutions = [];
 		
@@ -110,7 +117,7 @@ class RideProcessor implements ShouldQueue
 		$max_ride_duration = 60; // 60 minutes par course
 		$date = $this->getStartDate($item);
 		
-		$rides = $this->getActivedRide($club, $item->ride_at, $order->place);
+		$rides = $this->getActivedRide($club, $item->ride_at, $place);
 		foreach($rides as $ride){
             $items = $ride->rideitems;
             if(!$this->hasNotServed($items)){
@@ -127,7 +134,7 @@ class RideProcessor implements ShouldQueue
             $solutions[$ride->getKey()] = $ride;
 		}
         
-        $rides = $this->getPingedRide($club, $item->ride_at, $order->place);
+        $rides = $this->getPingedRide($club, $item->ride_at, $place);
         foreach($rides as $ride){
             $items = $ride->rideitems;
             $items[] = $item;
@@ -148,19 +155,19 @@ class RideProcessor implements ShouldQueue
      *
      * @return Car $car
      */
-    protected function getCar(Club $club, Item $item, $excludedRides = [])
+    protected function getCar(Club $club, Item $item, $place, $excludedRides = [])
     {
-        $car = $this->findPerfectCar($club, $item->ride_at, $order->place);
+        $car = $this->findPerfectCar($club, $item->ride_at, $place);
         if($car && $car->driver){
             return $car;
         }
 		
-        $car = $this->findBestCar($club, $item->ride_at, $order->place);
+        $car = $this->findBestCar($club, $item->ride_at, $place);
         if($car && $car->driver){
             return $car;
         }
         
-        $car = $this->findCar($club, $item->ride_at, $order->place);
+        $car = $this->findCar($club, $item->ride_at, $place);
         if($car && $car->driver){
              return $car;
         }
@@ -290,7 +297,7 @@ class RideProcessor implements ShouldQueue
 		
         $start_date = $this->getStartDate($item);
         $end_date = $this->getEndDate($item);
-        $active = $club->rides()->where('status', Ride::STATUS_ACTIVE)->first();
+        $active = $club->rides()->where('status', Ride::STATUS_STARTED)->first();
         $ping = $club->rides()->where('status', Ride::STATUS_PING)->orderby('start_at', 'asc')->first();
         if($active && $start_date->greaterThan($active->complete_at))
         {
@@ -320,8 +327,8 @@ class RideProcessor implements ShouldQueue
 		$query = $club->rides()
 			->where('rides.started_at', '<=', $date)
 			->where('rides.complete_at', '>=', $date)
-			->where('TIMEDIFF(rides.started_at, rides.complete_at)', '<=', 3600)
-			->where('rides.status', Ride::STATUS_ACTIVE);
+			//->where('TIMEDIFF(rides.started_at, rides.complete_at)', '<=', 3600)
+			->where('rides.status', Ride::STATUS_STARTED);
 		if(is_array($excludedRides) && !empty($excludedRides)){
 			$query->whereNotIn('rides.id', $excludedRides);
 		}

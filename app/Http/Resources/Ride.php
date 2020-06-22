@@ -27,6 +27,7 @@ class Ride extends JsonResource
 			'direction' => $this->direction,
 			'start_at' => $this->start_at,
 			'started_at' => $this->started_at,
+			'complete_at' => $this->complete_at,
 			'completed_at' => $this->completed_at,
 			'canceled_at' => $this->canceled_at,
 			'created_at' => $this->created_at,
