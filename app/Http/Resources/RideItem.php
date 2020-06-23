@@ -28,7 +28,6 @@ class RideItem extends JsonResource
 			'distance' => $this->distance,
 			'distance_value' => $this->distance_value,
 			'direction' => $this->direction,
-			'actived_at' => $this->actived_at,
 			'arrived_at' => $this->arrived_at,
 			'start_at' => $this->start_at,
 			'started_at' => $this->started_at,
