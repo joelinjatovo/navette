@@ -59,7 +59,7 @@ class RideController extends Controller
             ->with(['items', 'items.point'])
             ->with(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point'])
             ->orderBy('rides.start_at', 'asc')
-            ->first();
+            ->firstOrFail();
         return new RideResource($model);
     }
     
