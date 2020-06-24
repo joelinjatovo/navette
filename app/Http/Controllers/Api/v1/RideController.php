@@ -45,6 +45,25 @@ class RideController extends Controller
     }
     
     /**
+     * Get current ride.
+     *
+     * @param  Request  $request
+     *
+     * @return Response
+     */
+    public function current(Request $request)
+    {
+		$model = $request->user()->ridesDrived()
+            ->where('rides.status', Ride::STATUS_STARTED)
+            ->orWhere('rides.status', Ride::STATUS_PING)
+            ->with(['items', 'items.point'])
+            ->with(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point'])
+            ->orderBy('rides.start_at', 'asc')
+            ->first();
+        return new RideResource($model);
+    }
+    
+    /**
      * Start a new ride.
      *
      * @param  Request  $request

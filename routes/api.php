@@ -60,11 +60,14 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
             });
         });
         
+        Route::post('car', 'CarController@toggle')->name('car.toggle');
+        
         Route::get('notifications', 'NotificationController@index')->name('notifications');
         Route::post('notifications', 'NotificationController@markAsRead')->name('notifications.markAsRead');
         Route::get('notifications/unread', 'NotificationController@unread')->name('notifications.unread');
         
         Route::get('rides', 'RideController@index')->name('rides');
+        Route::get('ride', 'RideController@current')->name('ride.current');
         Route::get('ride/{ride}', 'RideController@show')->name('ride.show');
         Route::get('ride/{ride}/items', 'RideController@items')->name('ride.items');
         Route::get('ride/{ride}/points', 'RideController@points')->name('ride.points');
