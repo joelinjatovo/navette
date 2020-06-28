@@ -194,7 +194,7 @@ class Ride extends Model
         
         // Set first active point as next
         $rideitem = $this->rideitems()
-			->where('status', [RideItem::STATUS_OK, RideItem::STATUS_ACTIVE])
+			->where('status', [RideItem::STATUS_PING, RideItem::STATUS_ACTIVE])
 			->orderBy('order', 'asc')
 			->first();
         if($rideitem)
@@ -438,14 +438,14 @@ class Ride extends Model
 			->where(function($query){
 				$query->where('type', RideItem::TYPE_PICKUP);
 				$query->whereIn('status', [
-					RideItem::STATUS_OK, 
+					RideItem::STATUS_PING, 
 					RideItem::STATUS_ACTIVE
 				]);
 			})
 			->orWhere(function($query){
 				$query->where('type', RideItem::TYPE_DROP);
 				$query->whereIn('status', [
-					RideItem::STATUS_OK,
+					RideItem::STATUS_PING,
 					RideItem::STATUS_ACTIVE,
 					RideItem::STATUS_STARTED
 				]);

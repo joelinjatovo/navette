@@ -344,10 +344,10 @@ class RideProcessor implements ShouldQueue
                 });
                 $query->orWhere(function($subquery) use($date){
                     $subquery->where('rides.start_at', '<=', $date);
-                    $subquery->where('ADDTIME(rides.start_at, 3600)', '>=', $date);
+                    //$subquery->where('ADDTIME(rides.start_at, 3600)', '>=', $date);
                 });
             })
-			->where('TIMEDIFF(rides.start_at, rides.complete_at)', '<=', 3600)
+			//->where('TIMEDIFF(rides.start_at, rides.complete_at)', '<=', 3600)
 			->where('rides.status', Ride::STATUS_PING)
 			->orderBy('rides.available_place', 'asc');
 		if(is_array($excludedRides) && !empty($excludedRides)){
