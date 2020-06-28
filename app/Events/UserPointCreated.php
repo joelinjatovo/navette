@@ -42,7 +42,10 @@ class UserPointCreated implements ShouldBroadcastNow
             "my-channel"
         ];
         
-        $ride = $this->user->ridesDrived()->where('rides.status', 'active')->first();
+        $ride = $this->user->ridesDrived()
+            ->orWhere('rides.status', \App\Models\Ride::STATUS_STARTED)
+            ->orWhere('rides.status', \App\Models\Ride::STATUS_PING)
+			->first();
         if($ride){
             $channels[] = new PrivateChannel('App.Ride.'.$ride->getKey());
         }
