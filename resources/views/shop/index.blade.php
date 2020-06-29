@@ -822,5 +822,5 @@ jQuery(document).ready(function($){
       
       }
     </script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=places&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ config('google.apikey') }}&libraries=places&callback=initMap" async defer></script>
 @endsection

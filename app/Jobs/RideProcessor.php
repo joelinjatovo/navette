@@ -183,7 +183,10 @@ class RideProcessor implements ShouldQueue
         $ride->attachItem($item, $place);
         $ride->addPlace($place);
         $item->active();
-        $order->active();
+        $order = $item->order;
+        if($order){
+            $order->active();
+        }
     }
 	
     /**

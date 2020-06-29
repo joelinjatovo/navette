@@ -39,7 +39,7 @@ class GoogleApiService
         \Log::info('directions ' . $waypoints);
         
         $data = [
-            'key' => env('GOOGLE_API_KEY'),
+            'key' => config('google.apikey'),
             'origin' => $origins,
             'destination' => $destinations,
             'mode' => $mode,
@@ -73,7 +73,7 @@ class GoogleApiService
             //'traffic_model' => 'best_guess', // best_guess | pessimistic | optimistic 
             'origins' => $pointA->lat.','.$pointA->long, //$a['results'][0]['formatted_address'],
             'destinations' => $pointB->lat.','.$pointB->long, //$b['results'][0]['formatted_address'],
-            'key' => env('GOOGLE_API_KEY'),
+            'key' => config('google.apikey'),
         ];
         $response = Http::get($url . '?' . http_build_query($data));
         
@@ -92,7 +92,7 @@ class GoogleApiService
         $url = "https://maps.googleapis.com/maps/api/geocode/json";
         $data = [
             'latlng' => $point->lat.','.$point->long,
-            'key' => env('GOOGLE_API_KEY'),
+            'key' => config('google.apikey'),
         ];
         $response = Http::get($url . '?' . http_build_query($data));
         

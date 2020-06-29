@@ -37,11 +37,8 @@ class UserPointCreated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        $channels = [
-            new PrivateChannel('App.User.'.$this->user->getKey()),
-            "my-channel"
-        ];
-        
+        $channels = [];
+        $channels[] = new PrivateChannel('App.User.'.$this->user->getKey());
         $ride = $this->user->ridesDrived()
             ->orWhere('rides.status', \App\Models\Ride::STATUS_STARTED)
             ->orWhere('rides.status', \App\Models\Ride::STATUS_PING)
@@ -49,7 +46,6 @@ class UserPointCreated implements ShouldBroadcastNow
         if($ride){
             $channels[] = new PrivateChannel('App.Ride.'.$ride->getKey());
         }
-        
         return $channels;
     }
     
@@ -74,6 +70,7 @@ class UserPointCreated implements ShouldBroadcastNow
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
+                'email' => $this->user->email,
                 'phone' => $this->user->phone,
             ],
             'point' => [
