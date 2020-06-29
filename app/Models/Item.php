@@ -7,6 +7,9 @@ use App\Events\Item\ItemCanceled;
 use App\Events\Item\ItemCompleted;
 use App\Events\Item\ItemDeleted;
 use App\Events\Item\ItemDetached;
+use App\Events\Item\ItemPartialyCanceled;
+use App\Events\Item\ItemPartialyCompleted;
+use App\Events\Item\ItemReceived;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,14 +19,22 @@ class Item extends Model
     public const TYPE_GO = 'go';
     
     public const TYPE_BACK = 'back';
+	
     
     public const STATUS_ACTIVE = 'active';
   
     public const STATUS_CANCELED = 'canceled';
     
     public const STATUS_COMPLETED = 'completed';
+	
+    public const STATUS_OK = 'ok';
+    
+    public const STATUS_PARTIALY_CANCELED = 'partialy-canceled';
+	
+    public const STATUS_PARTIALY_COMPLETED = 'partialy-completed';
     
     public const STATUS_PING = 'ping';
+	
     
     /**
      * The attributes that are mass assignable.
@@ -51,6 +62,9 @@ class Item extends Model
         'completed' => ItemCompleted::class,
         'deleted' => ItemDeleted::class,
         'detached' => ItemDetached::class,
+        'partialy-canceled' => ItemPartialyCanceled::class,
+        'partialy-completed' => ItemPartialyCompleted::class,
+        'received' => ItemReceived::class,
     ];
     
     /**
@@ -180,11 +194,44 @@ class Item extends Model
     }
     
     /**
+     * Set item as ok
+     */
+    public function ok()
+    {
+		$this->status = self::STATUS_OK;
+		$this->save();
+		
+        $this->fireModelEvent('received');
+    }
+    
+    /**
      * Get the order that owns the item.
      */
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');
+    }
+    
+    /**
+     * Set order as partialy canceled
+     */
+    public function partialyCanceled()
+    {
+		$this->status = self::STATUS_PARTIALY_CANCELED;
+		$this->save();
+		
+        $this->fireModelEvent('partialy-canceled');
+    }
+    
+    /**
+     * Set order as partialy completed
+     */
+    public function partialyCompleted()
+    {
+		$this->status = self::STATUS_PARTIALY_COMPLETED;
+		$this->save();
+		
+        $this->fireModelEvent('partialy-completed');
     }
     
     /**

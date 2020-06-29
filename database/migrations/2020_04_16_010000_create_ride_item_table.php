@@ -29,6 +29,7 @@ class CreateRideItemTable extends Migration
                 $table->dateTime('start_at')->nullable(); // date prevu
                 $table->dateTime('started_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
+                $table->dateTime('complete_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
                 $table->unsignedBigInteger('ride_id')->nullable();
                 $table->foreign('ride_id')->references('id')->on('rides')->onDelete('cascade');

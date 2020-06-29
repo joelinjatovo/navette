@@ -39,7 +39,7 @@ class Ride extends Model
      * @var array
      */
     protected $fillable = [
-        'status', 'user_id', 'driver_id', 'car_id',
+        'status', 'user_id', 'driver_id', 'car_id'
     ];
 
     /**
@@ -48,7 +48,7 @@ class Ride extends Model
      * @var array
      */
     protected $dates = [
-        'created_at', 'updated_at', 'start_at', 'started_at', 'canceled_at', 'completed_at', 'deleted_at',
+        'created_at', 'updated_at', 'start_at', 'started_at', 'canceled_at', 'complete_at', 'completed_at', 'deleted_at'
     ];
 
     /**
@@ -104,6 +104,7 @@ class Ride extends Model
     {
 		$this->current_place += $place;
 		$this->available_place -= $place;
+		$this->save();
     }
     
     /**
@@ -161,6 +162,15 @@ class Ride extends Model
     }
     
     /**
+     * 
+     */
+    public function delayAfter(Ride $prev, $date)
+    {
+        $this->setStartDate($date);
+        $this->updateTimeWidows();
+    }
+    
+    /**
      * Get the driver associated with the race.
      */
     public function driver()
@@ -175,13 +185,18 @@ class Ride extends Model
     public function getNextRideItem()
     {
         // Check if ride has next point
-        $rideitem = $this->rideitems()->whereIn('status', [RideItem::STATUS_NEXT, RideItem::STATUS_ARRIVED])->first();
+        $rideitem = $this->rideitems()
+			->whereIn('status', [RideItem::STATUS_NEXT, RideItem::STATUS_ARRIVED])
+			->first();
         if($rideitem){
             return $rideitem;
         }
         
         // Set first active point as next
-        $rideitem = $this->rideitems()->where('status', [RideItem::STATUS_PING, RideItem::STATUS_ACTIVE])->orderBy('order', 'asc')->first();
+        $rideitem = $this->rideitems()
+			->where('status', [RideItem::STATUS_PING, RideItem::STATUS_ACTIVE])
+			->orderBy('order', 'asc')
+			->first();
         if($rideitem)
         {
 			$rideitem->status = RideItem::STATUS_NEXT;
@@ -191,9 +206,10 @@ class Ride extends Model
 			return $rideitem;
         }
 		
-		// Si tous les points sont annulés
-        $count = $this->rideitems()->where('status', '!=', RideItem::STATUS_CANCELED)->count();
-        if($count == 0){
+		// S'il n'y a plus de point suivant
+        $all_count = $this->rideitems()->count();
+        $canceled_count = $this->rideitems()->where('status', '==', RideItem::STATUS_CANCELED)->count();
+        if($all_count == $canceled_count){
 			$this->cancelable(); // Set ride as cancelable
         }else{
 			$this->completable(); // Set ride as completable
@@ -328,10 +344,39 @@ class Ride extends Model
     /**
      * Start the order item
      */
+    public function setEndDate($date)
+    {
+		if($date==null){
+			$this->complete_at = null;
+			$this->save();
+			$this->fireModelEvent('end-refreshed');
+			return;
+		}
+		
+		if($this->complete_at){
+			if($model->complete_at->greaterThan($date)){
+				$this->complete_at = $date;
+        		$this->save();
+				$this->fireModelEvent('end-delayed');
+			}else{
+				$this->complete_at = $date;
+        		$this->save();
+				$this->fireModelEvent('end-forwarded');
+			}
+		}else{
+			$this->complete_at = $date;
+        	$this->save();
+			$this->fireModelEvent('end-inited');
+		}
+    }
+    
+    /**
+     * Start the order item
+     */
     public function setStartDate($date)
     {
 		if($date==null){
-			$this->start_at = $date;
+			$this->start_at = null;
 			$this->save();
 			$this->fireModelEvent('start-refreshed');
 			return;
@@ -367,6 +412,16 @@ class Ride extends Model
     }
 
     /**
+     * Update time intervalle
+     *
+     * @return mixed
+     */
+    public function updateTimeWidows()
+    {
+        // @TODO
+    }
+
+    /**
      * Calculate direction
      *
      * @Param App\Models\Ride $ride
@@ -374,16 +429,28 @@ class Ride extends Model
      */
     public function verifyDirection($google)
     {
+		// Check if club has point
 		if(!$this->point()){ 
 			return false;
         }
 		
 		$query = $this->rideitems()
-			->whereIn('status', [
-				RideItem::STATUS_PING, 
-				RideItem::STATUS_ACTIVE, 
-				RideItem::STATUS_NEXT
-			]);
+			->where(function($query){
+				$query->where('type', RideItem::TYPE_PICKUP);
+				$query->whereIn('status', [
+					RideItem::STATUS_PING, 
+					RideItem::STATUS_ACTIVE
+				]);
+			})
+			->orWhere(function($query){
+				$query->where('type', RideItem::TYPE_DROP);
+				$query->whereIn('status', [
+					RideItem::STATUS_PING,
+					RideItem::STATUS_ACTIVE,
+					RideItem::STATUS_STARTED
+				]);
+			})
+			;
 		
 		if(!$query->exists()){
 			return false;
@@ -396,6 +463,7 @@ class Ride extends Model
         
         $array_waypoints = ['optimize:true'];
         foreach($rideitems as $rideitem){
+			// Check if has item point
 			if($rideitem->point()){
 				$array_waypoints[] = sprintf("%s,%s", $rideitem->point()->lat, $rideitem->point()->lng);
 			}
@@ -414,6 +482,9 @@ class Ride extends Model
                 if(is_array($routes) && !empty($routes)){
                     $route = $routes[0];
                     
+					/**
+					* Update RideItem order
+					*/
                     $orders = [];
                     if(isset($route['waypoint_order'])){
                         $orders = $route['waypoint_order'];
@@ -426,6 +497,9 @@ class Ride extends Model
                         }
                     }
                     
+					/**
+					* Update RideItem course info
+					*/
                     if(isset($route['legs'])){
                         $distance = 0;
                         $duration = 0;
@@ -466,7 +540,9 @@ class Ride extends Model
                             }
                             $polyline = \App\Services\Polyline::encode($positions);
                             
-                            // Update pivot info
+                            /**
+							* Set RideItem info
+							*/
                             if( is_array($orders) && isset($orders[$key]) && isset($rideitems[$orders[$key]]) ) {
 								$rideitem = $rideitems[$orders[$key]];
 								$rideitem->direction = $polyline;
@@ -495,5 +571,5 @@ class Ride extends Model
         
         return false;
     }
-    
+   
 }

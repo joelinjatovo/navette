@@ -28,6 +28,8 @@ class ApiUpdateUser extends FormRequest
             'first_name' => 'nullable|string|max:100',
             'last_name' => 'nullable|string|max:100',
             'birthday' => 'nullable|string|max:100',
+            'address' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:100',
             'code' => 'nullable|string|max:100',
             'phone' => 'nullable|numeric|unique:users,phone,' . auth()->user()->id,
             'email' => 'nullable|email|unique:users,email,' . auth()->user()->id,

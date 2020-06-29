@@ -18,6 +18,7 @@ class CreateCarsTable extends Migration
                 $table->id();
                 $table->string('status', 100)->default('available');
                 $table->string('name', 100);
+                $table->string('type', 100)->nullable();
                 $table->text('description')->nullable();
                 $table->integer('place');
                 $table->unsignedBigInteger('club_id')->nullable();

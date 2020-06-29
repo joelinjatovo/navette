@@ -53,6 +53,8 @@ class OrderController extends Controller
      * @return Response
      */
     public function show(Request $request, Order $order){
+        $order->load(['club', 'club.point'])
+            ->load(['items', 'items.point', 'items.rides']);
         return new OrderResource($order);
     }
 
@@ -199,6 +201,9 @@ class OrderController extends Controller
                 $order->payment_status = Order::PAYMENT_STATUS_PING;
 				$order->payment_type = Order::PAYMENT_TYPE_CASH;
 				$order->save();
+                foreach($items as $item){
+                    $item->ok();
+                }
 			break;
 		}
         
@@ -213,6 +218,18 @@ class OrderController extends Controller
                 }
             }
         }
+		
+        return new OrderResource($order->load(['items', 'items.point']));
+    }
+
+    /**
+     * Update n order.
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function update(Request $request, Order $order)
+    {
 		
         return new OrderResource($order->load(['items', 'items.point']));
     }

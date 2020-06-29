@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Set your secret key. Remember to switch to your live secret key in production!
         // See your keys here: https://dashboard.stripe.com/account/apikeys
-		\Stripe\Stripe::setApiKey(env('STRIPE_KEY_SECRET'));
+		\Stripe\Stripe::setApiKey(config('stripe.secret'));
         
         // String DB Lengths
         Schema::defaultStringLength(191);

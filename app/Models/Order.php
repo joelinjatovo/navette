@@ -8,8 +8,11 @@ use App\Events\Order\OrderCreated;
 use App\Events\Order\OrderCompleted;
 use App\Events\Order\OrderDeleted;
 use App\Events\Order\OrderPaid;
+use App\Events\Order\OrderPartialyCanceled;
+use App\Events\Order\OrderPartialyCompleted;
 use App\Events\Order\OrderPlaceChanged;
 use App\Events\Order\OrderRefunded;
+use App\Events\Order\OrderReceived;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,6 +27,7 @@ class Order extends Model
     
     public const PAYMENT_TYPE_APPLE_PAY = 'apple_pay';
 	
+	
     public const PAYMENT_STATUS_SUCCEEDED = 'succeeded';
     
 	public const PAYMENT_STATUS_PING = 'ping';
@@ -35,20 +39,27 @@ class Order extends Model
 	public const PAYMENT_STATUS_CANCELED = 'canceled';
 	
 	public const PAYMENT_STATUS_REFUNDED = 'refunded';
+	
     
-    public const STATUS_PING = 'ping'; 
-    
-    public const STATUS_ON_HOLD = 'on-hold';
-    
-    public const STATUS_PROCESSING = 'processing';
-    
-    public const STATUS_OK = 'ok';
     
     public const STATUS_ACTIVE = 'active';
     
     public const STATUS_CANCELED = 'canceled';
     
     public const STATUS_COMPLETED = 'completed';
+    
+    public const STATUS_OK = 'ok';
+    
+    public const STATUS_ON_HOLD = 'on-hold';
+	
+    public const STATUS_PARTIALY_CANCELED = 'partialy-canceled';
+	
+    public const STATUS_PARTIALY_COMPLETED = 'partialy-completed';
+	
+    public const STATUS_PING = 'ping'; 
+    
+    public const STATUS_PROCESSING = 'processing';
+	
     
     public const TYPE_GO = 'go';
     
@@ -82,7 +93,10 @@ class Order extends Model
         'created' => OrderCreated::class,
         'deleted' => OrderDeleted::class,
         'paid' => OrderPaid::class,
+        'partialy-canceled' => OrderPartialyCanceled::class,
+        'partialy-completed' => OrderPartialyCompleted::class,
         'place-changed' => OrderPlaceChanged::class,
+        'received' => OrderReceived::class,
     ];
     
     /**
@@ -220,8 +234,10 @@ class Order extends Model
      */
     public function ok()
     {
-		$this->status = Order::STATUS_OK;
+		$this->status = self::STATUS_OK;
 		$this->save();
+		
+        $this->fireModelEvent('received');
     }
     
     /**
@@ -238,6 +254,28 @@ class Order extends Model
         $this->save();
 		
         $this->fireModelEvent('paid');
+    }
+    
+    /**
+     * Set order as partialy canceled
+     */
+    public function partialyCanceled()
+    {
+		$this->status = self::STATUS_PARTIALY_CANCELED;
+		$this->save();
+		
+        $this->fireModelEvent('partialy-canceled');
+    }
+    
+    /**
+     * Set order as partialy completed
+     */
+    public function partialyCompleted()
+    {
+		$this->status = self::STATUS_PARTIALY_COMPLETED;
+		$this->save();
+		
+        $this->fireModelEvent('partialy-completed');
     }
     
     /**
@@ -265,13 +303,12 @@ class Order extends Model
     /**
      * Update order status
 	 *
-     *
 	 */
     public function updateStatus()
     {
-		$ping_item = $this->items()->whereIn('items.status', [Item::STATUS_PING, Item::STATUS_ACTIVE])->exists();
+		$ping_item = $this->items()->whereIn('items.status', [Item::STATUS_OK, Item::STATUS_ACTIVE])->exists();
 		if($ping_item){
-			$this->ok();
+			$this->partialyCompleted();
 		}else{
 			$this->complete();
 		}

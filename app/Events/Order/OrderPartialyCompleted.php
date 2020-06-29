@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\RideItem;
+namespace App\Events\Order;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,19 +10,19 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class RideItemActived
+class OrderPartialyCompleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $rideitem;
+    public $order;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(\App\Models\RideItem $rideitem)
+    public function __construct(\App\Models\Order $order)
     {
-        $this->rideitem = $rideitem;
+        $this->order = $order;
     }
 }

@@ -28,6 +28,7 @@ class CreateRidesTable extends Migration
                 $table->json('route')->nullable();
                 $table->dateTime('start_at')->nullable(); // Date prevue
                 $table->dateTime('started_at')->nullable(); // Date reelle
+                $table->dateTime('complete_at')->nullable();
                 $table->dateTime('completed_at')->nullable();
                 $table->dateTime('canceled_at')->nullable();
                 $table->unsignedBigInteger('club_id')->nullable();

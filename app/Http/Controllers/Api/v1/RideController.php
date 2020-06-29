@@ -37,11 +37,32 @@ class RideController extends Controller
      */
     public function index(Request $request){
 		$models = $request->user()->ridesDrived()
+						->with(['club', 'club.point'])
 						->with(['items', 'items.point'])
 						->with(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point'])
 						->orderBy('rides.created_at', 'desc')
 						->paginate();
         return new RideCollection($models);
+    }
+    
+    /**
+     * Get current ride.
+     *
+     * @param  Request  $request
+     *
+     * @return Response
+     */
+    public function current(Request $request)
+    {
+		$model = $request->user()->ridesDrived()
+            ->orWhere('rides.status', Ride::STATUS_STARTED)
+            ->orWhere('rides.status', Ride::STATUS_PING)
+            ->with(['club', 'club.point'])
+            ->with(['items', 'items.point'])
+            ->with(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point'])
+            ->orderBy('rides.start_at', 'asc')
+            ->firstOrFail();
+        return new RideResource($model);
     }
     
     /**
@@ -54,7 +75,8 @@ class RideController extends Controller
      */
     public function show(Request $request, Ride $ride)
     {
-		$ride->load(['items', 'items.point'])
+		$ride->load(['club', 'club.point'])
+			->load(['items', 'items.point'])
 			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point']);
         return new RideResource($ride);
     }

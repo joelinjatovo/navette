@@ -26,4 +26,3 @@ class RideItemCompleted
         $this->rideitem = $rideitem;
     }
 }
-}

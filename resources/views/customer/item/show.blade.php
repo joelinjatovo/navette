@@ -241,5 +241,5 @@ jQuery(document).ready(function(){
     loadItem();
 });
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_API_KEY') }}&libraries=geometry&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ config('google.apikey') }}&libraries=geometry&callback=initMap" async defer></script>
 @endsection

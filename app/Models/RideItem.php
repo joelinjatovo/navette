@@ -19,6 +19,7 @@ class RideItem extends Pivot
     const TYPE_PICKUP = 'pickup';
     
     const TYPE_DROP = 'drop';
+	
     
     const STATUS_PING = 'ping';
     
@@ -124,11 +125,40 @@ class RideItem extends Pivot
     }
     
     /**
+     * Complete ride item
+     */
+    public function complete()
+    {
+		$this->status = self::STATUS_COMPLETED;
+		$this->started_at = now();
+		$this->save();
+		$this->fireModelEvent('completed');
+    }
+	
+    /**
      * Get the driver
      */
     public function driver()
     {
         return $this->ride ? $this->ride->driver : null;
+    }
+	
+    /**
+     * If pickup, charge > 0
+     * If drop, charge < 0
+     */
+    public function getCharge()
+    {
+        return (self::TYPE_PICKUP == $this->type ? $this->place : -$this->place);
+    }
+	
+    /**
+     * If pickup, charge > 0
+     * If drop, charge < 0
+     */
+    public function getMaxDuration()
+    {
+        return $item->duration_value + (self::TYPE_PICKUP == $this->type ? 5 * 60 : 0);
     }
     
     /**
@@ -194,15 +224,9 @@ class RideItem extends Pivot
     public function pickOrDrop()
     {
         if($this->type == self::TYPE_PICKUP){
-			$this->status = self::STATUS_STARTED;
-			$this->started_at = now();
-			$this->save();
-			$this->fireModelEvent('started');
+			$this->start();
         }else{
-			$this->status = self::STATUS_COMPLETED;
-			$this->started_at = now();
-			$this->save();
-			$this->fireModelEvent('completed');
+			$this->complete();
         }
     }
     
@@ -222,6 +246,17 @@ class RideItem extends Pivot
         return $this->belongsTo(Ride::class, 'ride_id');
     }
     
+    /**
+     * Start ride item
+     */
+    public function start()
+    {
+		$this->status = self::STATUS_STARTED;
+		$this->started_at = now();
+		$this->save();
+		$this->fireModelEvent('started');
+    }
+	
     /**
      * Get the user
      */
