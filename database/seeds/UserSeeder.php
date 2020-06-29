@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
         ]);
         DB::table('images')->insert([
             'name' => 'haja.jpg',
-            'type' => "image/jpeg",
+            'mime' => "image/jpeg",
             'url' => "img/users/haja.jpg",
             'imageable_id' => 1,
             'imageable_type' => "App\Models\User",

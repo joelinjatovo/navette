@@ -150,7 +150,9 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function image()
     {
-        return $this->morphOne(Image::class, 'imageable')->orderBy('images.created_at', 'desc');
+        return $this->morphOne(Image::class, 'imageable')
+            ->whereNull('images.mime')
+            ->orderBy('images.created_at', 'desc');
     }
     
     /**

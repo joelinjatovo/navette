@@ -29,7 +29,7 @@ class ClubMgSeeder extends Seeder
         ]);
         DB::table('images')->insert([
             'name' => 'vegas-club.png',
-            'type' => "image/png",
+            'mime' => "image/png",
             'url' => "img/clubs/vegas-club.png",
             'imageable_id' => 1,
             'imageable_type' => "App\Models\Club",
@@ -54,7 +54,7 @@ class ClubMgSeeder extends Seeder
         ]);
         DB::table('images')->insert([
             'name' => 'grisy-club.png',
-            'type' => "image/jpeg",
+            'mime' => "image/jpeg",
             'url' => "img/clubs/grisy-club.jpg",
             'imageable_id' => 2,
             'imageable_type' => "App\Models\Club",
@@ -79,7 +79,7 @@ class ClubMgSeeder extends Seeder
         ]);
         DB::table('images')->insert([
             'name' => 'r7-club.png',
-            'type' => "image/jpeg",
+            'mime' => "image/jpeg",
             'url' => "img/clubs/r7-club.jpg",
             'imageable_id' => 3,
             'imageable_type' => "App\Models\Club",
@@ -104,7 +104,7 @@ class ClubMgSeeder extends Seeder
         ]);
         DB::table('images')->insert([
             'name' => 'pacha-club.png',
-            'type' => "image/jpeg",
+            'mime' => "image/jpeg",
             'url' => "img/clubs/pacha-club.jpg",
             'imageable_id' => 4,
             'imageable_type' => "App\Models\Club",
