@@ -151,7 +151,47 @@ class User extends Authenticatable implements MustVerifyPhone
     public function image()
     {
         return $this->morphOne(Image::class, 'imageable')
-            ->whereNull('images.mime')
+            ->whereNull('images.type')
+            ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the driver's license recto.
+     */
+    public function licenseRecto()
+    {
+        return $this->morphOne(Image::class, 'imageable')
+            ->where('images.type', 'license-recto')
+            ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the user's license verso.
+     */
+    public function licenseVerso()
+    {
+        return $this->morphOne(Image::class, 'imageable')
+            ->where('images.type', 'license-verso')
+            ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the user's vtc recto.
+     */
+    public function vtcRecto()
+    {
+        return $this->morphOne(Image::class, 'imageable')
+            ->where('images.type', 'vtc-recto')
+            ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the user's vtc verso.
+     */
+    public function vtcVerso()
+    {
+        return $this->morphOne(Image::class, 'imageable')
+            ->where('images.type', 'vtc-verso')
             ->orderBy('images.created_at', 'desc');
     }
     

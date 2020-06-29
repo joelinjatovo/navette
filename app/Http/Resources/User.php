@@ -34,6 +34,10 @@ class User extends JsonResource
             'rating' => $this->rating(),
             'reviews' => $this->reviews(),
             'car' => new Car($this->car),
+            'license_recto' => $this->licenseRecto ? url($this->licenseRecto->url) : null,
+            'license_verso' => $this->licenseVerso ? url($this->licenseVerso->url) : null,
+            'vtc_recto' => $this->vtcRecto ? url($this->vtcRecto->url) : null,
+            'vtc_verso' => $this->vtcVerso ? url($this->vtcVerso->url) : null,
         ];
     }
 

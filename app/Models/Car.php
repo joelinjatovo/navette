@@ -72,7 +72,9 @@ class Car extends Model
      */
     public function image()
     {
-        return $this->morphOne(Image::class, 'imageable')->orderBy('images.created_at', 'desc');;
+        return $this->morphOne(Image::class, 'imageable')
+            ->whereNull('images.type')
+            ->orderBy('images.created_at', 'desc');
     }
     
     /**

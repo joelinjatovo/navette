@@ -31,6 +31,8 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
     Route::post('token/refresh', 'TokenController@refresh')->name('token.refresh');
     Route::post('register', 'UserController@store')->name('user.create');
     Route::post('facebook/connect', 'FacebookController@connect')->name('facebook.connect');
+    Route::post('upload/license/{type}', 'UploadController@license')->name('upload.license')->where('type', 'verso|recto');
+    Route::post('upload/vtc/{type}', 'UploadController@vtc')->name('upload.vtc')->where('type', 'verso|recto');
 	
 	Route::get('clubs', 'ClubController@index')->name('clubs');
 	Route::post('cart', 'OrderController@cart')->name('order.cart');
@@ -41,6 +43,8 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::get('user', 'UserController@show')->name('user.show');
         Route::put('user', 'UserController@update')->name('user.edit');
         Route::post('user/avatar', 'UserController@avatar')->name('user.avatar');
+        Route::post('user/license/{type}', 'UserController@license')->name('user.license')->where('type', 'verso|recto');
+        Route::post('user/vtc/{type}', 'UserController@vtc')->name('user.vtc')->where('type', 'verso|recto');
         Route::post('user/rate', 'UserController@rate')->name('user.rate');
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         

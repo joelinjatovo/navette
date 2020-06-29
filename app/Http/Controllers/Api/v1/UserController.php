@@ -8,6 +8,7 @@ use App\Http\Requests\ApiUpdateUser as UpdateUserRequest;
 use App\Http\Requests\VerifyPhone as VerifyPhoneRequest;
 use App\Http\Requests\RateUser as RateUserRequest;
 use App\Http\Resources\AccessToken as AccessTokenResource;
+use App\Http\Resources\Image as ImageResource;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\UserItem as UserItemResource;
 use App\Http\Resources\UserCollection;
@@ -142,6 +143,54 @@ class UserController extends Controller
         $user = $request->user();
         
         $this->uploader->upload('image', $user);
+        
+        $token = app('api_token');
+
+        return (new AccessTokenResource($token));
+    }
+
+    /**
+     * Upload license photo
+     *
+     * @return Response
+     */
+    public function license(Request $request, $type)
+    {
+        $request->validate([
+            'image' => 'file|mimes:jpeg,png,jpg'
+        ]);
+        
+        $image = $this->uploader->uploadLicense('image', $type);
+        
+        if($type=='verso'){
+            $request->user()->licenseVerso()->save($image);
+        }else{
+            $request->user()->licenseRecto()->save($image);
+        }
+        
+        $token = app('api_token');
+
+        return (new AccessTokenResource($token));
+    }
+
+    /**
+     * Upload license photo
+     *
+     * @return Response
+     */
+    public function vtc(Request $request, $type)
+    {
+        $request->validate([
+            'image' => 'file|mimes:jpeg,png,jpg'
+        ]);
+        
+        $image = $this->uploader->uploadVTC('image', $type);
+        
+        if($type=='verso'){
+            $request->user()->vtcVerso()->save($image);
+        }else{
+            $request->user()->vtcRecto()->save($image);
+        }
         
         $token = app('api_token');
 

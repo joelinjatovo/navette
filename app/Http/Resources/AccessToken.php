@@ -38,6 +38,10 @@ class AccessToken extends JsonResource
                 'reviews' => $this->user->reviews(),
                 'roles' => Role::collection($this->user->roles),
                 'car' => new Car($this->user->car),
+                'license_recto' => $this->user->licenseRecto ? url($this->user->licenseRecto->url) : null,
+                'license_verso' => $this->user->licenseVerso ? url($this->user->licenseVerso->url) : null,
+                'vtc_recto' => $this->user->vtcRecto ? url($this->user->vtcRecto->url) : null,
+                'vtc_verso' => $this->user->vtcVerso ? url($this->user->vtcVerso->url) : null,
             ];
         }
         

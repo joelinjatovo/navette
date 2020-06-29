@@ -20,8 +20,8 @@ class CreateImagesTable extends Migration
                 $table->string('mime');
                 $table->string('type')->nullable();
                 $table->text('url');
-                $table->unsignedBigInteger('imageable_id')->index();
-                $table->string('imageable_type');
+                $table->unsignedBigInteger('imageable_id')->index()->nullable();
+                $table->string('imageable_type')->nullable();
                 $table->timestamps();
             });
         }
