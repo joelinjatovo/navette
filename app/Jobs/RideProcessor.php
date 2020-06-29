@@ -317,9 +317,7 @@ class RideProcessor implements ShouldQueue
             $ping->delayAfter($ride, $date);
         }
         
-		if($ride->save()){
-			$car->lock();
-		}else{
+		if(!$ride->save()){
 			$ride = null;
 		}
 		

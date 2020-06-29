@@ -75,6 +75,13 @@ class UserController extends Controller
 				$parent->children()->save($user);
 			}
 		}
+		
+		if(isset($data['code']) && !empty($data['code'])){
+			$parent = User::where('code', $data['code'])->first();
+			if($parent){
+				$parent->children()->save($user);
+			}
+		}
         
         $user->sendPhoneVerificationNotification();
         

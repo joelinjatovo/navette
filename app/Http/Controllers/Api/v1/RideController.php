@@ -55,8 +55,7 @@ class RideController extends Controller
     public function current(Request $request)
     {
 		$model = $request->user()->ridesDrived()
-            ->orWhere('rides.status', Ride::STATUS_STARTED)
-            ->orWhere('rides.status', Ride::STATUS_PING)
+            ->whereIn('rides.status', [Ride::STATUS_STARTED, Ride::STATUS_PING, Ride::STATUS_COMPLETABLE])
             ->with(['club', 'club.point'])
             ->with(['items', 'items.point'])
             ->with(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point'])
@@ -149,6 +148,10 @@ class RideController extends Controller
         
         $ride->start();
 		
+		if($ride->car){
+			$ride->car->lock();
+		}
+		
         return $this->direction($request);
     }
     
@@ -168,6 +171,10 @@ class RideController extends Controller
         }
         
         $ride->cancel();
+		
+		if($ride->car){
+			$ride->car->free();
+		}
         
 		foreach($ride->rideitems as $rideitem){
 			if($rideitem->isCancelable()){
@@ -178,7 +185,7 @@ class RideController extends Controller
 				}
 				
 				if($rideitem->item){
-        			if($item->isCancelable()){
+        			if($rideitem->item->isCancelable()){
 						$rideitem->item->cancel();
 					}
 				}
@@ -209,18 +216,22 @@ class RideController extends Controller
         
         $ride->complete();
 		
+		if($ride->car){
+			$ride->car->free();
+		}
+		
 		$rideitems = $ride->rideitems()
-			->with('item')
-			->with('item.order')
+			//->with('item')
+			//->with('item.order')
 			->where('status', RideItem::STATUS_STARTED)
 			->get();
 		
         foreach($rideitems as $rideitem){
 			$rideitem->complete();
-			if($ride->item){
-				$ride->item->complete();
-				if($ride->item->order){
-					$ride->item->order->updateStatus(); // Check order status
+			if($rideitem->item){
+				$rideitem->item->complete();
+				if($rideitem->item->order){
+					$rideitem->item->order->updateStatus(); // Check order status
 				}
 			}
 		}

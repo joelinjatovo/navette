@@ -45,7 +45,11 @@ class BaseRideNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->ride->attributesToArray();
+        $array = $this->ride->attributesToArray();
+		if(isset($array['route'])){
+			unset($array['route']);
+		}
+		return $array;
     }
         
 }
