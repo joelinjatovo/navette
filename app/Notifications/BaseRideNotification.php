@@ -38,6 +38,21 @@ class BaseRideNotification extends Notification
     }
 
     /**
+     * Get the broadcast representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toBroadcast($notifiable)
+    {
+        $array = $this->ride->attributesToArray();
+		if(isset($array['route'])){
+			unset($array['route']);
+		}
+        return new BroadcastMessage(['data' => $array]);
+    }
+
+    /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
