@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
                 $table->string('address', 100)->nullable();
                 $table->string('postal_code', 100)->nullable();
                 $table->string('locale', 2)->default('fr');
+                $table->timestamp('activated_at')->nullable();
                 $table->timestamp('blocked_at')->nullable();
                 $table->timestamp('phone_verified_at')->nullable();
                 $table->string('phone_verification_code')->nullable();

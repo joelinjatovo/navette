@@ -40,7 +40,7 @@ class StripeController extends Controller
         ]);
 		
         $output = [
-            'publishable_key' => env('STRIPE_KEY_PUBLIC'),
+            'publishable_key' => config('stripe.public'),
             'client_secret' => $intent->client_secret,
         ];
 
@@ -75,7 +75,7 @@ class StripeController extends Controller
         ]);
         
         return $this->success(200, 'ok', [
-            'publishable_key' => env('STRIPE_KEY_PUBLIC'),
+            'publishable_key' => config('stripe.public'),
 			'client_secret' => $setup_intent->client_secret
 		]);
     }

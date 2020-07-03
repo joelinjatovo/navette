@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             'phone' => '+261331377768',
             'password' => Hash::make('admin!'),
             'phone_verified_at' => now(),
+            //'activated_at' => now(),
             'created_at' => now(),
             'locale' => 'fr',
         ]);

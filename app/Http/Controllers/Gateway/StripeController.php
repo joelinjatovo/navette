@@ -50,7 +50,7 @@ class StripeController extends Controller
 
         $output = [
             'redirect' => route('customer.order.show', $order),
-            'publishable_key' => env('STRIPE_KEY_PUBLIC'),
+            'publishable_key' => config('stripe.public'),
             'client_secret' => $intent->client_secret,
         ];
 

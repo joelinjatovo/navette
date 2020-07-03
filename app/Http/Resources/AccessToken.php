@@ -32,6 +32,7 @@ class AccessToken extends JsonResource
                 'address' => $this->user->address,
                 'postal_code' => $this->user->postal_code,
                 'locale' => $this->user->locale,
+                'active' => $this->user->isActivated(),
                 'verified' => $this->user->hasVerifiedPhone(),
                 'image_url' => $this->user->image ? url($this->user->image->url) : null,
                 'rating' => $this->user->rating(),

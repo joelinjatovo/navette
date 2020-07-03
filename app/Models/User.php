@@ -57,6 +57,7 @@ class User extends Authenticatable implements MustVerifyPhone
      * @var array
      */
     protected $casts = [
+        'activated_at' => 'datetime',
         'phone_verified_at' => 'datetime',
     ];
 
@@ -153,6 +154,14 @@ class User extends Authenticatable implements MustVerifyPhone
         return $this->morphOne(Image::class, 'imageable')
             ->whereNull('images.type')
             ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the user's image.
+     */
+    public function isActivated()
+    {
+        return $this->activated_at!=null;
     }
     
     /**
