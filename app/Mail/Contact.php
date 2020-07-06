@@ -33,7 +33,7 @@ class Contact extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->object)
+        return $this->subject('[Support:]' . $this->object)
 				->markdown('emails.contact.html')
                 ->text('emails.contact.plain')
 				->with([

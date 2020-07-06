@@ -3,8 +3,8 @@
 
 Un client a demandé un support.
 
-{{ $object }}<br>
-{{ $content }}
+Object: {{ $object }}<br>
+Message: {{ $content }}
 
 Merci,<br>
 {{ config('app.name') }}
