@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 1,
+            'code' =>(string) \Str::random(6),
             'name' => 'Haja JOELINJATOVO',
             'phone' => '+261331377768',
             'password' => Hash::make('admin!'),
@@ -34,7 +35,7 @@ class UserSeeder extends Seeder
             'imageable_id' => 1,
             'imageable_type' => "App\Models\User",
             'created_at' => now(),
-        ]);
+        ]);random
         
         $i = 1;
         $roles = ['admin' => 'administrator', 'driver' => 'driver', 'customer' => 'customer'];
@@ -54,6 +55,7 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 2,
+            'code' =>(string) \Str::random(6),
             'name' => 'Driver2 JOELINJATOVO',
             'phone' => '+261331377769',
             'password' => Hash::make('driver2!'),
@@ -65,6 +67,7 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 3,
+            'code' =>(string) \Str::random(6),
             'name' => 'Driver3 JOELINJATOVO',
             'phone' => '+261331377770',
             'password' => Hash::make('driver3!'),
@@ -76,6 +79,7 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 4,
+            'code' =>(string) \Str::random(6),
             'name' => 'Driver4 JOELINJATOVO',
             'phone' => '+261331377771',
             'password' => Hash::make('driver4!'),
@@ -87,6 +91,7 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 5,
+            'code' =>(string) \Str::random(6),
             'name' => 'Driver5 JOELINJATOVO',
             'phone' => '+261331377772',
             'password' => Hash::make('driver5!'),

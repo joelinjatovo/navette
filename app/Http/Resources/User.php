@@ -16,6 +16,7 @@ class User extends JsonResource
     {
         return [
             'id' => $this->getKey(),
+            'code' => $this->code,
             'stripe_id' => $this->stripe_id,
             'payment_method_id' => $this->payment_method_id,
             'facebook_id' => $this->facebook_id,
@@ -28,7 +29,7 @@ class User extends JsonResource
             'address' => $this->address,
             'postal_code' => $this->postal_code,
             'locale' => $this->locale,
-            'active' => $this->isActivated(),
+            'activated' => $this->isActivated(),
             'verified' => $this->hasVerifiedPhone(),
             'image_url' => $this->image ? url($this->image->url) : null,
             'roles' => Role::collection($this->whenLoaded('roles')),
