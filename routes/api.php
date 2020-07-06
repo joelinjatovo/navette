@@ -37,6 +37,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
 	Route::get('clubs', 'ClubController@index')->name('clubs');
 	Route::post('cart', 'OrderController@cart')->name('order.cart');
     Route::middleware('auth:api')->group(function () {
+        Route::post('contact', 'ContactController@contact')->name('contact');
         Route::post('logout', 'TokenController@logout')->name('logout');
         Route::post('verify', 'VerificationController@verify')->name('verification.verify');
         Route::get('resend', 'VerificationController@resend')->name('verification.resend');

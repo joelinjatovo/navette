@@ -75,7 +75,7 @@ class TokenController extends Controller
         
         $token = app('api_token');
 		if($token){
-			//$token->delete();
+			$token->delete();
 		}
         
         return (new UserResource($user));
