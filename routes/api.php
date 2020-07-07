@@ -46,6 +46,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('user/avatar', 'UserController@avatar')->name('user.avatar');
         Route::post('user/license/{type}', 'UserController@license')->name('user.license')->where('type', 'verso|recto');
         Route::post('user/vtc/{type}', 'UserController@vtc')->name('user.vtc')->where('type', 'verso|recto');
+        Route::get('user/ratings', 'UserController@ratings')->name('user.ratings');
         Route::post('user/rate', 'UserController@rate')->name('user.rate');
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         

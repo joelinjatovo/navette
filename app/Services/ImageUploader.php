@@ -64,8 +64,8 @@ class ImageUploader
                     'type' => 'license-' . $type, 
                     'name' => $file->getClientOriginalName()
                 ]);
-                
-                return $image->save();
+                $image->save();
+                return $image;
             }
         }
     }
@@ -84,8 +84,8 @@ class ImageUploader
                     'type' => 'vtc-' . $type, 
                     'name' => $file->getClientOriginalName()
                 ]);
-                
-                return $image->save();
+                $image->save();
+                return $image;
             }
         }
     }
