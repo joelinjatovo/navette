@@ -23,7 +23,7 @@ class ItemController extends Controller
 			->where('orders.user_id', '=', $request->user()->getKey())
 			->with('point')
 			->with(['rides', 'rides.driver'])
-			->with(['order', 'order.club', 'order.club.point'])
+			->with(['order', 'order.club', 'order.club.point', 'order.payments'])
 			->orderBy('items.created_at', 'desc')
 			->paginate();
         return new ItemCollection($models);
@@ -41,7 +41,7 @@ class ItemController extends Controller
     {
 		$item->load('point')
 			->load(['rides', 'rides.driver'])
-			->load(['order', 'order.club', 'order.club.point']);
+			->load(['order', 'order.club', 'order.club.point', 'order.payments']);
         return new ItemResource($item);
     }
     
@@ -77,7 +77,7 @@ class ItemController extends Controller
 		
 		$item->load('point')
 			->load(['rides', 'rides.driver'])
-			->load(['order', 'order.club']);
+			->load(['order', 'order.club', 'order.payments']);
 		
         return new ItemResource($item);
     }

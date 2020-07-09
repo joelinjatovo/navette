@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentToken extends Model
+class Payment extends Model
 {
     
     public const STATUS_PING = 'ping';
@@ -22,10 +22,10 @@ class PaymentToken extends Model
      */
     protected $fillable = [
         'payment_type',
+        'payment_id',
         'amount',
         'currency',
         'order_id',
-        'token',
     ];
     
     /**

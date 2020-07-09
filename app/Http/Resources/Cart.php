@@ -4,8 +4,17 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Order extends JsonResource
+class Cart extends JsonResource
 {
+    protected $items;
+
+	public function __construct($resource, $items)
+    {
+		$this->items = $items;
+		
+        parent::__construct($resource);
+    }
+	
     /**
      * Transform the resource into an array.
      *
@@ -35,10 +44,7 @@ class Order extends JsonResource
 			'canceled_at' => $this->canceled_at,
 			'completed_at' => $this->completed_at,
 			'created_at' => $this->created_at,
-            'user' => $this->when($this->relationLoaded('user'), new User($this->user)),
-            'club' => $this->when($this->relationLoaded('club'), new Club($this->club)),
-            'items' => Item::collection($this->whenLoaded('items')),
-            'payments' => Payment::collection($this->whenLoaded('payments')),
+            'items' => $this->items
         ];
     }
 

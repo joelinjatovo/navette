@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Gateway;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\PaymentToken;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class StripeController extends Controller
@@ -40,12 +40,12 @@ class StripeController extends Controller
         $order->payment_type = Order::PAYMENT_TYPE_STRIPE;
         $order->save();
         
-        PaymentToken::create([
+        Payment::create([
            'payment_type' => Order::PAYMENT_TYPE_STRIPE,
            'amount' => $order->total * 100 + 100,
            'currency' => $order->currency,
            'order_id' => $order->getKey(),
-           'token' => md5($intent->client_secret),
+           'payment_id' => md5($intent->client_secret),
         ]);
 
         $output = [

@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'phone' => '+261331377768',
             'password' => Hash::make('admin!'),
             'phone_verified_at' => now(),
-            //'activated_at' => now(),
+            'activated_at' => now(),
             'created_at' => now(),
             'locale' => 'fr',
         ]);
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             'imageable_id' => 1,
             'imageable_type' => "App\Models\User",
             'created_at' => now(),
-        ]);random
+        ]);
         
         $i = 1;
         $roles = ['admin' => 'administrator', 'driver' => 'driver', 'customer' => 'customer'];
