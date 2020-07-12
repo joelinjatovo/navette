@@ -269,6 +269,23 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
+		$place = $request->input('place');
+		if($place > 0 && ($place < $order->place)){
+			$order->place = $place;
+			$order->save();
+			
+			foreach($order->items as $item){
+				foreach($item->rides as $ride){
+					// TODO Handle multicar
+					if($ride->pivot){
+						$ride->pivot->place = $place;
+						$ride->pivot->save();
+					}
+				}
+			}
+			
+			// TODO Refund
+		}
         return new OrderResource($order->load(['items', 'items.point']));
     }
     
