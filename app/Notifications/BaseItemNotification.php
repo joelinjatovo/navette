@@ -38,6 +38,17 @@ class BaseItemNotification extends Notification
     }
 
     /**
+     * Get the broadcast representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage(['data' => $this->item->attributesToArray()]);
+    }
+
+    /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable

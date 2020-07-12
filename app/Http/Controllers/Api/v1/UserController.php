@@ -8,6 +8,9 @@ use App\Http\Requests\ApiUpdateUser as UpdateUserRequest;
 use App\Http\Requests\VerifyPhone as VerifyPhoneRequest;
 use App\Http\Requests\RateUser as RateUserRequest;
 use App\Http\Resources\AccessToken as AccessTokenResource;
+use App\Http\Resources\Image as ImageResource;
+use App\Http\Resources\Note as NoteResource;
+use App\Http\Resources\NoteCollection;
 use App\Http\Resources\User as UserResource;
 use App\Http\Resources\UserItem as UserItemResource;
 use App\Http\Resources\UserCollection;
@@ -15,6 +18,7 @@ use App\Models\AccessToken;
 use App\Models\Note;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Image;
 use App\Models\RefreshToken;
 use App\Repositories\TokenRepository;
 use App\Services\ImageUploader;
@@ -41,7 +45,7 @@ class UserController extends Controller
      */
     public function show(Request $request)
     {
-        return new UserResource($request->user()->load('roles'));
+        return new UserResource($request->user()->load('roles')->load('car')->load('car.club'));
     }
 
     /**
@@ -53,6 +57,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request, TokenRepository $repository)
     {
         $data = $request->validated();
+		info($data);
         
         $user = User::create([
             'first_name' => $data['first_name']??null,
@@ -63,15 +68,52 @@ class UserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
       
-        $role = Role::where('name', Role::CUSTOMER)->first();
-        if($role){
+		if(isset($data['role']) && !empty($data['role']) && in_array($data['role'], [Role::DRIVER, Role::CUSTOMER])){
+			$role = Role::where('name', $data['role'])->first();
+		}else{
+			$role = Role::where('name', Role::CUSTOMER)->first();
+		}
+		
+		if($role){
             $user->roles()->attach($role->getKey(), ['approved' => true]);
         }
+		
+		if($user->isCustomer()){
+			$user->activated_at = now();
+		}
 		
 		if(isset($data['code']) && !empty($data['code'])){
 			$parent = User::where('code', $data['code'])->first();
 			if($parent){
 				$parent->children()->save($user);
+			}
+		}
+		
+		if(!empty($request->input('license_recto'))){
+			$image = Image::find($request->input('license_recto'));
+			if($image){
+				$user->licenseRecto()->save($image);
+			}
+		}
+		
+		if(!empty($request->input('license_verso'))){
+			$image = Image::find($request->input('license_verso'));
+			if($image){
+				$user->licenseVerso()->save($image);
+			}
+		}
+		
+		if(!empty($request->input('vtc_recto'))){
+			$image = Image::find($request->input('vtc_recto'));
+			if($image){
+				$user->vtcRecto()->save($image);
+			}
+		}
+		
+		if(!empty($request->input('vtc_verso'))){
+			$image = Image::find($request->input('vtc_verso'));
+			if($image){
+				$user->vtcVerso()->save($image);
 			}
 		}
         
@@ -146,6 +188,75 @@ class UserController extends Controller
         $token = app('api_token');
 
         return (new AccessTokenResource($token));
+    }
+
+    /**
+     * Upload license photo
+     *
+     * @return Response
+     */
+    public function license(Request $request, $type)
+    {
+        $request->validate([
+            'image' => 'file|mimes:jpeg,png,jpg'
+        ]);
+        
+        $image = $this->uploader->uploadLicense('image', $type);
+        
+        if($type=='verso'){
+            $request->user()->licenseVerso()->save($image);
+        }else{
+            $request->user()->licenseRecto()->save($image);
+        }
+        
+        $token = app('api_token');
+
+        return (new AccessTokenResource($token));
+    }
+
+    /**
+     * Upload license photo
+     *
+     * @return Response
+     */
+    public function vtc(Request $request, $type)
+    {
+        $request->validate([
+            'image' => 'file|mimes:jpeg,png,jpg'
+        ]);
+        
+        $image = $this->uploader->uploadVTC('image', $type);
+        
+        if($type=='verso'){
+            $request->user()->vtcVerso()->save($image);
+        }else{
+            $request->user()->vtcRecto()->save($image);
+        }
+        
+        $token = app('api_token');
+
+        return (new AccessTokenResource($token));
+    }
+
+    /**
+     * Get ratings
+     *
+     * @param Request $request
+     * 
+     * @return Response
+     */
+    public function ratings(Request $request)
+    {
+		$perpage = 5;
+		if(!empty($request->perpage) && ($request->perpage > 0)){
+			$perpage = $request->perpage;
+		}
+		$models = $request->user()->notes()
+			->where('type', Note::TYPE_REVIEWS)
+			->orderBy('created_at', 'desc')
+			->paginate($perpage);
+		
+        return new NoteCollection($models);
     }
 
     /**

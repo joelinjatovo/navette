@@ -41,11 +41,51 @@ class ImageUploader
                 
                 $image = new Image([
                     'url' => $path, 
-                    'type' => $file->getClientMimeType(), 
+                    'mime' => $file->getClientMimeType(), 
                     'name' => $file->getClientOriginalName()
                 ]);
                 
                 $model->image()->save($image);
+            }
+        }
+    }
+    
+    public function uploadLicense($field, $type)
+    {
+        $request = $this->request;
+        if ($request->hasFile($field)) {
+            $file = $request->file($field);
+            if ($file->isValid()) {
+                $name = md5(time()).'.'.$file->extension();
+                $path = $file->storeAs('uploads',  'users/license-' . $type . '/' . $name);
+                $image = new Image([
+                    'url' => $path, 
+                    'mime' => $file->getClientMimeType(), 
+                    'type' => 'license-' . $type, 
+                    'name' => $file->getClientOriginalName()
+                ]);
+                $image->save();
+                return $image;
+            }
+        }
+    }
+    
+    public function uploadVTC($field, $type)
+    {
+        $request = $this->request;
+        if ($request->hasFile($field)) {
+            $file = $request->file($field);
+            if ($file->isValid()) {
+                $name = md5(time()).'.'.$file->extension();
+                $path = $file->storeAs('uploads',  'users/vtc-' . $type . '/' . $name);
+                $image = new Image([
+                    'url' => $path, 
+                    'mime' => $file->getClientMimeType(), 
+                    'type' => 'vtc-' . $type, 
+                    'name' => $file->getClientOriginalName()
+                ]);
+                $image->save();
+                return $image;
             }
         }
     }

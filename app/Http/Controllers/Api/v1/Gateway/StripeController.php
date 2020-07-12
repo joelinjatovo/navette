@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1\Gateway;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
-use App\Models\PaymentToken;
+use App\Models\Payment;
 use App\Events\OrderStatusChanged;
 
 class StripeController extends Controller
@@ -31,16 +31,16 @@ class StripeController extends Controller
         $order->payment_type = Order::PAYMENT_TYPE_STRIPE;
         $order->save();
         
-        PaymentToken::create([
+        Payment::create([
            'payment_type' => Order::PAYMENT_TYPE_STRIPE,
            'amount' => $order->total * 100,
            'currency' => $order->currency,
            'order_id' => $order->getKey(),
-           'token' => $intent->id,
+           'payment_id' => $intent->id,
         ]);
 		
         $output = [
-            'publishable_key' => env('STRIPE_KEY_PUBLIC'),
+            'publishable_key' => config('stripe.public'),
             'client_secret' => $intent->client_secret,
         ];
 
@@ -75,7 +75,7 @@ class StripeController extends Controller
         ]);
         
         return $this->success(200, 'ok', [
-            'publishable_key' => env('STRIPE_KEY_PUBLIC'),
+            'publishable_key' => config('stripe.public'),
 			'client_secret' => $setup_intent->client_secret
 		]);
     }
@@ -161,8 +161,8 @@ class StripeController extends Controller
 	
 	// Then define and call a method to handle the successful payment intent.
 	protected function handlePaymentIntentSucceeded($intent){
-		$transaction = PaymentToken::where('payment_type', Order::PAYMENT_TYPE_STRIPE)
-				->where('token', $intent->id)
+		$transaction = Payment::where('payment_type', Order::PAYMENT_TYPE_STRIPE)
+				->where('payment_id', $intent->id)
 				->first();
 		if($transaction){
 			if($order = $transaction->order){
@@ -171,7 +171,7 @@ class StripeController extends Controller
 				   && ($order->total * 100 == $intent->amount_received)
 				   && ($order->currency = strtoupper($intent->currency))
 				   && ($order->status == Order::STATUS_ON_HOLD)){
-                    $transaction->status = PaymentToken::STATUS_SUCCESS;
+                    $transaction->status = Payment::STATUS_SUCCESS;
                     $transaction->save();
 					 // Set as paid
 					$order->status = Order::STATUS_OK;

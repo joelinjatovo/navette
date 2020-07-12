@@ -32,6 +32,10 @@ class CarController extends Controller
         }
         
         $token = app('api_token');
+		
+		$token->load('user')
+			->load('user.car')
+			->load('user.car.club');
 
         return (new AccessTokenResource($token));
     }

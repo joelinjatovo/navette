@@ -54,7 +54,7 @@ class GoogleApiService
         
         $response = Http::get($url . '?' . http_build_query($data));
         
-        \Log::info('distancematrix ' . $response->body());
+        \Log::info('directions ' . $response->body());
         
         return $response->json();
     }

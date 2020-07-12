@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Resources\AccessToken as AccessTokenResource;
 use App\Http\Resources\Unauthorized as UnauthorizedResource;
+use App\Http\Resources\User as UserResource;
 use App\Models\AccessToken;
 use App\Models\RefreshToken;
 use App\Models\User;
@@ -68,14 +69,16 @@ class TokenController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::logout();
+		$user = $request->user();
+		
+        //Auth::logout();
         
         $token = app('api_token');
 		if($token){
 			$token->delete();
 		}
         
-        return response()->success(200, trans('messages.logged.out'));
+        return (new UserResource($user));
     }
 
     /**

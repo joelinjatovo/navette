@@ -40,6 +40,29 @@ class UserPointCreated extends Notification
     }
 
     /**
+     * Get the broadcast representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage(['data' => [
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+                'phone' => $this->user->phone,
+            ],
+            'point' => [
+                'name' => $this->point->name,
+                'lat' => $this->point->lat,
+                'lng' => $this->point->lng,
+                'alt' => $this->point->alt,
+            ],
+        ]]);
+    }
+
+    /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable

@@ -14,6 +14,7 @@ class Image extends Model
      */
     protected $fillable = [
         'name',
+        'mime',
         'type',
         'url',
     ];

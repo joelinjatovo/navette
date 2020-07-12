@@ -57,6 +57,7 @@ class User extends Authenticatable implements MustVerifyPhone
      * @var array
      */
     protected $casts = [
+        'activated_at' => 'datetime',
         'phone_verified_at' => 'datetime',
     ];
 
@@ -71,7 +72,7 @@ class User extends Authenticatable implements MustVerifyPhone
         
         static::creating(function ($model) {
             if ( empty( $model->code ) ) {
-                $model->code = (string) \Str::uuid();
+                $model->code = (string) \Str::random(6);
             }
             $model->name = $model->first_name . ' ' . $model->last_name;
         });
@@ -150,7 +151,57 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function image()
     {
-        return $this->morphOne(Image::class, 'imageable')->orderBy('images.created_at', 'desc');
+        return $this->morphOne(Image::class, 'imageable')
+            ->whereNull('images.type')
+            ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the user's image.
+     */
+    public function isActivated()
+    {
+        return $this->activated_at!=null;
+    }
+    
+    /**
+     * Get the driver's license recto.
+     */
+    public function licenseRecto()
+    {
+        return $this->morphOne(Image::class, 'imageable')
+            ->where('images.type', 'license-recto')
+            ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the user's license verso.
+     */
+    public function licenseVerso()
+    {
+        return $this->morphOne(Image::class, 'imageable')
+            ->where('images.type', 'license-verso')
+            ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the user's vtc recto.
+     */
+    public function vtcRecto()
+    {
+        return $this->morphOne(Image::class, 'imageable')
+            ->where('images.type', 'vtc-recto')
+            ->orderBy('images.created_at', 'desc');
+    }
+    
+    /**
+     * Get the user's vtc verso.
+     */
+    public function vtcVerso()
+    {
+        return $this->morphOne(Image::class, 'imageable')
+            ->where('images.type', 'vtc-verso')
+            ->orderBy('images.created_at', 'desc');
     }
     
     /**
@@ -204,9 +255,9 @@ class User extends Authenticatable implements MustVerifyPhone
     /**
      * Get the payment tokens for the user.
      */
-    public function paymentTokens()
+    public function payments()
     {
-        return $this->hasMany(PaymentToken::class, 'user_id');
+        return $this->hasMany(Payment::class, 'user_id');
     }
     
     /**

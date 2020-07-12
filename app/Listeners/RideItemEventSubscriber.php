@@ -47,25 +47,48 @@ class RideItemEventSubscriber
 		if( !($rideitem = $event->rideitem) || !($ride = $rideitem->ride) || !($driver = $ride->driver) ){
 			return;
 		}
+		
+		$user= false;
+		if( ($item = $rideitem->item) && ($order = $item->order) ){
+			$user = $order->user;
+		}
 
 		switch(true){
 			case $event instanceof RideItemAttachedEvent:
 				$driver->notify(new RideItemAttachedNotification($rideitem));
+				if($user){
+					$user->notify(new RideItemAttachedNotification($rideitem));
+				}
 			break;
 			case $event instanceof RideItemCanceledEvent:
 				$driver->notify(new RideItemCanceledNotification($rideitem));
+				if($user){
+					$user->notify(new RideItemCanceledNotification($rideitem));
+				}
 			break;
 			case $event instanceof RideItemCompletedEvent:
 				$driver->notify(new RideItemCompletedNotification($rideitem));
+				if($user){
+					$user->notify(new RideItemCompletedNotification($rideitem));
+				}
 			break;
 			case $event instanceof RideItemDetachedEvent:
 				$driver->notify(new RideItemDetachedNotification($rideitem));
+				if($user){
+					$user->notify(new RideItemDetachedNotification($rideitem));
+				}
 			break;
 			case $event instanceof RideItemDriverArrivedEvent:
 				$driver->notify(new RideItemDriverArrivedNotification($rideitem));
+				if($user){
+					$user->notify(new RideItemDriverArrivedNotification($rideitem));
+				}
 			break;
 			case $event instanceof RideItemStartedEvent:
 				$driver->notify(new RideItemStartedNotification($rideitem));
+				if($user){
+					$user->notify(new RideItemStartedNotification($rideitem));
+				}
 			break;
 		}
     }

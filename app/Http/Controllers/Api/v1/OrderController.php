@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrder as StoreOrderRequest;
+use App\Http\Resources\Cart as CartResource;
 use App\Http\Resources\Order as OrderResource;
 use App\Http\Resources\OrderCollection;
 use App\Models\Car;
 use App\Models\Club;
 use App\Models\Order;
 use App\Models\Item;
-use App\Models\PaymentToken;
+use App\Models\Payment;
 use App\Models\Phone;
 use App\Models\Point;
 use App\Models\Ride;
@@ -41,6 +42,7 @@ class OrderController extends Controller
     public function index(Request $request){
 		$models = $request->user()->orders()
 			->with(['club', 'club.point'])
+			->with(['payments'])
 			->with(['items', 'items.point', 'items.rides'])
 			->orderBy('created_at', 'desc')
 			->paginate();
@@ -54,6 +56,7 @@ class OrderController extends Controller
      */
     public function show(Request $request, Order $order){
         $order->load(['club', 'club.point'])
+			->load(['payments'])
             ->load(['items', 'items.point', 'items.rides']);
         return new OrderResource($order);
     }
@@ -78,8 +81,30 @@ class OrderController extends Controller
 		$item_count = 0;
         $distance = 0;
         $values = $request->input('items');
+        $items = [];
         foreach($values as $value){
+			$point = null;
+            if(isset($value['point'])){
+				$point = new Point($value['point']);
+			}
+				
+			if(isset($value['type']) && ($value['type'] == Item::TYPE_BACK)){
+				$direction = $this->getDirection($point, $club->point);
+			}else{
+				$direction = $this->getDirection($club->point, $point);
+			}
+				
+			info($direction);
+			
+			$value['duration'] = $direction['duration'];
+			$value['duration_value'] = $direction['duration_value'];
+			$value['distance'] = $direction['distance'];
+			$value['distance_value'] = $direction['distance_value'];
+			$value['direction'] = $direction['direction'];
+			
 			$item = new Item($value);
+			$items[] = $item;
+			
 			$distance += (int) $item->distance_value;
 			$item_count++;
         }
@@ -96,7 +121,7 @@ class OrderController extends Controller
         $order->distance = $distance;
         $order->setZone($zone);
 
-        return new OrderResource($order);
+        return new CartResource($order, $items);
     }
 
     /**
@@ -128,6 +153,20 @@ class OrderController extends Controller
             if(isset($value['point'])){
                 $point = new Point($value['point']);
                 $point->save();
+				
+				if(isset($value['type']) && ($value['type'] == Item::TYPE_BACK)){
+					$direction = $this->getDirection($point, $club->point);
+				}else{
+					$direction = $this->getDirection($club->point, $point);
+				}
+				
+				info($direction);
+			
+				$value['duration'] = $direction['duration'];
+				$value['duration_value'] = $direction['duration_value'];
+				$value['distance'] = $direction['distance'];
+				$value['distance_value'] = $direction['distance_value'];
+				$value['direction'] = $direction['direction'];
 
                 $item = new Item($value);
                 $item->point()->associate($point);
@@ -171,7 +210,7 @@ class OrderController extends Controller
         
                     $intent_id = $intent->id;
 				    $order->payment_status = Order::PAYMENT_STATUS_PING;
-                    $status = PaymentToken::STATUS_PING;
+                    $status = Payment::STATUS_PING;
                     
                 } catch (\Stripe\Exception\CardException $e) {
                     // Error code will be authentication_required if authentication is needed
@@ -179,16 +218,16 @@ class OrderController extends Controller
                     $intent_id = $e->getError()->payment_intent->id;
                     $intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
 				    $order->payment_status = Order::PAYMENT_STATUS_AUTH_REQUIRED;
-                    $status = PaymentToken::STATUS_AUTH_REQUIRED;
+                    $status = Payment::STATUS_AUTH_REQUIRED;
                 }
         
-                PaymentToken::create([
+                Payment::create([
                     'status' => $status,
                     'payment_type' => Order::PAYMENT_TYPE_STRIPE,
                     'amount' => $order->total * 100,
                     'currency' => $order->currency,
                     'order_id' => $order->getKey(),
-                    'token' => $intent_id,
+                    'payment_id' => $intent_id,
                 ]);
 
 				$order->status = Order::STATUS_ON_HOLD;
@@ -230,7 +269,23 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-		
+		$place = $request->input('place');
+		if($place > 0 && ($place < $order->place)){
+			$order->place = $place;
+			$order->save();
+			
+			foreach($order->items as $item){
+				foreach($item->rides as $ride){
+					// TODO Handle multicar
+					if($ride->pivot){
+						$ride->pivot->place = $place;
+						$ride->pivot->save();
+					}
+				}
+			}
+			
+			// TODO Refund
+		}
         return new OrderResource($order->load(['items', 'items.point']));
     }
     
@@ -267,4 +322,44 @@ class OrderController extends Controller
         
         return new OrderResource($order->load(['items', 'items.point']));
     }
+	
+	private function getDirection(Point $a, Point $b){
+		$output = [
+			'duration' => null,
+			'duration_value' => 0,
+			'distance' => null,
+			'distance_value' => 0,
+			'direction' => null,
+		];
+		
+		if(!$a) return $output;
+		if(!$b) return $output;
+		
+		$google = $this->google;
+        $origin = sprintf("%s,%s", $a->lat, $a->lng);
+        $destination = sprintf("%s,%s", $b->lat, $b->lng);
+		$direction = $google->getDirection($origin, $destination);
+        if($direction && isset($direction['status']) && $direction['status'] == "OK"){
+            if(isset($direction['routes'])){
+                $routes = $direction['routes'];
+                if(is_array($routes) && !empty($routes)){
+					$route = $routes[0];
+					$output['direction'] = $route['overview_polyline']['points'];
+                    if(isset($route['legs'])){
+                        $legs = $route['legs'];
+						if(is_array($legs) && !empty($legs)){
+							$leg = $legs[0];
+							$output['duration'] = $leg['duration']['text'];
+							$output['duration_value'] = $leg['duration']['value'];
+							$output['distance'] = $leg['distance']['text'];
+							$output['distance_value'] = $leg['distance']['value'];
+							return $output;
+						}
+					}
+				}
+			}
+		}
+		
+		return $output;
+	}
 }

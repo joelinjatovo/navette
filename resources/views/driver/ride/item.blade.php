@@ -54,7 +54,7 @@
 								@if($item->order->user)
 									@if($item->order->user->email)
 									<li class="navi-item">
-										<a href="mailto:{{ $item->user->email }}" class="navi-link">
+										<a href="mailto:{{ $item->order->user->email }}" class="navi-link">
 											<span class="navi-icon"><i class="flaticon2-envelope"></i></span>
 											<span class="navi-text">{{ __('messages.button.contact') }}</span>
 										</a>
@@ -62,7 +62,7 @@
 									@endif
 									@if($item->order->user->email)
 										<li class="navi-item">
-											<a href="tel:{{ $item->user->phone }}" class="navi-link">
+											<a href="tel:{{ $item->order->user->phone }}" class="navi-link">
 												<span class="navi-icon"><i class="flaticon2-phone"></i></span>
 												<span class="navi-text">{{ __('messages.button.call') }}</span>
 											</a>

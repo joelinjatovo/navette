@@ -16,6 +16,7 @@ class User extends JsonResource
     {
         return [
             'id' => $this->getKey(),
+            'code' => $this->code,
             'stripe_id' => $this->stripe_id,
             'payment_method_id' => $this->payment_method_id,
             'facebook_id' => $this->facebook_id,
@@ -28,12 +29,17 @@ class User extends JsonResource
             'address' => $this->address,
             'postal_code' => $this->postal_code,
             'locale' => $this->locale,
+            'activated' => $this->isActivated(),
             'verified' => $this->hasVerifiedPhone(),
             'image_url' => $this->image ? url($this->image->url) : null,
             'roles' => Role::collection($this->whenLoaded('roles')),
             'rating' => $this->rating(),
             'reviews' => $this->reviews(),
             'car' => new Car($this->car),
+            'license_recto' => $this->licenseRecto ? url($this->licenseRecto->url) : null,
+            'license_verso' => $this->licenseVerso ? url($this->licenseVerso->url) : null,
+            'vtc_recto' => $this->vtcRecto ? url($this->vtcRecto->url) : null,
+            'vtc_verso' => $this->vtcVerso ? url($this->vtcVerso->url) : null,
         ];
     }
 

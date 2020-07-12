@@ -22,6 +22,8 @@ class Car extends JsonResource
 			'place' => $this->place,
 			'description' => $this->description,
 			'created_at' => $this->created_at,
+			'club' => $this->when($this->relationLoaded('club'), new Club($this->club)),
+			'driver' => $this->when($this->relationLoaded('driver'), new User($this->driver)),
         ];
     }
 

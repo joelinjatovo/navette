@@ -166,8 +166,7 @@ class RideItem extends Pivot
      */
     public function isArrivable()
     {
-        return (self::STATUS_NEXT == $this->status) 
-            && (self::TYPE_PICKUP == $this->type);
+        return ((self::STATUS_NEXT == $this->status) && (self::TYPE_PICKUP == $this->type));
     }
     
     /**

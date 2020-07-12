@@ -19,16 +19,18 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 1,
+            'code' =>(string) \Str::random(6),
             'name' => 'Haja JOELINJATOVO',
-            'phone' => '+261331377768',
+            'phone' => '0330001',
             'password' => Hash::make('admin!'),
             'phone_verified_at' => now(),
+            'activated_at' => now(),
             'created_at' => now(),
             'locale' => 'fr',
         ]);
         DB::table('images')->insert([
             'name' => 'haja.jpg',
-            'type' => "image/jpeg",
+            'mime' => "image/jpeg",
             'url' => "img/users/haja.jpg",
             'imageable_id' => 1,
             'imageable_type' => "App\Models\User",
@@ -53,10 +55,12 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 2,
+            'code' =>(string) \Str::random(6),
             'name' => 'Driver2 JOELINJATOVO',
-            'phone' => '+261331377769',
+            'phone' => '0330002',
             'password' => Hash::make('driver2!'),
             'phone_verified_at' => now(),
+            'activated_at' => now(),
             'created_at' => now(),
             'locale' => 'fr',
         ]);
@@ -64,8 +68,9 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 3,
+            'code' =>(string) \Str::random(6),
             'name' => 'Driver3 JOELINJATOVO',
-            'phone' => '+261331377770',
+            'phone' => '0330003',
             'password' => Hash::make('driver3!'),
             'phone_verified_at' => now(),
             'created_at' => now(),
@@ -75,10 +80,12 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 4,
+            'code' =>(string) \Str::random(6),
             'name' => 'Driver4 JOELINJATOVO',
-            'phone' => '+261331377771',
+            'phone' => '0330004',
             'password' => Hash::make('driver4!'),
             'phone_verified_at' => now(),
+            'activated_at' => now(),
             'created_at' => now(),
             'locale' => 'fr',
         ]);
@@ -86,10 +93,12 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 5,
+            'code' =>(string) \Str::random(6),
             'name' => 'Driver5 JOELINJATOVO',
-            'phone' => '+261331377772',
+            'phone' => '0330005',
             'password' => Hash::make('driver5!'),
             'phone_verified_at' => now(),
+            'activated_at' => now(),
             'created_at' => now(),
             'locale' => 'fr',
         ]);

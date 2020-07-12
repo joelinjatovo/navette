@@ -17,8 +17,25 @@ class Image extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'mime' => $this->mime,
             'type' => $this->type,
-            'url' => $this->url,
+            'url' => url($this->url),
+        ];
+    }
+
+    /**
+     * Get additional data that should be returned with the resource array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function with($request)
+    {
+        return [
+            'http_status' => 200,
+            'status_code' => 0,
+            'message' => null,
+			"errors" => [],
         ];
     }
 }

@@ -67,18 +67,20 @@ class UserPointCreated implements ShouldBroadcastNow
     public function broadcastWith()
     {
         return [
-            'user' => [
-                'id' => $this->user->id,
-                'name' => $this->user->name,
-                'email' => $this->user->email,
-                'phone' => $this->user->phone,
-            ],
-            'point' => [
-                'name' => $this->point->name,
-                'lat' => $this->point->lat,
-                'lng' => $this->point->lng,
-                'alt' => $this->point->alt,
-            ],
+			'data' => [
+				'user' => [
+					'id' => $this->user->id,
+					'name' => $this->user->name,
+					'email' => $this->user->email,
+					'phone' => $this->user->phone,
+				],
+				'point' => [
+					'name' => $this->point->name,
+					'lat' => $this->point->lat,
+					'lng' => $this->point->lng,
+					'alt' => $this->point->alt,
+				],
+			]
         ];
     }
 }

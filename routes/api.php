@@ -31,16 +31,22 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
     Route::post('token/refresh', 'TokenController@refresh')->name('token.refresh');
     Route::post('register', 'UserController@store')->name('user.create');
     Route::post('facebook/connect', 'FacebookController@connect')->name('facebook.connect');
+    Route::post('upload/license/{type}', 'UploadController@license')->name('upload.license')->where('type', 'verso|recto');
+    Route::post('upload/vtc/{type}', 'UploadController@vtc')->name('upload.vtc')->where('type', 'verso|recto');
 	
 	Route::get('clubs', 'ClubController@index')->name('clubs');
 	Route::post('cart', 'OrderController@cart')->name('order.cart');
     Route::middleware('auth:api')->group(function () {
+        Route::post('contact', 'ContactController@contact')->name('contact');
         Route::post('logout', 'TokenController@logout')->name('logout');
         Route::post('verify', 'VerificationController@verify')->name('verification.verify');
         Route::get('resend', 'VerificationController@resend')->name('verification.resend');
         Route::get('user', 'UserController@show')->name('user.show');
         Route::put('user', 'UserController@update')->name('user.edit');
         Route::post('user/avatar', 'UserController@avatar')->name('user.avatar');
+        Route::post('user/license/{type}', 'UserController@license')->name('user.license')->where('type', 'verso|recto');
+        Route::post('user/vtc/{type}', 'UserController@vtc')->name('user.vtc')->where('type', 'verso|recto');
+        Route::get('user/ratings', 'UserController@ratings')->name('user.ratings');
         Route::post('user/rate', 'UserController@rate')->name('user.rate');
         Route::post('user/position', 'UserPointController@store')->name('user.position.create');
         
@@ -77,9 +83,9 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('ride/complete', 'RideController@complete')->name('ride.complete');
         Route::post('ride/direction', 'RideController@direction')->name('ride.direction');
 		
-        Route::post('rideitem/arrive', 'RideItemController@arrive')->name('rideitem.arrive'); // Driver
-        Route::post('rideitem/cancel', 'RideItemController@cancel')->name('rideitem.cancel'); // Driver
-        Route::post('rideitem/pick-or-drop', 'RideItemController@pickOrDrop')->name('rideitem.pickOrDrop'); // Driver
+        Route::post('rideitem/{rideitem}/arrive', 'RideItemController@arrive')->name('rideitem.arrive'); // Driver
+        Route::post('rideitem/{rideitem}/cancel', 'RideItemController@cancel')->name('rideitem.cancel'); // Driver
+        Route::post('rideitem/{rideitem}/pick-or-drop', 'RideItemController@pickOrDrop')->name('rideitem.pickOrDrop'); // Driver
 		
         Route::get('items', 'ItemController@index')->name('items'); // Customer
         Route::get('item/{item}', 'ItemController@show')->name('item.show'); // Customer

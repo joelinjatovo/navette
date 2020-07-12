@@ -20,6 +20,8 @@ class Order extends Model
 {
     
     public const PAYMENT_TYPE_CASH = 'cash';
+	
+    public const PAYMENT_TYPE_CARD = 'card';
     
     public const PAYMENT_TYPE_STRIPE = 'stripe';
     
@@ -281,9 +283,9 @@ class Order extends Model
     /**
      * Get the payment tokens
      */
-    public function paymentTokens()
+    public function payments()
     {
-        return $this->hasMany(PaymentToken::class, 'order_id');
+        return $this->hasMany(Payment::class, 'order_id');
     }
     
     /**

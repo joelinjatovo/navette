@@ -19,6 +19,7 @@ class AccessToken extends JsonResource
         if( null != $this->user ) {
             $data = [
                 'id' => $this->user->getKey(),
+                'code' => $this->user->code,
                 'stripe_id' => $this->user->stripe_id,
                 'payment_method_id' => $this->user->payment_method_id,
                 'facebook_id' => $this->user->facebook_id,
@@ -32,12 +33,17 @@ class AccessToken extends JsonResource
                 'address' => $this->user->address,
                 'postal_code' => $this->user->postal_code,
                 'locale' => $this->user->locale,
+                'activated' => $this->user->isActivated(),
                 'verified' => $this->user->hasVerifiedPhone(),
                 'image_url' => $this->user->image ? url($this->user->image->url) : null,
                 'rating' => $this->user->rating(),
                 'reviews' => $this->user->reviews(),
                 'roles' => Role::collection($this->user->roles),
                 'car' => new Car($this->user->car),
+                'license_recto' => $this->user->licenseRecto ? url($this->user->licenseRecto->url) : null,
+                'license_verso' => $this->user->licenseVerso ? url($this->user->licenseVerso->url) : null,
+                'vtc_recto' => $this->user->vtcRecto ? url($this->user->vtcRecto->url) : null,
+                'vtc_verso' => $this->user->vtcVerso ? url($this->user->vtcVerso->url) : null,
             ];
         }
         

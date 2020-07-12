@@ -38,6 +38,7 @@ class Order extends JsonResource
             'user' => $this->when($this->relationLoaded('user'), new User($this->user)),
             'club' => $this->when($this->relationLoaded('club'), new Club($this->club)),
             'items' => Item::collection($this->whenLoaded('items')),
+            'payments' => Payment::collection($this->whenLoaded('payments')),
         ];
     }
 
