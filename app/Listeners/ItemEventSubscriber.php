@@ -50,7 +50,7 @@ class ItemEventSubscriber
      * Hande events.
      */
     public function handle($event) {
-		if( !($item = $event->item) || !($user = $item->user) ){
+		if( !($item = $event->item) || !($order = $item->order) || !($user = $order->user) ){
 			return;
 		}
 

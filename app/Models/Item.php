@@ -288,12 +288,4 @@ class Item extends Model
     {
        $this->attributes['ride_at'] = Carbon::parse($value);
     }
-    
-    /**
-     * Get the user that owns the order item.
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 }

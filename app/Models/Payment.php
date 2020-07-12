@@ -14,6 +14,10 @@ class Payment extends Model
     public const STATUS_SUCCESS = 'success';
     
     public const STATUS_AUTH_REQUIRED = 'auth_required';
+	
+	public const STATUS_CANCELED = 'canceled';
+	
+	public const STATUS_REFUNDED = 'refunded';
 
     /**
      * The attributes that are mass assignable.

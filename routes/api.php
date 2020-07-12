@@ -83,9 +83,9 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('ride/complete', 'RideController@complete')->name('ride.complete');
         Route::post('ride/direction', 'RideController@direction')->name('ride.direction');
 		
-        Route::post('rideitem/arrive', 'RideItemController@arrive')->name('rideitem.arrive'); // Driver
-        Route::post('rideitem/cancel', 'RideItemController@cancel')->name('rideitem.cancel'); // Driver
-        Route::post('rideitem/pick-or-drop', 'RideItemController@pickOrDrop')->name('rideitem.pickOrDrop'); // Driver
+        Route::post('rideitem/{rideitem}/arrive', 'RideItemController@arrive')->name('rideitem.arrive'); // Driver
+        Route::post('rideitem/{rideitem}/cancel', 'RideItemController@cancel')->name('rideitem.cancel'); // Driver
+        Route::post('rideitem/{rideitem}/pick-or-drop', 'RideItemController@pickOrDrop')->name('rideitem.pickOrDrop'); // Driver
 		
         Route::get('items', 'ItemController@index')->name('items'); // Customer
         Route::get('item/{item}', 'ItemController@show')->name('item.show'); // Customer

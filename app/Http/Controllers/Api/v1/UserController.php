@@ -45,7 +45,7 @@ class UserController extends Controller
      */
     public function show(Request $request)
     {
-        return new UserResource($request->user()->load('roles'));
+        return new UserResource($request->user()->load('roles')->load('car')->load('car.club'));
     }
 
     /**
@@ -73,9 +73,14 @@ class UserController extends Controller
 		}else{
 			$role = Role::where('name', Role::CUSTOMER)->first();
 		}
+		
 		if($role){
             $user->roles()->attach($role->getKey(), ['approved' => true]);
         }
+		
+		if($user->isCustomer()){
+			$user->activated_at = now();
+		}
 		
 		if(isset($data['code']) && !empty($data['code'])){
 			$parent = User::where('code', $data['code'])->first();
@@ -242,10 +247,14 @@ class UserController extends Controller
      */
     public function ratings(Request $request)
     {
+		$perpage = 5;
+		if(!empty($request->perpage) && ($request->perpage > 0)){
+			$perpage = $request->perpage;
+		}
 		$models = $request->user()->notes()
 			->where('type', Note::TYPE_REVIEWS)
 			->orderBy('created_at', 'desc')
-			->paginate();
+			->paginate($perpage);
 		
         return new NoteCollection($models);
     }

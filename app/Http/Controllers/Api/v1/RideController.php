@@ -38,8 +38,7 @@ class RideController extends Controller
     public function index(Request $request){
 		$models = $request->user()->ridesDrived()
 						->with(['club', 'club.point'])
-						->with(['items', 'items.point'])
-						->with(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments'])
+						->with(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments'])
 						->orderBy('rides.created_at', 'desc')
 						->paginate();
         return new RideCollection($models);
@@ -57,8 +56,7 @@ class RideController extends Controller
 		$model = $request->user()->ridesDrived()
             ->whereIn('rides.status', [Ride::STATUS_STARTED, Ride::STATUS_PING, Ride::STATUS_COMPLETABLE])
             ->with(['club', 'club.point'])
-            ->with(['items', 'items.point'])
-            ->with(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments'])
+            ->with(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments'])
             ->orderBy('rides.start_at', 'asc')
             ->firstOrFail();
         return new RideResource($model);
@@ -75,8 +73,7 @@ class RideController extends Controller
     public function show(Request $request, Ride $ride)
     {
 		$ride->load(['club', 'club.point'])
-			->load(['items', 'items.point'])
-			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
+			->load(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
         return new RideResource($ride);
     }
     
@@ -196,8 +193,7 @@ class RideController extends Controller
 			}
 		}
 		
-		$ride->load(['items', 'items.point'])
-			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
+		$ride->load(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
 		
         return new RideResource($ride);
     }
@@ -236,8 +232,7 @@ class RideController extends Controller
 			}
 		}
         
-		$ride->load(['items', 'items.point'])
-			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
+		$ride->load(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
 		
         return new RideResource($ride);
     }
@@ -265,8 +260,7 @@ class RideController extends Controller
         
 		$ride->getNextRideItem();
         
-		$ride->load(['items', 'items.point'])
-			->load(['items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
+		$ride->load(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
 		
         return new RideResource($ride);
     }

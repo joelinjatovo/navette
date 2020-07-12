@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ItemCollection extends ResourceCollection
+class NoteCollection extends ResourceCollection
 {
     protected $pagination;
 
