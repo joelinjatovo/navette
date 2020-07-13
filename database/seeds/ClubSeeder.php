@@ -13,7 +13,7 @@ class ClubSeeder extends Seeder
     {
         DB::table('points')->insert([
             'id' => 1,
-            'name' => 'Vegas Club',
+            'name' => 'Boulevard Napoléon 1er, L\'Isle-Adam, France',
             'lat' => 49.127983,
             'lng' => 2.2396556,
             'alt' => 17,
@@ -38,7 +38,7 @@ class ClubSeeder extends Seeder
         
         DB::table('points')->insert([
             'id' => 2,
-            'name' => 'Grisy Club',
+            'name' => '2 Rue du Gén de Gaulle, Grisy-les-Plâtres, France',
             'lat' => 48.8178148,
             'lng' => 1.3483707,
             'alt' => 8,
@@ -63,7 +63,7 @@ class ClubSeeder extends Seeder
         
         DB::table('points')->insert([
             'id' => 3,
-            'name' => 'LE R7 - Restaurant Lounge Club',
+            'name' => '2 Rue du Gén de Gaulle, Grisy-les-Plâtres, France',
             'lat' => 49.1270697,
             'lng' => 2.0311066,
             'alt' => 14,
@@ -88,7 +88,7 @@ class ClubSeeder extends Seeder
         
         DB::table('points')->insert([
             'id' => 4,
-            'name' => 'Pacha Club',
+            'name' => '64 Route de Versailles, Louveciennes, France',
             'lat' => 48.8482925,
             'lng' => 2.1065443,
             'alt' => 17,
