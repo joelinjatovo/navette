@@ -108,27 +108,13 @@ class StripeController extends Controller
         ]);
 		
 		$list = $list->toArray();
-		
-		$datas = isset($list['data']) ? $list['data'] : [];
-		foreach($datas as $key => $data){
-			if(empty($user->payment_method_id)){
-				$user->payment_method_id = $data['id'];
-				$user->save();
-				$datas[$key]['active'] = true;
-				break;
-			}else{
-				$datas[$key]['active'] = ($data['id'] == $user->payment_method_id);
-			}
-		}
-		
         $output = [
 			'http_status' => 200,
 			'status_code' => 0, 
 			'message'=>'ok', 
 			'errors' => [],
-			'data' => $datas,
-		]; 
-		
+			'data' => isset($list['data']) ? $list['data'] : [],
+		];
         return response()->json($output);
     }
     
