@@ -82,6 +82,15 @@ class Order extends Model
         'privatized',
         'preordered',
     ];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'privatized' => 'boolean',
+        'preordered' => 'boolean',
+    ];
 
     /**
      * The event map for the model.
