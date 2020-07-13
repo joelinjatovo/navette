@@ -75,6 +75,9 @@ class TokenController extends Controller
         
         $token = app('api_token');
 		if($token){
+			if($token->refreshToken){
+				$token->refreshToken->delete();
+			}
 			$token->delete();
 		}
         
