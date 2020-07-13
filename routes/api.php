@@ -53,7 +53,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::get('orders', 'OrderController@index')->name('orders');
         Route::get('order/{order}', 'OrderController@show')->name('order.show');
         Route::post('order/cancel', 'OrderController@cancel')->name('order.cancel');
-        Route::middleware('verified')->group(function () {
+        //Route::middleware('verified')->group(function () {
             Route::post('order', 'OrderController@store')->name('order.create');
             Route::post('order/{order}', 'OrderController@update')->name('order.update');
             Route::post('order/cancel', 'OrderController@cancel')->name('order.cancel');
@@ -64,7 +64,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
 				Route::get('stripe/cards', 'StripeController@paymentMethods')->name('stripe.cards');
                 Route::post('paypal/pay', 'PayPalController@pay')->name('paypal.pay');
             });
-        });
+        //});
         
         Route::post('car', 'CarController@toggle')->name('car.toggle');
         
