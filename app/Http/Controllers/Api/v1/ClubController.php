@@ -17,7 +17,16 @@ class ClubController extends Controller
      *
      * @return Response
      */
-    public function index(){
-        return new ClubCollection(Club::with(['point', 'cars'])->paginate());
+    public function index(Request $request){
+		if($request->get('s') && !empty(trim($request->get('s')))){
+			$s = '%'.trim($request->get('s')).'%';
+			$models = Club::where('name', 'LIKE', $s)
+				->with(['point', 'cars'])
+				->paginate();
+		}else{
+			$models = Club::with(['point', 'cars'])->paginate();
+		}
+		
+        return new ClubCollection($models);
     }
 }
