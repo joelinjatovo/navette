@@ -14,6 +14,8 @@ use App\Events\Ride\RideStartForwarded as RideStartForwardedEvent;
 use App\Events\Ride\RideStartInited as RideStartInitedEvent;
 use App\Events\Ride\RideStartRefreshed as RideStartRefreshedEvent;
 
+use App\Models\Item;
+
 use App\Notifications\RideCancelable as RideCancelableNotification;
 use App\Notifications\RideCanceled as RideCanceledNotification;
 use App\Notifications\RideCompletable as RideCompletableNotification;
@@ -72,6 +74,12 @@ class RideEventSubscriber
 			break;
 			case $event instanceof RideCompletedEvent:
 				$driver->notify(new RideCompletedNotification($ride));
+				$ride->items()->where('status', Item::STATUS_ACTIVE)->get();
+				foreach($items as $item){
+					if(($order = $item->order) && ($user = $order->user)){
+						$user->notify(new RideCompletedNotification($ride));
+					}
+				}
 			break;
 			case $event instanceof RideCreatedEvent:
 				$driver->notify(new RideCreatedNotification($ride));
