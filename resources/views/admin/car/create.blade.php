@@ -41,6 +41,22 @@
             <div class="row">
                 <div class="col-xl-2"></div>
                 <div class="col-xl-7 my-2">
+					<div class="form-group row">
+						<label class="col-3 col-form-label">{{ __('messages.form.car.status') }}</label>
+						<div class="col-9 col-form-label">
+							<div class="radio-inline">
+								<label class="radio">
+								<input type="radio" name="status" value="available" {{ old('status', $model->status) == 'available' ? 'checked="checked"' : '' }}>
+								<span></span>Disponible</label>
+								<label class="radio">
+								<input type="radio" name="status" value="locked" {{ old('status', $model->status) == 'locked' ? 'checked="checked"' : '' }}>
+								<span></span>En course</label>
+								<label class="radio radio-danger">
+								<input type="radio" name="status" value="unavailable"{{ old('status', $model->status) == 'unavailable' ? 'checked="checked"' : '' }}>
+								<span></span>Non disponible</label>
+							</div>
+						</div>
+					</div>
                     <!--begin::Group-->
                     <div class="form-group row">
                         <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.car.image') }}</label>
@@ -72,6 +88,18 @@
                         <div class="col-9">
                             <input class="form-control form-control-lg form-control-solid @error('name') is-invalid @enderror" type="text" name="name" placeholder="{{ __('messages.form.car.name') }}" value="{{ old('name', $model->name) }}">
                             @error('name')
+                                <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+                            @enderror
+                        </div>
+                    </div>
+                    <!--end::Group-->
+                    
+                    <!--begin::Group-->
+                    <div class="form-group row">
+                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.car.type') }}</label>
+                        <div class="col-9">
+                            <input class="form-control form-control-lg form-control-solid @error('type') is-invalid @enderror" type="text" name="type" placeholder="{{ __('messages.form.car.type') }}" value="{{ old('type', $model->type) }}">
+                            @error('type')
                                 <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
                             @enderror
                         </div>

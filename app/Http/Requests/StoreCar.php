@@ -25,7 +25,9 @@ class StoreCar extends FormRequest
     {
         return [
             'image' => 'file|mimes:jpeg,png,jpg',
-            'name' => 'required|max:255',
+            'status' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'type' => 'nullable|string|max:255',
             'place' => 'required|numeric',
             'driver' => 'required|exists:users,id',
             'club' => 'required|exists:clubs,id',

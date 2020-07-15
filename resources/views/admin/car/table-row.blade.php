@@ -20,6 +20,13 @@
 	<td data-field="{{ __('messages.place') }}" aria-label="" class="datatable-cell">
 		<span style="width: 100px;">
 			<div class="text-primary mb-0">{{ trans_choice('messages.count.places', $model->place, ['value' => $model->place]) }}</div>
+			@if($model->status == 'available')
+				<span class="label label-lg label-light-primary label-inline">Disponible</span>
+			@elseif($model->status == 'locked')
+				<span class="label label-lg label-light-primary label-inline">En course</span>
+			@elseif($model->status == 'unavailable')
+				<span class="label label-lg label-light-warning label-inline">Non Dispo</span>
+			@endif
 		</span>
 	</td>
 	<td data-field="{{ __('messages.actions') }}" data-autohide-disabled="false" aria-label="null" class="datatable-cell">

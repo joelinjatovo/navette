@@ -26,6 +26,8 @@ class StoreClub extends FormRequest
         return [
             'image' => 'file|mimes:jpeg,png,jpg',
             'name' => 'required|max:255',
+            'max_car_place' => 'nullable|min:1|max:100',
+            'point.name' => 'nullable',
             'point.lat' => 'required',
             'point.lng' => 'required',
         ];

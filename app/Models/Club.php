@@ -15,6 +15,7 @@ class Club extends Model
      */
     protected $fillable = [
         'name',
+        'max_car_place',
 		'description'
     ];
 
