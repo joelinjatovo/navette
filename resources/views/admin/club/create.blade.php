@@ -68,10 +68,35 @@
                     
                     <!--begin::Group-->
                     <div class="form-group row">
+                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.club.max_car_place') }}</label>
+                        <div class="col-9">
+                            <input class="form-control form-control-lg form-control-solid @error('max_car_place') is-invalid @enderror" type="number" min="1" max="100" name="max_car_place" placeholder="{{ __('messages.form.club.max_car_place') }}" value="{{ old('max_car_place', $model->max_car_place) }}">
+                            @error('max_car_place')
+                                <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+                            @enderror
+							<span class="form-text text-muted">Calculé depuis le nombre de place de voiture du club disponible si vide.</span>
+                        </div>
+                    </div>
+                    <!--end::Group-->
+                    
+                    <!--begin::Group-->
+                    <div class="form-group row">
                         <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.club.name') }}</label>
                         <div class="col-9">
                             <input class="form-control form-control-lg form-control-solid @error('name') is-invalid @enderror" type="text" name="name" placeholder="{{ __('messages.form.club.name') }}" value="{{ old('name', $model->name) }}">
                             @error('name')
+                                <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
+                            @enderror
+                        </div>
+                    </div>
+                    <!--end::Group-->
+                    
+                    <!--begin::Group-->
+                    <div class="form-group row">
+                        <label class="col-form-label col-3 text-lg-right text-left">{{ __('messages.form.point.name') }}</label>
+                        <div class="col-9">
+                            <input class="form-control form-control-lg form-control-solid @error('point.name') is-invalid @enderror" type="text" name="point[name]" id="point_name" placeholder="{{ __('messages.form.point.name') }}" value="{{ old('point.name', $model->point ? $model->point->name: '') }}">
+                            @error('point.name')
                                 <div class="fv-plugins-message-container"><div class="fv-help-block">{{ $message }}</div></div>
                             @enderror
                         </div>

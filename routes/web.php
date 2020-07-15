@@ -121,6 +121,7 @@ Route::middleware(['auth'])->group(function () {
         
         Route::get('orders', 'Admin\OrderController@index')->name('orders');
         Route::get('order/{order}', 'Admin\OrderController@show')->name('order.show');
+        Route::get('order/{order}/details', 'Admin\OrderController@details')->name('order.details');
         Route::delete('orders', 'Admin\OrderController@delete');
         Route::put('orders', 'Admin\OrderController@action');
         

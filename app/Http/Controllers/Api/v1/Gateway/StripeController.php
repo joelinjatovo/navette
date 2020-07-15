@@ -114,7 +114,7 @@ class StripeController extends Controller
 			'message'=>'ok', 
 			'errors' => [],
 			'data' => isset($list['data']) ? $list['data'] : [],
-		]; 
+		];
         return response()->json($output);
     }
     

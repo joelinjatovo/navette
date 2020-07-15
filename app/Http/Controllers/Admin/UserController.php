@@ -79,6 +79,14 @@ class UserController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password'])
         ]);
+		
+		if($request->input('active')){
+			$user->activated_at = now();
+		}
+		
+		if($request->input('verified')){
+			$user->markPhoneAsVerified();
+		}
         
         if($user->save()){
             $user->roles()->attach($validated['roles']);
@@ -115,6 +123,18 @@ class UserController extends Controller
             'phone' => $validated['phone'],
             'email' => $validated['email'],
         ]);
+		
+		if($request->input('active') && !$user->activated_at){
+			$user->activated_at = now();
+		}elseif(!$request->input('active')){
+			$user->activated_at = null;
+		}
+		
+		if($request->input('verified') && !$user->hasVerifiedPhone()){
+			$user->markPhoneAsVerified();
+		}elseif(!$request->input('verified')){
+			$user->phone_verified_at = null;
+		}
         
         if($user->save()){
             $user->roles()->sync($validated['roles']);

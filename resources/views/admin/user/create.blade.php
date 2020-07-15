@@ -139,6 +139,33 @@
                             </div>
                         </div>
                     </div>
+                    <!--begin::Group-->
+					<div class="form-group row">
+						<label class="col-form-label col-3 text-lg-right text-left">Validation</label>
+						<div class="col-9">
+							<div class="checkbox-inline">
+								<label class="checkbox mb-2">
+								<input type="hidden" name="active" value="0">
+								<input type="checkbox" name="active" value="1" {{ $model->isActivated() ? 'checked="checked"' : '' }} >
+								<span></span>{{ __('Marquer le compte comme validé') }}</label>
+							</div>
+							<div class="form-text text-muted">{{ __('Ceci permet d\'activer ou désactiver le compte du client ou du chauffeur.') }}</div>
+						</div>
+					</div>
+                    <!--end::Group-->
+                    <!--begin::Group-->
+					<div class="form-group row">
+						<label class="col-form-label col-3 text-lg-right text-left">Vérification</label>
+						<div class="col-9">
+							<div class="checkbox-inline">
+								<label class="checkbox mb-2">
+								<input type="hidden" name="verified" value="0">
+								<input type="checkbox" name="verified" value="1" {{ $model->hasVerifiedPhone() ? 'checked="checked"' : '' }} >
+								<span></span>{{ __('Marquer le numéro de téléphone comme vérifié') }}</label>
+							</div>
+						</div>
+					</div>
+                    <!--end::Group-->
                 </div>
             </div>
             <!--end::Row-->
