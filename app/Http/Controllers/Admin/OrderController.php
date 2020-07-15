@@ -47,6 +47,17 @@ class OrderController extends Controller
     }
 
     /**
+     * Show the order details.
+     *
+     * @param Order $order
+     * @return Response
+     */
+    public function details(Order $order)
+    {
+        return view('admin.order.details', ['model' => $order]);
+    }
+
+    /**
      * Handle specified action
      *
      * @param Request  $request

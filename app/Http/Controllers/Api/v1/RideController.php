@@ -219,7 +219,7 @@ class RideController extends Controller
 		$rideitems = $ride->rideitems()
 			//->with('item')
 			//->with('item.order')
-			->where('status', RideItem::STATUS_STARTED)
+			->where('ride_item.status', RideItem::STATUS_STARTED)
 			->get();
 		
         foreach($rideitems as $rideitem){
@@ -249,7 +249,7 @@ class RideController extends Controller
     {
         $ride = Ride::findOrFail($request->input('id'));
         
-        $rideitems = $ride->rideitems()->where('status', RideItem::STATUS_ACTIVE)->get();
+        $rideitems = $ride->rideitems()->where('ride_item.status', RideItem::STATUS_ACTIVE)->get();
         if(empty($rideitems)){
             return $this->error(400, 4005, trans('messages.no.items.found'));
         }

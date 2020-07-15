@@ -74,7 +74,7 @@ class RideEventSubscriber
 			break;
 			case $event instanceof RideCompletedEvent:
 				$driver->notify(new RideCompletedNotification($ride));
-				$ride->items()->where('status', Item::STATUS_ACTIVE)->get();
+				$items = $ride->items()->where('items.status', Item::STATUS_ACTIVE)->get();
 				foreach($items as $item){
 					if(($order = $item->order) && ($user = $order->user)){
 						$user->notify(new RideCompletedNotification($ride));
