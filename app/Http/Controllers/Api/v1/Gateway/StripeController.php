@@ -130,7 +130,7 @@ class StripeController extends Controller
 		$payload = @file_get_contents('php://input');
         try {
             // Make sure the event is coming from Stripe by checking the signature header
-            $event = \Stripe\Webhook::constructEvent($payload, $_SERVER['HTTP_STRIPE_SIGNATURE'], env('STRIPE_WEBHOOK_SECRET'));
+            $event = \Stripe\Webhook::constructEvent($payload, $_SERVER['HTTP_STRIPE_SIGNATURE'], config('stripe.webhook.secret'));
 		} catch(\UnexpectedValueException $e) {
             return response()->json(['status' => 'error','details' => 'Invalid payload'])->setStatusCode(403);
 		} catch(\Stripe\Exception\SignatureVerificationException $e) {
