@@ -118,6 +118,9 @@ class UserController extends Controller
 		}
         
         $user->sendPhoneVerificationNotification();
+		
+		// Remove for test
+        $user->markPhoneAsVerified();
         
         event(new Registered($user));
 
