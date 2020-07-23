@@ -9,6 +9,8 @@ class Note extends Model
 
 	const TYPE_REVIEWS = 'reviews';
 	
+	const TYPE_AVG = 'avg';
+	
     /**
      * Bootstrap the model and its traits.
      *

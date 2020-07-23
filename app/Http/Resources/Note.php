@@ -19,6 +19,8 @@ class Note extends JsonResource
 			'type' => $this->type,
 			'description' => $this->description,
 			'star' => $this->star,
+			'amount' => $this->amount,
+			'currency' => $this->currency,
 			'created_at' => $this->created_at,
         ];
     }
