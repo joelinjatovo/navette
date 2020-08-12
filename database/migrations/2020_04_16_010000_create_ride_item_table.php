@@ -25,6 +25,7 @@ class CreateRideItemTable extends Migration
                 $table->bigInteger('duration_value')->nullable();
                 $table->string('duration')->nullable();
                 $table->text('direction')->nullable();
+                $table->json('leg')->nullable();
                 $table->dateTime('arrived_at')->nullable(); // date reel
                 $table->dateTime('start_at')->nullable(); // date prevu
                 $table->dateTime('started_at')->nullable();

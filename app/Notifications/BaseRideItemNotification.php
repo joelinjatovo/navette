@@ -56,7 +56,11 @@ class BaseRideItemNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->rideitem->attributesToArray();
+        $array = $this->rideitem->attributesToArray();
+		if(isset($array['leg'])){
+			unset($array['leg']);
+		}
+        return $array;
     }
         
 }
