@@ -50,8 +50,6 @@ class RideProcessor implements ShouldQueue
 			->orderBy('items.ride_at', 'asc') // First In First Served
 			->get();
         
-        info("here");
-
 		$rides = [];
 		foreach($items as $item){
             if(!($order = $item->order) || !($club = $order->club)){
@@ -114,21 +112,28 @@ class RideProcessor implements ShouldQueue
         $solutions = [];
 		
         $max_car_place = $club->getMaxCarPlace();
-		$max_ride_duration = 60; // 60 minutes par course
+		$max_ride_duration = 60 * 60; // 60 minutes par course
 		$date = $this->getStartDate($item);
 		
 		$rides = $this->getActivedRide($club, $item->ride_at, $place);
 		foreach($rides as $ride){
-            $items = $ride->rideitems;
-            if(!$this->hasNotServed($items)){
+            $rideitems = $ride->rideitems;
+            if(!$this->hasNotServed($rideitems)){
                 continue;
             }
-            $items[] = $item;
-            $items = $this->getDirection($items);
-            if(!$this->isChargeValid($items, $max_car_place)){
+            $next = $this->getNextRideItem($rideitems);
+            $rideitem = new RideItem();
+            $rideitem->item = $item;
+            $rideitem->place = $place;
+            $rideitem->type = ($item->type == Item::TYPE_BACK ? RideItem::TYPE_DROP : RideItem::TYPE_PICKUP);
+            $rideitems[] = $rideitem;
+            $rideitems = $this->getDirection($rideitems, $club, $next);
+            if(!$this->isChargeValid($rideitems, $max_car_place)){
+                info('!$this->isChargeValid 1');
                 continue;
             }
-            if(!$this->isDurationValid($items, $max_ride_duration)){
+            if(!$this->isDurationValid($rideitems, $max_ride_duration)){
+                info('!$this->isDurationValid 1');
                 continue;
             }
             $solutions[$ride->getKey()] = $ride;
@@ -136,19 +141,147 @@ class RideProcessor implements ShouldQueue
         
         $rides = $this->getPingedRide($club, $item->ride_at, $place);
         foreach($rides as $ride){
-            $items = $ride->rideitems;
-            $items[] = $item;
-            $items = $this->getDirection($items);
-            if(!$this->isChargeValid($items, $max_car_place)){
+            $rideitems = $ride->rideitems;
+            $rideitem = new RideItem();
+            $rideitem->item = $item;
+            $rideitem->place = $place;
+            $rideitem->type = ($item->type == Item::TYPE_BACK ? RideItem::TYPE_DROP : RideItem::TYPE_PICKUP);
+            $rideitems[] = $rideitem;
+            $rideitems = $this->getDirection($rideitems, $club, null);
+            if(!$this->isChargeValid($rideitems, $max_car_place)){
+                info('!$this->isChargeValid 2');
                 continue;
             }
-            if(!$this->isDurationValid($items, $max_ride_duration)){
+            if(!$this->isDurationValid($rideitems, $max_ride_duration)){
+                info('!$this->isDurationValid 2');
                 continue;
             }
             $solutions[$ride->getKey()] = $ride;
         }
         
         return $solutions;
+    }
+	
+    /**
+     *
+     * @return Array $items
+     */
+    protected function getDirection($rideitems, Club $club, ?RideItem $next = null)
+    {
+        $output = [];
+        
+        if($next && $next->item && $next->item->point){
+            $origin = sprintf("%s,%s", $next->item->point->lat, $next->item->point->lng);
+        }else{
+            $origin = sprintf("%s,%s", $club->point->lat, $club->point->lng);
+        }
+        
+        $destination = sprintf("%s,%s", $club->point->lat, $club->point->lng);
+        $array_waypoints = ['optimize:true'];
+        $_rideitems = [];
+        foreach($rideitems as $rideitem){
+			if($rideitem->item && $rideitem->item->point && (!$next || !$next->item || !$next->item->point || ($rideitem->getKey()!=$next->getKey()))){
+				$array_waypoints[] = sprintf("%s,%s", $rideitem->item->point->lat, $rideitem->item->point->lng);
+				$_rideitems[] = $rideitem;
+			}
+        }
+
+        $waypoints = null;
+        if(count($array_waypoints)>0){
+            $waypoints = implode("|", $array_waypoints);
+        }
+
+        $direction = $this->google->getDirection($origin, $destination, $waypoints);
+        
+        if($direction && isset($direction['status']) && $direction['status'] == "OK"){
+            if(isset($direction['routes'])){
+                $routes = $direction['routes'];
+                if(is_array($routes) && !empty($routes)){
+                    $route = $routes[0];
+                    
+					/**
+					* Set RideItem order
+					*/
+                    $orders = [];
+                    if(isset($route['waypoint_order'])){
+                        $orders = $route['waypoint_order'];
+                        foreach($orders as $key => $order){
+                            if(isset($_rideitems[$order])){
+								$_rideitems[$order]->order = $key + 1;
+                            }
+                        }
+                    }
+                    
+					/**
+					* Set RideItem course info
+					*/
+                    if(isset($route['legs'])){
+                        $distance = 0;
+                        $duration = 0;
+                        $legs = $route['legs'];
+                        foreach($legs as $key => $leg){
+                            $leg_distance = 0;
+                            if(isset($leg['distance']) && isset($leg['distance']['value'])){
+                                $leg_distance = $leg['distance']['value'];
+                                $distance += $leg_distance; // Calculate ride distance
+                            }
+							
+                            $leg_distance_text = null;
+                            if(isset($leg['distance']) && isset($leg['distance']['text'])){
+                                $leg_distance_text = $leg['distance']['text'];
+                            }
+                            
+                            $leg_duration = 0;
+                            if(isset($leg['duration']) && isset($leg['duration']['value'])){
+                                $leg_duration = $leg['duration']['value'];
+                                $duration += $leg_duration; // Calculate ride duration
+                            }
+                            
+							$leg_duration_text = null;
+                            if(isset($leg['duration']) && isset($leg['duration']['text'])){
+                                $leg_duration_text = $leg['duration']['text'];
+                            }
+                            
+                            // Polyline
+							$positions = [];
+                            if(isset($leg['steps'])){
+                                $steps = $leg['steps'];
+                                foreach($steps as $step){
+                                    if(isset($step['polyline']) && isset($step['polyline']['points'])){
+										$decoded = \App\Services\Polyline::decode($step['polyline']['points']);
+                                        $positions = array_merge($positions, $decoded);
+                                    }
+                                }
+                            }
+                            $polyline = \App\Services\Polyline::encode($positions);
+                            
+                            /**
+							* Set RideItem info
+							*/
+                            if( is_array($orders) && isset($orders[$key]) && isset($_rideitems[$orders[$key]]) ) {
+								$_rideitems[$orders[$key]]->direction = $polyline;
+								$_rideitems[$orders[$key]]->distance = $leg_distance_text;
+								$_rideitems[$orders[$key]]->distance_value = $leg_distance;
+								$_rideitems[$orders[$key]]->duration_value = $leg_duration;
+								$_rideitems[$orders[$key]]->duration = $leg_duration_text;
+                                $_rideitems[$orders[$key]]->leg = $leg;
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+        foreach($_rideitems as $_rideitem){
+            if(($_rideitem->order > 0) && !isset($output[$_rideitem->order - 1])){
+                $output[$_rideitem->order - 1] = $_rideitem;
+            }else{
+                $output[] = $_rideitem;
+            }
+        }
+        
+		return $output;
     }
 	
     /**
@@ -192,74 +325,91 @@ class RideProcessor implements ShouldQueue
     /**
     * 
     */
-	private function isChargeValid(RideItem $items, $max)
+	private function isChargeValid($rideitems, $max)
     {
         $currentCharge = 0;
-        foreach($items as $order => $item){
-            if(RideItem::TYPE_DROP == $item->type){
-                $currentCharge += $item->place;
+        foreach($rideitems as $order => $rideitem){
+            if(RideItem::TYPE_DROP == $rideitem->type){
+                $currentCharge += $rideitem->place;
             }
         }
         
-        foreach($items as $item){
-            $currentCharge += $item->getCharge();
+        foreach($rideitems as $rideitem){
+            $currentCharge += $rideitem->getCharge();
             if($currentCharge>$max) return false;
         }
+        
         return true;
     }
 	
     /**
-    * 
+    * Verifier si la duree du trajet est valide en inserant ce nouvel Item
     */
-	private function isDurationValid(RideItem $items, $max){
+	private function isDurationValid($rideitems, $max){
+        // Tous les "Retours" sont à ajouter dans le car
         $currentItems = [];
-        foreach($items as $order => $item){
-            if(RideItem::TYPE_DROP == $item->type){
-                $currentItems[$order] = $item;
+        foreach($rideitems as $order => $rideitem){
+            if(RideItem::TYPE_DROP == $rideitem->type){
+                $currentItems[$order] = $rideitem;
             }
         }
         
         $preds = [];
         $from = 0;
-        foreach($items as $order => $item){
-            $duration = $this->getDuration($preds, $from) + $item->getMaxDuration();
+        foreach($rideitems as $order => $rideitem){
+            // Calculer la duree de tous les points
+            $duration = $this->getDuration($preds, $from) + $rideitem->getMaxDuration();
             if($duration>$max) return false;
             
-            $preds[$order] = $item;
-            if(RideItem::TYPE_DROP == $item->type){
+            // Ajouter au predecesseur
+            $preds[$order] = $rideitem;
+            
+            if(RideItem::TYPE_DROP == $rideitem->type){
+                // Enlever ce point du car si c'est un "Retours"
                 unset($currentItems[$order]);
+                
+                // Calcul de duree max a partir du premier client "Aller" si tous les "Retours" sont OK
                 if(!$this->containsDropOff($currentItems)){
                     $from = $this->getFirstPickupOrder($preds);
                 }
             }else{
-                $currentItems[$order] = $item;
+                // Ajouter ce point si c'est un "Aller"
+                $currentItems[$order] = $rideitem;
             }
+            
+            $preds[] = $rideitem;
         }
         
         return true;
     }
 	
     /**
-    * 
+    * Permet de calculer la duree d'une course
     */
-	private function getDuration(RideItem $items, $from = 0){
+	private function getDuration($preds, $from = 0){
+        info(count($preds));
+        
         $duration = 0;
-        if(($from == 0) && $this->containsDropOff($items)){
+        
+        if(($from == 0) && $this->containsDropOff($preds)){
+            // Ajouter la duree d'attente de tous les "Retours"
             $duration = 5 * 60;
         }
         
-        for($i = $from; $i < count($items); $i++){
-            $duration += $items[$i]->getMaxDuration();
+        for($i = $from; $i < count($preds); $i++){
+            // Ajouter la duree d'attente des "Aller"
+            $duration += (isset($preds[$i]) ? $preds[$i]->getMaxDuration() : 0);
         }
+        
         return $duration;
     }
 	
     /**
-    * 
+    * Permet d'obtenir l'ordre du premier voyage "Aller"
     */
-	private function getFirstPickupOrder(RideItem $items){
-        foreach($items as $order => $item){
-            if(RideItem::TYPE_PICKUP == $item->type){
+	private function getFirstPickupOrder($rideitems){
+        foreach($rideitems as $order => $rideitem){
+            if(RideItem::TYPE_PICKUP == $rideitem->type){
                 return $order;
             }
         }
@@ -267,11 +417,11 @@ class RideProcessor implements ShouldQueue
     }
 	
     /**
-    * 
+    * Permet de verigier s'il y a encore un "Retours"
     */
-	private function containsDropOff(RideItem $items){
-        foreach($items as $key => $item){
-            if(RideItem::TYPE_DROP == $item->type){
+	private function containsDropOff($rideitems){
+        foreach($rideitems as $key => $rideitem){
+            if(RideItem::TYPE_DROP == $rideitem->type){
                 return true;
             }
         }
@@ -279,15 +429,29 @@ class RideProcessor implements ShouldQueue
     }
 	
     /**
-    * 
+    * @return bool
+    * @params Array RideItem
     */
-	private function hasNotServed(RideItem $items){
-        foreach($items as $key => $item) {
-            if(in_array($item->status, [RideItem::TYPE_PING, RideItem::TYPE_ACTIVE, RideItem::TYPE_NEXT])) {
+	private function hasNotServed($rideitems){
+        foreach($rideitems as $key => $rideitem) {
+            if($rideitem && in_array($rideitem->status, [RideItem::TYPE_PING, RideItem::TYPE_ACTIVE, RideItem::TYPE_NEXT])) {
                 return true;
             }
         }
         return false;
+    }
+	
+    /**
+    * @params Array RideItem
+    * @return Item
+    */
+	private function getNextRideItem($rideitems){
+        foreach($rideitems as $key => $rideitem) {
+            if($rideitem && in_array($rideitem->status, [RideItem::TYPE_NEXT])) {
+                return $rideitems;
+            }
+        }
+        return null;
     }
     
 	private function createRide(Club $club, Car $car, Item $item){

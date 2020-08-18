@@ -158,7 +158,7 @@ class RideItem extends Pivot
      */
     public function getMaxDuration()
     {
-        return $item->duration_value + (self::TYPE_PICKUP == $this->type ? 5 * 60 : 0);
+        return $this->duration_value + (self::TYPE_PICKUP == $this->type ? 5 * 60 : 0);
     }
     
     /**

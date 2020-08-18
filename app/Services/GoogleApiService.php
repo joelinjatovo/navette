@@ -44,6 +44,7 @@ class GoogleApiService
             'destination' => $destinations,
             'mode' => $mode,
             'units' => 'metric',
+            'language' => 'fr',
         ];
         
         if($waypoints){

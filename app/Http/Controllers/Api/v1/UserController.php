@@ -67,14 +67,19 @@ class UserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
       
-		if(isset($data['role']) && !empty($data['role']) && in_array($data['role'], [Role::DRIVER, Role::CUSTOMER])){
-			$role = Role::where('name', $data['role'])->first();
-		}else{
-			$role = Role::where('name', Role::CUSTOMER)->first();
-		}
-		
-		if($role){
-            $user->roles()->attach($role->getKey(), ['approved' => true]);
+        $roles = $request->input('roles');
+        if(!empty($request->input('roles')) && is_array($roles)){
+            foreach($roles as $role){
+                $role = Role::where('name', $role)->first();
+                if($role){
+                    $user->roles()->attach($role->getKey(), ['approved' => true]);
+                }
+            }
+        }else{
+            $role = Role::where('name', Role::CUSTOMER)->first();
+            if($role){
+                $user->roles()->attach($role->getKey(), ['approved' => true]);
+            }
         }
 		
 		if($user->isCustomer()){
