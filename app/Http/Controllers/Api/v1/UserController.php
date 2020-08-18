@@ -57,7 +57,6 @@ class UserController extends Controller
     public function store(StoreUserRequest $request, TokenRepository $repository)
     {
         $data = $request->validated();
-		info($data);
         
         $user = User::create([
             'first_name' => $data['first_name']??null,
@@ -153,9 +152,7 @@ class UserController extends Controller
         
         $user = $request->user();
         
-        if($user->phone != $data['phone']){
-            $user->sendPhoneVerificationNotification();
-        }
+        $oldPhone = $user->phone;
         
         $user->update([
             'payment_method_id' => $data['payment_method_id']??null,
@@ -167,6 +164,10 @@ class UserController extends Controller
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
         ]);
+        
+        if($user->phone != $oldPhone){
+            $user->sendPhoneVerificationNotification();
+        }
         
         $token = app('api_token');
 

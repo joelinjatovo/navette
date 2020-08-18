@@ -131,6 +131,14 @@ class Ride extends Model
     }
     
     /**
+     * Get the car associated with the race.
+     */
+    public function car()
+    {
+        return $this->belongsTo(Car::class, 'car_id', 'id');
+    }
+    
+    /**
      * Get the club associated with the race.
      */
     public function club()
@@ -293,6 +301,7 @@ class Ride extends Model
                         'duration',
                         'duration_value',
                         'direction',
+                        'leg',
 						'arrived_at', 
 						'start_at',
 						'started_at',

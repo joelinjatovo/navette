@@ -295,7 +295,8 @@ class RideProcessor implements ShouldQueue
 		$ride->status = Ride::STATUS_PING;
 		$ride->available_place = $car->place;
 		$ride->max_place = $car->place;
-		$ride->club()->associate($car->club);
+		$ride->car()->associate($car);
+		$ride->club()->associate($club);
 		$ride->driver()->associate($car->driver);
 		
         $start_date = $this->getStartDate($item);

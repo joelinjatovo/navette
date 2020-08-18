@@ -268,6 +268,7 @@ class Item extends Model
                         'duration',
                         'duration_value',
                         'direction',
+                        'leg',
 						'arrived_at', 
 						'start_at',
 						'started_at',

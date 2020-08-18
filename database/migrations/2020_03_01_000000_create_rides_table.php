@@ -35,6 +35,8 @@ class CreateRidesTable extends Migration
                 $table->foreign('club_id')->references('id')->on('clubs');
                 $table->unsignedBigInteger('driver_id')->nullable();
                 $table->foreign('driver_id')->references('id')->on('users');
+                $table->unsignedBigInteger('car_id')->nullable();
+                $table->foreign('car_id')->references('id')->on('cars');
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
