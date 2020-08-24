@@ -19,6 +19,8 @@ class CreateNotesTable extends Migration
                 $table->string('type')->nullable();
                 $table->text('description')->nullable();
                 $table->unsignedBigInteger('star')->nullable();
+                $table->float('amount', 20, 4)->nullable(); // 
+                $table->string('currency', 3)->nullable();
                 $table->unsignedBigInteger('notable_id')->index();
                 $table->string('notable_type');
                 $table->unsignedBigInteger('user_id')->nullable();

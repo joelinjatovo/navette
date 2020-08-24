@@ -25,6 +25,7 @@ class Ride extends JsonResource
 			'duration' => $this->duration,
 			'duration_value' => $this->duration_value,
 			'direction' => $this->direction,
+			'route' => is_array($this->route) ? $this->route : json_decode($this->route),
 			'start_at' => $this->start_at,
 			'started_at' => $this->started_at,
 			'complete_at' => $this->complete_at,

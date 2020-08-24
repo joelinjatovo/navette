@@ -57,7 +57,6 @@ class UserController extends Controller
     public function store(StoreUserRequest $request, TokenRepository $repository)
     {
         $data = $request->validated();
-		info($data);
         
         $user = User::create([
             'first_name' => $data['first_name']??null,
@@ -68,14 +67,19 @@ class UserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
       
-		if(isset($data['role']) && !empty($data['role']) && in_array($data['role'], [Role::DRIVER, Role::CUSTOMER])){
-			$role = Role::where('name', $data['role'])->first();
-		}else{
-			$role = Role::where('name', Role::CUSTOMER)->first();
-		}
-		
-		if($role){
-            $user->roles()->attach($role->getKey(), ['approved' => true]);
+        $roles = $request->input('roles');
+        if(!empty($request->input('roles')) && is_array($roles)){
+            foreach($roles as $role){
+                $role = Role::where('name', $role)->first();
+                if($role){
+                    $user->roles()->attach($role->getKey(), ['approved' => true]);
+                }
+            }
+        }else{
+            $role = Role::where('name', Role::CUSTOMER)->first();
+            if($role){
+                $user->roles()->attach($role->getKey(), ['approved' => true]);
+            }
         }
 		
 		if($user->isCustomer()){
@@ -117,10 +121,11 @@ class UserController extends Controller
 			}
 		}
         
-        $user->sendPhoneVerificationNotification();
-		
-		// Remove for test
-        $user->markPhoneAsVerified();
+        if(!empty($user->phone)){
+            $user->sendPhoneVerificationNotification();
+            // Remove for test
+            $user->markPhoneAsVerified();
+        }
         
         event(new Registered($user));
 
@@ -153,9 +158,7 @@ class UserController extends Controller
         
         $user = $request->user();
         
-        if($user->phone != $data['phone']){
-            $user->sendPhoneVerificationNotification();
-        }
+        $oldPhone = $user->phone;
         
         $user->update([
             'payment_method_id' => $data['payment_method_id']??null,
@@ -167,6 +170,10 @@ class UserController extends Controller
             'phone' => $data['phone']??null,
             'email' => $data['email']??null,
         ]);
+        
+        if($user->phone != $oldPhone){
+            $user->sendPhoneVerificationNotification();
+        }
         
         $token = app('api_token');
 

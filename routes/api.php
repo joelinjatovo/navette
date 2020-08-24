@@ -35,6 +35,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
     Route::post('upload/vtc/{type}', 'UploadController@vtc')->name('upload.vtc')->where('type', 'verso|recto');
 	
 	Route::get('clubs', 'ClubController@index')->name('clubs');
+	Route::get('club/{club}/cars', 'CarController@index')->name('cars');
 	Route::post('cart', 'OrderController@cart')->name('order.cart');
     Route::middleware('auth:api')->group(function () {
         Route::post('contact', 'ContactController@contact')->name('contact');
