@@ -82,6 +82,7 @@ Route::middleware('apikey')->prefix('v1')->name('api.')->namespace('Api\v1')->gr
         Route::post('ride/start', 'RideController@start')->name('ride.start');
         Route::post('ride/cancel', 'RideController@cancel')->name('ride.cancel');
         Route::post('ride/complete', 'RideController@complete')->name('ride.complete');
+        Route::post('ride/finish', 'RideController@finish')->name('ride.finish');
         Route::post('ride/direction', 'RideController@direction')->name('ride.direction');
 		
         Route::post('rideitem/{rideitem}/arrive', 'RideItemController@arrive')->name('rideitem.arrive'); // Driver

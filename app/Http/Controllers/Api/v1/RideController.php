@@ -153,6 +153,29 @@ class RideController extends Controller
     }
     
     /**
+     * Finish driving ride: complete or cancel
+     *
+     * @param  Request  $request
+     * @param  Ride  $ride
+     *
+     * @return Response
+     */
+    public function finish(Request $request)
+    {
+        $ride = Ride::findOrFail($request->input('id'));
+        
+        if(!$ride->isCancelable() && !$ride->isCompletable()){
+            return $this->error(400, 4003, trans('messages.ride.not.finishable'));
+        }
+        
+        if($ride->isCompletable()){
+            return $this->complete($request);
+        }
+		
+        return $this->cancel($request);
+    }
+    
+    /**
      * Cancel a ride.
      *
      * @param  Request  $request
@@ -217,8 +240,6 @@ class RideController extends Controller
 		}
 		
 		$rideitems = $ride->rideitems()
-			//->with('item')
-			//->with('item.order')
 			->where('ride_item.status', RideItem::STATUS_STARTED)
 			->get();
 		
