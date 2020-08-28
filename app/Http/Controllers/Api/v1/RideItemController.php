@@ -72,7 +72,7 @@ class RideItemController extends Controller
         }
 		
 		$payments = $request->input('payments');
-		if(is_array($payments)){
+		if(!empty($payments) && is_array($payments)){
 			$item = $rideitem->item;
 			$order = null;
 			if($item){
