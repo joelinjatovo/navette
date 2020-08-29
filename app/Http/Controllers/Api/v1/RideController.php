@@ -14,6 +14,7 @@ use App\Http\Resources\Ride as RideResource;
 use App\Models\Ride;
 use App\Models\RideItem;
 use App\Models\Item;
+use App\Models\Point;
 use App\Services\GoogleApiService;
 use Illuminate\Http\Request;
 
@@ -275,7 +276,13 @@ class RideController extends Controller
             return $this->error(400, 4005, trans('messages.no.items.found'));
         }
         
-        if(!$ride->verifyDirection($this->google)){
+        $orgin = null;
+        $point = $request->input('origin');
+        if(!empty($point)){
+            $orgin = new Point($point);
+        }
+        
+        if(!$ride->verifyDirection($this->google, $orgin)){
             return $this->error(400, 4006, trans('messages.no.route.found'));
         }
         
