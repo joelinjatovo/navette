@@ -436,7 +436,7 @@ class Ride extends Model
      * @Param App\Models\Ride $ride
      * @return mixed
      */
-    public function verifyDirection($google)
+    public function verifyDirection($google, ?Point $origin = null)
     {
 		// Check if club has point
 		if(!$this->point()){ 
@@ -467,7 +467,11 @@ class Ride extends Model
 		
 		$rideitems = $query->get();
         
-        $origins = sprintf("%s,%s", $this->point()->lat, $this->point()->lng);
+        if($origin){
+            $origins = sprintf("%s,%s", $origin->lat, $origin->lng);
+        }else{
+            $origins = sprintf("%s,%s", $this->point()->lat, $this->point()->lng);
+        }
         $destinations = sprintf("%s,%s", $this->point()->lat, $this->point()->lng);
         
         $array_waypoints = ['optimize:true'];
