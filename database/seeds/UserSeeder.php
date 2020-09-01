@@ -106,6 +106,8 @@ class UserSeeder extends Seeder
         
         DB::table('users')->insert([
             'id' => 6,
+            'stripe_id' => 'cus_HufY7fyLmu34zh',
+            'payment_method_id' => 'pm_1HKqEAGh5d2tPsnDoPgfi3O0',
             'code' =>(string) \Str::random(6),
             'name' => 'Client1 Navette',
             'phone' => '0123456789',
