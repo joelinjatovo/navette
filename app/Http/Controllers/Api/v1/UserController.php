@@ -263,6 +263,7 @@ class UserController extends Controller
 		}
 		$models = $request->user()->notes()
 			->where('type', Note::TYPE_REVIEWS)
+            ->whereDate('created_at', date('Y-m-d'))
 			->orderBy('created_at', 'desc')
 			->paginate($perpage);
 		
