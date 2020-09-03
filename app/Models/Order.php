@@ -265,11 +265,8 @@ class Order extends Model
         $this->save();
         
         $items = $this->items()->where('items.status', Item::STATUS_PING)->get();
-        if(is_array($items)){
-            foreach($items as $item){
-                $item->ok();
-                $item->save();
-            }
+        foreach($items as $item){
+            $item->ok();
         }
         
         info($items);

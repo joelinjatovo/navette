@@ -181,6 +181,8 @@ class StripeController extends Controller
                     'order' => [
                         'id' => $order->getKey(),
                         'status' => $order->status,
+                        'total' => $order->total,
+                        'currency' => $order->currency,
                     ],
                     'transaction' => [
                         'id' => $transaction->getKey(),
