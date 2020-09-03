@@ -94,8 +94,6 @@ class OrderController extends Controller
 				$direction = $this->getDirection($club->point, $point);
 			}
 				
-			info($direction);
-			
 			$value['duration'] = $direction['duration'];
 			$value['duration_value'] = $direction['duration_value'];
 			$value['distance'] = $direction['distance'];
@@ -160,8 +158,6 @@ class OrderController extends Controller
 					$direction = $this->getDirection($club->point, $point);
 				}
 				
-				info($direction);
-			
 				$value['duration'] = $direction['duration'];
 				$value['duration_value'] = $direction['duration_value'];
 				$value['distance'] = $direction['distance'];

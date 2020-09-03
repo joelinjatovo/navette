@@ -85,7 +85,6 @@ class RideProcessor implements ShouldQueue
     {
         // Send user notification of failure, etc...
 		info('Send user notification of failure...' . $exception->getMessage());
-		info($exception);
     }
 	
     /**

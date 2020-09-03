@@ -270,6 +270,8 @@ class Order extends Model
                 $item->ok();
             }
         }
+        
+        info($items);
 		
         $this->fireModelEvent('paid');
     }

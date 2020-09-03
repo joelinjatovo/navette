@@ -143,10 +143,12 @@ class StripeController extends Controller
 		
         if ($event->type == 'payment_intent.succeeded') {
             $details = '💰 Payment received!';
+            info($details);
 			$paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
 			$this->handlePaymentIntentSucceeded($paymentIntent);
         }else if ($event->type == 'payment_intent.payment_failed') {
             $details = '❌ Payment failed.';
+            info($details);
 			$paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
 			$this->handlePaymentIntentFailed($paymentIntent);
         }
@@ -159,13 +161,32 @@ class StripeController extends Controller
         return response()->json($output);
     }
 	
+	// Then define and call a method to handle the failed payment intent.
+	protected function handlePaymentIntentFailed($intent){
+        info([
+            'action' => 'handlePaymentIntentFailed'
+        ]);
+    }
+	
 	// Then define and call a method to handle the successful payment intent.
 	protected function handlePaymentIntentSucceeded($intent){
 		$transaction = Payment::where('payment_type', Order::PAYMENT_TYPE_STRIPE)
 				->where('payment_id', $intent->id)
 				->first();
+        
 		if($transaction){
 			if($order = $transaction->order){
+                info([
+                    'action' => 'handlePaymentIntentSucceeded',
+                    'order' => [
+                        'id' => $order->getKey(),
+                    ],
+                    'intent' => [
+                        'amount_received' => $intent->amount_received,
+                        'currency' => $intent->currency,
+                    ],
+                ]);
+                
 				$currency = strtoupper($intent->currency);
 				if(($order->payment_type == Order::PAYMENT_TYPE_STRIPE) 
 				   && ($order->total * 100 == $intent->amount_received)
