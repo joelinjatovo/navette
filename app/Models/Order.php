@@ -268,6 +268,7 @@ class Order extends Model
         if(is_array($items)){
             foreach($items as $item){
                 $item->ok();
+                $item->save();
             }
         }
         
