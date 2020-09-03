@@ -42,6 +42,8 @@ class RideProcessor implements ShouldQueue
     public function handle(GoogleApiService $google)
     {
         $this->google = $google;
+        
+        info('Handle job...');
 
 		// Handle job...
 		$items = Item::where('items.status', Item::STATUS_OK)
