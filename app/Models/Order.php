@@ -263,6 +263,13 @@ class Order extends Model
         $this->payment_type = $payment_type;
         $this->paid_at = now();
         $this->save();
+        
+        $items = $this->items()->where('items.status', Item::STATUS_PING)->get();
+        if(is_array($items)){
+            foreach($items as $item){
+                $item->ok();
+            }
+        }
 		
         $this->fireModelEvent('paid');
     }
