@@ -180,6 +180,11 @@ class StripeController extends Controller
                     'action' => 'handlePaymentIntentSucceeded',
                     'order' => [
                         'id' => $order->getKey(),
+                        'status' => $order->status,
+                    ],
+                    'transaction' => [
+                        'id' => $transaction->getKey(),
+                        'status' => $transaction->status,
                     ],
                     'intent' => [
                         'amount_received' => $intent->amount_received,
