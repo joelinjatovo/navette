@@ -215,11 +215,10 @@ class RideController extends Controller
 				if($rideitem->item){
         			if($rideitem->item->isCancelable()){
 						$rideitem->item->cancel();
+                        if($rideitem->item->order){
+                            $rideitem->item->order->cancel($request->user());
+                        }
 					}
-				}
-				
-				if($rideitem->order){
-					$rideitem->order->cancel($request->user());
 				}
 			}
 		}
