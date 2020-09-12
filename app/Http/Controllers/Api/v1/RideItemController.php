@@ -22,6 +22,9 @@ class RideItemController extends Controller
     public function arrive(Request $request, RideItem $rideitem)
     {
         if(!$rideitem->isArrivable()){
+            if($rideitem->status == RideItem::STATUS_ARRIVED){
+                return new RideItemResource($rideitem);
+            }
             return $this->error(400, 5002, trans('messages.rideitem.not.arrivable'));
         }
         
@@ -45,6 +48,9 @@ class RideItemController extends Controller
     public function cancel(Request $request, RideItem $rideitem)
     {
         if(!$rideitem->isCancelable()){
+            if($rideitem->status == RideItem::STATUS_CANCELED){
+                return new RideItemResource($rideitem);
+            }
             return $this->error(400, 5003, trans('messages.rideitem.not.cancelable'));
         }
         
@@ -68,6 +74,12 @@ class RideItemController extends Controller
     public function pickOrDrop(Request $request, RideItem $rideitem)
     {
         if(!$rideitem->isPickable() && !$rideitem->isDropable()){
+            if($rideitem->status == RideItem::STATUS_ARRIVED){
+                return new RideItemResource($rideitem);
+            }
+            if($rideitem->status == RideItem::STATUS_COMPLETED){
+                return new RideItemResource($rideitem);
+            }
             return $this->error(400, 5004, trans('messages.rideitem.not.pickable.or.dropable'));
         }
 		

@@ -39,6 +39,7 @@ class RideController extends Controller
     public function index(Request $request){
 		$models = $request->user()->ridesDrived()
 						->with(['club', 'club.point'])
+                        ->with(['driver', 'car'])
 						->with(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments'])
 						->orderBy('rides.created_at', 'desc')
 						->paginate();
@@ -57,6 +58,7 @@ class RideController extends Controller
 		$model = $request->user()->ridesDrived()
             ->whereIn('rides.status', [Ride::STATUS_STARTED, Ride::STATUS_PING, Ride::STATUS_COMPLETABLE])
             ->with(['club', 'club.point'])
+            ->with(['driver', 'car'])
             ->with(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments'])
             ->orderBy('rides.start_at', 'asc')
             ->firstOrFail();
@@ -73,7 +75,8 @@ class RideController extends Controller
      */
     public function show(Request $request, Ride $ride)
     {
-		$ride->load(['club', 'club.point'])
+		$ride->load(['driver', 'car'])
+            ->load(['club', 'club.point'])
 			->load(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
         return new RideResource($ride);
     }
@@ -188,6 +191,10 @@ class RideController extends Controller
         $ride = Ride::findOrFail($request->input('id'));
         
         if(!$ride->isCancelable()){
+            if($ride->status == Ride::STATUS_CANCELED){
+                $ride->load(['items', 'items.point', 'items.order', 'items.order.user', 'items.order.club', 'items.order.club.point', 'items.order.payments']);
+                return new RideResource($ride);
+            }
             return $this->error(400, 4003, trans('messages.ride.not.cancelable'));
         }
         
@@ -208,11 +215,10 @@ class RideController extends Controller
 				if($rideitem->item){
         			if($rideitem->item->isCancelable()){
 						$rideitem->item->cancel();
+                        if($rideitem->item->order){
+                            $rideitem->item->order->cancel($request->user());
+                        }
 					}
-				}
-				
-				if($rideitem->order){
-					$rideitem->order->cancel($request->user());
 				}
 			}
 		}

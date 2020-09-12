@@ -289,7 +289,7 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function rating()
     {
-        return (float) $this->notes()->avg('star');
+        return (float) $this->notes()->whereDate('notes.created_at', date('Y-m-d'))->avg('star');
     }
     
     /**
@@ -297,7 +297,7 @@ class User extends Authenticatable implements MustVerifyPhone
      */
     public function reviews()
     {
-        return (int) $this->notes()->count();
+        return (int) $this->notes()->whereDate('notes.created_at', date('Y-m-d'))->count();
     }
     
     /**

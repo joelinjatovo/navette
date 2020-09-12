@@ -34,6 +34,7 @@ class Ride extends JsonResource
 			'created_at' => $this->created_at,
             'club' => $this->when($this->relationLoaded('club'), new Club($this->club)),
             'driver' => $this->when($this->relationLoaded('driver'), new User($this->driver)),
+            'car' => $this->when($this->relationLoaded('car'), new Car($this->car)),
             'rideitem' => $this->when($this->pivot, new RideItem($this->pivot)),
             'items' => Item::collection($this->whenLoaded('items')),
         ];

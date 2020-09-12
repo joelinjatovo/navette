@@ -103,5 +103,20 @@ class UserSeeder extends Seeder
             'locale' => 'fr',
         ]);
         DB::table('role_user')->insert(['approved' => 1, 'user_id' => 5, 'role_id' => 2]);
+        
+        DB::table('users')->insert([
+            'id' => 6,
+            'stripe_id' => 'cus_HufY7fyLmu34zh',
+            'payment_method_id' => 'pm_1HKqEAGh5d2tPsnDoPgfi3O0',
+            'code' =>(string) \Str::random(6),
+            'name' => 'Client1 Navette',
+            'phone' => '0123456789',
+            'password' => Hash::make('client!'),
+            'phone_verified_at' => now(),
+            'activated_at' => now(),
+            'created_at' => now(),
+            'locale' => 'fr',
+        ]);
+        DB::table('role_user')->insert(['approved' => 1, 'user_id' => 6, 'role_id' => 3]);
     }
 }

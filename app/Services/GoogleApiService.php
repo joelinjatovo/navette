@@ -34,10 +34,6 @@ class GoogleApiService
      */
     public function getDirection($origins, $destinations, $waypoints = null, $mode = self::MODE_DRIVING)
     {
-        \Log::info('directions ' . $origins);
-        \Log::info('directions ' . $destinations);
-        \Log::info('directions ' . $waypoints);
-        
         $data = [
             'key' => config('google.apikey'),
             'origin' => $origins,
@@ -54,8 +50,6 @@ class GoogleApiService
         $url = self::BASE_URL. "api/directions/json";
         
         $response = Http::get($url . '?' . http_build_query($data));
-        
-        \Log::info('directions ' . $response->body());
         
         return $response->json();
     }
