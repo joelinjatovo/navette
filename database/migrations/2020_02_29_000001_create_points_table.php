@@ -13,6 +13,7 @@ class CreatePointsTable extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         if( ! Schema::hasTable('points') ) {
             Schema::create('points', function (Blueprint $table) {
                 $table->uuid('id')->primary();
