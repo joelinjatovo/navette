@@ -23,10 +23,11 @@ class CreatePointsTable extends Migration
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->timestamps();
             });
-            
+            /*
             Schema::table('points', function($table) {
                 $table->foreign('user_id')->references('id')->on('users');
             });
+            */
         }
     }
 
