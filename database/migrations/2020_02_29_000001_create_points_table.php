@@ -13,7 +13,6 @@ class CreatePointsTable extends Migration
      */
     public function up()
     {
-        Schema::disableForeignKeyConstraints();
         if( ! Schema::hasTable('points') ) {
             Schema::create('points', function (Blueprint $table) {
                 $table->uuid('id')->primary();
@@ -22,8 +21,11 @@ class CreatePointsTable extends Migration
                 $table->decimal('lat', 10, 7);
                 $table->decimal('alt', 10, 7)->nullable();
                 $table->unsignedBigInteger('user_id')->nullable();
-                //$table->foreign('user_id')->references('id')->on('users');
                 $table->timestamps();
+            });
+            
+            Schema::table('points', function($table) {
+                $table->foreign('user_id')->references('id')->on('users');
             });
         }
     }
