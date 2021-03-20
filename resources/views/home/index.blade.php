@@ -1,7 +1,7 @@
 @extends('home.base')
 
 @section('title')
-Accueil 
+Accueil
 @endsection
 
 @section('stylesheet')
@@ -18,14 +18,14 @@ Accueil
 		<a href="/order" class="btn btn-fill btn-green btn-lg rounded-0 animated infinite pulse 2s">Où allez-vous?</a>
 		<div class="subscribe">
 			<h5 class="info-text">
-				Contactez-nous ou Inscrivez-vous <b>GRATUITEMENT</b> et téléchargez l'application 
+				Contactez-nous ou Inscrivez-vous <b>GRATUITEMENT</b> et téléchargez l'application
 			</h5>
 			<div class="row">
 				<div class="col-md-12 text-center">
 				  <a href="{{ route('register') }}" class="btn btn-white text-uppercase">inscription</a>
 				  <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-					<a href="{{ asset('apps/android.apk') }}" type="button" class="btn btn-green"><i class="fab fa-android"></i>&nbsp;Download APK</a>
-					<a href="{{ asset('apps/android.apk') }}" type="button" class="btn btn-green"><i class="fas fa-download"></i></a>
+					<a href="{{ asset('apps/com.navetteclub.android.beta-1.0.1-2021-03-20BETA.apk') }}" type="button" class="btn btn-green"><i class="fab fa-android"></i>&nbsp;Download APK</a>
+					<a href="{{ asset('apps/com.navetteclub.android.beta-1.0.1-2021-03-20BETA.apk') }}" type="button" class="btn btn-green"><i class="fas fa-download"></i></a>
 				  </div>
 				</div>
 			</div>
