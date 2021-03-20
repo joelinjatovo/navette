@@ -19,12 +19,12 @@ class ApiKey
     {
         $apikey = $request->header('x-api-key');
         if( empty($apikey) || !$this->isValidApiKey($apikey)){
-			throw new \App\Exceptions\ApiKeyException(trans('messages.invalid.api.key'));
+			//throw new \App\Exceptions\ApiKeyException(trans('messages.invalid.api.key'));
         }
-        
+
         return $next($request);
     }
-    
+
     private function isValidApiKey($apikey){
         try {
             $decrypted = decrypt($apikey);
