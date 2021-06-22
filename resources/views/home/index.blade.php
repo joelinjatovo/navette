@@ -24,8 +24,13 @@ Accueil
 				<div class="col-md-12 text-center">
 				  <a href="{{ route('register') }}" class="btn btn-white text-uppercase">inscription</a>
 				  <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+<<<<<<< HEAD
 					<a href="{{ asset('apps/com.navetteclub.android.beta-1.0.1-2021-03-20BETA.apk') }}" type="button" class="btn btn-green"><i class="fab fa-android"></i>&nbsp;Download APK</a>
 					<a href="{{ asset('apps/com.navetteclub.android.beta-1.0.1-2021-03-20BETA.apk') }}" type="button" class="btn btn-green"><i class="fas fa-download"></i></a>
+=======
+					<a href="{{ asset('apps/com.navetteclub.android-1.0.1-2021-02-09.apk') }}" type="button" class="btn btn-green"><i class="fab fa-android"></i>&nbsp;Download APK</a>
+					<a href="{{ asset('apps/com.navetteclub.android-1.0.1-2021-02-09.apk') }}" type="button" class="btn btn-green"><i class="fas fa-download"></i></a>
+>>>>>>> master
 				  </div>
 				</div>
 			</div>
