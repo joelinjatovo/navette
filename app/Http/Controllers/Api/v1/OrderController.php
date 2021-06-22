@@ -73,11 +73,11 @@ class OrderController extends Controller
         if( null === $club->point ) {
             return $this->error(400, 2000, trans('messages.club.no.point'));
         }
-        
+
         $order = new Order($request->all());
         $order->status = Order::STATUS_PING;
         $order->setVat(0);
-        
+
 		$item_count = 0;
         $distance = 0;
         $values = $request->input('items');
@@ -87,30 +87,30 @@ class OrderController extends Controller
             if(isset($value['point'])){
 				$point = new Point($value['point']);
 			}
-				
+
 			if(isset($value['type']) && ($value['type'] == Item::TYPE_BACK)){
 				$direction = $this->getDirection($point, $club->point);
 			}else{
 				$direction = $this->getDirection($club->point, $point);
 			}
-				
+
 			$value['duration'] = $direction['duration'];
 			$value['duration_value'] = $direction['duration_value'];
 			$value['distance'] = $direction['distance'];
 			$value['distance_value'] = $direction['distance_value'];
 			$value['direction'] = $direction['direction'];
-			
+
 			$item = new Item($value);
 			$items[] = $item;
-			
+
 			$distance += (int) $item->distance_value;
 			$item_count++;
         }
-        
+
         if($distance == 0){
             return $this->error(400, 2001, trans('messages.no.route.found'));
         }
-        
+
         $distance = ($item_count > 0 ? (int) ( $distance / $item_count ) : $distance );
         $zone = Zone::findByDistance($distance);
         if(null == $zone){
@@ -131,19 +131,19 @@ class OrderController extends Controller
     public function store(Request $request)
     {
 		$user = $request->user();
-		
+
         $club = Club::findOrFail($request->input('club_id'));
-        
+
         if( null === $club->point ) {
             return $this->error(400, 2000, trans('messages.club.no.point'));
         }
-        
+
         $order = new Order($request->all());
         $order->status = Order::STATUS_PING;
         $order->setVat(0);
         $order->club()->associate($club);
         $order->save();
-        
+
         $distance = 0;
         $items = [];
         $values = $request->input('items');
@@ -151,13 +151,13 @@ class OrderController extends Controller
             if(isset($value['point'])){
                 $point = new Point($value['point']);
                 $point->save();
-				
+
 				if(isset($value['type']) && ($value['type'] == Item::TYPE_BACK)){
 					$direction = $this->getDirection($point, $club->point);
 				}else{
 					$direction = $this->getDirection($club->point, $point);
 				}
-				
+
 				$value['duration'] = $direction['duration'];
 				$value['duration_value'] = $direction['duration_value'];
 				$value['distance'] = $direction['distance'];
@@ -171,18 +171,18 @@ class OrderController extends Controller
                 $items[] = $item;
 
                 $distance += (int) $item->distance_value;
-                
+
                 if(isset($value['ride_id'])){
                     $item->ride_id = $value['ride_id'];
                     $items[] = $item;
                 }
             }
         }
-        
+
         if($distance == 0){
             return $this->error(400, 2001, trans('messages.no.route.found'));
         }
-        
+
         $distance = (int) ( $distance / 2 );
         $zone = Zone::findByDistance($distance);
         if(null == $zone){
@@ -191,7 +191,7 @@ class OrderController extends Controller
         $order->distance = $distance;
         $order->setZone($zone);
         $order->save();
-		
+
 		switch($request->input('payment_type')){
 			case Order::PAYMENT_TYPE_STRIPE:
                 try {
@@ -203,20 +203,20 @@ class OrderController extends Controller
                         'off_session' => true,
                         'confirm' => true,
                     ]);
-        
+
                     $intent_id = $intent->id;
 				    $order->payment_status = Order::PAYMENT_STATUS_PING;
                     $status = Payment::STATUS_PING;
-                    
+
                 } catch (\Stripe\Exception\CardException $e) {
                     // Error code will be authentication_required if authentication is needed
                     //echo 'Error code is:' . $e->getError()->code;
                     $intent_id = $e->getError()->payment_intent->id;
-                    $intent = \Stripe\PaymentIntent::retrieve($payment_intent_id);
+                    $intent = \Stripe\PaymentIntent::retrieve($intent_id);
 				    $order->payment_status = Order::PAYMENT_STATUS_AUTH_REQUIRED;
                     $status = Payment::STATUS_AUTH_REQUIRED;
                 }
-        
+
                 Payment::create([
                     'status' => $status,
                     'payment_type' => Order::PAYMENT_TYPE_STRIPE,
@@ -231,7 +231,6 @@ class OrderController extends Controller
 				$order->save();
 			break;
 			default:
-			case Order::PAYMENT_TYPE_CASH:
 				$order->status = Order::STATUS_OK;
                 $order->payment_status = Order::PAYMENT_STATUS_PING;
 				$order->payment_type = Order::PAYMENT_TYPE_CASH;
@@ -241,7 +240,7 @@ class OrderController extends Controller
                 }
 			break;
 		}
-        
+
         foreach($items as $item){
             if($item->ride_id){
                 $ride = Ride::find($item->ride_id);
@@ -253,7 +252,7 @@ class OrderController extends Controller
                 }
             }
         }
-		
+
         return new OrderResource($order->load(['items', 'items.point']));
     }
 
@@ -269,7 +268,7 @@ class OrderController extends Controller
 		if($place > 0 && ($place < $order->place)){
 			$order->place = $place;
 			$order->save();
-			
+
 			foreach($order->items as $item){
 				foreach($item->rides as $ride){
 					// TODO Handle multicar
@@ -279,12 +278,12 @@ class OrderController extends Controller
 					}
 				}
 			}
-			
+
 			// TODO Refund
 		}
         return new OrderResource($order->load(['items', 'items.point']));
     }
-    
+
     /**
      * Cancel order
      *
@@ -299,9 +298,9 @@ class OrderController extends Controller
         if(!$order->isCancelable()){
             return $this->error(400, 2003, trans('messages.order.not.cancelable'));
         }
-        
+
         $order->cancel($request->user());
-		
+
 		foreach($order->items as $item){
 			if($item->isCancelable()){
 				$item->cancel();
@@ -315,10 +314,10 @@ class OrderController extends Controller
 				}
 			}
 		}
-        
+
         return new OrderResource($order->load(['items', 'items.point']));
     }
-	
+
 	private function getDirection(Point $a, Point $b){
 		$output = [
 			'duration' => null,
@@ -327,10 +326,10 @@ class OrderController extends Controller
 			'distance_value' => 0,
 			'direction' => null,
 		];
-		
+
 		if(!$a) return $output;
 		if(!$b) return $output;
-		
+
 		$google = $this->google;
         $origin = sprintf("%s,%s", $a->lat, $a->lng);
         $destination = sprintf("%s,%s", $b->lat, $b->lng);
@@ -355,7 +354,7 @@ class OrderController extends Controller
 				}
 			}
 		}
-		
+
 		return $output;
 	}
 }
